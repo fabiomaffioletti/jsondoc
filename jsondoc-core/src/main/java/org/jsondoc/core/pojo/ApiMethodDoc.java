@@ -1,25 +1,31 @@
 package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jsondoc.core.annotation.ApiMethod;
-import org.jsondoc.core.util.JSONDocMethod;
 
 public class ApiMethodDoc {
 	private String path;
 	private String description;
-	private JSONDocMethod method;
+	private ApiVerb method;
+	private List<String> headers;
+	private List<String> produces;
+	private List<String> consumes;
 	private List<ApiURLParamDoc> urlparameters;
 	private ApiRequestBodyObjectDoc bodyparameter;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
 
-	public static ApiMethodDoc buildFromAnnotation(ApiMethod apiMethod) {
+	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-		apiMethodDoc.setPath(apiMethod.path());
-		apiMethodDoc.setDescription(apiMethod.description());
-		apiMethodDoc.setMethod(apiMethod.method());
+		apiMethodDoc.setPath(annotation.path());
+		apiMethodDoc.setDescription(annotation.description());
+		apiMethodDoc.setMethod(annotation.method());
+		apiMethodDoc.setHeaders(Arrays.asList(annotation.headers()));
+		apiMethodDoc.setConsumes(Arrays.asList(annotation.consumes()));
+		apiMethodDoc.setProduces(Arrays.asList(annotation.produces()));
 		return apiMethodDoc;
 	}
 
@@ -28,11 +34,35 @@ public class ApiMethodDoc {
 		this.urlparameters = new ArrayList<ApiURLParamDoc>();
 	}
 
-	public JSONDocMethod getMethod() {
+	public List<String> getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(List<String> headers) {
+		this.headers = headers;
+	}
+
+	public List<String> getProduces() {
+		return produces;
+	}
+
+	public void setProduces(List<String> produces) {
+		this.produces = produces;
+	}
+
+	public List<String> getConsumes() {
+		return consumes;
+	}
+
+	public void setConsumes(List<String> consumes) {
+		this.consumes = consumes;
+	}
+
+	public ApiVerb getMethod() {
 		return method;
 	}
 
-	public void setMethod(JSONDocMethod method) {
+	public void setMethod(ApiVerb method) {
 		this.method = method;
 	}
 

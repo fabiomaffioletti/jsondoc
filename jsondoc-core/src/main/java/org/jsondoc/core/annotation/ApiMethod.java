@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jsondoc.core.util.JSONDocMethod;
+import org.jsondoc.core.pojo.ApiVerb;
 
 @Documented
 @Target(value=ElementType.METHOD)
@@ -17,10 +17,12 @@ public @interface ApiMethod {
 
 	public String description();
 	
-	public JSONDocMethod method();
+	public ApiVerb method();
 	
 	public String[] produces();
 	
 	public String[] consumes();
+	
+	public String[] headers() default {};
 	
 }

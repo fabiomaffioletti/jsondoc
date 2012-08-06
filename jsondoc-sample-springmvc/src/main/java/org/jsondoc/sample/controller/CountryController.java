@@ -8,7 +8,7 @@ import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiRequestBodyObject;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiURLParam;
-import org.jsondoc.core.util.JSONDocMethod;
+import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
 import org.jsondoc.sample.pojo.Country;
 import org.springframework.http.MediaType;
@@ -23,10 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value="/country")
 public class CountryController {
-	
 	@ApiMethod(
 			path="/get/{name}", 
-			method=JSONDocMethod.GET, 
+			method=ApiVerb.GET, 
 			description="Gets Australia",
 			produces={MediaType.APPLICATION_JSON_VALUE},
 			consumes={MediaType.APPLICATION_JSON_VALUE}
@@ -51,7 +50,7 @@ public class CountryController {
 	
 	@ApiMethod(
 			path="/save", 
-			method=JSONDocMethod.GET, 
+			method=ApiVerb.POST, 
 			description="Saves a country",
 			produces={MediaType.APPLICATION_JSON_VALUE},
 			consumes={MediaType.APPLICATION_JSON_VALUE}

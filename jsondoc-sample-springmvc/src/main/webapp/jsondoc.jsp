@@ -159,8 +159,11 @@ body {
 					} else if(this.method == 'DELETE') {
 						var labelClass = 'label label-important';
 					}
-					
 					$("<span/>", {'class' : labelClass, text: this.method}).appendTo(td);
+					
+					tr = $('<tr/>').appendTo(table);
+					th = $('<th/>', {text: 'Headers', colspan: 2}).appendTo(tr);
+					buildHeaders(this.headers, table);
 					tr = $('<tr/>').appendTo(table);
 					th = $('<th/>', {text: 'URL parameters', colspan: 2}).appendTo(tr);
 					buildURLParameters(this.urlparameters, table);
@@ -171,6 +174,12 @@ body {
 					th = $('<th/>', {text: 'Response', colspan: 2}).appendTo(tr);
 					buildResponseObject(this.response, table);
 					tr = $('<tr/>').appendTo(table);
+					th = $('<th/>', {text: 'Produces', colspan: 2}).appendTo(tr);
+					buildProduces(this.produces, table);
+					tr = $('<tr/>').appendTo(table);
+					th = $('<th/>', {text: 'Consumes', colspan: 2}).appendTo(tr);
+					buildConsumes(this.consumes, table);
+					tr = $('<tr/>').appendTo(table);
 					th = $('<th/>', {text: 'Errors', colspan: 2}).appendTo(tr);
 					buildErrors(this.apierrors, table);
 				});
@@ -178,6 +187,39 @@ body {
 		});
 		
 		$(".collapse").collapse();
+	}
+	
+	function buildProduces(produces, t) {
+		if(produces.length == 0) {
+			tr = $('<tr/>').appendTo(t);
+			$('<td/>', {text: 'No produces found', colspan : 2}).appendTo(tr);
+		}
+		$(produces).each(function(index) {
+			tr = $('<tr/>').appendTo(t);
+			$('<code/>', {text: produces[index]}).appendTo($('<td/>', {colspan: 2}).appendTo(tr));
+		});
+	}
+	
+	function buildConsumes(consumes, t) {
+		if(consumes.length == 0) {
+			tr = $('<tr/>').appendTo(t);
+			$('<td/>', {text: 'No consumes found', colspan : 2}).appendTo(tr);
+		}
+		$(consumes).each(function(index) {
+			tr = $('<tr/>').appendTo(t);
+			$('<code/>', {text: consumes[index]}).appendTo($('<td/>', {colspan: 2}).appendTo(tr));
+		});
+	}
+	
+	function buildHeaders(headers, t) {
+		if(headers.length == 0) {
+			tr = $('<tr/>').appendTo(t);
+			$('<td/>', {text: 'No header found', colspan : 2}).appendTo(tr);
+		}
+		$(headers).each(function(index) {
+			tr = $('<tr/>').appendTo(t);
+			$('<code/>', {text: headers[index]}).appendTo($('<td/>', {colspan: 2}).appendTo(tr));
+		});
 	}
 	
 	function buildURLParameters(urlparameters, t) {

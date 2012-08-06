@@ -6,7 +6,7 @@ import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiURLParam;
-import org.jsondoc.core.util.JSONDocMethod;
+import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -23,8 +23,9 @@ public class CityController {
 	
 	@ApiMethod(
 			path="/get/{name}", 
-			method=JSONDocMethod.POST, 
+			method=ApiVerb.POST, 
 			description="Gets Sydney",
+			headers = {"api_key", "Content-Type"},
 			produces={MediaType.APPLICATION_JSON_VALUE},
 			consumes={MediaType.APPLICATION_JSON_VALUE}
 			)
