@@ -11,6 +11,8 @@
 
 	<modules>
 		<module>jsondoc-core</module>
+		<module>jsondoc-springmvc</module>
+		<module>jsondoc-sample-springmvc</module>
 	</modules>
-	
+
 </project>
