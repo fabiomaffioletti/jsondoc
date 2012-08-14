@@ -87,7 +87,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>sample-springmvc</finalName>
+		<finalName>ROOT</finalName>
 
 		<plugins>
 			<plugin>
