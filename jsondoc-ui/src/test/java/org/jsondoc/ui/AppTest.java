@@ -1,4 +1,4 @@
-package org.jsondoc.springmvc;
+package org.jsondoc.ui;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

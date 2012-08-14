@@ -1,21 +1,21 @@
 package org.jsondoc.sample.pojo;
 
-import org.jsondoc.core.annotation.ApiPojo;
-import org.jsondoc.core.annotation.ApiPojoField;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiPojo(name = "city")
-public class City {
+@ApiObject(name = "city", extendsclass="org.jsondoc.sample.pojo.Location")
+public class City extends Location {
 
-	@ApiPojoField(name = "name", description = "city name", type = "string", multiple = false)
+	@ApiObjectField(name = "name", description = "The name of the city", type = "string", multiple = false)
 	private String name;
-
-	public String getName() {
-		return name;
-	}
 
 	public City(String name) {
 		super();
 		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

@@ -3,11 +3,8 @@ package org.jsondoc.sample;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.setup.MockMvcBuilders.xmlConfigSetup;
-
-import javax.xml.ws.Response;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +31,7 @@ public class ApiTest {
 	@Test
 	public void testLogin() {
 		try {
-			mockMvc.perform(get("/apidoc")
+			mockMvc.perform(get("/jsondoc")
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 					.andDo(print())

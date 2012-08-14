@@ -9,12 +9,12 @@
         </layout>
     </appender>
 
-	<logger name="com.fm.template">
-        <level value="WARN"/>
+	<logger name="org.jsondoc.sample">
+        <level value="ERROR"/>
     </logger>
 
 	<root>
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="console" />
 	</root>
 </log4j:configuration>  
