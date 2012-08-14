@@ -6,7 +6,7 @@ public class JSONDoc {
 	private String version;
 	private String basePath;
 	private List<ApiDoc> apis;
-	private List<ApiPojoDoc> objects;
+	private List<ApiObjectDoc> objects;
 
 	public JSONDoc(String version, String basePath) {
 		super();
@@ -30,11 +30,11 @@ public class JSONDoc {
 		this.apis = apis;
 	}
 
-	public List<ApiPojoDoc> getObjects() {
+	public List<ApiObjectDoc> getObjects() {
 		return objects;
 	}
 
-	public void setObjects(List<ApiPojoDoc> objects) {
+	public void setObjects(List<ApiObjectDoc> objects) {
 		this.objects = objects;
 	}
 

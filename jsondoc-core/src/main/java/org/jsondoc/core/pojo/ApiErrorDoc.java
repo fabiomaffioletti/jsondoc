@@ -13,10 +13,8 @@ public class ApiErrorDoc {
 
 	public static List<ApiErrorDoc> buildFromAnnotation(ApiErrors annotation) {
 		List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
-		if (annotation != null) {
-			for (ApiError apiError : annotation.apierrors()) {
-				apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
-			}
+		for (ApiError apiError : annotation.apierrors()) {
+			apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
 		}
 		return apiMethodDocs;
 	}
@@ -31,16 +29,8 @@ public class ApiErrorDoc {
 		return code;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getDescription() {
 		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 }

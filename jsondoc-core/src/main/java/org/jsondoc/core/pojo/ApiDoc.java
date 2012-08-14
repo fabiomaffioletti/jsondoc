@@ -6,14 +6,14 @@ import java.util.List;
 import org.jsondoc.core.annotation.Api;
 
 public class ApiDoc {
-	private String path;
+	private String name;
 	private String description;
 	private List<ApiMethodDoc> methods;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
 		apiDoc.setDescription(api.description());
-		apiDoc.setPath(api.path());
+		apiDoc.setName(api.name());
 		return apiDoc;
 	}
 
@@ -21,12 +21,12 @@ public class ApiDoc {
 		this.methods = new ArrayList<ApiMethodDoc>();
 	}
 
-	public String getPath() {
-		return path;
+	public String getName() {
+		return name;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {

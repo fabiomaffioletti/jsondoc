@@ -9,12 +9,12 @@ import org.jsondoc.core.annotation.ApiMethod;
 public class ApiMethodDoc {
 	private String path;
 	private String description;
-	private ApiVerb method;
-	private List<String> headers;
+	private ApiVerb verb;
 	private List<String> produces;
 	private List<String> consumes;
-	private List<ApiURLParamDoc> urlparameters;
-	private ApiRequestBodyObjectDoc bodyparameter;
+	private List<ApiHeaderDoc> headers;
+	private List<ApiParamDoc> urlparameters;
+	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
 
@@ -22,8 +22,7 @@ public class ApiMethodDoc {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(annotation.path());
 		apiMethodDoc.setDescription(annotation.description());
-		apiMethodDoc.setMethod(annotation.method());
-		apiMethodDoc.setHeaders(Arrays.asList(annotation.headers()));
+		apiMethodDoc.setVerb(annotation.verb());
 		apiMethodDoc.setConsumes(Arrays.asList(annotation.consumes()));
 		apiMethodDoc.setProduces(Arrays.asList(annotation.produces()));
 		return apiMethodDoc;
@@ -31,14 +30,16 @@ public class ApiMethodDoc {
 
 	public ApiMethodDoc() {
 		super();
-		this.urlparameters = new ArrayList<ApiURLParamDoc>();
+		this.headers = new ArrayList<ApiHeaderDoc>();
+		this.urlparameters = new ArrayList<ApiParamDoc>();
+		this.apierrors = new ArrayList<ApiErrorDoc>();
 	}
 
-	public List<String> getHeaders() {
+	public List<ApiHeaderDoc> getHeaders() {
 		return headers;
 	}
 
-	public void setHeaders(List<String> headers) {
+	public void setHeaders(List<ApiHeaderDoc> headers) {
 		this.headers = headers;
 	}
 
@@ -58,12 +59,12 @@ public class ApiMethodDoc {
 		this.consumes = consumes;
 	}
 
-	public ApiVerb getMethod() {
-		return method;
+	public ApiVerb getVerb() {
+		return verb;
 	}
 
-	public void setMethod(ApiVerb method) {
-		this.method = method;
+	public void setVerb(ApiVerb verb) {
+		this.verb = verb;
 	}
 
 	public String getPath() {
@@ -82,11 +83,11 @@ public class ApiMethodDoc {
 		this.description = description;
 	}
 
-	public List<ApiURLParamDoc> getUrlparameters() {
+	public List<ApiParamDoc> getUrlparameters() {
 		return urlparameters;
 	}
 
-	public void setUrlparameters(List<ApiURLParamDoc> urlparameters) {
+	public void setUrlparameters(List<ApiParamDoc> urlparameters) {
 		this.urlparameters = urlparameters;
 	}
 
@@ -98,12 +99,12 @@ public class ApiMethodDoc {
 		this.response = response;
 	}
 
-	public ApiRequestBodyObjectDoc getBodyparameter() {
-		return bodyparameter;
+	public ApiBodyObjectDoc getBodyobject() {
+		return bodyobject;
 	}
 
-	public void setBodyparameter(ApiRequestBodyObjectDoc bodyparameter) {
-		this.bodyparameter = bodyparameter;
+	public void setBodyobject(ApiBodyObjectDoc bodyobject) {
+		this.bodyobject = bodyobject;
 	}
 
 	public List<ApiErrorDoc> getApierrors() {

@@ -13,6 +13,6 @@ public @interface Api {
 
 	public String description();
 	
-	public String path();
+	public String name();
 
 }

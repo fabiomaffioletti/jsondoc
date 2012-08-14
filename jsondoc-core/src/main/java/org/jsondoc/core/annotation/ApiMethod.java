@@ -17,12 +17,10 @@ public @interface ApiMethod {
 
 	public String description();
 	
-	public ApiVerb method();
+	public ApiVerb verb();
 	
 	public String[] produces();
 	
 	public String[] consumes();
-	
-	public String[] headers() default {};
 	
 }
