@@ -18,6 +18,8 @@
 		<property name="basePath" value="http://localhost:8080/api" />
 	</bean>
 	
+	<bean class="org.springframework.mock.web.MockServletContext"/>
+	
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
