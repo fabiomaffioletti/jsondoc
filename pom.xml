@@ -9,6 +9,7 @@
 	<name>jsondoc-master</name>
 
 	<modules>
+		<module>jsondoc-parent</module>
 		<module>jsondoc-core</module>
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-sample-springmvc</module>
