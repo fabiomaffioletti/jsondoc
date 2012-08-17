@@ -13,12 +13,10 @@
 	<artifactId>jsondoc-sample-springmvc</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
 	<name>jsondoc-sample-springmvc</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<description>The sample project of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
 
 	<dependencies>
 		<dependency>

@@ -15,11 +15,8 @@
 	<packaging>jar</packaging>
 
 	<name>jsondoc-core</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<description>The annotations of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
 
 	<dependencies>
 		<dependency>

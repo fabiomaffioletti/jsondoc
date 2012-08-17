@@ -14,12 +14,10 @@
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-springmvc</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>jsondoc-springmvc</name>
-	<url>http://maven.apache.org</url>
 	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>jsondoc-springmvc</name>
+	<description>The Spring MVC helper of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
 
 	<dependencies>
 		<dependency>

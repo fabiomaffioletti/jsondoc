@@ -14,13 +14,11 @@
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-ui</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>jsondoc-ui</name>
 	<packaging>war</packaging>
-	<url>http://maven.apache.org</url>
 	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>jsondoc-ui</name>
+	<description>The interface of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
 	
 	<dependencies>
 
