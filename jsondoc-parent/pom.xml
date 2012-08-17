@@ -9,6 +9,12 @@
 	<packaging>pom</packaging>
 	<name>jsondoc-parent</name>
 	
+	<developers>
+		<developer>
+			<name>Fabio Maffioletti</name>
+		</developer>
+	</developers>
+	
 	<scm>
 		<connection>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</connection>
 		<url>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</url>
