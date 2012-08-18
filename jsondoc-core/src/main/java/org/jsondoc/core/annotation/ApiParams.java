@@ -6,11 +6,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation is to be used on your method and represents the parameters passed in the URL of the requests
+ * @see ApiParam
+ * @author Fabio Maffioletti
+ *
+ */
 @Documented
 @Target(value=ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParams {
 
+	/**
+	 * An array of ApiParam annotations
+	 * @return
+	 */
 	public ApiParam[] urlparameters();
 
 }
