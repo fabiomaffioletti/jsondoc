@@ -47,6 +47,7 @@ body {
 				</a> <a class="brand" href="#">JSONDoc</a>
 			    <ul class="nav">
 			    	<li><a href="#">Documentation</a></li>
+			    	<li><a href="#examples">Examples</a></li>
 				    <li><a href="#downloads">Downloads</a></li>
 				    <li><a href="/jsondoc.jsp" target="blank">Demo</a></li>
 			    </ul>
@@ -203,7 +204,7 @@ body {
 					<td><code>@ApiParam</code></td>
 					<td>Annotation</td>
 					<td>
-						<p>This annotation is to be used inside an annotation of type <code>@ApiHeaders</code>. Here are its attributes: </p>
+						<p>This annotation is to be used inside an annotation of type <code>@ApiParams</code>. Here are its attributes: </p>
 						<table class="table">
 							<tr>
 								<th>Name</th>
@@ -403,7 +404,73 @@ body {
 					</td>
 				</tr>
 			</table>
-			<h2>Examples</h2>
+
+		<h1>Step 2: generate the documentation!</h1>
+		<h3>Using Spring MVC</h3>
+		<p>If your web application already uses Spring MVC, then it's easy: the project <strong>jsondoc-springmvc</strong> already does it for you. The only thing to do on your side is to declare
+		the jsondoc controller in your spring context.xml file:</p>
+<pre class="prettyprint linenums">
+&lt;mvc:annotation-driven /&gt;
+&lt;context:component-scan base-package="your.base.package" /&gt;
+
+&lt;bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController"&gt;
+	&lt;property name="version" value="1.0" /&gt;
+	&lt;property name="basePath" value="http://localhost:8080/api" /&gt;
+	&lt;!-- change the base path of your web application, or better put a placeholder here and in the pom.xml and filter this file to have if replaced for free for different environments --&gt;
+&lt;/bean&gt;
+</pre>
+<p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
+ 
+		<h3>Starting from scratch</h3>
+		<p>You can use your favourite MVC framework with JSONDoc. In this case you should only include <strong>jsondoc-core</strong> and use 
+		<code>JSONDocUtils</code> static class to generate an object of kind <code>JSONDoc</code> that can be later marshalled in JSON with your preferred
+		marshaller. Here is the code of the Spring MVC controller, maybe you will find it useful: </p>
+<pre class="prettyprint linenums">
+package org.jsondoc.springmvc.controller;
+
+import javax.servlet.ServletContext;
+
+import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.util.JSONDocUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping(value = "/jsondoc")
+public class JSONDocController {
+	@Autowired
+	private ServletContext servletContext;
+	private String version;
+	private String basePath;
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody
+	JSONDoc getApi() {
+		return JSONDocUtils.getApiDoc(servletContext, version, basePath);
+	}
+
+}</pre>	
+		
+			<h1>Step 3: Display the generated documentation!</h1>
+			<h3>With jsondoc-ui</h3>
+			<p>You can include the <strong>jsondoc-ui</strong> project in your web application. This provides an interface to browse the generated
+			documentation, it is built on Twitter Bootstrap and can be easily customized for you needs. Check out the <a href="/jsondoc.jsp" target="blank">live demo here</a>.</p>
+			<h3>Build your own viewer</h3>
+			<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
+			
+			<h1 id="examples">Examples</h1>
 
 <h3>Api</h3>
 <pre class="prettyprint linenums">
@@ -501,71 +568,6 @@ public class Location {
 	}
 
 }</pre>
-
-		<h1>Step 2: generate the documentation!</h1>
-		<h3>Using Spring MVC</h3>
-		<p>If your web application already uses Spring MVC, then it's easy: the project <strong>jsondoc-springmvc</strong> already does it for you. The only thing to do on your side is to declare
-		the jsondoc controller in your spring context.xml file:</p>
-<pre class="prettyprint linenums">
-&lt;mvc:annotation-driven /&gt;
-&lt;context:component-scan base-package="your.base.package" /&gt;
-
-&lt;bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController"&gt;
-	&lt;property name="version" value="1.0" /&gt;
-	&lt;property name="basePath" value="http://localhost:8080/api" /&gt;
-	&lt;!-- change the base path of your web application, or better put a placeholder here and in the pom.xml and filter this file to have if replaced for free for different environments --&gt;
-&lt;/bean&gt;
-</pre>
-<p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
- 
-		<h3>Starting from scratch</h3>
-		<p>You can use your favourite MVC framework with JSONDoc. In this case you should only include <strong>jsondoc-core</strong> and use 
-		<code>JSONDocUtils</code> static class to generate an object of kind <code>JSONDoc</code> that can be later marshalled in JSON with your preferred
-		marshaller. Here is the code of the Spring MVC controller, maybe you will find it useful: </p>
-<pre class="prettyprint linenums">
-package org.jsondoc.springmvc.controller;
-
-import javax.servlet.ServletContext;
-
-import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-@Controller
-@RequestMapping(value = "/jsondoc")
-public class JSONDocController {
-	@Autowired
-	private ServletContext servletContext;
-	private String version;
-	private String basePath;
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
-	}
-
-	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	JSONDoc getApi() {
-		return JSONDocUtils.getApiDoc(servletContext, version, basePath);
-	}
-
-}</pre>	
-		
-			<h1>Step 3: Display the generated documentation!</h1>
-			<h3>With jsondoc-ui</h3>
-			<p>You can include the <strong>jsondoc-ui</strong> project in your web application. This provides an interface to browse the generated
-			documentation, it is built on Twitter Bootstrap and can be easily customized for you needs. Check out the <a href="/jsondoc.jsp" target="blank">live demo here</a>.</p>
-			<h3>Build your own viewer</h3>
-			<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
 		
 			<h1>Appendix: example of generated jsondoc</h1>
 			<p>
