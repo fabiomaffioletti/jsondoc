@@ -2,13 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<parent>
-		<artifactId>jsondoc-parent</artifactId>
-		<groupId>org.jsondoc</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../jsondoc-parent/pom.xml</relativePath>
-	</parent>
-	
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-sample-springmvc</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -17,42 +10,100 @@
 	<name>jsondoc-sample-springmvc</name>
 	<description>The sample project of the jsondoc project</description>
 	<url>http://www.jsondoc.org</url>
+	
+	<properties>
+		<base.path>http://localhost:8080/api</base.path>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>dotcloud</id>
+			<properties>
+				<base.path>http://jsondoc-fabiomaffioletti.dotcloud.com/api</base.path>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>springource-artifactory</id>
+			<url>http://repo.springsource.org/libs-milestone</url>
+		</repository>
+		
+		<repository>
+			<id>fm-repo-snapshots</id>
+			<url>https://raw.github.com/fabiomaffioletti/fm-repo/master/snapshots</url>
+		</repository>
+		
+		<repository>
+			<id>fm-repo-releases</id>
+			<url>https://raw.github.com/fabiomaffioletti/fm.repo/master/releases</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-springmvc</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test-mvc</artifactId>
+			<version>1.0.0.M1</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<version>3.1.2.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>3.1.2.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.8</version>
 		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.8</version>
 		</dependency>
 
 	</dependencies>
@@ -61,6 +112,15 @@
 		<finalName>ROOT</finalName>
 
 		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
@@ -126,5 +186,11 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 	</build>
 </project>

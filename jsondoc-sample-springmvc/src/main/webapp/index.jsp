@@ -22,6 +22,10 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+section {
+	padding-top:60px;
+}
 </style>
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
@@ -48,7 +52,9 @@ body {
 			    <ul class="nav">
 			    	<li><a href="#">Documentation</a></li>
 			    	<li><a href="#examples">Examples</a></li>
+			    	<li><a href="#gettingstarted">Getting started</a></li>
 				    <li><a href="#downloads">Downloads</a></li>
+				    <li><a href="#appendix">Appendix</a></li>
 				    <li><a href="/jsondoc.jsp" target="blank">Demo</a></li>
 			    </ul>
 			</div>
@@ -67,6 +73,7 @@ body {
 			</div>
 		</div>
 		<div class="row-fluid">
+			<section id="documentation">
 			<h1>Step 1: annotate your code!</h1>
 			<p>JSONDoc has a set of annotation that are completely <em>MVC framework agnostic</em>. Here is the list:</p>
 			<table class="table table-striped table-bordered">
@@ -469,8 +476,11 @@ public class JSONDocController {
 			documentation, it is built on Twitter Bootstrap and can be easily customized for you needs. Check out the <a href="/jsondoc.jsp" target="blank">live demo here</a>.</p>
 			<h3>Build your own viewer</h3>
 			<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
+			</section>
 			
-			<h1 id="examples">Examples</h1>
+			
+			<section id="examples">
+			<h1>Examples</h1>
 
 <h3>Api</h3>
 <pre class="prettyprint linenums">
@@ -568,7 +578,75 @@ public class Location {
 	}
 
 }</pre>
+		</section>
+
+
+		<section id="gettingstarted">
+			<h1>Getting started</h1>
+			<h2>1) Download core library</h2>
+			<p>Download jsondoc-core from this website or from the <strong><em>temporary</em></strong> maven repository. To do this you have to
+			add two repositories to your project's pom.xml and declare the dependecy in your project</p>
+<pre class="prettyprint linenums">
+&lt;repositories&gt;
+	&lt;repository&gt;
+		&lt;id&gt;fm-repo-snapshots&lt;/id&gt;
+		&lt;url&gt;https://raw.github.com/fabiomaffioletti/fm-repo/master/snapshots&lt;/url&gt;
+	&lt;/repository&gt;
+	
+	&lt;repository&gt;
+		&lt;id&gt;fm-repo-releases&lt;/id&gt;
+		&lt;url&gt;https://raw.github.com/fabiomaffioletti/fm.repo/master/releases&lt;/url&gt;
+	&lt;/repository&gt;
+&lt;/repositories&gt;
+</pre>
+
+<pre class="prettyprint linenums">
+&lt;dependency&gt;
+	&lt;groupId&gt;org.jsondoc&lt;/groupId&gt;
+	&lt;artifactId&gt;jsondoc-core&lt;/artifactId&gt;
+	&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+			<p>If you choose to download jars instead of using temportary repository, here is how to install them into your local repository:</p>
+			<p><code>mvn install:install-file -Dfile=&lt;path-to-file&gt;jsondoc-core.jar -DgroupId=org.jsondoc -DartifactId=jsondoc-core  -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar</code></p>
+			<p><code>mvn install:install-file -Dfile=&lt;path-to-file&gt;jsondoc-springmvc.jar -DgroupId=org.jsondoc -DartifactId=jsondoc-springmvc  -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar</code></p>
+
+		<h2>2) Expose your documentation</h2>
+		<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath);</code> or you can
+		use the <code>jsondoc-springmvc</code> library. Refer to "Step 2: generate the documentation" on this page. In this case you can download the library from this website or
+		from the <strong><em>temporary</em></strong> maven repository.</p>
+		  
+<pre class="prettyprint linenums">
+&lt;dependency&gt;
+	&lt;groupId&gt;org.jsondoc&lt;/groupId&gt;
+	&lt;artifactId&gt;jsondoc-springmvc&lt;/artifactId&gt;
+	&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+		<h2>3) Display the docs</h2>
+		<p>This is optional, but you most probably want it. If you are using the jsondoc-springmvc library, your documentation will be at <code>/jsondoc</code>. Otherwise at the
+		path you defined for your generation class. You may want to display the docs in a human readable way, and fot his purpose you can use the <code>jsondoc-ui</code> project, which
+		you can download from this website. Simply copy things under <code>src/main/webapps</code> to your project's webapps folder. Maybe you will need to modify some paths if you decide
+		to put that stuff in a different location, but in any case everything is in the <code>&lt;head&gt;</code> of <code>jsondoc.jsp</code>. At this point you only have to 
+		point your browser to <code>http://localhost:8080/jsondoc.jsp</code> (or whatever path your server has), insert the <code>/jsondoc</code> path in the upper box, like for example 
+		<code>http://localhost:8080/api/jsondoc</code> and hit enter to see the documentation.</p>
+
+		</section>
 		
+		<section  id="downloads">
+			<h1>Downloads</h1>
+			<p>
+			<table class="table table-bordered table-striped">
+				<tr><th>Project</th><th>Description</th></tr>
+				<tr><td><a href="static/jsondoc-core.jar">jsondoc-core</a></td><td>Set of annotations. Download only this if your web application is not using Spring MVC</td></tr>
+				<tr><td><a href="static/jsondoc-springmvc.jar">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Until jsondoc is not on a public maven repository, you have to download and install also jsondoc-core</td></tr>
+				<tr><td><a href="static/jsondoc-ui.zip">jsondoc-ui</a></td><td>Standard interface to display the generated documentation</td></tr>
+			</table>
+		</section>
+		
+		<section id="appendix">
 			<h1>Appendix: example of generated jsondoc</h1>
 			<p>
 <pre class="pre-scrollable prettyprint linenums">{
@@ -838,16 +916,7 @@ public class Location {
     ]
 }	
 </pre>
-		
-		<h1 id="downloads">Downloads</h1>
-		<p>
-		<table class="table table-bordered table-striped">
-			<tr><th>Project</th><th>Description</th></tr>
-			<tr><td>jsondoc-core</td><td>Set of annotations. Download only this if your web application is not using Spring MVC</td></tr>
-			<tr><td>jsondoc-springmvc</td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Until jsondoc is not on a public maven repository, you have to download and install also jsondoc-core</td></tr>
-			<tr><td>jsondoc-ui</td><td>Standard interface to display the generated documentation</td></tr>
-			<tr><td>jsondoc-sample-springmvc</td><td>A complete example using Spring MVC</td></tr>
-		</table>
+		</section>
 			
 		</div>
 	</div>

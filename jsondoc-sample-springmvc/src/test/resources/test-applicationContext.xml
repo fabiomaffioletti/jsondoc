@@ -9,21 +9,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+        
+        <import resource="classpath:applicationContext.xml"/>
 
-	<mvc:annotation-driven />
-	<context:component-scan base-package="org.jsondoc.sample" />
-	
-	<bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController">
-		<property name="version" value="1.0" />
-		<property name="basePath" value="${base.path}" />
-	</bean>
-	
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
+	<bean class="org.springframework.mock.web.MockServletContext" />
 
 </beans>

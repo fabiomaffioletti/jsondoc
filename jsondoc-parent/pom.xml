@@ -51,44 +51,14 @@
 			</properties>
 		</profile>
 	</profiles>
-	
+
 	<repositories>
 		<repository>
 			<id>springource-artifactory</id>
 			<url>http://repo.springsource.org/libs-milestone</url>
 		</repository>
-		
-		<repository>
-			<id>fm-repo-snapshots</id>
-			<url>https://raw.github.com/fabiomaffioletti/fm-repo/master/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>fm-repo-releases</id>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</snapshots>
-			<url>https://raw.github.com/fabiomaffioletti/fm.repo/master/releases</url>
-		</repository>
 	</repositories>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<!-- Jsondoc -->
