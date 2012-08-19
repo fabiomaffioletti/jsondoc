@@ -55,6 +55,7 @@ section {
 			    	<li><a href="#gettingstarted">Getting started</a></li>
 				    <li><a href="#downloads">Downloads</a></li>
 				    <li><a href="#appendix">Appendix</a></li>
+				    <li><a href="#">Contacts</a></li>
 				    <li><a href="/jsondoc.jsp" target="blank">Demo</a></li>
 			    </ul>
 			</div>
@@ -63,13 +64,24 @@ section {
 
 	<div class="container-fluid">
 		<div class="row-fluid">
+			<div class="span9">
 			<div class="hero-unit" style="background-image: url('img/crisp_paper_ruffles.png');">
 				<h1>JSONDoc</h1>
-				<p>Easily generate documentation for your RESTful services</p>
+				<p>Easily generate documentation for your RESTful API</p>
 				<p>
 					<a class="btn btn-large" href="https://github.com/fabiomaffioletti/jsondoc" target="blank"> View project on Github </a>
 					<a class="btn btn-large" href="/jsondoc.jsp" target="blank"> See live demo </a>
 				</p>
+			</div>
+			</div>
+			<div class="span3 well">
+				<h2>Contact me</h2>
+				<ul class="unstyled">
+					<li><i class="icon-envelope-alt"></i> <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a></li>
+					<li><i class="icon-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></li>
+					<li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/fabiomaffioletti" target="blank">Linkedin profile</a></li>
+					<li><i class="icon-github"></i> <a href="https://github.com/fabiomaffioletti/" target="blank">Github repository</a></li>
+				</ul>
 			</div>
 		</div>
 		<div class="row-fluid">
