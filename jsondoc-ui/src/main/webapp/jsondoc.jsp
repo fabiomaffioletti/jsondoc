@@ -78,12 +78,6 @@ body {
 			</div>
 		</div>
 
-		<hr>
-
-		<footer>
-			<p>&copy; JSONDoc 2012</p>
-		</footer>
-
 	</div>
 
 <script>
