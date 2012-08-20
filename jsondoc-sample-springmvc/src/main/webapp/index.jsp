@@ -46,7 +46,7 @@ section {
 
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
-			<div class="container-fluid">
+			<div class="container">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</a> <a class="brand" href="#">JSONDoc</a>
 			    <ul class="nav">
@@ -55,16 +55,18 @@ section {
 			    	<li><a href="#gettingstarted">Getting started</a></li>
 				    <li><a href="#downloads">Downloads</a></li>
 				    <li><a href="#appendix">Appendix</a></li>
-				    <li><a href="#">Contacts</a></li>
+				    <li><a href="#contacts">Contacts</a></li>
 				    <li><a href="/jsondoc.jsp" target="blank">Demo</a></li>
+			    </ul>
+			    <ul class="nav pull-right">
+			    	<li><a href="mailto:fabio.maffioletti@gmail.com"><i class="icon-envelope"></i> Email me</a></li>
 			    </ul>
 			</div>
 		</div>
 	</div>
 
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span9">
+	<div class="container">
+		<div class="row">
 			<div class="hero-unit" style="background-image: url('img/crisp_paper_ruffles.png');">
 				<h1>JSONDoc</h1>
 				<p>Easily generate documentation for your RESTful API</p>
@@ -73,18 +75,8 @@ section {
 					<a class="btn btn-large" href="/jsondoc.jsp" target="blank"> See live demo </a>
 				</p>
 			</div>
-			</div>
-			<div class="span3 well">
-				<h2>Contact me</h2>
-				<ul class="unstyled">
-					<li><i class="icon-envelope-alt"></i> <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a></li>
-					<li><i class="icon-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></li>
-					<li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/fabiomaffioletti" target="blank">Linkedin profile</a></li>
-					<li><i class="icon-github"></i> <a href="https://github.com/fabiomaffioletti/" target="blank">Github repository</a></li>
-				</ul>
-			</div>
 		</div>
-		<div class="row-fluid">
+		<div class="row">
 			<section id="documentation">
 			<h1>Step 1: annotate your code!</h1>
 			<p>JSONDoc has a set of annotation that are completely <em>MVC framework agnostic</em>. Here is the list:</p>
@@ -656,6 +648,16 @@ public class Location {
 				<tr><td><a href="static/jsondoc-springmvc.jar">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Until jsondoc is not on a public maven repository, you have to download and install also jsondoc-core</td></tr>
 				<tr><td><a href="static/jsondoc-ui.zip">jsondoc-ui</a></td><td>Standard interface to display the generated documentation</td></tr>
 			</table>
+		</section>
+		
+		<section id="contacts">
+			<h1>Contacts</h1>
+			<ul class="unstyled">
+				<li><i class="icon-envelope-alt"></i> <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a></li>
+				<li><i class="icon-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></li>
+				<li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/fabiomaffioletti" target="blank">Linkedin profile</a></li>
+				<li><i class="icon-github"></i> <a href="https://github.com/fabiomaffioletti/" target="blank">Github repository</a></li>
+			</ul>
 		</section>
 		
 		<section id="appendix">
