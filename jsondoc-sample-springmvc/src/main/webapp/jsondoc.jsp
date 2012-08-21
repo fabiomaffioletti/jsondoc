@@ -293,7 +293,7 @@ body {
 		});
 		$("a[rel=object]").each(function() {
 			$(this).click(function() {
-				var i = this.id.substring(0,1);
+				var i = this.id.substring(0,this.id.indexOf('o'));
 				var object = data.objects[i];
 				$(cs).empty();
 				var table = $('<table/>', {'class' : 'table table-condensed table-striped table-bordered'}).appendTo(cs);
