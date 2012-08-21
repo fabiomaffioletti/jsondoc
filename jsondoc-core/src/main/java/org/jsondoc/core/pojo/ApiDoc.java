@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jsondoc.core.annotation.Api;
 
-public class ApiDoc {
+public class ApiDoc implements Comparable<ApiDoc> {
 	private String name;
 	private String description;
 	private List<ApiMethodDoc> methods;
@@ -47,6 +47,11 @@ public class ApiDoc {
 
 	public void addMethod(ApiMethodDoc apiMethod) {
 		this.methods.add(apiMethod);
+	}
+
+	@Override
+	public int compareTo(ApiDoc o) {
+		return name.compareTo(o.getName());
 	}
 
 }

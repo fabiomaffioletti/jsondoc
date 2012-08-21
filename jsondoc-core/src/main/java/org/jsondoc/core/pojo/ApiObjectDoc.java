@@ -8,7 +8,7 @@ import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.reflections.ReflectionUtils;
 
-public class ApiObjectDoc {
+public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private String name;
 	private List<ApiObjectFieldDoc> fields;
 
@@ -42,6 +42,11 @@ public class ApiObjectDoc {
 
 	public List<ApiObjectFieldDoc> getFields() {
 		return fields;
+	}
+
+	@Override
+	public int compareTo(ApiObjectDoc o) {
+		return name.compareTo(o.getName());
 	}
 
 }

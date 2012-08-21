@@ -1,12 +1,12 @@
 package org.jsondoc.core.pojo;
 
-import java.util.List;
+import java.util.Set;
 
 public class JSONDoc {
 	private String version;
 	private String basePath;
-	private List<ApiDoc> apis;
-	private List<ApiObjectDoc> objects;
+	private Set<ApiDoc> apis;
+	private Set<ApiObjectDoc> objects;
 
 	public JSONDoc(String version, String basePath) {
 		super();
@@ -22,19 +22,19 @@ public class JSONDoc {
 		this.version = version;
 	}
 
-	public List<ApiDoc> getApis() {
+	public Set<ApiDoc> getApis() {
 		return apis;
 	}
 
-	public void setApis(List<ApiDoc> apis) {
+	public void setApis(Set<ApiDoc> apis) {
 		this.apis = apis;
 	}
 
-	public List<ApiObjectDoc> getObjects() {
+	public Set<ApiObjectDoc> getObjects() {
 		return objects;
 	}
 
-	public void setObjects(List<ApiObjectDoc> objects) {
+	public void setObjects(Set<ApiObjectDoc> objects) {
 		this.objects = objects;
 	}
 

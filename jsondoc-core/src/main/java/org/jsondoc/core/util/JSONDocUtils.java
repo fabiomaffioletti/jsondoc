@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 
@@ -43,8 +44,8 @@ public class JSONDocUtils {
 		return apiDoc;
 	}
 	
-	public static List<ApiDoc> getApiDocs(Set<Class<?>> classes) {
-		List<ApiDoc> apiDocs = new ArrayList<ApiDoc>();
+	public static Set<ApiDoc> getApiDocs(Set<Class<?>> classes) {
+		Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
 		for (Class<?> controller : classes) {
 			ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
 			apiDoc.setMethods(getApiMethodDocs(controller));
@@ -53,8 +54,8 @@ public class JSONDocUtils {
 		return apiDocs;
 	}
 	
-	public static List<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
-		List<ApiObjectDoc> pojoDocs = new ArrayList<ApiObjectDoc>();
+	public static Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
+		Set<ApiObjectDoc> pojoDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> pojo : classes) {
 			ApiObject annotation = pojo.getAnnotation(ApiObject.class);
 			ApiObjectDoc pojoDoc = ApiObjectDoc.buildFromAnnotation(annotation, pojo);
