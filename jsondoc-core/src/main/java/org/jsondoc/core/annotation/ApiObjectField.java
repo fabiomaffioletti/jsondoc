@@ -34,5 +34,11 @@ public @interface ApiObjectField {
 	 * @return
 	 */
 	public boolean multiple();
+	
+	/**
+	 * The format pattern for this field
+	 * @return
+	 */
+	public String format() default "";
 
 }

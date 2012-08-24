@@ -2,20 +2,30 @@ package org.jsondoc.core.pojo;
 
 import org.jsondoc.core.annotation.ApiObjectField;
 
-
 public class ApiObjectFieldDoc {
 	private String name;
 	private String type;
 	private boolean multiple;
 	private String description;
+	private String format;
 
-	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField apiPojoField, String name) {
+	public static ApiObjectFieldDoc buildFromAnnotation(
+			ApiObjectField annotation, String name) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
 		apiPojoFieldDoc.setName(name);
-		apiPojoFieldDoc.setDescription(apiPojoField.description());
-		apiPojoFieldDoc.setType(apiPojoField.type());
-		apiPojoFieldDoc.setMultiple(apiPojoField.multiple());
+		apiPojoFieldDoc.setDescription(annotation.description());
+		apiPojoFieldDoc.setType(annotation.type());
+		apiPojoFieldDoc.setMultiple(annotation.multiple());
+		apiPojoFieldDoc.setFormat(annotation.format());
 		return apiPojoFieldDoc;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 	public boolean isMultiple() {
