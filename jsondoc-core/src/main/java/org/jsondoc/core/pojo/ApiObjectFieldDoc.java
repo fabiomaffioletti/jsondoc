@@ -9,9 +9,9 @@ public class ApiObjectFieldDoc {
 	private boolean multiple;
 	private String description;
 
-	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField apiPojoField) {
+	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField apiPojoField, String name) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-		apiPojoFieldDoc.setName(apiPojoField.name());
+		apiPojoFieldDoc.setName(name);
 		apiPojoFieldDoc.setDescription(apiPojoField.description());
 		apiPojoFieldDoc.setType(apiPojoField.type());
 		apiPojoFieldDoc.setMultiple(apiPojoField.multiple());

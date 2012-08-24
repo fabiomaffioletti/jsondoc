@@ -17,7 +17,7 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
 		for(Field field : clazz.getDeclaredFields()) {
 			if(field.getAnnotation(ApiObjectField.class) != null) {
-				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class)));
+				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field.getName()));
 			}
 		}
 		

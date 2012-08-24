@@ -17,12 +17,6 @@ import java.lang.annotation.Target;
 public @interface ApiObjectField {
 
 	/**
-	 * The name of the field
-	 * @return
-	 */
-	public String name();
-	
-	/**
 	 * A drescription of what the field is
 	 * @return
 	 */
