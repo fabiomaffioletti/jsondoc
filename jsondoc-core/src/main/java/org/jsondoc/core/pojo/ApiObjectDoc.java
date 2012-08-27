@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
-import org.reflections.ReflectionUtils;
 
 public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private String name;
@@ -20,11 +19,13 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field.getName()));
 			}
 		}
-		
-		if(annotation.extendsclass() != null && !annotation.extendsclass().trim().equals("")) {
-			Class<?> c = ReflectionUtils.forName(annotation.extendsclass());
-			ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(c.getAnnotation(ApiObject.class), c);
-			fieldDocs.addAll(objDoc.getFields());
+
+		Class<?> c = clazz.getSuperclass();
+		if(c != null) {
+			if(c.isAnnotationPresent(ApiObject.class)) {
+				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(c.getAnnotation(ApiObject.class), c);
+				fieldDocs.addAll(objDoc.getFields());
+			}
 		}
 		
 		return new ApiObjectDoc(annotation.name(), fieldDocs);

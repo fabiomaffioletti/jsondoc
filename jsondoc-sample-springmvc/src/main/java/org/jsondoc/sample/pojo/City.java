@@ -3,7 +3,7 @@ package org.jsondoc.sample.pojo;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name = "city", extendsclass="org.jsondoc.sample.pojo.Location")
+@ApiObject(name = "city")
 public class City extends Location {
 
 	@ApiObjectField(description = "The name of the city", type = "string")

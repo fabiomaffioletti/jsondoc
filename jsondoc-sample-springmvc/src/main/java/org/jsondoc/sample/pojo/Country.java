@@ -5,7 +5,7 @@ import java.util.List;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name="country", extendsclass="org.jsondoc.sample.pojo.Location")
+@ApiObject(name="country")
 public class Country extends Location {
 
 	@ApiObjectField(description = "The name of the country", type = "string")

@@ -23,12 +23,6 @@ public @interface ApiObject {
 	 * @return
 	 */
 	public String name();
-
-	/**
-	 * Fully qualified path of the parent class. This has to be specified if your class extends another one and you want to display the object structure in a single shot. Default value is ""
-	 * @return
-	 */
-	public String extendsclass() default "";
 	
 	/**
 	 * Whether to build the json documentation for this object or not. Default value is true
