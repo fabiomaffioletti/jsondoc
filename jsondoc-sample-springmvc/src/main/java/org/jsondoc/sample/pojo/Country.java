@@ -6,12 +6,12 @@ import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
 @ApiObject(name="country", extendsclass="org.jsondoc.sample.pojo.Location")
-public class Country {
+public class Country extends Location {
 
-	@ApiObjectField(name = "name", description = "The name of the country", type = "string", multiple = false)
+	@ApiObjectField(description = "The name of the country", type = "string")
 	private String name;
 
-	@ApiObjectField(name = "cities", description = "The cities of the country", type = "city", multiple = true)
+	@ApiObjectField(description = "The cities of the country", type = "city", multiple = true)
 	private List<City> cities;
 	
 	public Country(String name, List<City> cities) {

@@ -8,6 +8,7 @@ public class ApiObjectFieldDoc {
 	private boolean multiple;
 	private String description;
 	private String format;
+	private String[] allowedvalues;
 
 	public static ApiObjectFieldDoc buildFromAnnotation(
 			ApiObjectField annotation, String name) {
@@ -17,7 +18,16 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setType(annotation.type());
 		apiPojoFieldDoc.setMultiple(annotation.multiple());
 		apiPojoFieldDoc.setFormat(annotation.format());
+		 apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
 		return apiPojoFieldDoc;
+	}
+
+	public String[] getAllowedvalues() {
+		return allowedvalues;
+	}
+
+	public void setAllowedvalues(String[] allowedvalues) {
+		this.allowedvalues = allowedvalues;
 	}
 
 	public String getFormat() {

@@ -45,6 +45,6 @@ public @interface ApiParam {
 	 * An array representing the allowed values this parameter can have. Default value is *
 	 * @return
 	 */
-	public String[] allowedvalues() default {"*"};
+	public String[] allowedvalues() default {};
 	
 }
