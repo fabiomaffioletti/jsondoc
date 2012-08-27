@@ -32,9 +32,8 @@ public class CityController {
 		@ApiParam(name="name", required = true, description="name description", type = "string", allowedvalues = {"sydney", "melbourne", "perth"})
 	})
 	@ApiResponseObject(
-			object="city", 
-			description="A city object", 
-			multiple = true)
+			object="city"
+	)
 	@ApiErrors(apierrors={
 			@ApiError(code="2000", description="City not found"),
 			@ApiError(code="9000", description="Illegal argument")

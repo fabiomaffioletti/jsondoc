@@ -86,7 +86,7 @@ public class JSONDocUtils {
 				}
 				
 				if(method.isAnnotationPresent(ApiResponseObject.class)) {
-					apiMethodDoc.setResponse(ApiResponseObjectDoc.buildFromAnnotation(method.getAnnotation(ApiResponseObject.class)));
+					apiMethodDoc.setResponse(ApiResponseObjectDoc.buildFromAnnotation(method.getAnnotation(ApiResponseObject.class), method));
 				}
 				
 				if(method.isAnnotationPresent(ApiErrors.class)) {

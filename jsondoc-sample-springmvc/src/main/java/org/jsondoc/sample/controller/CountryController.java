@@ -38,9 +38,7 @@ public class CountryController {
 		@ApiParam(name="name", description="The country name", type = "string")
 	})
 	@ApiResponseObject(
-		object="country", 
-		description="A country object, with the list of its cities", 
-		multiple = false
+		object="country"
 	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),
@@ -60,9 +58,7 @@ public class CountryController {
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
 	@ApiResponseObject(
-		object="country", 
-		description="A list of country objects", 
-		multiple = true
+		object="country"
 	)
 	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public @ResponseBody List<Country> getAllCountries() {
@@ -81,9 +77,7 @@ public class CountryController {
 		@ApiHeader(name="application_id", description="The application id")
 	})
 	@ApiResponseObject(
-		object="country", 
-		description="The saved country, with its generated id", 
-		multiple = false
+		object="country"
 	)
 	@ApiBodyObject(
 		object="country", description="A country object, with the list of its cities", multiple=false
@@ -114,9 +108,7 @@ public class CountryController {
 		@ApiHeader(name="application_id", description="The application id")
 	})
 	@ApiResponseObject(
-		object="boolean", 
-		description="A boolean representing the result of the operation", 
-		multiple = false
+		object="boolean"
 	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),

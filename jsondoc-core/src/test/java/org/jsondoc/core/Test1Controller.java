@@ -24,20 +24,19 @@ public class Test1Controller {
 			produces={MediaType.APPLICATION_JSON_VALUE}
 	)
 	@ApiParams(urlparameters={
-			@ApiParam(name="id", type="string", required=true, description="the test id param"),
-			@ApiParam(name="count", type="integer", required=true, description="the test count param"),
+			@ApiParam(name="id", type="string", description="the test id param"),
+			@ApiParam(name="count", type="integer", description="the test count param"),
 	})
 	@ApiHeaders(headers={
 			@ApiHeader(name="application_id", description="The application's ID")
 	})
 	@ApiBodyObject(object="object", description="A test body object", multiple=false)
-	@ApiResponseObject(object="response", description="A test response", multiple=true)
 	@ApiErrors(apierrors={
 			@ApiError(code="1000", description="A test error #1"),
 			@ApiError(code="2000", description="A test error #2")
 	})
-	public void get(String id, Integer count, Object object) {
-		
+	public @ApiResponseObject(object="son") Son get(String id, Integer count, Object object) {
+		return null;
 	}
 
 }

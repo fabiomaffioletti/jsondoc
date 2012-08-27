@@ -1,27 +1,29 @@
 package org.jsondoc.core.pojo;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
+
 import org.jsondoc.core.annotation.ApiResponseObject;
 
 public class ApiResponseObjectDoc {
 	private String object;
-	private String description;
 	private boolean multiple;
 
-	public static ApiResponseObjectDoc buildFromAnnotation(
-			ApiResponseObject annotation) {
-		return new ApiResponseObjectDoc(annotation.object(), annotation.description(), annotation.multiple());
+	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
+		return new ApiResponseObjectDoc(annotation.object(), isMultiple(method));
+	}
+	
+	private static boolean isMultiple(Method method) {
+		if(Collection.class.isAssignableFrom(method.getReturnType()) || method.getReturnType().isArray()) {
+			return true;
+		}
+		return false;
 	}
 
-	public ApiResponseObjectDoc(String object, String description,
-			boolean multiple) {
+	public ApiResponseObjectDoc(String object, boolean multiple) {
 		super();
 		this.object = object;
-		this.description = description;
 		this.multiple = multiple;
-	}
-
-	public String getDescription() {
-		return description;
 	}
 
 	public String getObject() {

@@ -9,36 +9,45 @@ import org.jsondoc.core.annotation.ApiObjectField;
 
 public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private String name;
+	private String description;
 	private List<ApiObjectFieldDoc> fields;
 
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
-		for(Field field : clazz.getDeclaredFields()) {
-			if(field.getAnnotation(ApiObjectField.class) != null) {
-				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field.getName()));
+		for (Field field : clazz.getDeclaredFields()) {
+			if (field.getAnnotation(ApiObjectField.class) != null) {
+				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(
+						field.getAnnotation(ApiObjectField.class),
+						field.getName()));
 			}
 		}
 
 		Class<?> c = clazz.getSuperclass();
-		if(c != null) {
-			if(c.isAnnotationPresent(ApiObject.class)) {
-				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(c.getAnnotation(ApiObject.class), c);
+		if (c != null) {
+			if (c.isAnnotationPresent(ApiObject.class)) {
+				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(
+						c.getAnnotation(ApiObject.class), c);
 				fieldDocs.addAll(objDoc.getFields());
 			}
 		}
-		
-		return new ApiObjectDoc(annotation.name(), fieldDocs);
+
+		return new ApiObjectDoc(annotation.name(), annotation.description(), fieldDocs);
 	}
 
-	public ApiObjectDoc(String name, List<ApiObjectFieldDoc> fields) {
+	public ApiObjectDoc(String name, String description, List<ApiObjectFieldDoc> fields) {
 		super();
 		this.name = name;
+		this.description = description;
 		this.fields = fields;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public List<ApiObjectFieldDoc> getFields() {

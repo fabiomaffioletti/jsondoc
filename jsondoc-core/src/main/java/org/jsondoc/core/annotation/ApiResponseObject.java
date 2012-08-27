@@ -24,16 +24,4 @@ public @interface ApiResponseObject {
 	 */
 	public String object();
 
-	/**
-	 * A description of what the object contains or represents
-	 * @return
-	 */
-	public String description();
-	
-	/**
-	 * Whether it is a list of objects or a single object
-	 * @return
-	 */
-	public boolean multiple();
-	
 }

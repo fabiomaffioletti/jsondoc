@@ -25,6 +25,12 @@ public @interface ApiObject {
 	public String name();
 	
 	/**
+	 * A description of what the object contains or represents
+	 * @return
+	 */
+	public String description() default "";
+	
+	/**
 	 * Whether to build the json documentation for this object or not. Default value is true
 	 * @return
 	 */
