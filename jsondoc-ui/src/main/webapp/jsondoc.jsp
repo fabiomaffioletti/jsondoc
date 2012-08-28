@@ -10,6 +10,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
+<script type="text/javascript" src="js/jlinq.js"></script>
 
 <!-- Le styles -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -57,20 +59,9 @@ body {
 		<div class="row-fluid">
 			
 			<div class="span3">
-				<div id="apidiv" style="display:none;">
-					<div class="alert alert-info">
-						<ul class="unstyled">
-							<li id="version"></li>
-							<li id="basePath"></li>
-						</ul>
-					</div>
-				</div>
-				<div class="well sidebar-nav" id="apiWell" style="display:none;">
-					<ul class="nav nav-list" id="apis"></ul>
-				</div>
-				<div class="well sidebar-nav" id="objectWell" style="display:none;">
-					<ul class="nav nav-list" id="objects"></ul>
-				</div>
+				<div id="maindiv" style="display:none;"></div>
+				<div class="well sidebar-nav" id="apidiv" style="display:none;"></div>
+				<div class="well sidebar-nav" id="objectdiv" style="display:none;"></div>
 			</div>
 
 			<div class="span9">
@@ -80,7 +71,181 @@ body {
 
 	</div>
 
+<script id="main" type="text/x-handlebars-template">
+<div class="alert alert-info">
+	<ul class="unstyled">
+		<li id="version">Version: {{version}}</li>
+		<li id="basePath">Base path: {{basePath}}</li>
+	</ul>
+</div>
+</script>
+
+<script id="apis" type="text/x-handlebars-template">
+<ul class="nav nav-list">
+	<li class="nav-header">APIs</li>
+	{{#apis}}
+		<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
+	{{/apis}}
+</ul>
+</script>
+
+<script id="objects" type="text/x-handlebars-template">
+<ul class="nav nav-list">
+	<li class="nav-header">Objects</li>
+	{{#objects}}
+		<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
+	{{/objects}}
+</ul>
+</script>
+
+<script id="methods" type="text/x-handlebars-template">
+<div class="accordion" id="accordion">
+	{{#methods}}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a href="#_{{jsondocId}}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle">{{path}}</a>
+		</div>
+		<div class="accordion-body collapse" id="_{{jsondocId}}">
+			<div class="accordion-inner">
+				<table class="table table-condensed table-striped table-bordered">
+					<tr>
+						<th style="width:15%;">Path</th>
+						<td><code>{{path}}</code></td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{{description}}</td>
+					</tr>
+					<tr>
+						<th>Method</th>
+						<td>{{verb}}</td>
+					</tr>
+					{{#if produces}}
+						<tr>
+							<th colspan=2>Produces</th>
+						</tr>
+						{{#each produces}}
+							<tr>
+								<td colspan=2><code>{{this}}</code></td>
+							</tr>
+						{{/each}}
+					{{/if}}
+					{{#if consumes}}
+						<tr>
+							<th colspan=2>Consumes</th>
+						</tr>
+						{{#each consumes}}
+							<tr>
+								<td colspan=2><code>{{this}}</code></td>
+							</tr>
+						{{/each}}
+					{{/if}}
+					{{#if headers}}
+						<tr>
+							<th colspan=2>Headers</th>
+						</tr>
+						{{#each headers}}
+							<tr>
+								<td><code>{{this.name}}</code></td>
+								<td>{{this.description}}</td>
+							</tr>
+						{{/each}}
+					{{/if}}
+					{{#if urlparameters}}
+						<tr>
+							<th colspan=2>URL parameters</th>
+						</tr>
+						{{#each urlparameters}}
+							<tr>
+								<td><code>{{this.name}}</code></td>
+								<td>Required: {{this.required}}</td>
+								
+							</tr>
+							<tr>
+								<td></td>
+								<td>Type: {{this.type}}</td>
+							</tr>
+							{{#if this.description}}
+							<tr>
+								<td></td>
+								<td>Description: {{this.description}}</td>
+							</tr>
+							{{/if}}
+							{{#if this.allowedvalues}}
+							<tr>
+								<td></td>
+								<td>Allowed values: {{this.allowedvalues}}</td>
+							</tr>
+							{{/if}}
+							{{#if this.format}}
+							<tr>
+								<td></td>
+								<td>Format: {{this.format}}</td>
+							</tr>
+							{{/if}}
+						{{/each}}
+					{{/if}}
+					{{#if bodyobject}}
+						<tr>
+							<th colspan=2>Body object</th>
+						</tr>
+						<tr>
+							<td>Object</td>
+							<td><code>{{bodyobject.object}}</code></td>
+						</tr>
+						<tr>
+							<td>Multiple</td>
+							<td>{{bodyobject.multiple}}</td>
+						</tr>
+					{{/if}}
+					{{#if response}}
+						<tr>
+							<th colspan=2>Response object</th>
+						</tr>
+						<tr>
+							<td>Object</td>
+							<td><code>{{response.object}}</code></td>
+						</tr>
+						<tr>
+							<td>Multiple</td>
+							<td>{{response.multiple}}</td>
+						</tr>
+					{{/if}}
+					{{#if apierrors}}
+						<tr>
+							<th colspan=2>Errors</th>
+						</tr>
+						{{#each apierrors}}
+							<tr>
+								<td><code>{{this.code}}</code></td>
+								<td>{{this.description}}</td>
+							</tr>
+						{{/each}}
+					{{/if}}
+				</table>
+			</div>
+		</div>
+	</div>
+	{{/methods}}
+</div>
+</script>
+
+<script id="object" type="text/x-handlebars-template">
+<table class="table table-condensed table-striped table-bordered">
+	<tr><th style="width:15%;">Name</th><td><code>{{name}}</code></td></tr>
+	{{#if fields}}
+	<tr><th colspan=2>Fields</th></tr>
+		{{#each fields}}
+			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
+			<tr><td></td><td>Type: {{type}}</td></tr>
+			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
+		{{/each}}
+	{{/if}}
+</table>
+</script>
+
 <script>
+	fetchdoc($("#jsondocfetch").val());
 	$("#jsondocfetch").keypress(function(event) {
 		if (event.which == 13) {
 			fetchdoc($(this).val());
@@ -94,234 +259,46 @@ body {
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
 			success : function(data) {
-				buildApiDiv(data);
-				buildApis(data);
-				buildObjects(data);
-				console.debug(data);
+				var main = Handlebars.compile($("#main").html());
+				var mainHTML = main(data);
+				$("#maindiv").html(mainHTML);
+				$("#maindiv").show();
+				
+				var apis = Handlebars.compile($("#apis").html());
+				var apisHTML = apis(data);
+				$("#apidiv").html(apisHTML);
+				$("#apidiv").show();
+				
+				$("#apidiv a").each(function() {
+					$(this).click(function() {
+						var api = jlinq.from(data.apis).equals("jsondocId", this.id).first();
+						var methods = Handlebars.compile($("#methods").html());
+						var methodsHTML = methods(api);
+						$("#content").html(methodsHTML);
+						$("#content").show();
+					});
+				});
+				
+				var objects = Handlebars.compile($("#objects").html());
+				var objectsHTML = objects(data);
+				$("#objectdiv").html(objectsHTML);
+				$("#objectdiv").show();
+				
+				$("#objectdiv a").each(function() {
+					$(this).click(function() {
+						var o = jlinq.from(data.objects).equals("jsondocId", this.id).first();
+						var object = Handlebars.compile($("#object").html());
+						var objectHTML = object(o);
+						$("#content").html(objectHTML);
+						$("#content").show();
+						
+					});
+				});
+
 			},
 			error: function(msg) {
-				console.debug(msg);
+				alert(msg);
 			}
-		});
-	}
-	
-	function buildApiDiv(data) {
-		$("#version").text("Version: " + data.version);
-		$("#basePath").text("Base path: " + data.basePath);
-		$("#apidiv").show();
-	}
-	
-	function buildApis(data) {
-		var apiWell = $("#apiWell");
-		var objectWell = $("#objectWell");
-		var as = $("#apis");
-		var cs = $("#content");
-		$(as).empty();
-		$(cs).empty();
-		$("<li/>", {'class' : 'nav-header', text : 'Apis'}).appendTo(as);
-		$(data.apis).each(function(index) {
-			$("<a/>", {text: this.name, href: '#', id: index+'a', rel: 'api'}).appendTo($("<li/>").appendTo(as));
-		});
-		$("a[rel=api]").each(function() {
-			$(this).click(function() {
-				var i = this.id.substring(0,1);
-				var api = data.apis[i];
-				$(cs).empty();
-				var accordion = $("<div/>", {'class': 'accordion', id: 'accordion'}).appendTo(cs);
-				$(api.methods).each(function(index) {
-					var accordionGroup = $("<div/>", {'class' : 'accordion-group'}).appendTo(accordion);
-					var accordionHeading = $("<div/>", {'class': 'accordion-heading'}).appendTo(accordionGroup);
-					var accordionA = $("<a/>", {href: '#'+index, 'data-parent': '#accordion', 'data-toggle': 'collapse', 'class': 'accordion-toggle', text: this.path}).appendTo(accordionHeading);
-					var accordionBody = $("<div/>", {'class': 'accordion-body collapse', id: index}).appendTo(accordionGroup);
-	                var accordionInner = $("<div/>", {'class': 'accordion-inner'}).appendTo(accordionBody);
-					
-					var table = $('<table/>', {'class' : 'table table-condensed table-striped table-bordered'}).appendTo(accordionInner);
-					var tr = $('<tr/>').appendTo(table);
-					var th = $('<th/>', {text: 'Path', style: 'width: 15%;'}).appendTo(tr);
-					$('<code/>', {text: this.path}).appendTo($('<td/>').appendTo(tr));
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Description'}).appendTo(tr);
-					td = $('<td/>', {text: this.description}).appendTo(tr);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Method'}).appendTo(tr);
-					td = $('<td/>').appendTo(tr);
-					
-					if(this.verb == 'GET') {
-						var labelClass = 'label label-info';
-					} else if(this.verb == 'POST') {
-						var labelClass = 'label label-success';
-					} else if(this.verb == 'PUT') {
-						var labelClass = 'label label-warning';
-					} else if(this.verb == 'DELETE') {
-						var labelClass = 'label label-important';
-					}
-					$("<span/>", {'class' : labelClass, text: this.verb}).appendTo(td);
-					
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Headers', colspan: 2}).appendTo(tr);
-					buildHeaders(this.headers, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'URL parameters', colspan: 2}).appendTo(tr);
-					buildURLParameters(this.urlparameters, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Body object', colspan: 2}).appendTo(tr);
-					buildBodyObject(this.bodyobject, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Response', colspan: 2}).appendTo(tr);
-					buildResponseObject(this.response, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Produces', colspan: 2}).appendTo(tr);
-					buildProduces(this.produces, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Consumes', colspan: 2}).appendTo(tr);
-					buildConsumes(this.consumes, table);
-					tr = $('<tr/>').appendTo(table);
-					th = $('<th/>', {text: 'Errors', colspan: 2}).appendTo(tr);
-					buildErrors(this.apierrors, table);
-				});
-			});
-		});
-		
-		$(apiWell).show();
-		$(objectWell).show();
-		$(".collapse").collapse();
-	}
-	
-	function buildProduces(produces, t) {
-		if(produces.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No produces found', colspan : 2}).appendTo(tr);
-		}
-		$(produces).each(function(index) {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: produces[index]}).appendTo($('<td/>', {colspan: 2}).appendTo(tr));
-		});
-	}
-	
-	function buildConsumes(consumes, t) {
-		if(consumes.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No consumes found', colspan : 2}).appendTo(tr);
-		}
-		$(consumes).each(function(index) {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: consumes[index]}).appendTo($('<td/>', {colspan: 2}).appendTo(tr));
-		});
-	}
-	
-	function buildHeaders(headers, t) {
-		if(headers.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No header found', colspan : 2}).appendTo(tr);
-		}
-		$(headers).each(function(index) {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: this.name}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: 'Description: ' + this.description}).appendTo(tr);
-		});
-	}
-	
-	function buildURLParameters(urlparameters, t) {
-		if(urlparameters.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No URL parameters found', colspan : 2}).appendTo(tr);
-		}
-		$(urlparameters).each(function() {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: this.name}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: 'Description: ' + this.description}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Required: ' + this.required}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Type: ' + this.type}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Allowed values: ' + this.allowedvalues}).appendTo(tr);
-		});
-	}
-	
-	function buildBodyObject(bodyobject, t) {
-		if(bodyobject != null) {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: bodyobject.object}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: 'Description: ' + bodyobject.description}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Multiple: ' + bodyobject.multiple}).appendTo(tr);
-		} else {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No body object found', colspan : 2}).appendTo(tr);
-		}
-	}
-	
-	function buildResponseObject(response, t) {
-		if(response != null) {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: response.object}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: 'Description: ' + response.description}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Multiple: ' + response.multiple}).appendTo(tr);
-		} else {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No response object found', colspan : 2}).appendTo(tr);
-		}
-	}
-	
-	function buildErrors(apierrors, t) {
-		if(apierrors.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No errors found', colspan : 2}).appendTo(tr);
-		}
-		$(apierrors).each(function() {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: this.code}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: this.description}).appendTo(tr);
-		});
-	}
-	
-	function buildObjects(data) {
-		var os = $("#objects");
-		var cs = $("#content");
-		$(os).empty();
-		$(cs).empty();
-		$("<li/>", {'class' : 'nav-header', text : 'Objects'}).appendTo(os);
-		$(data.objects).each(function(index) {
-			$("<a/>", {text: this.name, href: '#', id: index+'o', rel: 'object'}).appendTo($("<li/>").appendTo(os));
-		});
-		$("a[rel=object]").each(function() {
-			$(this).click(function() {
-				var i = this.id.substring(0,this.id.indexOf('o'));
-				var object = data.objects[i];
-				$(cs).empty();
-				var table = $('<table/>', {'class' : 'table table-condensed table-striped table-bordered'}).appendTo(cs);
-				var tr = $('<tr/>').appendTo(table);
-				var th = $('<th/>', {text: 'Name', style: 'width: 15%;'}).appendTo(tr);
-				$('<code/>', {text: object.name}).appendTo($('<td/>').appendTo(tr));
-				tr = $('<tr/>').appendTo(table);
-				th = $('<th/>', {text: 'Fields', colspan: 2}).appendTo(tr);
-				buildObjectFields(object.fields, table);
-			});
-		});
-	}
-	
-	function buildObjectFields(objectfields, t) {
-		if(objectfields.length == 0) {
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>', {text: 'No fields found', colspan : 2}).appendTo(tr);
-		}
-		$(objectfields).each(function() {
-			tr = $('<tr/>').appendTo(t);
-			$('<code/>', {text: this.name}).appendTo($('<td/>').appendTo(tr));
-			$('<td/>', {text: 'Description: ' + this.description}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Type: ' + this.type}).appendTo(tr);
-			tr = $('<tr/>').appendTo(t);
-			$('<td/>').appendTo(tr);
-			$('<td/>', {text: 'Multiple: ' + this.multiple}).appendTo(tr);
 		});
 	}
 	

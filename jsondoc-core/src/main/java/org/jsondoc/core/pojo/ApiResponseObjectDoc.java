@@ -12,10 +12,10 @@ import org.jsondoc.core.util.JSONDocUtils;
 public class ApiResponseObjectDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String object;
-	private boolean multiple;
+	private String multiple;
 
 	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
-		return new ApiResponseObjectDoc(getReturnObject(method), JSONDocUtils.isMultiple(method));
+		return new ApiResponseObjectDoc(getReturnObject(method), String.valueOf(JSONDocUtils.isMultiple(method)));
 	}
 	
 	public static String getReturnObject(Method method) {
@@ -36,7 +36,7 @@ public class ApiResponseObjectDoc {
 		return JSONDocUtils.getObjectNameFromAnnotatedClass(method.getReturnType());
 	}
 	
-	public ApiResponseObjectDoc(String object, boolean multiple) {
+	public ApiResponseObjectDoc(String object, String multiple) {
 		super();
 		this.object = object;
 		this.multiple = multiple;
@@ -46,7 +46,7 @@ public class ApiResponseObjectDoc {
 		return object;
 	}
 
-	public boolean isMultiple() {
+	public String getMultiple() {
 		return multiple;
 	}
 

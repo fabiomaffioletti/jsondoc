@@ -32,7 +32,7 @@ public class CityController {
 			@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
-	public @ResponseBody @ApiResponseObject City getCityByName(@PathVariable @ApiParam(name="name", description="The city name") String name) {
+	public @ResponseBody @ApiResponseObject City getCityByName(@PathVariable @ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name, @PathVariable @ApiParam(name="path", description="The city path") String path) {
 		// Here goes the method implementation
 		return null;
 	}

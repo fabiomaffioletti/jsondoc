@@ -13,7 +13,7 @@ import org.jsondoc.core.util.JSONDocUtils;
 public class ApiBodyObjectDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String object;
-	private boolean multiple;
+	private String multiple;
 
 	public static ApiBodyObjectDoc buildFromAnnotation(Method method) {
 		boolean multiple = false;
@@ -21,7 +21,7 @@ public class ApiBodyObjectDoc {
 		if(index != -1) {
 			Class<?> parameter = method.getParameterTypes()[index];
 			multiple = JSONDocUtils.isMultiple(parameter);
-			return new ApiBodyObjectDoc(getBodyObject(method, index), multiple);
+			return new ApiBodyObjectDoc(getBodyObject(method, index), String.valueOf(multiple));
 		}
 		return null;
 	}
@@ -58,7 +58,7 @@ public class ApiBodyObjectDoc {
 		return JSONDocUtils.getObjectNameFromAnnotatedClass(parameter);
 	}
 	
-	public ApiBodyObjectDoc(String object, boolean multiple) {
+	public ApiBodyObjectDoc(String object, String multiple) {
 		super();
 		this.object = object;
 		this.multiple = multiple;
@@ -68,7 +68,7 @@ public class ApiBodyObjectDoc {
 		return object;
 	}
 
-	public boolean isMultiple() {
+	public String getMultiple() {
 		return multiple;
 	}
 
