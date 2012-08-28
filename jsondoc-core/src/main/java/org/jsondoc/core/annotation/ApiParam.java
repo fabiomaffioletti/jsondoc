@@ -47,4 +47,10 @@ public @interface ApiParam {
 	 */
 	public String[] allowedvalues() default {};
 	
+	/**
+	 * The format from the parameter (ex. yyyy-MM-dd HH:mm:ss, ...)
+	 * @return
+	 */
+	public String format() default "";
+	
 }

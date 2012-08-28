@@ -12,15 +12,17 @@ public class ApiParamDoc {
 	private String type;
 	private boolean required;
 	private String[] allowedvalues;
+	private String format;
 
 	public ApiParamDoc(String name, String description, String type,
-			boolean required, String[] allowedvalues) {
+			boolean required, String[] allowedvalues, String format) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.type = type;
 		this.required = required;
 		this.allowedvalues = allowedvalues;
+		this.format = format;
 	}
 
 	public static List<ApiParamDoc> buildFromAnnotation(ApiParams annotation) {
@@ -28,7 +30,7 @@ public class ApiParamDoc {
 		for (ApiParam apiParam : annotation.urlparameters()) {
 			docs.add(new ApiParamDoc(apiParam.name(), apiParam.description(),
 					apiParam.type(), apiParam.required(), apiParam
-							.allowedvalues()));
+							.allowedvalues(), apiParam.format()));
 		}
 		return docs;
 	}
@@ -55,6 +57,10 @@ public class ApiParamDoc {
 
 	public String[] getAllowedvalues() {
 		return allowedvalues;
+	}
+
+	public String getFormat() {
+		return format;
 	}
 
 }
