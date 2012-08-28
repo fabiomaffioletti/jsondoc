@@ -1,6 +1,9 @@
 package org.jsondoc.core;
 
+import java.util.List;
+
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.http.MediaType;
@@ -15,7 +18,7 @@ public class Test2Controller {
 			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public void save(Object object) {
+	public void save(@ApiBodyObject(object="object") List<Object> object) {
 		
 	}
 	

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target(value=ElementType.METHOD)
+@Target(value=ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiBodyObject {
 
@@ -23,17 +23,5 @@ public @interface ApiBodyObject {
 	 * @return
 	 */
 	public String object();
-
-	/**
-	 * A description of what the parameter is needed for
-	 * @return
-	 */
-	public String description();
-	
-	/**
-	 * Whether it is a list of objects or a single object
-	 * @return
-	 */
-	public boolean multiple();
 	
 }

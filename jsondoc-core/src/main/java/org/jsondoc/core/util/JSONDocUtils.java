@@ -9,7 +9,6 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 
 import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -81,9 +80,7 @@ public class JSONDocUtils {
 					apiMethodDoc.setUrlparameters(ApiParamDoc.buildFromAnnotation(method.getAnnotation(ApiParams.class)));
 				}
 				
-				if(method.isAnnotationPresent(ApiBodyObject.class)) {
-					apiMethodDoc.setBodyobject(ApiBodyObjectDoc.buildFromAnnotation(method.getAnnotation(ApiBodyObject.class)));
-				}
+				apiMethodDoc.setBodyobject(ApiBodyObjectDoc.buildFromAnnotation(method));
 				
 				if(method.isAnnotationPresent(ApiResponseObject.class)) {
 					apiMethodDoc.setResponse(ApiResponseObjectDoc.buildFromAnnotation(method.getAnnotation(ApiResponseObject.class), method));

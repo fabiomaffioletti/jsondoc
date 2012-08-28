@@ -30,12 +30,11 @@ public class Test1Controller {
 	@ApiHeaders(headers={
 			@ApiHeader(name="application_id", description="The application's ID")
 	})
-	@ApiBodyObject(object="object", description="A test body object", multiple=false)
 	@ApiErrors(apierrors={
 			@ApiError(code="1000", description="A test error #1"),
 			@ApiError(code="2000", description="A test error #2")
 	})
-	public @ApiResponseObject(object="son") Son get(String id, Integer count, Object object) {
+	public @ApiResponseObject(object="son") Son get(String id, Integer count, @ApiBodyObject(object="object") Object object) {
 		return null;
 	}
 

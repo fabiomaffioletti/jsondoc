@@ -79,9 +79,6 @@ public class CountryController {
 	@ApiResponseObject(
 		object="country"
 	)
-	@ApiBodyObject(
-		object="country", description="A country object, with the list of its cities", multiple=false
-	)
 	@ApiErrors(apierrors={
 		@ApiError(code="5000", description="Duplicate country"),
 		@ApiError(code="6000", description="Validation error"),
@@ -89,7 +86,7 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody String saveCountry(@RequestBody Country country) {
+	public @ResponseBody String saveCountry(@RequestBody @ApiBodyObject(object="country") Country country) {
 		// Here goes the method implementation
 		return null;
 	}
