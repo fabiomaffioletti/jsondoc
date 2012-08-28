@@ -7,11 +7,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiParamDoc {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private String type;

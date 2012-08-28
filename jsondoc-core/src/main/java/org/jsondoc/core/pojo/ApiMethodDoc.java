@@ -3,10 +3,12 @@ package org.jsondoc.core.pojo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
 
 public class ApiMethodDoc {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String path;
 	private String description;
 	private ApiVerb verb;

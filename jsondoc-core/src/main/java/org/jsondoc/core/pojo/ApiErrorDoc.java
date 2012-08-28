@@ -2,12 +2,13 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
 
-
 public class ApiErrorDoc {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String code;
 	private String description;
 

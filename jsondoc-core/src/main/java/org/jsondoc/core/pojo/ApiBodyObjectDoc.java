@@ -5,11 +5,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiBodyObjectDoc {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String object;
 	private boolean multiple;
 

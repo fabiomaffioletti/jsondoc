@@ -4,11 +4,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiObjectFieldDoc {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String type;
 	private boolean multiple;

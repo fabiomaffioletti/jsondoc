@@ -2,10 +2,12 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.Api;
 
 public class ApiDoc implements Comparable<ApiDoc> {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private List<ApiMethodDoc> methods;

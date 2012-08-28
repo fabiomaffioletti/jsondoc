@@ -3,15 +3,17 @@ package org.jsondoc.core.pojo;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
 public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
+	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private List<ApiObjectFieldDoc> fields;
-
+	
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
