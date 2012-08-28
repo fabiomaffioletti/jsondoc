@@ -30,6 +30,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 public class JSONDocUtils {
+	public static final String UNDEFINED = "undefined";
 	private static Reflections reflections = null;
 	
 	/**
