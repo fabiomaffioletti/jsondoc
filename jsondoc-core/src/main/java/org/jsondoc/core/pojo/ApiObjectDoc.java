@@ -17,17 +17,14 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
-				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(
-						field.getAnnotation(ApiObjectField.class),
-						field.getName()));
+				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field));
 			}
 		}
 
 		Class<?> c = clazz.getSuperclass();
 		if (c != null) {
 			if (c.isAnnotationPresent(ApiObject.class)) {
-				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(
-						c.getAnnotation(ApiObject.class), c);
+				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(c.getAnnotation(ApiObject.class), c);
 				fieldDocs.addAll(objDoc.getFields());
 			}
 		}

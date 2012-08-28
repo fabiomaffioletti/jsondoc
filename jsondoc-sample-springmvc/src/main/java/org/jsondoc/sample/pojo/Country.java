@@ -11,7 +11,7 @@ public class Country extends Location {
 	@ApiObjectField(description = "The name of the country", type = "string")
 	private String name;
 
-	@ApiObjectField(description = "The cities of the country", type = "city", multiple = true)
+	@ApiObjectField(description = "The cities of the country", type = "city")
 	private List<City> cities;
 	
 	public Country(String name, List<City> cities) {

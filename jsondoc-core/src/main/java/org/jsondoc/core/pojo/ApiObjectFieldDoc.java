@@ -1,5 +1,8 @@
 package org.jsondoc.core.pojo;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
+
 import org.jsondoc.core.annotation.ApiObjectField;
 
 public class ApiObjectFieldDoc {
@@ -10,16 +13,22 @@ public class ApiObjectFieldDoc {
 	private String format;
 	private String[] allowedvalues;
 
-	public static ApiObjectFieldDoc buildFromAnnotation(
-			ApiObjectField annotation, String name) {
+	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-		apiPojoFieldDoc.setName(name);
+		apiPojoFieldDoc.setName(field.getName());
 		apiPojoFieldDoc.setDescription(annotation.description());
 		apiPojoFieldDoc.setType(annotation.type());
-		apiPojoFieldDoc.setMultiple(annotation.multiple());
+		apiPojoFieldDoc.setMultiple(isMultiple(field.getType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
-		 apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
+		apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
 		return apiPojoFieldDoc;
+	}
+	
+	private static boolean isMultiple(Class<?> clazz) {
+		if(Collection.class.isAssignableFrom(clazz) || clazz.isArray()) {
+			return true;
+		}
+		return false;
 	}
 
 	public String[] getAllowedvalues() {

@@ -30,12 +30,6 @@ public @interface ApiObjectField {
 	public String type();
 	
 	/**
-	 * Whether this field is a list or not
-	 * @return
-	 */
-	public boolean multiple() default false;
-	
-	/**
 	 * The format pattern for this field
 	 * @return
 	 */
