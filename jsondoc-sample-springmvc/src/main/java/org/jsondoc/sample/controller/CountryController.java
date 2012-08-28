@@ -37,15 +37,12 @@ public class CountryController {
 	@ApiParams(urlparameters={
 		@ApiParam(name="name", description="The country name", type = "string")
 	})
-	@ApiResponseObject(
-		object="country"
-	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
-	public @ResponseBody Country getCountryByName(@PathVariable String name) {
+	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable String name) {
 		// Here goes the method implementation
 		return null;
 	}
@@ -57,11 +54,8 @@ public class CountryController {
 		produces={MediaType.APPLICATION_JSON_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
-	@ApiResponseObject(
-		object="country"
-	)
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public @ResponseBody List<Country> getAllCountries() {
+	public @ResponseBody @ApiResponseObject List<Country> getAllCountries() {
 		// Here goes the method implementation
 		return null;
 	}
@@ -76,9 +70,6 @@ public class CountryController {
 	@ApiHeaders(headers={
 		@ApiHeader(name="application_id", description="The application id")
 	})
-	@ApiResponseObject(
-		object="country"
-	)
 	@ApiErrors(apierrors={
 		@ApiError(code="5000", description="Duplicate country"),
 		@ApiError(code="6000", description="Validation error"),
@@ -86,7 +77,7 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody String saveCountry(@RequestBody @ApiBodyObject(object="country") Country country) {
+	public @ResponseBody @ApiResponseObject String saveCountry(@RequestBody @ApiBodyObject(object="country") Country country) {
 		// Here goes the method implementation
 		return null;
 	}
@@ -104,16 +95,13 @@ public class CountryController {
 	@ApiHeaders(headers={
 		@ApiHeader(name="application_id", description="The application id")
 	})
-	@ApiResponseObject(
-		object="boolean"
-	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),
 		@ApiError(code="7000", description="Invalid application id"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public @ResponseBody boolean deleteCountry(@PathVariable Integer id) {
+	public @ResponseBody @ApiResponseObject boolean deleteCountry(@PathVariable Integer id) {
 		// Here goes the method implementation
 		return true;
 	}

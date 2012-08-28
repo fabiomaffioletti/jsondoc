@@ -5,6 +5,7 @@ import java.util.List;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.http.MediaType;
 
@@ -18,8 +19,8 @@ public class Test2Controller {
 			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public void save(@ApiBodyObject(object="object") List<Object> object) {
-		
+	public @ApiResponseObject String save(@ApiBodyObject(object="object") List<Object> object) {
+		return null;
 	}
 	
 	@ApiMethod(
@@ -29,7 +30,7 @@ public class Test2Controller {
 			consumes={},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public void delete(Object object) {
+	public @ApiResponseObject void delete(Object object) {
 		
 	}
 

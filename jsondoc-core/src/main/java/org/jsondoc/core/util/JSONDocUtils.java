@@ -98,6 +98,14 @@ public class JSONDocUtils {
 		return apiMethodDocs;
 	}
 	
+	public static String getObjectNameFromAnnotatedClass(Class<?> clazz, boolean collection) {
+		Class<?> annotatedClass = Reflections.forName(clazz.getName());
+		if(annotatedClass.isAnnotationPresent(ApiObject.class)) {
+			return annotatedClass.getAnnotation(ApiObject.class).name();
+		}
+		return clazz.getSimpleName().toLowerCase();
+	}
+	
 	public static boolean isMultiple(Method method) {
 		if(Collection.class.isAssignableFrom(method.getReturnType()) || method.getReturnType().isArray()) {
 			return true;

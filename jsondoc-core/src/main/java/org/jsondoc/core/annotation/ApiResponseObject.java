@@ -17,11 +17,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiResponseObject {
 
-	/**
-	 * The name of the object returned by the method.
-	 * @see ApiObject
-	 * @return
-	 */
-	public String object();
-
 }
