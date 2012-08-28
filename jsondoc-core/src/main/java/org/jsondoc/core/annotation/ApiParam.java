@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target(value=ElementType.ANNOTATION_TYPE)
+@Target(value=ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParam {
 
@@ -27,13 +27,7 @@ public @interface ApiParam {
 	 * A description of what the parameter is needed for
 	 * @return
 	 */
-	public String description();
-	
-	/**
-	 * The type of the parameter (ex. integer, string, ...)
-	 * @return
-	 */
-	public String type();
+	public String description() default "";
 	
 	/**
 	 * Whether this parameter is required or not. Default value is true

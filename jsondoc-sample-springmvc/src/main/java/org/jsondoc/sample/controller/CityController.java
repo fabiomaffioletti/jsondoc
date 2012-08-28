@@ -5,7 +5,6 @@ import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
@@ -28,16 +27,12 @@ public class CityController {
 		produces={MediaType.APPLICATION_JSON_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
-	@ApiParams(urlparameters={
-		@ApiParam(name="name", required = true, description="name description", type = "string", allowedvalues = {"sydney", "melbourne", "perth"})
-	})
-	@ApiResponseObject
 	@ApiErrors(apierrors={
 			@ApiError(code="2000", description="City not found"),
 			@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
-	public @ResponseBody City getCityByName(@PathVariable String name) {
+	public @ResponseBody @ApiResponseObject City getCityByName(@PathVariable @ApiParam(name="name", description="The city name") String name) {
 		// Here goes the method implementation
 		return null;
 	}

@@ -10,7 +10,6 @@ import org.jsondoc.core.annotation.ApiHeader;
 import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.Country;
@@ -34,15 +33,12 @@ public class CountryController {
 		produces={MediaType.APPLICATION_JSON_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
-	@ApiParams(urlparameters={
-		@ApiParam(name="name", description="The country name", type = "string")
-	})
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
-	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable String name) {
+	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name") String name) {
 		// Here goes the method implementation
 		return null;
 	}
@@ -89,9 +85,6 @@ public class CountryController {
 		produces={MediaType.APPLICATION_JSON_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
-	@ApiParams(urlparameters={
-		@ApiParam(name="id", description="The country id", type = "integer")
-	})
 	@ApiHeaders(headers={
 		@ApiHeader(name="application_id", description="The application id")
 	})
@@ -101,7 +94,7 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public @ResponseBody @ApiResponseObject boolean deleteCountry(@PathVariable Integer id) {
+	public @ResponseBody @ApiResponseObject boolean deleteCountry(@PathVariable @ApiParam(name="id") Integer id) {
 		// Here goes the method implementation
 		return true;
 	}
