@@ -23,13 +23,6 @@ public @interface ApiObjectField {
 	public String description();
 	
 	/**
-	 * The type of the field. This can be a simple type like integer, string, ... or can be an object
-	 * @see ApiObject
-	 * @return
-	 */
-	public String type();
-	
-	/**
 	 * The format pattern for this field
 	 * @return
 	 */

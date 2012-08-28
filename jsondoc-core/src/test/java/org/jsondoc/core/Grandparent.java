@@ -8,10 +8,10 @@ import org.jsondoc.core.annotation.ApiObjectField;
 @ApiObject(name="grandparent", show=false)
 public class Grandparent {
 	
-	@ApiObjectField(type="string", description="the test surname")
+	@ApiObjectField(description="the test surname")
 	private String surname;
 	
-	@ApiObjectField(type="date", description="the date of birth", format="yyyy-MM-dd HH:mm:ss")
+	@ApiObjectField(description="the date of birth", format="yyyy-MM-dd HH:mm:ss")
 	private Date dob;
 	
 }

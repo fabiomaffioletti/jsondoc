@@ -8,10 +8,10 @@ import org.jsondoc.core.annotation.ApiObjectField;
 @ApiObject(name="country")
 public class Country extends Location {
 
-	@ApiObjectField(description = "The name of the country", type = "string")
+	@ApiObjectField(description = "The name of the country")
 	private String name;
 
-	@ApiObjectField(description = "The cities of the country", type = "city")
+	@ApiObjectField(description = "The cities of the country")
 	private List<City> cities;
 	
 	public Country(String name, List<City> cities) {

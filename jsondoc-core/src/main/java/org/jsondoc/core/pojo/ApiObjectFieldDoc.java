@@ -1,6 +1,9 @@
 package org.jsondoc.core.pojo;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.util.JSONDocUtils;
@@ -17,11 +20,29 @@ public class ApiObjectFieldDoc {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
 		apiPojoFieldDoc.setName(field.getName());
 		apiPojoFieldDoc.setDescription(annotation.description());
-		apiPojoFieldDoc.setType(annotation.type());
+		apiPojoFieldDoc.setType(getFieldObject(field));
 		apiPojoFieldDoc.setMultiple(JSONDocUtils.isMultiple(field.getType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
 		apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
 		return apiPojoFieldDoc;
+	}
+	
+	public static String getFieldObject(Field field) {
+		if(Collection.class.isAssignableFrom(field.getType())) {
+			if(field.getGenericType() instanceof ParameterizedType) {
+				ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+				Type type = parameterizedType.getActualTypeArguments()[0];
+				Class<?> clazz = (Class<?>) type;
+				return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz);
+			} else {
+				return JSONDocUtils.UNDEFINED;
+			}
+		} else if(field.getType().isArray()) {
+			Class<?> classArr = field.getType();
+			return JSONDocUtils.getObjectNameFromAnnotatedClass(classArr.getComponentType());
+			
+		}
+		return JSONDocUtils.getObjectNameFromAnnotatedClass(field.getType());
 	}
 	
 	public String[] getAllowedvalues() {

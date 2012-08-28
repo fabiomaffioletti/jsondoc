@@ -8,9 +8,9 @@ import org.jsondoc.core.annotation.ApiObjectField;
 @ApiObject(name="parent")
 public class Parent extends Grandparent {
 	
-	@ApiObjectField(type="string", description="the test name")
+	@ApiObjectField(description="the test name")
 	private String name;
 
-	@ApiObjectField(type="child", description="the test name")
+	@ApiObjectField(description="the test name")
 	private List<Child> children;
 }
