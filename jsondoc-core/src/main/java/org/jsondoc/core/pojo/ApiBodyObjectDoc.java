@@ -2,9 +2,9 @@ package org.jsondoc.core.pojo;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collection;
 
 import org.jsondoc.core.annotation.ApiBodyObject;
+import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiBodyObjectDoc {
 	private String object;
@@ -15,7 +15,7 @@ public class ApiBodyObjectDoc {
 		Object[] ret = getApiBodyObjectIndex(method);
 		if(ret != null) {
 			Class<?> parameter = method.getParameterTypes()[(Integer) ret[0]];
-			multiple = isMultiple(parameter);
+			multiple = JSONDocUtils.isMultiple(parameter);
 			return new ApiBodyObjectDoc(((ApiBodyObject) ret[1]).object(), multiple);
 		}
 		return null;
@@ -33,13 +33,6 @@ public class ApiBodyObjectDoc {
 		return null;
 	}
 	
-	private static boolean isMultiple(Class<?> clazz) {
-		if(Collection.class.isAssignableFrom(clazz) || clazz.isArray()) {
-			return true;
-		}
-		return false;
-	}
-
 	public ApiBodyObjectDoc(String object, boolean multiple) {
 		super();
 		this.object = object;

@@ -1,9 +1,9 @@
 package org.jsondoc.core.pojo;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiObjectFieldDoc {
 	private String name;
@@ -18,19 +18,12 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setName(field.getName());
 		apiPojoFieldDoc.setDescription(annotation.description());
 		apiPojoFieldDoc.setType(annotation.type());
-		apiPojoFieldDoc.setMultiple(isMultiple(field.getType()));
+		apiPojoFieldDoc.setMultiple(JSONDocUtils.isMultiple(field.getType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
 		apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
 		return apiPojoFieldDoc;
 	}
 	
-	private static boolean isMultiple(Class<?> clazz) {
-		if(Collection.class.isAssignableFrom(clazz) || clazz.isArray()) {
-			return true;
-		}
-		return false;
-	}
-
 	public String[] getAllowedvalues() {
 		return allowedvalues;
 	}

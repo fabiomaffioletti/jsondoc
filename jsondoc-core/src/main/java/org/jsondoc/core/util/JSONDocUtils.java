@@ -2,6 +2,7 @@ package org.jsondoc.core.util;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -95,6 +96,20 @@ public class JSONDocUtils {
 			
 		}
 		return apiMethodDocs;
+	}
+	
+	public static boolean isMultiple(Method method) {
+		if(Collection.class.isAssignableFrom(method.getReturnType()) || method.getReturnType().isArray()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isMultiple(Class<?> clazz) {
+		if(Collection.class.isAssignableFrom(clazz) || clazz.isArray()) {
+			return true;
+		}
+		return false;
 	}
 	
 }
