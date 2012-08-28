@@ -5,7 +5,7 @@ import java.util.List;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name="father")
+@ApiObject(name="parent")
 public class Parent extends Grandparent {
 	
 	@ApiObjectField(type="string", description="the test name")

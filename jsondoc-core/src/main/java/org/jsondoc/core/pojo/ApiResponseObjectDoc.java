@@ -22,16 +22,16 @@ public class ApiResponseObjectDoc {
 				ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
 				Type type = parameterizedType.getActualTypeArguments()[0];
 				Class<?> clazz = (Class<?>) type;
-				return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz, true);
+				return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz);
 			} else {
 				return JSONDocUtils.UNDEFINED;
 			}
 		} else if(method.getReturnType().isArray()) {
 			Class<?> classArr = method.getReturnType();
-			return JSONDocUtils.getObjectNameFromAnnotatedClass(classArr.getComponentType(), false);
+			return JSONDocUtils.getObjectNameFromAnnotatedClass(classArr.getComponentType());
 			
 		}
-		return JSONDocUtils.getObjectNameFromAnnotatedClass(method.getReturnType(), false);
+		return JSONDocUtils.getObjectNameFromAnnotatedClass(method.getReturnType());
 	}
 	
 	public ApiResponseObjectDoc(String object, boolean multiple) {

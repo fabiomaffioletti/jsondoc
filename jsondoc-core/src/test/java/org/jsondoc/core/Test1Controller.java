@@ -36,7 +36,7 @@ public class Test1Controller {
 			@ApiError(code="1000", description="A test error #1"),
 			@ApiError(code="2000", description="A test error #2")
 	})
-	public @ApiResponseObject List<Integer> get(String id, Integer count, @ApiBodyObject(object="object") Object object) {
+	public @ApiResponseObject List<Integer> get(String id, Integer count, @ApiBodyObject String name) {
 		return null;
 	}
 

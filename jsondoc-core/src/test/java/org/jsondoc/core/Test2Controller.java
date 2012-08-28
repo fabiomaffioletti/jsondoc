@@ -19,7 +19,7 @@ public class Test2Controller {
 			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public @ApiResponseObject String save(@ApiBodyObject(object="object") List<Object> object) {
+	public @ApiResponseObject String save(@ApiBodyObject List<String> names) {
 		return null;
 	}
 	
@@ -30,7 +30,7 @@ public class Test2Controller {
 			consumes={},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public @ApiResponseObject void delete(Object object) {
+	public @ApiResponseObject void delete(@ApiBodyObject Parent parent) {
 		
 	}
 

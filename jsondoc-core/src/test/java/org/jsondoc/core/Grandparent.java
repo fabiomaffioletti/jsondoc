@@ -5,7 +5,7 @@ import java.util.Date;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name="grandfather", show=false)
+@ApiObject(name="grandparent", show=false)
 public class Grandparent {
 	
 	@ApiObjectField(type="string", description="the test surname")

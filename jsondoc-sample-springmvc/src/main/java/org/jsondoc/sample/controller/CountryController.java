@@ -77,7 +77,7 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody @ApiResponseObject String saveCountry(@RequestBody @ApiBodyObject(object="country") Country country) {
+	public @ResponseBody @ApiResponseObject String saveCountry(@RequestBody @ApiBodyObject Country country) {
 		// Here goes the method implementation
 		return null;
 	}

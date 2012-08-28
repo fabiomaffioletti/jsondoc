@@ -16,12 +16,5 @@ import java.lang.annotation.Target;
 @Target(value=ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiBodyObject {
-
-	/**
-	 * The name of the object passed in the request body. 
-	 * @see ApiObject
-	 * @return
-	 */
-	public String object();
 	
 }
