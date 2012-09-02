@@ -3,6 +3,8 @@ package org.jsondoc.sample.controller;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiHeader;
+import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
@@ -27,6 +29,9 @@ public class CityController {
 		produces={MediaType.APPLICATION_JSON_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE}
 	)
+	@ApiHeaders(headers={
+			@ApiHeader(name="api_id", description="The api identifier")
+	})
 	@ApiErrors(apierrors={
 			@ApiError(code="2000", description="City not found"),
 			@ApiError(code="9000", description="Illegal argument")

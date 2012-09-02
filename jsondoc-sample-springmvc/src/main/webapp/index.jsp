@@ -193,27 +193,8 @@ section {
 					</td>
 				</tr>
 				<tr>
-					<td><code>@ApiParams</code></td>
-					<td>Method</td>
-					<td>
-						<p>This annotation is to be used on your method and represents the parameters passed in the URL of the requests. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>urlparameters</td>
-								<td>TRUE</td>
-								<td>An array of <code>@ApiParam</code> annotations</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
 					<td><code>@ApiParam</code></td>
-					<td>Annotation</td>
+					<td>Parameter</td>
 					<td>
 						<p>This annotation is to be used inside an annotation of type <code>@ApiParams</code>. Here are its attributes: </p>
 						<table class="table">
@@ -229,13 +210,8 @@ section {
 							<tr>
 							<tr>
 								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the parameter is needed for</td>
-							<tr>
-							<tr>
-								<td>type</td>
-								<td>TRUE</td>
-								<td>The type of the parameter (ex. integer, string, ...)</td>
+								<td>FALSE</td>
+								<td>A description of what the parameter is needed for. Default is <code>""</code></td>
 							<tr>
 							<tr>
 								<td>required</td>
@@ -245,67 +221,28 @@ section {
 							<tr>
 								<td>allowedvalues</td>
 								<td>FALSE</td>
-								<td>An array representing the allowed values this parameter can have. Default value is <code>*</code></td>
+								<td>An array representing the allowed values this parameter can have. Default value is <code>{}</code></td>
+							<tr>
+							<tr>
+								<td>format</td>
+								<td>FALSE</td>
+								<td>The format of the parameter. For example, in case of dates object it couls be <code>yyyy-MM-dd HH:mm:ss</code> Default value is <code>""</code></td>
 							<tr>
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td><code>@ApiBodyObject</code></td>
-					<td>Method</td>
+					<td>Parameter</td>
 					<td>
-						<p>This annotation is to be used on your method and represents the parameter passed in the body of the requests. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>object</td>
-								<td>TRUE</td>
-								<td>The name of the object passed in the request body. See also <code>@ApiObject</code></td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the parameter is needed for</td>
-							<tr>
-							<tr>
-								<td>multiple</td>
-								<td>TRUE</td>
-								<td>Whether it is a list of objects or a single object</td>
-							<tr>
-						</table>
+						<p>This annotation is to be used on your method and represents the parameter passed in the body of the requests</p>
 					</td>
 				</tr>
 				<tr>
 					<td><code>@ApiResponseObject</code></td>
 					<td>Method</td>
 					<td>
-						<p>This annotation is to be used on your method and represents the returned value. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>object</td>
-								<td>TRUE</td>
-								<td>The name of the object returned by the method. See also <code>@ApiObject</code></td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the object contains or represents</td>
-							<tr>
-							<tr>
-								<td>multiple</td>
-								<td>TRUE</td>
-								<td>Whether it is a list of objects or a single object</td>
-							<tr>
-						</table>
+						<p>This annotation is to be used on your method and represents the returned value</p>
 					</td>
 				</tr>
 				<tr>
@@ -365,12 +302,12 @@ section {
 							<tr>
 								<td>name</td>
 								<td>TRUE</td>
-								<td>The name of the object, to be referenced by other annotations with an "object" attribute. See also <code>@ApiBodyObject</code> and <code>@ApiResponseObject</code></td>
+								<td>The name of the object. See also <code>@ApiBodyObject</code> and <code>@ApiResponseObject</code></td>
 							<tr>
 							<tr>
-								<td>extendsclass</td>
+								<td>description</td>
 								<td>FALSE</td>
-								<td>Fully qualified path of the parent class. This has to be specified if your class extends another one and you want to display the object structure in a single shot. Default value is <code>""</code></td>
+								<td>A description of what the object is. Default value is <code>""</code></td>
 							<tr>
 							<tr>
 								<td>show</td>
@@ -392,24 +329,19 @@ section {
 								<th>Description</th>
 							<tr>
 							<tr>
-								<td>name</td>
-								<td>TRUE</td>
-								<td>The name of the field</td>
-							<tr>
-							<tr>
 								<td>description</td>
 								<td>TRUE</td>
 								<td>A drescription of what the field is</td>
 							<tr>
 							<tr>
-								<td>type</td>
-								<td>TRUE</td>
-								<td>The type of the field. This can be a simple type like integer, string, ... or can be an object. See also <code>@ApiObject</code></td>
+								<td>format</td>
+								<td>FALSE</td>
+								<td>The format of the field. For example in case of date objects it could be <code>yyyy-MM-dd HH:m:ss</code></td>
 							<tr>
 							<tr>
-								<td>multiple</td>
-								<td>TRUE</td>
-								<td>Whether this field is a list or not</td>
+								<td>allowedvalues</td>
+								<td>FALSE</td>
+								<td>An array representing the allowed values this field can have. Default value is <code>{}</code></td>
 							<tr>
 						</table>
 					</td>
@@ -517,19 +449,15 @@ import org.jsondoc.core.pojo.ApiVerb;
 	produces={MediaType.APPLICATION_JSON_VALUE},
 	consumes={MediaType.APPLICATION_JSON_VALUE}
 )
-@ApiParams(urlparameters={
-	@ApiParam(name="name", required = true, description="name description", type = "string", allowedvalues = {"sydney", "melbourne", "perth"})
+@ApiHeaders(headers={
+	@ApiHeader(name="api_id", description="The api identifier")
 })
-@ApiResponseObject(
-	object="city", 
-	description="A city object", 
-	multiple = true)
 @ApiErrors(apierrors={
 	@ApiError(code="2000", description="City not found"),
 	@ApiError(code="9000", description="Illegal argument")
 })
 // mvc framework annotations ommited
-public City getCityByName(String name) {
+public @ApiResponseObject City getCityByName(String name) {
 	// Here goes the method implementation
 	return null;
 }</pre>
@@ -541,10 +469,10 @@ package org.jsondoc.sample.pojo;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name = "city", extendsclass="org.jsondoc.sample.pojo.Location")
+@ApiObject(name = "city")
 public class City extends Location {
 
-	@ApiObjectField(name = "name", description = "The name of the city", type = "string", multiple = false)
+	@ApiObjectField(description = "The name of the city")
 	private String name;
 
 	public City(String name) {
@@ -558,7 +486,7 @@ public class City extends Location {
 
 }</pre>
 
-<h3>Object to be ignored when building documentation</h3>
+<h3>Object that won't be shown but will be considered in building documentation</h3>
 <pre class="prettyprint linenums">
 package org.jsondoc.sample.pojo;
 
@@ -568,9 +496,9 @@ import org.jsondoc.core.annotation.ApiObjectField;
 @ApiObject(name="location", show=false)
 public class Location {
 
-	@ApiObjectField(name="population", multiple=false, description="The population of the location", type="integer")
+	@ApiObjectField(description="The population of the location")
 	private Integer population;
-	@ApiObjectField(name="squarekm", multiple=false, description="The square km of the location", type="integer")
+	@ApiObjectField(description="The square km of the location")
 	private Integer squarekm;
 
 	public Integer getPopulation() {
