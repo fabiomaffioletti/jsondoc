@@ -47,7 +47,7 @@
 		<profile>
 			<id>home</id>
 			<properties>
-				<git.local.repo>file:///home/fabio/workspace/fm-repo/</git.local.repo>
+				<git.local.repo>file:///Users/fabio/workspace/fm-repo/</git.local.repo>
 			</properties>
 		</profile>
 	</profiles>

@@ -596,10 +596,12 @@ public class Location {
     "basePath": "http://localhost:8080/api",
     "apis": [
         {
+            "jsondocId": "910b7629-944c-41c3-be0d-0c11952defea",
             "name": "city services",
             "description": "Methods for managing cities",
             "methods": [
                 {
+                    "jsondocId": "626c75ad-603d-45c8-a5ce-9770184bf4fe",
                     "path": "/city/get/{name}",
                     "description": "Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
                     "verb": "GET",
@@ -609,32 +611,51 @@ public class Location {
                     "consumes": [
                         "application/json"
                     ],
-                    "headers": [],
+                    "headers": [
+                        {
+                            "jsondocId": "ee996f57-4124-4c91-b2d7-231c7aa22ab6",
+                            "name": "api_id",
+                            "description": "The api identifier"
+                        }
+                    ],
                     "urlparameters": [
                         {
+                            "jsondocId": "392b54f6-c69f-4bd0-970b-2c3ae5ba5769",
                             "name": "name",
-                            "description": "name description",
+                            "description": "The city name",
                             "type": "string",
-                            "required": true,
+                            "required": "true",
                             "allowedvalues": [
-                                "sydney",
-                                "melbourne",
-                                "perth"
-                            ]
+                                "Melbourne",
+                                "Sydney",
+                                "Perth"
+                            ],
+                            "format": ""
+                        },
+                        {
+                            "jsondocId": "5b93ac13-8d1f-4e5c-b7f5-d5689bec074a",
+                            "name": "path",
+                            "description": "The city path",
+                            "type": "string",
+                            "required": "true",
+                            "allowedvalues": [],
+                            "format": ""
                         }
                     ],
                     "bodyobject": null,
                     "response": {
+                        "jsondocId": "0e4b1744-04b1-4553-9a80-6c7c7b934672",
                         "object": "city",
-                        "description": "A city object",
-                        "multiple": true
+                        "multiple": "false"
                     },
                     "apierrors": [
                         {
+                            "jsondocId": "b02e613c-4196-4361-ad6f-f91d26b68b35",
                             "code": "2000",
                             "description": "City not found"
                         },
                         {
+                            "jsondocId": "bbed9ced-83f5-4556-b5a7-954271af1d84",
                             "code": "9000",
                             "description": "Illegal argument"
                         }
@@ -643,10 +664,12 @@ public class Location {
             ]
         },
         {
+            "jsondocId": "b47a565c-0754-443a-801a-47cdb9d44629",
             "name": "country services",
             "description": "Methods for managing countries",
             "methods": [
                 {
+                    "jsondocId": "e5ec7971-9131-49da-9328-0a11b80eaf46",
                     "path": "/country/get/{name}",
                     "description": "Gets a country with the given name",
                     "verb": "GET",
@@ -659,33 +682,36 @@ public class Location {
                     "headers": [],
                     "urlparameters": [
                         {
+                            "jsondocId": "7a15b265-3a01-47b2-8b79-bb4ee7e05fc4",
                             "name": "name",
-                            "description": "The country name",
+                            "description": "",
                             "type": "string",
-                            "required": true,
-                            "allowedvalues": [
-                                "*"
-                            ]
+                            "required": "true",
+                            "allowedvalues": [],
+                            "format": ""
                         }
                     ],
                     "bodyobject": null,
                     "response": {
+                        "jsondocId": "00213ea8-1951-4ffc-8824-c6093327a4ae",
                         "object": "country",
-                        "description": "A country object, with the list of its cities",
-                        "multiple": false
+                        "multiple": "false"
                     },
                     "apierrors": [
                         {
+                            "jsondocId": "73e1b976-d039-4aa1-bf83-d94b4a7c537e",
                             "code": "1000",
                             "description": "Country not found"
                         },
                         {
+                            "jsondocId": "7f408c4c-3feb-4938-9539-3bfb394e54f6",
                             "code": "9000",
                             "description": "Illegal argument"
                         }
                     ]
                 },
                 {
+                    "jsondocId": "7d3bfba0-87e3-485e-854a-9f918aaecd99",
                     "path": "/country/all",
                     "description": "Gets all the countries",
                     "verb": "GET",
@@ -699,13 +725,14 @@ public class Location {
                     "urlparameters": [],
                     "bodyobject": null,
                     "response": {
+                        "jsondocId": "abafe4ab-57c5-46e9-8cdc-120baf2aa13b",
                         "object": "country",
-                        "description": "A list of country objects",
-                        "multiple": true
+                        "multiple": "true"
                     },
                     "apierrors": []
                 },
                 {
+                    "jsondocId": "58a5d779-dfe4-4f73-abff-b12fbf06a7fa",
                     "path": "/country/save",
                     "description": "Saves a country, with a list of cities",
                     "verb": "POST",
@@ -717,41 +744,47 @@ public class Location {
                     ],
                     "headers": [
                         {
+                            "jsondocId": "ec21ad1a-2fd2-4cf4-9e54-e482d84b4856",
                             "name": "application_id",
                             "description": "The application id"
                         }
                     ],
                     "urlparameters": [],
                     "bodyobject": {
+                        "jsondocId": "34916cf1-d594-46f9-a213-d543cd753250",
                         "object": "country",
-                        "description": "A country object, with the list of its cities",
-                        "multiple": false
+                        "multiple": "false"
                     },
                     "response": {
-                        "object": "country",
-                        "description": "The saved country, with its generated id",
-                        "multiple": false
+                        "jsondocId": "9e6599a7-0ab4-4378-bfff-03a8af6dee8a",
+                        "object": "string",
+                        "multiple": "false"
                     },
                     "apierrors": [
                         {
+                            "jsondocId": "0555c5b7-f6ae-4b66-8519-5d96e162c83f",
                             "code": "5000",
                             "description": "Duplicate country"
                         },
                         {
+                            "jsondocId": "c6f0986d-b006-48b8-bd2f-bb8280d15c63",
                             "code": "6000",
                             "description": "Validation error"
                         },
                         {
+                            "jsondocId": "d6222341-35ee-45a9-a299-135a93adc0df",
                             "code": "7000",
                             "description": "Invalid application id"
                         },
                         {
+                            "jsondocId": "d1b23f28-d85f-4043-a224-50ef28c11ec6",
                             "code": "9000",
                             "description": "Illegal argument"
                         }
                     ]
                 },
                 {
+                    "jsondocId": "d5539e87-f482-4815-9ea5-d3287dd73d46",
                     "path": "/country/delete/{id}",
                     "description": "Deletes the country with the given id",
                     "verb": "DELETE",
@@ -763,37 +796,41 @@ public class Location {
                     ],
                     "headers": [
                         {
+                            "jsondocId": "719ea519-097a-4671-953b-fae48f37e377",
                             "name": "application_id",
                             "description": "The application id"
                         }
                     ],
                     "urlparameters": [
                         {
+                            "jsondocId": "d97350da-b24c-4d73-a87d-2decd501dd2a",
                             "name": "id",
-                            "description": "The country id",
+                            "description": "",
                             "type": "integer",
-                            "required": true,
-                            "allowedvalues": [
-                                "*"
-                            ]
+                            "required": "true",
+                            "allowedvalues": [],
+                            "format": ""
                         }
                     ],
                     "bodyobject": null,
                     "response": {
+                        "jsondocId": "7e88b628-014f-40e7-bf10-c606071f1776",
                         "object": "boolean",
-                        "description": "A boolean representing the result of the operation",
-                        "multiple": false
+                        "multiple": "false"
                     },
                     "apierrors": [
                         {
+                            "jsondocId": "e2eba05a-9558-4fee-a679-072802df6646",
                             "code": "1000",
                             "description": "Country not found"
                         },
                         {
+                            "jsondocId": "70ac5599-ad6d-4b17-b338-9b4cf28b36a0",
                             "code": "7000",
                             "description": "Invalid application id"
                         },
                         {
+                            "jsondocId": "28ca0dbd-8099-425b-8889-bd41c99fdd96",
                             "code": "9000",
                             "description": "Illegal argument"
                         }
@@ -804,59 +841,84 @@ public class Location {
     ],
     "objects": [
         {
+            "jsondocId": "11fec27a-6787-4bb5-8f3a-3af72e01fa17",
             "name": "city",
+            "description": "",
             "fields": [
                 {
+                    "jsondocId": "21f3d2d1-c7f6-4f33-b2c7-97d6bc35f143",
                     "name": "name",
                     "type": "string",
-                    "multiple": false,
-                    "description": "The name of the city"
+                    "multiple": "false",
+                    "description": "The name of the city",
+                    "format": "",
+                    "allowedvalues": []
                 },
                 {
+                    "jsondocId": "5aabe241-ac09-4286-8d65-d66e50364699",
                     "name": "population",
                     "type": "integer",
-                    "multiple": false,
-                    "description": "The population of the location"
+                    "multiple": "false",
+                    "description": "The population of the location",
+                    "format": "",
+                    "allowedvalues": []
                 },
                 {
+                    "jsondocId": "00a41d07-6b38-470a-b587-1d13b5b7b8e9",
                     "name": "squarekm",
                     "type": "integer",
-                    "multiple": false,
-                    "description": "The square km of the location"
+                    "multiple": "false",
+                    "description": "The square km of the location",
+                    "format": "",
+                    "allowedvalues": []
                 }
             ]
         },
         {
+            "jsondocId": "c41a5420-d54c-4ed7-84d0-e3d29881c376",
             "name": "country",
+            "description": "",
             "fields": [
                 {
+                    "jsondocId": "2d98ed4b-afca-4980-8272-961e3c0ad048",
                     "name": "name",
                     "type": "string",
-                    "multiple": false,
-                    "description": "The name of the country"
+                    "multiple": "false",
+                    "description": "The name of the country",
+                    "format": "",
+                    "allowedvalues": []
                 },
                 {
+                    "jsondocId": "771aaed2-c67b-4a98-b2df-01da78745e31",
                     "name": "cities",
                     "type": "city",
-                    "multiple": true,
-                    "description": "The cities of the country"
+                    "multiple": "true",
+                    "description": "The cities of the country",
+                    "format": "",
+                    "allowedvalues": []
                 },
                 {
+                    "jsondocId": "66fb13e7-7ab3-4249-bcac-988eb74b9268",
                     "name": "population",
                     "type": "integer",
-                    "multiple": false,
-                    "description": "The population of the location"
+                    "multiple": "false",
+                    "description": "The population of the location",
+                    "format": "",
+                    "allowedvalues": []
                 },
                 {
+                    "jsondocId": "f4905325-328d-40be-9acd-269b21953949",
                     "name": "squarekm",
                     "type": "integer",
-                    "multiple": false,
-                    "description": "The square km of the location"
+                    "multiple": "false",
+                    "description": "The square km of the location",
+                    "format": "",
+                    "allowedvalues": []
                 }
             ]
         }
     ]
-}	
+}
 </pre>
 		</section>
 			
