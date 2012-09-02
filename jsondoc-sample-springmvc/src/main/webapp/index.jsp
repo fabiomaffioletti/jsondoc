@@ -457,7 +457,7 @@ import org.jsondoc.core.pojo.ApiVerb;
 	@ApiError(code="9000", description="Illegal argument")
 })
 // mvc framework annotations ommited
-public @ApiResponseObject City getCityByName(String name) {
+public @ApiResponseObject City getCityByName(@ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name) {
 	// Here goes the method implementation
 	return null;
 }</pre>
