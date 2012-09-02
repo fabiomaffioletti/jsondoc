@@ -49,7 +49,7 @@ body {
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</a> <a class="brand" href="#">JSONDoc</a>
 			    <div class="navbar-search pull-left">
-			    	<input id="jsondocfetch" class="search-query span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://localhost:8080/api/jsondoc" />
+			    	<input id="jsondocfetch" class="search-query span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://jsondoc-fabiomaffioletti.dotcloud.com/api/jsondoc" />
 			    </div>
 			</div>
 		</div>
@@ -245,7 +245,6 @@ body {
 </script>
 
 <script>
-	fetchdoc($("#jsondocfetch").val());
 	$("#jsondocfetch").keypress(function(event) {
 		if (event.which == 13) {
 			fetchdoc($(this).val());
@@ -297,7 +296,7 @@ body {
 
 			},
 			error: function(msg) {
-				alert(msg);
+				alert("Error " + msg);
 			}
 		});
 	}
