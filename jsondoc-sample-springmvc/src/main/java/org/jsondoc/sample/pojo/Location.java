@@ -10,6 +10,10 @@ public class Location {
 	private Integer population;
 	@ApiObjectField(description="The square km of the location")
 	private Integer squarekm;
+	
+	public Location() {
+
+	}
 
 	public Integer getPopulation() {
 		return population;

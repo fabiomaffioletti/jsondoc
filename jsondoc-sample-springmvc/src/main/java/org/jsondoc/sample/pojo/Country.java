@@ -14,6 +14,10 @@ public class Country extends Location {
 	@ApiObjectField(description = "The cities of the country")
 	private List<City> cities;
 	
+	public Country() {
+
+	}
+
 	public Country(String name, List<City> cities) {
 		super();
 		this.name = name;

@@ -8,6 +8,10 @@ public class City extends Location {
 
 	@ApiObjectField(description = "The name of the city")
 	private String name;
+	
+	public City() {
+
+	}
 
 	public City(String name) {
 		super();

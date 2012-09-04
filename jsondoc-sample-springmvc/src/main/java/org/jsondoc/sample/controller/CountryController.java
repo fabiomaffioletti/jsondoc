@@ -1,5 +1,6 @@
 package org.jsondoc.sample.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsondoc.core.annotation.Api;
@@ -12,6 +13,7 @@ import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.sample.pojo.City;
 import org.jsondoc.sample.pojo.Country;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -39,8 +41,11 @@ public class CountryController {
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name") String name) {
-		// Here goes the method implementation
-		return null;
+		List<City> cities = new ArrayList<City>();
+		cities.add(new City("Sydney"));
+		cities.add(new City("Melbourne"));
+		cities.add(new City("Perth"));
+		return new Country("Australia", cities);
 	}
 	
 	@ApiMethod(
@@ -75,7 +80,7 @@ public class CountryController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public @ResponseBody @ApiResponseObject String saveCountry(@RequestBody @ApiBodyObject Country country) {
 		// Here goes the method implementation
-		return null;
+		return "ok";
 	}
 
 	@ApiMethod(
