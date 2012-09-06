@@ -3,16 +3,22 @@ package org.jsondoc.sample.pojo;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name="location", show=false)
+@ApiObject(name = "location", show = false)
 public class Location {
 
-	@ApiObjectField(description="The population of the location")
+	@ApiObjectField(description = "The population of the location")
 	private Integer population;
-	@ApiObjectField(description="The square km of the location")
+	@ApiObjectField(description = "The square km of the location")
 	private Integer squarekm;
-	
+
 	public Location() {
 
+	}
+
+	public Location(Integer population, Integer squarekm) {
+		super();
+		this.population = population;
+		this.squarekm = squarekm;
 	}
 
 	public Integer getPopulation() {

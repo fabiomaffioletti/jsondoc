@@ -29,20 +29,28 @@ body {
 }
 
 .GET {
+	padding-top : 3px;
 	background-color: #468847;
 }
 .POST {
+	padding-top : 3px;
 	background-color: #3A87AD;
 }
 .PUT {
+	padding-top : 3px;
 	background-color: #F89406;
 }
 .DELETE {
+	padding-top : 3px;
 	background-color: #B94A48;
 }
 
 blockquote small:before {
     content: "";
+}
+
+.playground-spacer {
+	margin-top: 15px;
 }
 
 .com { color: #93a1a1; }
@@ -161,6 +169,7 @@ ol.linenums li {
 	{{#methods}}
 	<div class="accordion-group">
 		<div class="accordion-heading">
+			<span class="label pull-right {{verb}}" style="margin-right: 5px; margin-top: 8px;">{{verb}}</span>
 			<a href="#_{{jsondocId}}" id="{{jsondocId}}" rel="method" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle">{{path}}</a>
 		</div>
 		<div class="accordion-body collapse" id="_{{jsondocId}}">
@@ -294,36 +303,73 @@ ol.linenums li {
   <small>{{path}}</small>
 </blockquote>
 
-{{#if headers}}
-<div id="headers">
-	<h4>Headers</h4>
-	{{#headers}}
-		<div class="input-prepend">
-			<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+<div class="row-fluid">
+
+	{{#if headers}}	
+	<div class="span12">
+		<div id="headers">
+			<h4>Headers</h4>
+			{{#headers}}
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				</div>
+			{{/headers}}
 		</div>
-	{{/headers}}
-</div>
-{{/if}}
+	</div>
+	{{/if}}
 
-{{#if urlparameters}}
-<div id="urlparameters">
-	<h4>URL parameters</h4>
-	{{#urlparameters}}
-		<div class="input-prepend">
-			<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+	{{#if produces}}
+		<div class="span6" style="margin-left:0px">		
+		<div id="produces" class="playground-spacer">
+		<h4>Accept</h4>	
+		{{#produces}}
+			<label class="radio"><input type="radio" name="produces" value="{{this}}">{{this}}</label>
+		{{/produces}}
 		</div>
-	{{/urlparameters}}
-</div>
-{{/if}}
+		</div>
+	{{/if}}
 
-{{#if bodyobject}}
-<div id="bodyobject">
-	<h4>Body object</h4>
-	<textarea class="span12" id="inputJson" rows=10 />
-{{/if}}
+	{{#if bodyobject}}
+	{{#if consumes}}
+		<div class="span6" style="margin-left:0px">		
+		<div id="consumes" class="playground-spacer">
+		<h4>Content type</h4>	
+		{{#consumes}}
+			<label class="radio"><input type="radio" name="consumes" value="{{this}}">{{this}}</label>
+		{{/consumes}}
+		</div>
+		</div>
+	{{/if}}
+	{{/if}}
 
-<div class="form-actions">
-<button class="btn btn-primary" id="testButton" data-loading-text="Loading...">Submit</button>
+	{{#if urlparameters}}
+	<div class="span12" style="margin-left:0px">
+		<div id="urlparameters" class="playground-spacer">
+			<h4>URL parameters</h4>
+			{{#urlparameters}}
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				</div>
+			{{/urlparameters}}
+		</div>
+	</div>
+	{{/if}}
+
+	{{#if bodyobject}}
+	<div class="span12" style="margin-left:0px">
+		<div id="bodyobject" class="playground-spacer">
+			<h4>Body object</h4>
+			<textarea class="span12" id="inputJson" rows=10 />
+		</div>
+	</div>
+	{{/if}}
+
+	<div class="span12" style="margin-left:0px">
+		<div class="form-actions">
+			<button class="btn btn-primary" id="testButton" data-loading-text="Loading...">Submit</button>
+		</div>
+	</div>
+
 </div>
 
 <pre id="response" class="prettyprint" style="display:none;">
@@ -390,6 +436,7 @@ ol.linenums li {
 						$("#content").show();
 						$("#apiName").text(api.name);
 						$("#apiDescription").text(api.description);
+						$("#testContent").hide();
 						
 						$('#content a[rel="method"]').each(function() {
 							$(this).click(function() {
@@ -398,13 +445,16 @@ ol.linenums li {
 								var testHTML = test(method);
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
-								console.debug(method);
+								
+								$("#produces input:first").attr("checked", "checked");
 								
 								$("#testButton").click(function() {
 									var headers = new Object();
 									$("#headers input").each(function() {
 										headers[this.name] = $(this).val();
 									});
+									
+									headers["Accept"] = $("#produces input:checked").val();
 									
 									var replacedPath = method.path;
 									$("#urlparameters input").each(function() {
@@ -417,9 +467,8 @@ ol.linenums li {
 										url : model.basePath + replacedPath,
 										type: method.verb,
 										data: $("#inputJson").val(),
-										dataType: 'json',
 										headers: headers,
-										contentType: method.consumes[0],
+										contentType: $("#consumes input:checked").val(),
 										success : function(data) {
 											printResponse(data);
 										},

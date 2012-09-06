@@ -42,9 +42,9 @@ public class CountryController {
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name") String name) {
 		List<City> cities = new ArrayList<City>();
-		cities.add(new City("Sydney"));
-		cities.add(new City("Melbourne"));
-		cities.add(new City("Perth"));
+		cities.add(new City("Sydney", 19329, 43));
+		cities.add(new City("Melbourne", 85743, 12));
+		cities.add(new City("Perth", 58735, 39));
 		return new Country("Australia", cities);
 	}
 	
@@ -57,8 +57,20 @@ public class CountryController {
 	)
 	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject List<Country> getAllCountries() {
-		// Here goes the method implementation
-		return null;
+		List<Country> countries = new ArrayList<Country>();
+		List<City> cities = new ArrayList<City>();
+		cities.add(new City("Sydney", 19329, 43));
+		cities.add(new City("Melbourne", 85743, 12));
+		cities.add(new City("Perth", 58735, 39));
+		Country australia = new Country("Australia", cities);
+		countries.add(australia);
+		cities = new ArrayList<City>();
+		cities.add(new City("Milan", 19329, 43));
+		cities.add(new City("Rome", 85743, 12));
+		cities.add(new City("Florence", 58735, 39));
+		Country italy = new Country("Italy", cities);
+		countries.add(italy);
+ 		return countries;
 	}
 	
 	@ApiMethod(
@@ -78,9 +90,8 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody @ApiResponseObject String saveCountry(@RequestBody @ApiBodyObject Country country) {
-		// Here goes the method implementation
-		return "ok";
+	public @ResponseBody @ApiResponseObject Country saveCountry(@RequestBody @ApiBodyObject Country country) {
+		return country;
 	}
 
 	@ApiMethod(
@@ -98,7 +109,7 @@ public class CountryController {
 		@ApiError(code="7000", description="Invalid application id"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	public @ResponseBody @ApiResponseObject boolean deleteCountry(@PathVariable @ApiParam(name="id") Integer id) {
 		// Here goes the method implementation
 		return true;

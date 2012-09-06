@@ -28,8 +28,8 @@ public class CityController {
 		path="/city/get/{name}", 
 		verb=ApiVerb.GET, 
 		description="Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
-		produces={MediaType.APPLICATION_JSON_VALUE},
-		consumes={MediaType.APPLICATION_JSON_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+		consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiHeaders(headers={
 			@ApiHeader(name="api_id", description="The api identifier")
@@ -40,15 +40,15 @@ public class CityController {
 	})
 	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject City getCityByName(@PathVariable @ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name) {
-		return new City(name);
+		return new City(name, 1982700, 52);
 	}
 	
 	@ApiMethod(
 			path="/city/save", 
 			verb=ApiVerb.POST, 
 			description="Saves a city",
-			produces={MediaType.APPLICATION_JSON_VALUE},
-			consumes={MediaType.APPLICATION_JSON_VALUE}
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 		)
 		@ApiHeaders(headers={
 				@ApiHeader(name="api_id", description="The api identifier")

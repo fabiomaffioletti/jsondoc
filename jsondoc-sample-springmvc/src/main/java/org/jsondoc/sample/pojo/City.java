@@ -13,8 +13,8 @@ public class City extends Location {
 
 	}
 
-	public City(String name) {
-		super();
+	public City(String name, Integer population, Integer squarekm) {
+		super(population, squarekm);
 		this.name = name;
 	}
 	
