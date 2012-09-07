@@ -5,7 +5,7 @@ import java.util.List;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name="country")
+@ApiObject(name = "country")
 public class Country extends Location {
 
 	@ApiObjectField(description = "The name of the country")
@@ -13,13 +13,13 @@ public class Country extends Location {
 
 	@ApiObjectField(description = "The cities of the country")
 	private List<City> cities;
-	
+
 	public Country() {
 
 	}
 
-	public Country(String name, List<City> cities) {
-		super();
+	public Country(Integer population, Integer squarekm, String name, List<City> cities) {
+		super(population, squarekm);
 		this.name = name;
 		this.cities = cities;
 	}

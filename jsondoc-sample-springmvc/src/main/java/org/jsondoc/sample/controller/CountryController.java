@@ -45,7 +45,7 @@ public class CountryController {
 		cities.add(new City("Sydney", 19329, 43));
 		cities.add(new City("Melbourne", 85743, 12));
 		cities.add(new City("Perth", 58735, 39));
-		return new Country("Australia", cities);
+		return new Country(32198, 5487, "Australia", cities);
 	}
 	
 	@ApiMethod(
@@ -62,13 +62,13 @@ public class CountryController {
 		cities.add(new City("Sydney", 19329, 43));
 		cities.add(new City("Melbourne", 85743, 12));
 		cities.add(new City("Perth", 58735, 39));
-		Country australia = new Country("Australia", cities);
+		Country australia = new Country(32198, 5487, "Australia", cities);
 		countries.add(australia);
 		cities = new ArrayList<City>();
 		cities.add(new City("Milan", 19329, 43));
 		cities.add(new City("Rome", 85743, 12));
 		cities.add(new City("Florence", 58735, 39));
-		Country italy = new Country("Italy", cities);
+		Country italy = new Country(4326, 127376, "Italy", cities);
 		countries.add(italy);
  		return countries;
 	}

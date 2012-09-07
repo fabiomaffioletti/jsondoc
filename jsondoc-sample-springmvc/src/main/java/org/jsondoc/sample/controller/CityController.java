@@ -31,9 +31,6 @@ public class CityController {
 		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 		consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	@ApiHeaders(headers={
-			@ApiHeader(name="api_id", description="The api identifier")
-	})
 	@ApiErrors(apierrors={
 			@ApiError(code="2000", description="City not found"),
 			@ApiError(code="9000", description="Illegal argument")
