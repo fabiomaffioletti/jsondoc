@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>JSONDoc</title>
+<title>JSONDoc | Easily generate documentation for your RESTful API and quick test API methods</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
+<meta name="description" content="Easily generate documentation for your RESTful API and quick test API methods">
+<meta name="keywords" content="json documentation, restful documentation, api documentation, api doc, json doc, restful doc, generate documentation json, rest documentation, rest doc, jsondoc, test api, test api methods, test restful api, test rest api, json documentation spring mvc">
+<meta name="author" content="Fabio Maffioletti">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -32,13 +33,6 @@ section {
 <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-<!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="../assets/ico/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
 </head>
 
 <body onload="prettyPrint()">
@@ -46,8 +40,7 @@ section {
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="#">JSONDoc</a>
+				<a class="brand" href="#">JSONDoc</a>
 			    <ul class="nav">
 			    	<li><a href="#">Documentation</a></li>
 			    	<li><a href="#examples">Examples</a></li>
@@ -142,8 +135,8 @@ section {
 							<tr>
 							<tr>
 								<td>consumes</td>
-								<td>TRUE</td>
-								<td>An array of strings representing media types consumed by the method, like application/json, application/xml, ...</td>
+								<td>FALSE</td>
+								<td>An array of strings representing media types consumed by the method, like application/json, application/xml, ... Default is <code>{}</code></td>
 							<tr>
 						</table>
 					</td>
@@ -407,12 +400,14 @@ public class JSONDocController {
 		
 			<h1>Step 3: Display the generated documentation!</h1>
 			<h3>With jsondoc-ui</h3>
-			<p>You can include the <strong>jsondoc-ui</strong> project in your web application. This provides an interface to browse the generated
-			documentation, it is built on Twitter Bootstrap and can be easily customized for you needs. Check out the <a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank">live demo here</a>.</p>
+			<p>You can include the <strong>jsondoc-ui</strong> project in your web application. 
+			This provides an interface to browse the generated documentation and a playground to test methods. 
+			It is built on Twitter Bootstrap and can be easily customized for you needs. 
+			Check out the <a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank">live demo here</a>.</p>
+
 			<h3>Build your own viewer</h3>
 			<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
 			</section>
-			
 			
 			<section id="examples">
 			<h1>Examples</h1>
@@ -458,7 +453,6 @@ import org.jsondoc.core.pojo.ApiVerb;
 // mvc framework annotations ommited
 public @ApiResponseObject City getCityByName(@ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name) {
 	// Here goes the method implementation
-	return null;
 }</pre>
 
 <h3>Object to be documented</h3>
