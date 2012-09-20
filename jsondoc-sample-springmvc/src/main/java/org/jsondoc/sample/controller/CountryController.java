@@ -32,8 +32,7 @@ public class CountryController {
 		path="/country/get/{name}", 
 		verb=ApiVerb.GET, 
 		description="Gets a country with the given name",
-		produces={MediaType.APPLICATION_JSON_VALUE},
-		consumes={MediaType.APPLICATION_JSON_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE}
 	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),
@@ -52,8 +51,7 @@ public class CountryController {
 		path="/country/all", 
 		verb=ApiVerb.GET, 
 		description="Gets all the countries",
-		produces={MediaType.APPLICATION_JSON_VALUE},
-		consumes={MediaType.APPLICATION_JSON_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE}
 	)
 	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject List<Country> getAllCountries() {
@@ -98,8 +96,7 @@ public class CountryController {
 		path="/country/delete/{id}", 
 		verb=ApiVerb.DELETE, 
 		description="Deletes the country with the given id",
-		produces={MediaType.APPLICATION_JSON_VALUE},
-		consumes={MediaType.APPLICATION_JSON_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE}
 	)
 	@ApiHeaders(headers={
 		@ApiHeader(name="application_id", description="The application id")

@@ -143,8 +143,8 @@ section {
 							<tr>
 							<tr>
 								<td>consumes</td>
-								<td>TRUE</td>
-								<td>An array of strings representing media types consumed by the method, like application/json, application/xml, ...</td>
+								<td>FALSE</td>
+								<td>An array of strings representing media types consumed by the method, like application/json, application/xml, ... Default is <code>{}</code></td>
 							<tr>
 						</table>
 					</td>

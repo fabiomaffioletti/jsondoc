@@ -28,8 +28,7 @@ public class CityController {
 		path="/city/get/{name}", 
 		verb=ApiVerb.GET, 
 		description="Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
-		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-		consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiErrors(apierrors={
 			@ApiError(code="2000", description="City not found"),
