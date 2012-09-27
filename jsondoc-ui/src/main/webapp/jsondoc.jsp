@@ -365,8 +365,32 @@ ol.linenums li {
 
 </div>
 
-<pre id="response" class="prettyprint" style="display:none;">
-</pre>
+<div class="tabbable" id="resInfo" style="display:none;">
+	<ul class="nav nav-tabs">
+  		<li class="active"><a href="#tab1" data-toggle="tab">Response text</a></li>
+  		<li><a href="#tab2" data-toggle="tab">Response info</a></li>
+  		<li><a href="#tab3" data-toggle="tab">Request info</a></li>
+	</ul>
+	<div class="tab-content">
+    	<div class="tab-pane active" id="tab1">
+    		<pre id="response" class="prettyprint">
+			</pre>
+   		</div>
+    	<div class="tab-pane" id="tab2">
+			<p class="nav-header" style="padding:0px">Response code</p>
+      		<pre id="responseStatus" class="prettyprint">
+			</pre>
+			<p class="nav-header" style="padding:0px">Response headers</p>
+      		<pre id="responseHeaders" class="prettyprint">
+			</pre>
+    	</div>
+		<div class="tab-pane" id="tab3">
+      		<p class="nav-header" style="padding:0px">Request URL</p>
+      		<pre id="requestURL" class="prettyprint">
+			</pre>
+    	</div>
+	</div>
+</div>
 
 </script>
 
@@ -470,17 +494,17 @@ ol.linenums li {
 									
 									$('#testButton').button('loading');
 									
-									$.ajax({
+									var res = $.ajax({
 										url : model.basePath + replacedPath,
 										type: method.verb,
 										data: $("#inputJson").val(),
 										headers: headers,
 										contentType: $("#consumes input:checked").val(),
 										success : function(data) {
-											printResponse(data);
+											printResponse(data, res, this.url);
 										},
 										error: function(data) {
-											printResponse(data);
+											printResponse(data, res, this.url);
 										}
 									});
 									

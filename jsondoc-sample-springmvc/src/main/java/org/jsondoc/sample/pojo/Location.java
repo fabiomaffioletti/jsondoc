@@ -1,5 +1,7 @@
 package org.jsondoc.sample.pojo;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
@@ -7,8 +9,10 @@ import org.jsondoc.core.annotation.ApiObjectField;
 public class Location {
 
 	@ApiObjectField(description = "The population of the location")
+	@XmlElement
 	private Integer population;
 	@ApiObjectField(description = "The square km of the location")
+	@XmlElement
 	private Integer squarekm;
 
 	public Location() {

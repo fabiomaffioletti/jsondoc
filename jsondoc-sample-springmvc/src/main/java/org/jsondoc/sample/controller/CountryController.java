@@ -32,7 +32,7 @@ public class CountryController {
 		path="/country/get/{name}", 
 		verb=ApiVerb.GET, 
 		description="Gets a country with the given name",
-		produces={MediaType.APPLICATION_JSON_VALUE}
+		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiErrors(apierrors={
 		@ApiError(code="1000", description="Country not found"),

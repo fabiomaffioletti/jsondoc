@@ -99,7 +99,7 @@ ol.linenums li {
 			<div class="container-fluid">
 				<a class="brand" href="#">JSONDoc</a>
 				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://jsondoc-fabiomaffioletti.dotcloud.com/api/jsondoc" autocomplete="off" />
+					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://localhost:8080/api/jsondoc" autocomplete="off" />
 					    <button id="getDocButton" class="btn">Get documentation</button>
 					</form>
 			</div>
@@ -365,8 +365,32 @@ ol.linenums li {
 
 </div>
 
-<pre id="response" class="prettyprint" style="display:none;">
-</pre>
+<div class="tabbable" id="resInfo" style="display:none;">
+	<ul class="nav nav-tabs">
+  		<li class="active"><a href="#tab1" data-toggle="tab">Response text</a></li>
+  		<li><a href="#tab2" data-toggle="tab">Response info</a></li>
+  		<li><a href="#tab3" data-toggle="tab">Request info</a></li>
+	</ul>
+	<div class="tab-content">
+    	<div class="tab-pane active" id="tab1">
+    		<pre id="response" class="prettyprint">
+			</pre>
+   		</div>
+    	<div class="tab-pane" id="tab2">
+			<p class="nav-header" style="padding:0px">Response code</p>
+      		<pre id="responseStatus" class="prettyprint">
+			</pre>
+			<p class="nav-header" style="padding:0px">Response headers</p>
+      		<pre id="responseHeaders" class="prettyprint">
+			</pre>
+    	</div>
+		<div class="tab-pane" id="tab3">
+      		<p class="nav-header" style="padding:0px">Request URL</p>
+      		<pre id="requestURL" class="prettyprint">
+			</pre>
+    	</div>
+	</div>
+</div>
 
 </script>
 
@@ -409,11 +433,50 @@ ol.linenums li {
 		return false;
 	});
 	
-	function printResponse(data) {
-		$("#response").text(JSON.stringify(data, undefined, 2));
+	function printResponse(data, res, url) {
+		if(res.responseXML != null) {
+			$("#response").text(formatXML(res.responseText));
+		} else {
+			$("#response").text(JSON.stringify(data, undefined, 2));
+		}
+		
 		prettyPrint();
+		$("#responseStatus").text(res.status);
+		$("#responseHeaders").text(res.getAllResponseHeaders());
+		$("#requestURL").text(url);
 		$('#testButton').button('reset');
-		$("#response").show();
+		$("#resInfo").show();
+	}
+	
+	function formatXML(xml) {
+	    var formatted = '';
+	    var reg = /(>)(<)(\/*)/g;
+	    xml = xml.replace(reg, '$1\r\n$2$3');
+	    var pad = 0;
+	    jQuery.each(xml.split('\r\n'), function(index, node) {
+	        var indent = 0;
+	        if (node.match( /.+<\/\w[^>]*>$/ )) {
+	            indent = 0;
+	        } else if (node.match( /^<\/\w/ )) {
+	            if (pad != 0) {
+	                pad -= 1;
+	            }
+	        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+	            indent = 1;
+	        } else {
+	            indent = 0;
+	        }
+
+	        var padding = '';
+	        for (var i = 0; i < pad; i++) {
+	            padding += '  ';
+	        }
+
+	        formatted += padding + node + '\r\n';
+	        pad += indent;
+	    });
+
+	    return formatted;
 	}
 	
 	function fetchdoc(jsondocurl) {
@@ -470,17 +533,17 @@ ol.linenums li {
 									
 									$('#testButton').button('loading');
 									
-									$.ajax({
+									var res = $.ajax({
 										url : model.basePath + replacedPath,
 										type: method.verb,
 										data: $("#inputJson").val(),
 										headers: headers,
 										contentType: $("#consumes input:checked").val(),
 										success : function(data) {
-											printResponse(data);
+											printResponse(data, res, this.url);
 										},
 										error: function(data) {
-											printResponse(data);
+											printResponse(data, res, this.url);
 										}
 									});
 									

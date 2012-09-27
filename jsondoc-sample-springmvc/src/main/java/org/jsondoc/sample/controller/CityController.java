@@ -27,7 +27,7 @@ public class CityController {
 	@ApiMethod(
 		path="/city/get/{name}", 
 		verb=ApiVerb.GET, 
-		description="Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
+		description="Gets a city with the given name. (Allowed values are just to demonstrate the annotation attribute)",
 		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiErrors(apierrors={
