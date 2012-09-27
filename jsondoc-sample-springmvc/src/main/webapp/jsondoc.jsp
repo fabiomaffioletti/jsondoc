@@ -99,7 +99,7 @@ ol.linenums li {
 			<div class="container-fluid">
 				<a class="brand" href="#">JSONDoc</a>
 				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://localhost:8080/api/jsondoc" autocomplete="off" />
+					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://jsondoc-fabiomaffioletti.dotcloud.com/api/jsondoc" autocomplete="off" />
 					    <button id="getDocButton" class="btn">Get documentation</button>
 					</form>
 			</div>
