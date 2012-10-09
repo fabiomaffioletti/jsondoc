@@ -15,6 +15,7 @@ import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
 import org.jsondoc.sample.pojo.Country;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,14 +23,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Api(name="country services", description="Methods for managing countries")
 @Controller
-@RequestMapping(value="/country")
+@RequestMapping(value="/countries")
 public class CountryController {
 	
 	@ApiMethod(
-		path="/country/get/{name}", 
+		path="/countries/{name}", 
 		verb=ApiVerb.GET, 
 		description="Gets a country with the given name",
 		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
@@ -38,7 +40,7 @@ public class CountryController {
 		@ApiError(code="1000", description="Country not found"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
-	@RequestMapping(value="/get/{name}", method=RequestMethod.GET)
+	@RequestMapping(value="/{name}", method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name") String name) {
 		List<City> cities = new ArrayList<City>();
 		cities.add(new City("Sydney", 19329, 43));
@@ -48,12 +50,12 @@ public class CountryController {
 	}
 	
 	@ApiMethod(
-		path="/country/all", 
+		path="/countries", 
 		verb=ApiVerb.GET, 
 		description="Gets all the countries",
 		produces={MediaType.APPLICATION_JSON_VALUE}
 	)
-	@RequestMapping(value="/all", method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject List<Country> getAllCountries() {
 		List<Country> countries = new ArrayList<Country>();
 		List<City> cities = new ArrayList<City>();
@@ -72,7 +74,7 @@ public class CountryController {
 	}
 	
 	@ApiMethod(
-		path="/country/save", 
+		path="/countries", 
 		verb=ApiVerb.POST, 
 		description="Saves a country, with a list of cities",
 		produces={MediaType.APPLICATION_JSON_VALUE},
@@ -87,13 +89,13 @@ public class CountryController {
 		@ApiError(code="7000", description="Invalid application id"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
-	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody @ApiResponseObject Country saveCountry(@RequestBody @ApiBodyObject Country country) {
 		return country;
 	}
 
 	@ApiMethod(
-		path="/country/delete/{id}", 
+		path="/countries/{id}", 
 		verb=ApiVerb.DELETE, 
 		description="Deletes the country with the given id",
 		produces={MediaType.APPLICATION_JSON_VALUE}
@@ -106,9 +108,9 @@ public class CountryController {
 		@ApiError(code="7000", description="Invalid application id"),
 		@ApiError(code="9000", description="Illegal argument")
 	})
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-	public @ResponseBody @ApiResponseObject boolean deleteCountry(@PathVariable @ApiParam(name="id") Integer id) {
-		// Here goes the method implementation
-		return true;
+	@ResponseStatus(value=HttpStatus.NO_CONTENT)
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public @ResponseBody void deleteCountry(@PathVariable @ApiParam(name="id") Integer id) {
+		
 	}
 }
