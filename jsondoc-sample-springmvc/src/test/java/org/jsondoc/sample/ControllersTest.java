@@ -7,8 +7,11 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ControllersTest extends BaseControllerTest {
 
 	@Test

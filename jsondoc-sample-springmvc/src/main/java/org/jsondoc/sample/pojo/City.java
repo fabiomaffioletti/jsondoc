@@ -13,7 +13,7 @@ public class City extends Location {
 	@ApiObjectField(description = "The name of the city")
 	@XmlElement
 	private String name;
-	
+
 	public City() {
 
 	}
@@ -22,7 +22,7 @@ public class City extends Location {
 		super(population, squarekm);
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

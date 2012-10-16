@@ -255,8 +255,18 @@ ol.linenums li {
 						</tr>
 						<tr>
 							<td>Multiple</td>
-							<td>{{bodyobject.multiple}}</td>
+							<td>{{bodyobject.multiple}} ddd</td>
 						</tr>
+						{{#if bodyobject.map}}
+							<tr>
+								<td>Map key</td>
+								<td><code>{{bodyobject.mapKeyObject}}</code></td>
+							</tr>
+							<tr>
+								<td>Map value</td>
+								<td><code>{{bodyobject.mapValueObject}}</code></td>
+							</tr>
+						{{/if}}
 					{{/if}}
 					{{#if response}}
 						<tr>
@@ -270,6 +280,16 @@ ol.linenums li {
 							<td>Multiple</td>
 							<td>{{response.multiple}}</td>
 						</tr>
+						{{#if response.map}}
+							<tr>
+								<td>Map key</td>
+								<td><code>{{response.mapKeyObject}}</code></td>
+							</tr>
+							<tr>
+								<td>Map value</td>
+								<td><code>{{response.mapValueObject}}</code></td>
+							</tr>
+						{{/if}}
 					{{/if}}
 					{{#if apierrors}}
 						<tr>
@@ -403,6 +423,18 @@ ol.linenums li {
 			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
 			<tr><td></td><td>Type: {{type}}</td></tr>
 			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
+			{{#if map}}
+				{{#if this.mapKeyObject}}
+				<tr>	
+					<td></td>
+					<td>Map key: {{this.mapKeyObject}}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>Map value: {{this.mapValueObject}}</td>
+				</tr>
+				{{/if}}
+			{{/if}}
 		{{/each}}
 	{{/if}}
 </table>

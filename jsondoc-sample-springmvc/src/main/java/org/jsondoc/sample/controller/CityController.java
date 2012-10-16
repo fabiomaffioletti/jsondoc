@@ -1,5 +1,8 @@
 package org.jsondoc.sample.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiError;
@@ -45,20 +48,33 @@ public class CityController {
 		return city;
 	}
 
-	@ApiMethod(path = "/cities/{id}", verb = ApiVerb.DELETE, description = "Deleted a city by its ID", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiMethod(path = "/cities/{id}", verb = ApiVerb.DELETE, description = "Deleted a city by its ID")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	void delete(@PathVariable @ApiParam(name = "id", description = "The city ID") Integer id) {
 
 	}
-	
-	@ApiMethod(path="/cities/{id}", verb = ApiVerb.PUT, description = "Modifies a city", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes={MediaType.APPLICATION_JSON_VALUE})
+
+	@ApiMethod(path = "/cities/{id}", verb = ApiVerb.PUT, description = "Modifies a city", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public @ResponseBody
 	@ApiResponseObject
-	City put(@PathVariable @ApiParam(name="id", description="The city ID") Integer id, @RequestBody @ApiBodyObject City city) {
+	City put(@PathVariable @ApiParam(name = "id", description = "The city ID") Integer id, @RequestBody @ApiBodyObject City city) {
 		return city;
+	}
+
+	@ApiMethod(path = "/cities/map", verb = ApiVerb.GET, description = "Gets a map of cities", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/map", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ApiResponseObject
+	@ResponseBody
+	Map<String, City> map() {
+		Map<String, City> cities = new HashMap<String, City>();
+		cities.put("a", new City("Adelaide", 4322, 8));
+		cities.put("m", new City("Melbourne", 9080, 12));
+		cities.put("p", new City("Perth", 743534, 5));
+		cities.put("s", new City("Sydney", 54654, 32));
+		return cities;
 	}
 
 }

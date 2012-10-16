@@ -41,7 +41,7 @@ public @interface ApiMethod {
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...
 	 * @return
 	 */
-	public String[] produces();
+	public String[] produces() default {};
 	
 	/**
 	 * An array of strings representing media types consumed by the method, like application/json, application/xml, ...

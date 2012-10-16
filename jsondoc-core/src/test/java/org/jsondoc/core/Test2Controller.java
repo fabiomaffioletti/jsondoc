@@ -1,6 +1,7 @@
 package org.jsondoc.core;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiBodyObject;
@@ -21,6 +22,28 @@ public class Test2Controller {
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	public @ApiResponseObject String save(@ApiBodyObject List<String> names) {
+		return null;
+	}
+	
+	@ApiMethod(
+			path="/testMap", 
+			verb=ApiVerb.GET, 
+			description="map method for controller 2", 
+			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+	)
+	public @ApiResponseObject Map<String, Parent> map(@ApiBodyObject List<String> names) {
+		return null;
+	}
+	
+	@ApiMethod(
+			path="/testMapBody", 
+			verb=ApiVerb.GET, 
+			description="map body method for controller 2", 
+			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+	)
+	public @ApiResponseObject String map(@ApiBodyObject Map<String, Parent> names) {
 		return null;
 	}
 	
