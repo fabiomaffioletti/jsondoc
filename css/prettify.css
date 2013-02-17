@@ -28,3 +28,7 @@ ol.linenums li {
   line-height: 18px;
   text-shadow: 0 1px 0 #fff;
 }
+
+pre, code {
+  font-size: 11px;
+}

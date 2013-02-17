@@ -1,349 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>JSONDoc | Easily generate documentation for your RESTful API and quick test API methods</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Easily generate documentation for your RESTful API and quick test API methods">
-<meta name="keywords" content="json documentation, restful documentation, api documentation, api doc, json doc, restful doc, generate documentation json, rest documentation, rest doc, jsondoc, test api, test api methods, test restful api, test rest api, json documentation spring mvc">
-<meta name="author" content="Fabio Maffioletti">
+	<meta charset="utf-8">
+	<title>JSONDoc | Easily generate documentation for your RESTful API and quick test API methods</title>
+	<meta name="description" content="">
+	<meta name="author" content="Fabio Maffioletti">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/prettify.js"></script>
-
-
-<!-- Le styles -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.css" rel="stylesheet" >
-<link href="css/prettify.css" rel="stylesheet" />
-<style type="text/css">
-body {
-	padding-top: 60px;
-	padding-bottom: 40px;
-}
-
-section {
-	padding-top:60px;
-}
-</style>
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-</head>
+      <![endif]-->
 
-<body onload="prettyPrint()">
+      <!-- Le styles -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/font-awesome.css" rel="stylesheet">
+      <link href='http://fonts.googleapis.com/css?family=Hammersmith+One|Oswald' rel='stylesheet' type="text/css" />
+      <link rel="stylesheet" type="text/css" href="css/jquery.lightbox-0.5.css" media="screen" />
+      <link href="css/prettify.css" rel="stylesheet" />
+      <link href='http://fonts.googleapis.com/css?family=Viga' rel='stylesheet' type='text/css'>
 
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="#">JSONDoc</a>
-			    <ul class="nav">
-			    	<li><a href="#">Documentation</a></li>
-			    	<li><a href="#examples">Examples</a></li>
-			    	<li><a href="#gettingstarted">Getting started</a></li>
-				    <li><a href="#downloads">Downloads</a></li>
-				    <li><a href="#appendix">Appendix</a></li>
-				    <li><a href="#contacts">Contacts</a></li>
-				    <li><a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank">Demo</a></li>
-			    </ul>
-			    <ul class="nav pull-right">
-			    	<li><a href="mailto:fabio.maffioletti@gmail.com"><i class="icon-envelope"></i> Email me</a></li>
-			    </ul>
-			</div>
-		</div>
-	</div>
+      <style type="text/css">
+      /* Override some defaults */
+      html, body {
+      	background-color: #eee;
+      	background-image: url('img/classy_fabric.png');
+      }
+      body {
+      	padding-top: 20px; /* 40px to make the container go all the way to the bottom of the topbar */
+      	padding-bottom: 20px;
+      	font-size: 12px;
+      }
 
-	<div class="container">
-		<div class="row">
-			<div class="hero-unit" style="background-image: url('img/crisp_paper_ruffles.png');">
-				<h1>JSONDoc</h1>
-				<p>Easily generate documentation for your RESTful API and quick test API methods</p>
-				<p>
-					<a class="btn btn-large" href="https://github.com/fabiomaffioletti/jsondoc" target="blank"> View project on Github </a>
-					<a class="btn btn-large" href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank"> See live demo </a>
-				</p>
-			</div>
-		</div>
-		<div class="row">
-			<section id="documentation">
-			<h1>Step 1: annotate your code!</h1>
-			<p>JSONDoc has a set of annotation that are completely <em>MVC framework agnostic</em>. Here is the list:</p>
-			<table class="table table-striped table-bordered">
-				<tr>
-					<th style="width: 15%">Annotation</th>
-					<th style="width: 10%">Level</th>
-					<th>Description</th>
-				</tr>
-				<tr>
-					<td><code>@Api</code></td>
-					<td>Class</td>
-					<td>
-						<p>This annotation is to be used on your "service" class, for example controller classes in Spring MVC. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>name</td>
-								<td>TRUE</td>
-								<td>The name of the API</td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the API does</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiMethod</code></td>
-					<td>Method</td>
-					<td>
-						<p>This annotation is to be used on your exposed methods. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>path</td>
-								<td>TRUE</td>
-								<td>The relative path for this method (ex. /country/get/{name})</td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the method does</td>
-							<tr>
-							<tr>
-								<td>verb</td>
-								<td>TRUE</td>
-								<td>The request verb (or method), to be filled with an <code>ApiVerb</code> value (GET, POST, PUT, DELETE)</td>
-							<tr>
-							<tr>
-								<td>produces</td>
-								<td>FALSE</td>
-								<td>An array of strings representing media types produced by the method, like application/json, application/xml, ... Default is <code>{}</code></td>
-							<tr>
-							<tr>
-								<td>consumes</td>
-								<td>FALSE</td>
-								<td>An array of strings representing media types consumed by the method, like application/json, application/xml, ... Default is <code>{}</code></td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiHeaders</code></td>
-					<td>Method</td>
-					<td>
-						<p>This annotation is to be used on your method. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>headers</td>
-								<td>TRUE</td>
-								<td>An array of <code>@ApiHeader</code> annotations</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiHeader</code></td>
-					<td>Annotation</td>
-					<td>
-						<p>This annotation is to be used inside an annotation of type <code>@ApiHeaders</code>. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>name</td>
-								<td>TRUE</td>
-								<td>The name of the header parameter</td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the parameter is needed for</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiParam</code></td>
-					<td>Parameter</td>
-					<td>
-						<p>This annotation is to be used inside an annotation of type <code>@ApiParams</code>. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>name</td>
-								<td>TRUE</td>
-								<td>The name of the url parameter, as expected by the server</td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>FALSE</td>
-								<td>A description of what the parameter is needed for. Default is <code>""</code></td>
-							<tr>
-							<tr>
-								<td>required</td>
-								<td>FALSE</td>
-								<td>Whether this parameter is required or not. Default value is <code>true</code></td>
-							<tr>
-							<tr>
-								<td>allowedvalues</td>
-								<td>FALSE</td>
-								<td>An array representing the allowed values this parameter can have. Default value is <code>{}</code></td>
-							<tr>
-							<tr>
-								<td>format</td>
-								<td>FALSE</td>
-								<td>The format of the parameter. For example, in case of dates object it couls be <code>yyyy-MM-dd HH:mm:ss</code> Default value is <code>""</code></td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiBodyObject</code></td>
-					<td>Parameter</td>
-					<td>
-						<p>This annotation is to be used on your method and represents the parameter passed in the body of the requests</p>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiResponseObject</code></td>
-					<td>Method</td>
-					<td>
-						<p>This annotation is to be used on your method and represents the returned value</p>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiErrors</code></td>
-					<td>Method</td>
-					<td>
-						<p>This annotation is to be used on your method and represents the possible errors returned by the method. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>apierrors</td>
-								<td>TRUE</td>
-								<td>An array of <code>@ApiError</code> annotations</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiError</code></td>
-					<td>Annotation</td>
-					<td>
-						<p>This annotation is to be used inside an annotation of type <code>@ApiErrors</code>. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>code</td>
-								<td>TRUE</td>
-								<td>The error code returned</td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A description of what the error code means</td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiObject</code></td>
-					<td>Class</td>
-					<td>
-						<p>This annotation is to be used on your object classes and represents an object used for communication between clients and server. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>name</td>
-								<td>TRUE</td>
-								<td>The name of the object. See also <code>@ApiBodyObject</code> and <code>@ApiResponseObject</code></td>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>FALSE</td>
-								<td>A description of what the object is. Default value is <code>""</code></td>
-							<tr>
-							<tr>
-								<td>show</td>
-								<td>FALSE</td>
-								<td>Whether to build the json documentation for this object or not. Default value is <code>true</code></td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><code>@ApiObjectField</code></td>
-					<td>Field</td>
-					<td>
-						<p>This annotation is to be used on your objects' fields and represents a field of an object. Here are its attributes: </p>
-						<table class="table">
-							<tr>
-								<th>Name</th>
-								<th>Required</th>
-								<th>Description</th>
-							<tr>
-							<tr>
-								<td>description</td>
-								<td>TRUE</td>
-								<td>A drescription of what the field is</td>
-							<tr>
-							<tr>
-								<td>format</td>
-								<td>FALSE</td>
-								<td>The format of the field. For example in case of date objects it could be <code>yyyy-MM-dd HH:m:ss</code></td>
-							<tr>
-							<tr>
-								<td>allowedvalues</td>
-								<td>FALSE</td>
-								<td>An array representing the allowed values this field can have. Default value is <code>{}</code></td>
-							<tr>
-						</table>
-					</td>
-				</tr>
-			</table>
+      .container {
+      	width: 940px;
+      }
 
-		<h1>Step 2: generate the documentation!</h1>
-		<h3>Using Spring MVC</h3>
-		<p>If your web application already uses Spring MVC, then it's easy: the project <strong>jsondoc-springmvc</strong> already does it for you. The only thing to do on your side is to declare
-		the jsondoc controller in your spring context.xml file:</p>
+      .container > footer p {
+      	text-align: center; /* center align it with the container */
+      }
+
+      footer {
+      	padding-top: 10px;
+      	border-top: 7px solid #eee;
+      }
+
+      /* The white background content wrapper */
+      .content {
+      	background-color: #fff;
+      	padding: 20px;
+      	margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+      }
+
+      .topbar .btn {
+      	border: 0;
+      }
+
+      section {
+      	padding-top: 20px;
+      }
+
+      h1, h2, h3, h4 {
+      	/*font-family: 'Hammersmith One', sans-serif;*/
+      	/*font-family: 'Oswald', sans-serif;*/
+      	font-family: 'Viga', sans-serif;
+      }
+
+      h2, h3, h4 {
+      	color: #444;
+      }
+
+      p {
+      	font-family: Arial,Helvetica,sans-serif;
+      	font-size: 12px;	
+      }
+
+      .span10 {
+      	width: 940px;
+      }
+
+      </style>
+
+      <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script type="text/javascript" src="js/jquery.lightbox-0.5.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/prettify.js"></script>
+  </head>
+
+  <body onload="prettyPrint()">
+
+  	<div class="container">
+
+  		<div class="content">
+
+  			<section style="padding-top: 0px; padding-bottom: 10px; border-bottom: 7px solid #eee;">
+  				<div class="row">
+  					<div class="span7" style="border-right: 1px solid #eee;">
+  						<h1 style="font-size: 48px; margin-bottom: 5px;">JSONDoc</h1>
+  						<h3>easily generate docs and playgroung for your RESTful API</h3>
+  					</div>
+  					<div class="span2">
+  						<h3>Contact me</h3>
+  						<ul class="unstyled">
+  							<li><i class="icon-envelope-alt"></i> <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a></li>
+							<li><i class="icon-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></li>
+  						</ul>
+  					</div>
+  				</div>
+  			</section>
+
+  			<section>
+  				<div class="row">
+  					<div class="span10">
+						<ul class="nav nav-tabs">
+						    <li class="active"><a href="#annotate" data-toggle="tab"><code>{1} annotate</code></a></li>
+						    <li><a href="#generate" data-toggle="tab"><code>{2} generate</code></a></li>
+						    <li><a href="#display" data-toggle="tab"><code>{3} display</code></a></li>
+						    <li><a href="#examples" data-toggle="tab"><code>examples</code></a></li>
+						    <li><a href="#gettingstarted" data-toggle="tab"><code>getting started</code></a></li>
+						    <li><a href="#downloads" data-toggle="tab"><code>downloads</code></a></li>
+						    <li><a href="#appendix" data-toggle="tab"><code>appendix</code></a></li>
+						    <li class="pull-right"><a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank"><code>demo</code></a></li>
+					    </ul>
+
+					    <div class="tab-content">
+							
+							<div id="annotate" class="tab-pane fade active in">
+								<h2>Step 1: annotate your code!</h2>
+		  						<p>JSONDoc has a set of completely <em>MVC framework agnostic</em> annotations. Here is the list:</p>
+		  						<table class="table table-bordered table-condensed">
+		  							<tr>
+		  								<th style="width: 15%">Annotation</th>
+		  								<th style="width: 10%">Level</th>
+		  								<th>Description</th>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@Api</code></td>
+		  								<td>Class</td>
+		  								<td>
+		  									<p>This annotation has to be used on your controller class in an MVC pattern. It describes in a few words what the API does</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiMethod</code></td>
+		  								<td>Method</td>
+		  								<td>
+		  									<p>This annotation describes your exposed methods in a generic way: which verb has to be used, which is the path for the call, which type it accepts, which one produces, etc</p>
+		  								</td>
+		  							</tr>			
+		  							<tr>
+		  								<td><code>@ApiHeaders</code></td>
+		  								<td>Method</td>
+		  								<td>
+		  									<p>This annotation contains all the useful information to insert in the call headers. It is just a container for the following annotation, which describes headers in detail</p>
+		  								</td>
+		  							</tr>															
+		  							<tr>
+		  								<td><code>@ApiHeader</code></td>
+		  								<td>Annotation</td>
+		  								<td>
+		  									<p>This annotation has to be used inside an annotation of type <code>@ApiHeaders</code></p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiParam</code></td>
+		  								<td>Parameter</td>
+		  								<td>
+		  									<p>This annotation has to be used inside an annotation of type <code>@ApiParams</code> and describes the parameters to be passed to the method</p>
+		  								</td>
+		  							</tr>					
+		  							<tr>
+		  								<td><code>@ApiBodyObject</code></td>
+		  								<td>Parameter</td>
+		  								<td>
+		  									<p>This annotation has to be used on your method and represents the parameter passed in the body of the requests</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiResponseObject</code></td>
+		  								<td>Method</td>
+		  								<td>
+		  									<p>This annotation has to be used on your method and represents the returned object</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiErrors</code></td>
+		  								<td>Method</td>
+		  								<td>
+		  									<p>This annotation has to be used on your method and represents the possible errors returned by the method</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiError</code></td>
+		  								<td>Annotation</td>
+		  								<td>
+		  									<p>This annotation is to be used inside an annotation of type <code>@ApiErrors</code> and describes the error code and the error message for the returned error</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiObject</code></td>
+		  								<td>Class</td>
+		  								<td>
+		  									<p>This annotation is to be used on your object classes and represents an object used for communication between clients and server</p>
+		  								</td>
+		  							</tr>
+		  							<tr>
+		  								<td><code>@ApiObjectField</code></td>
+		  								<td>Field</td>
+		  								<td>
+		  									<p>This annotation is to be used on your objects' fields and represents a field of an object</p>
+		  								</td>
+		  							</tr>
+		  						</table>
+							</div>
+
+							<div id="generate" class="tab-pane fade">
+								<h2>Step 2: generate the documentation!</h2>
+		  						<h3>Using Spring MVC</h3>
+		  						<p>If your web application already uses Spring MVC, then it's easy: the project <strong>jsondoc-springmvc</strong> already does it for you. The only thing to do on your side is to declare the jsondoc controller in your spring context.xml file:</p>
 <pre class="prettyprint linenums">
 &lt;mvc:annotation-driven /&gt;
 &lt;context:component-scan base-package="your.base.package" /&gt;
@@ -354,12 +228,10 @@ section {
 	&lt;!-- change the base path of your web application, or better put a placeholder here and in the pom.xml and filter this file to have if replaced for free for different environments --&gt;
 &lt;/bean&gt;
 </pre>
-<p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
+								<p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
  
-		<h3>Starting from scratch</h3>
-		<p>You can use your favourite MVC framework with JSONDoc. In this case you should only include <strong>jsondoc-core</strong> and use 
-		<code>JSONDocUtils</code> static class to generate an object of kind <code>JSONDoc</code> that can be later marshalled in JSON with your preferred
-		marshaller. Here is the code of the Spring MVC controller, maybe you will find it useful: </p>
+								<h3>Starting from scratch</h3>
+								<p>You can use your favourite MVC framework with JSONDoc. In this case you should only include <strong>jsondoc-core</strong> and use <code>JSONDocUtils</code> static class to generate an object of kind <code>JSONDoc</code> that can be later marshalled in JSON with your favourite marshaller. Here is the code of the Spring MVC controller, maybe you will find it useful: </p>
 <pre class="prettyprint linenums">
 package org.jsondoc.springmvc.controller;
 
@@ -396,22 +268,24 @@ public class JSONDocController {
 		return JSONDocUtils.getApiDoc(servletContext, version, basePath);
 	}
 
-}</pre>	
-		
-			<h1>Step 3: Display the generated documentation!</h1>
-			<h3>With jsondoc-ui</h3>
-			<p>You can include the <strong>jsondoc-ui</strong> project in your web application. 
-			This provides an interface to browse the generated documentation and a playground to test methods. 
-			It is built on Twitter Bootstrap and can be easily customized for you needs. 
-			Check out the <a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank">live demo here</a>.</p>
+}</pre>
+							</div>
 
-			<h3>Build your own viewer</h3>
-			<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
-			</section>
-			
-			<section id="examples">
-			<h1>Examples</h1>
 
+							<div id="display" class="tab-pane fade">
+								<h2>Step 3: display the generated docs!</h2>
+								<h3>With jsondoc-ui</h3>
+								<p>You can include the <strong>jsondoc-ui</strong> project in your web application. 
+								This provides an interface to browse the generated documentation and a playground to test methods. 
+								It is built on Twitter Bootstrap and can be easily customized for you needs. 
+								Check out the <a href="http://jsondoc-fabiomaffioletti.dotcloud.com/jsondoc.jsp" target="blank">live demo here</a>.</p>
+
+								<h3>Build your own viewer</h3>
+								<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
+							</div>
+
+							<div id="examples" class="tab-pane fade">
+								<h2>Examples</h2>
 <h3>Api</h3>
 <pre class="prettyprint linenums">
 package org.jsondoc.sample.controller;
@@ -503,27 +377,12 @@ public class Location {
 	}
 
 }</pre>
-		</section>
+							</div>
 
-
-		<section id="gettingstarted">
-			<h1>Getting started</h1>
-			<h2>1) Download core library</h2>
-			<p>Download jsondoc-core from this website or from the <strong><em>temporary</em></strong> maven repository. To do this you have to
-			add two repositories to your project's pom.xml and declare the dependecy in your project</p>
-<pre class="prettyprint linenums">
-&lt;repositories&gt;
-	&lt;repository&gt;
-		&lt;id&gt;fm-repo-snapshots&lt;/id&gt;
-		&lt;url&gt;https://raw.github.com/fabiomaffioletti/fm-repo/master/snapshots&lt;/url&gt;
-	&lt;/repository&gt;
-	
-	&lt;repository&gt;
-		&lt;id&gt;fm-repo-releases&lt;/id&gt;
-		&lt;url&gt;https://raw.github.com/fabiomaffioletti/fm.repo/master/releases&lt;/url&gt;
-	&lt;/repository&gt;
-&lt;/repositories&gt;
-</pre>
+							<div id="gettingstarted" class="tab-pane fade">
+								<h2>Getting started</h2>
+			<h3>1) Download core library</h3>
+			<p>Download jsondoc-core, install it to your local maven repository or company artifactory and include it as a dependency in your project.</p>
 
 <pre class="prettyprint linenums">
 &lt;dependency&gt;
@@ -533,14 +392,8 @@ public class Location {
 &lt;/dependency&gt;
 </pre>
 
-			<p>If you choose to download jars instead of using temportary repository, here is how to install them into your local repository:</p>
-			<p><code>mvn install:install-file -Dfile=&lt;path-to-file&gt;jsondoc-core.jar -DgroupId=org.jsondoc -DartifactId=jsondoc-core  -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar</code></p>
-			<p><code>mvn install:install-file -Dfile=&lt;path-to-file&gt;jsondoc-springmvc.jar -DgroupId=org.jsondoc -DartifactId=jsondoc-springmvc  -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar</code></p>
-
-		<h2>2) Expose your documentation</h2>
-		<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath);</code> or you can
-		use the <code>jsondoc-springmvc</code> library. Refer to "Step 2: generate the documentation" on this page. In this case you can download the library from this website or
-		from the <strong><em>temporary</em></strong> maven repository.</p>
+		<h3>2) Expose your documentation</h3>
+		<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath);</code> or you can download, install and use the <code>jsondoc-springmvc</code> library. See <code>{2} generate</code> for more info on this.
 		  
 <pre class="prettyprint linenums">
 &lt;dependency&gt;
@@ -550,40 +403,24 @@ public class Location {
 &lt;/dependency&gt;
 </pre>
 
-		<h2>3) Display the docs</h2>
-		<p>This is optional, but you most probably want it. If you are using the jsondoc-springmvc library, your documentation will be at <code>/jsondoc</code>. Otherwise at the
-		path you defined for your generation class. You may want to display the docs in a human readable way, and fot his purpose you can use the <code>jsondoc-ui</code> project, which
-		you can download from this website. Simply copy things under <code>src/main/webapps</code> to your project's webapps folder. Maybe you will need to modify some paths if you decide
-		to put that stuff in a different location, but in any case everything is in the <code>&lt;head&gt;</code> of <code>jsondoc.jsp</code>. At this point you only have to 
-		point your browser to <code>http://localhost:8080/jsondoc.jsp</code> (or whatever path your server has), insert the <code>/jsondoc</code> path in the upper box, like for example 
-		<code>http://localhost:8080/api/jsondoc</code> and hit enter to see the documentation.</p>
+		<h3>3) Display the docs</h3>
+		<p>This is optional, but you most probably want it. If you are using the jsondoc-springmvc library, your documentation will be at <code>/jsondoc</code>. Otherwise at the path you defined for your generation class. You may want to display the docs in a human readable way, and for his purpose you can use the <code>jsondoc-ui</code> project, which you can download from this website. Simply copy things under <code>src/main/webapps</code> to your project's webapps folder. Maybe you will need to modify some paths if you decide to put that stuff in a different location, but in any case everything is in the <code>&lt;head&gt;</code> of <code>jsondoc.jsp</code>. At this point you only have to point your browser to <code>http://localhost:8080/jsondoc.jsp</code> (or whatever path your server has), insert the <code>/jsondoc</code> path in the upper box, like for example <code>http://localhost:8080/api/jsondoc</code> and hit enter to see the documentation.</p>
+							</div>
 
-		</section>
-		
-		<section  id="downloads">
-			<h1>Downloads</h1>
-			<p>
-			<table class="table table-bordered table-striped">
-				<tr><th>Project</th><th>Description</th></tr>
-				<tr><td><a href="static/jsondoc-core.jar">jsondoc-core</a></td><td>Set of annotations. Download only this if your web application is not using Spring MVC</td></tr>
-				<tr><td><a href="static/jsondoc-springmvc.jar">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Until jsondoc is not on a public maven repository, you have to download and install also jsondoc-core</td></tr>
-				<tr><td><a href="static/jsondoc-ui.zip">jsondoc-ui</a></td><td>Standard interface to display the generated documentation</td></tr>
-			</table>
-		</section>
-		
-		<section id="contacts">
-			<h1>Contacts</h1>
-			<ul class="unstyled">
-				<li><i class="icon-envelope-alt"></i> <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a></li>
-				<li><i class="icon-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></li>
-				<li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/fabiomaffioletti" target="blank">Linkedin profile</a></li>
-				<li><i class="icon-github"></i> <a href="https://github.com/fabiomaffioletti/" target="blank">Github repository</a></li>
-			</ul>
-		</section>
-		
-		<section id="appendix">
-			<h1>Appendix: example of generated jsondoc</h1>
-			<p>
+							<div id="downloads" class="tab-pane fade">
+								<h2>Downloads</h2>
+								<p>
+								<table class="table table-bordered table-condensed">
+									<tr><th style="width: 150px;">Project</th><th>Description</th></tr>
+									<tr><td><a href="static/jsondoc-core.jar">jsondoc-core</a></td><td>This includes the set of annotations. Download only this if your web application is not using Spring MVC and you want to use your favourite MVC framework. Refer to <code>{1} annotate</code> for more info</td></tr>
+									<tr><td><a href="static/jsondoc-springmvc.jar">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Refer to <code>{2} generate</code> for more info</td></tr>
+									<tr><td><a href="static/jsondoc-ui.zip">jsondoc-ui</a></td><td>Standard interface to display the generated documentation. Refer to <code>{3} display</code> for more info</td></tr>
+								</table>
+							</div>
+
+							<div id="appendix" class="tab-pane fade">
+								<h2>Appendix: example of generated jsondoc</h2>
+<p>
 <pre class="pre-scrollable prettyprint linenums">{
     "version": "1.0",
     "basePath": "http://localhost:8080/api",
@@ -913,21 +750,28 @@ public class Location {
     ]
 }
 </pre>
-		</section>
-			
-		</div>
-	</div>
+							</div>
 
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-     	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-	<script type="text/javascript">
-       	try {
-        	var pageTracker = _gat._getTracker("UA-4918972-5");
-       		pageTracker._trackPageview();
-       	} catch(err) {}
-     </script>
+						</div><!-- tab content -->
 
-</body>
+  					</div> <!-- span -->
+  				</div> <!-- row -->
+  			</section>
+
+  			<footer>
+  				JSONDoc is open source. <a href="https://github.com/fabiomaffioletti/jsondoc" target="blank">View project on github</a>
+  			</footer>
+
+			<script type="text/javascript">
+				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			    try {
+			        var pageTracker = _gat._getTracker("UA-4918972-5");
+			        pageTracker._trackPageview();
+			    } catch(err) {}
+			</script>
+
+  	</body>
 </html>
