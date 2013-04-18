@@ -22,6 +22,12 @@
 				<base.path>http://jsondoc-fabiomaffioletti.dotcloud.com/api</base.path>
 			</properties>
 		</profile>
+		<profile>
+			<id>appfog</id>
+			<properties>
+				<base.path>http://jsondoc.eu01.aws.af.cm/api</base.path>
+			</properties>
+		</profile>
 	</profiles>
 	
 	<repositories>
