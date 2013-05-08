@@ -5,7 +5,7 @@
 
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>jsondoc-parent</name>
 	
@@ -15,18 +15,6 @@
 		</developer>
 	</developers>
 
-	<distributionManagement>
-		<repository>
-			<id>github-repo</id>
-			<url>${git.local.repo}releases</url>
-		</repository>
-        <snapshotRepository>
-            <id>github-repo</id>
-			<url>${git.local.repo}snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-	</distributionManagement>
-	
 	<scm>
 		<connection>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</connection>
 		<url>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</url>

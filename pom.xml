@@ -5,7 +5,7 @@
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-master</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>jsondoc-master</name>
 
 	<modules>
@@ -13,7 +13,7 @@
 		<module>jsondoc-core</module>
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-sample-springmvc</module>
-    	<module>jsondoc-ui</module>
-  </modules>
+    		<module>jsondoc-ui</module>
+  	</modules>
 
 </project>
