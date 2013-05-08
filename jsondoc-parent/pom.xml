@@ -5,7 +5,7 @@
 
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-parent</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>jsondoc-parent</name>
 	
@@ -53,13 +53,13 @@
 			<dependency>
 				<groupId>org.jsondoc</groupId>
 				<artifactId>jsondoc-core</artifactId>
-				<version>1.0.0</version>
+				<version>1.0.1-SNAPSHOT</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.jsondoc</groupId>
 				<artifactId>jsondoc-springmvc</artifactId>
-				<version>1.0.0</version>
+				<version>1.0.1-SNAPSHOT</version>
 			</dependency>
 			
 			<!-- Spring -->
