@@ -4,7 +4,7 @@
 	
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-sample-springmvc</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	
 	<name>jsondoc-sample-springmvc</name>
@@ -41,13 +41,13 @@
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-core</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-springmvc</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>

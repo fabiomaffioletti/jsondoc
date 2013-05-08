@@ -7,13 +7,13 @@
 	<parent>
 		<artifactId>jsondoc-parent</artifactId>
 		<groupId>org.jsondoc</groupId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 		<relativePath>../jsondoc-parent/pom.xml</relativePath>
 	</parent>
 
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-springmvc</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	
 	<name>jsondoc-springmvc</name>
 	<description>The Spring MVC helper of the jsondoc project</description>
