@@ -559,8 +559,10 @@ ol.linenums li {
 									headers["Accept"] = $("#produces input:checked").val();
 									
 									var replacedPath = method.path;
+									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
 									$("#urlparameters input").each(function() {
-										replacedPath = method.path.replace("{"+this.name+"}", $(this).val());
+										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+										replacedPath = tempReplacedPath;
 									});
 									
 									$('#testButton').button('loading');
