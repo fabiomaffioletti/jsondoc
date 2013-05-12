@@ -408,14 +408,34 @@ public class Location {
 							</div>
 
 							<div id="downloads" class="tab-pane fade">
-								<h2>Downloads</h2>
-								<p>
-								<table class="table table-bordered table-condensed">
-									<tr><th style="width: 150px;">Project</th><th>Description</th></tr>
-									<tr><td><a href="static/jsondoc-core-1.0.0.jar">jsondoc-core</a></td><td>This includes the set of annotations. Download only this if your web application is not using Spring MVC and you want to use your favourite MVC framework. Refer to <code>{1} annotate</code> for more info</td></tr>
-									<tr><td><a href="static/jsondoc-springmvc-1.0.0.jar">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Refer to <code>{2} generate</code> for more info</td></tr>
-									<tr><td><a href="static/jsondoc-ui-1.0.0.tar.gz">jsondoc-ui</a></td><td>Standard interface to display the generated documentation. Refer to <code>{3} display</code> for more info</td></tr>
-								</table>
+								<div class="row">
+									<div class="span6">
+										<h2>Downloads</h2>
+										<table class="table table-bordered table-condensed">
+											<tr><th style="width: 150px;">Project</th><th>Version</th><th>Description</th></tr>
+											<tr><td><a href="static/jsondoc-core-1.0.1.jar">jsondoc-core</a></td><td>1.0.1</td><td>This includes the set of annotations. Download only this if your web application is not using Spring MVC and you want to use your favourite MVC framework. Refer to <code>{1} annotate</code> for more info</td></tr>
+											<tr><td><a href="static/jsondoc-springmvc-1.0.1.jar">jsondoc-springmvc</a></td><td>1.0.1</td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation. Refer to <code>{2} generate</code> for more info</td></tr>
+											<tr><td><a href="static/jsondoc-ui-1.0.1.tar.gz">jsondoc-ui</a></td><td>1.0.1</td><td>Standard interface to display the generated documentation. Refer to <code>{3} display</code> for more info</td></tr>
+										</table>
+									</div>
+									<div class="span3">
+										<h2>Changelog</h2>
+										<dl>
+											<dt>Version 1.0.1</dt>
+											<dd><a target="_blank" href="https://github.com/fabiomaffioletti/jsondoc/issues/2">Fixed bug</a> in jsondoc-ui </dd>
+										</dl>
+									</div>
+								</div>
+								<div class="row">
+									<div class="span6">
+										<h3>Previous versions</h3>
+										<table class="table table-bordered table-condensed">
+											<tr><th style="width: 150px;">Version</th><th>Download bundle <code>*</code></th></tr>
+											<tr><td>1.0.0</td><td><a href="static/jsondoc-bundle-1.0.0.tar.gz">jsondoc-bundle-1.0.0</a></td></tr>
+										</table>
+										<p><code>*</code> The bundle contains jsondoc-core, jsondoc-springmvc and jsondoc-ui</p>
+									</div>
+								</div>
 							</div>
 
 							<div id="appendix" class="tab-pane fade">
