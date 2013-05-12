@@ -162,7 +162,7 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<copy todir="../jsondoc-dotcloud/" flatten="true"
+								<copy todir="../jsondoc-cloud/" flatten="true"
 									overwrite="true" verbose="true" failonerror="true">
 									<fileset dir="target" includes="*.war" />
 								</copy>
