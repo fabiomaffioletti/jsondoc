@@ -2,9 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
+	<parent>
+		<artifactId>jsondoc-parent</artifactId>
+		<groupId>org.jsondoc</groupId>
+		<version>1.0.1-SNAPSHOT</version>
+		<relativePath>../jsondoc-parent/pom.xml</relativePath>
+	</parent>
+	
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-sample-springmvc</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	
 	<name>jsondoc-sample-springmvc</name>
@@ -16,12 +22,6 @@
 	</properties>
 	
 	<profiles>
-		<profile>
-			<id>dotcloud</id>
-			<properties>
-				<base.path>http://jsondoc-fabiomaffioletti.dotcloud.com/api</base.path>
-			</properties>
-		</profile>
 		<profile>
 			<id>appfog</id>
 			<properties>
@@ -41,13 +41,13 @@
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-core</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-springmvc</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -158,7 +158,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-war-for-dotcloud-deploy</id>
+						<id>copy-war-for-appfog-deploy</id>
 						<phase>package</phase>
 						<configuration>
 							<tasks>

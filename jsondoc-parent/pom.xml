@@ -25,21 +25,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
-	<profiles>
-		<profile>
-			<id>work</id>
-			<properties>
-				<git.local.repo>file:///home/fabio/workspace_fabio/fm-repo/</git.local.repo>
-			</properties>
-		</profile>
-		<profile>
-			<id>home</id>
-			<properties>
-				<git.local.repo>file:///Users/fabio/workspace/fm-repo/</git.local.repo>
-			</properties>
-		</profile>
-	</profiles>
-
 	<repositories>
 		<repository>
 			<id>springource-artifactory</id>
@@ -53,13 +38,13 @@
 			<dependency>
 				<groupId>org.jsondoc</groupId>
 				<artifactId>jsondoc-core</artifactId>
-				<version>1.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.jsondoc</groupId>
 				<artifactId>jsondoc-springmvc</artifactId>
-				<version>1.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			
 			<!-- Spring -->
