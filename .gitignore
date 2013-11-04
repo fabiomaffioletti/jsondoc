@@ -1,3 +1,4 @@
-
 .project
 /target
+.settings/
+jsondoc-parent/.settings/
