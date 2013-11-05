@@ -26,5 +26,19 @@ public class UserControllerTest extends BaseControllerTest {
 			Assert.fail();
 		}
     }
+	
+	@Test
+    public void testGetUserByGenderAndAge() {
+    	try {
+    		mockMvc.perform(get("/users/q/test-name/M?agemin=5&agemax=10")
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(print())
+					.andExpect(status().isOk());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+    }
 
 }

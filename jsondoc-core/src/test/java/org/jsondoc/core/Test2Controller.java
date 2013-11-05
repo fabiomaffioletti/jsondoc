@@ -8,6 +8,7 @@ import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.http.MediaType;
 
@@ -54,7 +55,7 @@ public class Test2Controller {
 			consumes={},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public @ApiResponseObject void delete(@ApiParam(name="parent", description="A parent object") Parent parent) {
+	public @ApiResponseObject void delete(@ApiParam(name="parent", description="A parent object", paramType=ApiParamType.PATH) Parent parent) {
 		
 	}
 

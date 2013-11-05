@@ -15,7 +15,8 @@ public class ApiMethodDoc {
 	private List<String> produces;
 	private List<String> consumes;
 	private List<ApiHeaderDoc> headers;
-	private List<ApiParamDoc> urlparameters;
+	private List<ApiParamDoc> pathparameters;
+	private List<ApiParamDoc> queryparameters;
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
@@ -33,7 +34,8 @@ public class ApiMethodDoc {
 	public ApiMethodDoc() {
 		super();
 		this.headers = new ArrayList<ApiHeaderDoc>();
-		this.urlparameters = new ArrayList<ApiParamDoc>();
+		this.pathparameters = new ArrayList<ApiParamDoc>();
+		this.queryparameters = new ArrayList<ApiParamDoc>();
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 	}
 
@@ -85,12 +87,20 @@ public class ApiMethodDoc {
 		this.description = description;
 	}
 
-	public List<ApiParamDoc> getUrlparameters() {
-		return urlparameters;
+	public List<ApiParamDoc> getPathparameters() {
+		return pathparameters;
 	}
 
-	public void setUrlparameters(List<ApiParamDoc> urlparameters) {
-		this.urlparameters = urlparameters;
+	public void setPathparameters(List<ApiParamDoc> pathparameters) {
+		this.pathparameters = pathparameters;
+	}
+
+	public List<ApiParamDoc> getQueryparameters() {
+		return queryparameters;
+	}
+
+	public void setQueryparameters(List<ApiParamDoc> queryparameters) {
+		this.queryparameters = queryparameters;
 	}
 
 	public ApiResponseObjectDoc getResponse() {

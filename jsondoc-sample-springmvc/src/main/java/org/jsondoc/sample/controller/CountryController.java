@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
 import org.jsondoc.sample.pojo.Country;
@@ -41,7 +42,7 @@ public class CountryController {
 		@ApiError(code="9000", description="Illegal argument")
 	})
 	@RequestMapping(value="/{name}", method=RequestMethod.GET)
-	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name") String name) {
+	public @ResponseBody @ApiResponseObject Country getCountryByName(@PathVariable @ApiParam(name="name", paramType=ApiParamType.PATH) String name) {
 		List<City> cities = new ArrayList<City>();
 		cities.add(new City("Sydney", 19329, 43));
 		cities.add(new City("Melbourne", 85743, 12));
@@ -110,7 +111,7 @@ public class CountryController {
 	})
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public @ResponseBody void deleteCountry(@PathVariable @ApiParam(name="id") Integer id) {
+	public @ResponseBody void deleteCountry(@PathVariable @ApiParam(name="id", paramType=ApiParamType.PATH) Integer id) {
 		
 	}
 }

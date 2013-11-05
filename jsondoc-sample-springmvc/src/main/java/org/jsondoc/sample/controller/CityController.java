@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class CityController {
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public @ResponseBody
 	@ApiResponseObject
-	City get(@PathVariable @ApiParam(name = "name", description = "The city name", allowedvalues = { "Melbourne", "Sydney", "Perth" }) String name) {
+	City get(@PathVariable @ApiParam(name = "name", description = "The city name", allowedvalues = { "Melbourne", "Sydney", "Perth" }, paramType=ApiParamType.PATH) String name) {
 		return new City(name, 1982700, 52);
 	}
 
@@ -52,7 +53,7 @@ public class CityController {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody
-	void delete(@PathVariable @ApiParam(name = "id", description = "The city ID") Integer id) {
+	void delete(@PathVariable @ApiParam(name = "id", description = "The city ID", paramType=ApiParamType.PATH) Integer id) {
 
 	}
 
@@ -60,7 +61,7 @@ public class CityController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public @ResponseBody
 	@ApiResponseObject
-	City put(@PathVariable @ApiParam(name = "id", description = "The city ID") Integer id, @RequestBody @ApiBodyObject City city) {
+	City put(@PathVariable @ApiParam(name = "id", description = "The city ID", paramType=ApiParamType.PATH) Integer id, @RequestBody @ApiBodyObject City city) {
 		return city;
 	}
 

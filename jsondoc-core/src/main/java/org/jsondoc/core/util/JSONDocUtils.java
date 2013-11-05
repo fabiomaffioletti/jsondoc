@@ -22,6 +22,7 @@ import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
+import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.reflections.Reflections;
@@ -78,7 +79,9 @@ public class JSONDocUtils {
 					apiMethodDoc.setHeaders(ApiHeaderDoc.buildFromAnnotation(method.getAnnotation(ApiHeaders.class)));
 				}
 				
-				apiMethodDoc.setUrlparameters(ApiParamDoc.getApiParamDocs(method));
+				apiMethodDoc.setPathparameters(ApiParamDoc.getApiParamDocs(method, ApiParamType.PATH));
+				
+				apiMethodDoc.setQueryparameters(ApiParamDoc.getApiParamDocs(method, ApiParamType.QUERY));
 				
 				apiMethodDoc.setBodyobject(ApiBodyObjectDoc.buildFromAnnotation(method));
 				

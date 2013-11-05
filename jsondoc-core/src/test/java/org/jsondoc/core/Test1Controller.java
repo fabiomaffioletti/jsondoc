@@ -11,6 +11,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.http.MediaType;
 
@@ -31,7 +32,7 @@ public class Test1Controller {
 			@ApiError(code="1000", description="A test error #1"),
 			@ApiError(code="2000", description="A test error #2")
 	})
-	public @ApiResponseObject List<Integer> get(@ApiParam(name="id", description="abc") String id, @ApiParam(name="count", description="xyz") Integer count, @ApiBodyObject String name) {
+	public @ApiResponseObject List<Integer> get(@ApiParam(name="id", description="abc", paramType=ApiParamType.PATH) String id, @ApiParam(name="count", description="xyz", paramType=ApiParamType.PATH) Integer count, @ApiBodyObject String name) {
 		return null;
 	}
 

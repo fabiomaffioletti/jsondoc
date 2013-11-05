@@ -31,13 +31,16 @@ public class ApiParamDoc {
 		this.format = format;
 	}
 
-	public static List<ApiParamDoc> getApiParamDocs(Method method) {
+	public static List<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
 		List<ApiParamDoc> docs = new ArrayList<ApiParamDoc>();
 		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
 		for (int i = 0; i < parametersAnnotations.length; i++) {
 			for (int j = 0; j < parametersAnnotations[i].length; j++) {
 				if (parametersAnnotations[i][j] instanceof ApiParam) {
-					docs.add(buildFromAnnotation((ApiParam) parametersAnnotations[i][j], getParamObjects(method, i)));
+					ApiParamDoc apiParamDoc = buildFromAnnotation((ApiParam) parametersAnnotations[i][j], getParamObjects(method, i), paramType);
+					if(apiParamDoc != null) {
+						docs.add(apiParamDoc);
+					}
 				}
 			}
 		}
@@ -65,8 +68,11 @@ public class ApiParamDoc {
 		return JSONDocUtils.getObjectNameFromAnnotatedClass(parameter);
 	}
 
-	public static ApiParamDoc buildFromAnnotation(ApiParam annotation, String type) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), type, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
+	public static ApiParamDoc buildFromAnnotation(ApiParam annotation, String type, ApiParamType paramType) {
+		if(annotation.paramType().equals(paramType)) {
+			return new ApiParamDoc(annotation.name(), annotation.description(), type, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
+		}
+		return null;
 	}
 
 	public ApiParamDoc() {
