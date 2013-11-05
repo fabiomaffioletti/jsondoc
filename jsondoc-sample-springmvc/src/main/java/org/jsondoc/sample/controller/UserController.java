@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Api(name = "User Services", description = "Methods for managing users")
@@ -40,6 +41,14 @@ public class UserController {
 		users.add(new User(1, "jsondoc-user-1", age, gender));
 		users.add(new User(2, "jsondoc-user-2", age, gender));
 		return users;
+	}
+	
+	@ApiMethod(path = "/users?name={name}", verb = ApiVerb.GET, description = "Gets a user with the given name", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@ApiErrors(apierrors = { @ApiError(code = "3000", description = "User not found"), @ApiError(code = "9000", description = "Illegal argument") })
+	@RequestMapping(method = RequestMethod.GET)
+	public @ResponseBody @ApiResponseObject
+	User userByName(@RequestParam("name") @ApiParam(name = "name", description = "The user's name", required = true) String name) {
+		return new User(1, name, 30, "M");
 	}
 
 }

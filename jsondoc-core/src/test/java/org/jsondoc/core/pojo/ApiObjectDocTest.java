@@ -34,6 +34,9 @@ public class ApiObjectDocTest {
 		@ApiObjectField(description="a parametrized list")
 		private List<String> parametrizedList;
 		
+		@ApiObjectField(description="a wildcard parametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
+		private List<?> wildcardParametrized;
+		
 	}
 	
 	@Test
@@ -42,9 +45,14 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(6, childDoc.getFields().size());
+		Assert.assertEquals(7, childDoc.getFields().size());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
+			if(fieldDoc.getName().equals("wildcardParametrized")) {
+				Assert.assertEquals("wildcard", fieldDoc.getType());
+				Assert.assertEquals("true", fieldDoc.getMultiple());
+			}
+			
 			if(fieldDoc.getName().equals("unparametrizedList")) {
 				Assert.assertEquals("undefined", fieldDoc.getType());
 				Assert.assertEquals("true", fieldDoc.getMultiple());

@@ -30,6 +30,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 public class JSONDocUtils {
 	public static final String UNDEFINED = "undefined";
+	public static final String WILDCARD = "wildcard";
 	private static Reflections reflections = null;
 	
 	/**
