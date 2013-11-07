@@ -3,6 +3,7 @@ package org.jsondoc.core.pojo;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -40,6 +41,9 @@ public class ApiResponseObjectDoc {
 			if (method.getGenericReturnType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
 				Type type = parameterizedType.getActualTypeArguments()[0];
+				if(type instanceof WildcardType) {
+					return new String[] { JSONDocUtils.WILDCARD, null, null, null };
+				}
 				Class<?> clazz = (Class<?>) type;
 				return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(clazz), null, null, null };
 			} else {

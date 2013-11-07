@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +56,9 @@ public class ApiParamDoc {
 			if (generic instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) generic;
 				Type type = parameterizedType.getActualTypeArguments()[0];
+				if(type instanceof WildcardType) {
+					return JSONDocUtils.WILDCARD;
+				}
 				Class<?> clazz = (Class<?>) type;
 				return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz);
 			} else {

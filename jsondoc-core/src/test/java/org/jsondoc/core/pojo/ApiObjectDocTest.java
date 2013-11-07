@@ -28,6 +28,7 @@ public class ApiObjectDocTest {
 		@ApiObjectField(description="the test map")
 		private Map<String, Integer> map;
 		
+		@SuppressWarnings("rawtypes")
 		@ApiObjectField(description="an unparametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
 		private List unparametrizedList;
 		

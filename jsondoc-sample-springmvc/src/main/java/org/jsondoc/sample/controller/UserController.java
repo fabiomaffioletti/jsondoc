@@ -2,8 +2,10 @@ package org.jsondoc.sample.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -15,6 +17,7 @@ import org.jsondoc.sample.pojo.User;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,6 +63,15 @@ public class UserController {
 		List<User> users = new ArrayList<User>();
 		users.add(new User(1, "jsondoc-user-1", agemin, gender));
 		users.add(new User(2, "jsondoc-user-2", agemax, gender));
+		return users;
+	}
+	
+	@ApiMethod(path = "/users/map", verb = ApiVerb.POST, description = "Post test for map request body", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/map", method = RequestMethod.POST)
+	public @ResponseBody @ApiResponseObject
+	List<User> usersWithMapBodyObject(@ApiBodyObject @RequestBody Map<String, Integer> map) {
+		List<User> users = new ArrayList<User>();
+		users.add(new User(1, "jsondoc-user-1", 1, "M"));
 		return users;
 	}
 
