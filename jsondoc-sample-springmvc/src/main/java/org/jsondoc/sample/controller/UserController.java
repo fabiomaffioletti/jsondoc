@@ -74,5 +74,14 @@ public class UserController {
 		users.add(new User(1, "jsondoc-user-1", 1, "M"));
 		return users;
 	}
+	
+	@ApiMethod(path = "/users/wildcardParametrizedList", verb = ApiVerb.GET, description = "Gets a list of users. This is a test for wildcard parametrized list", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/wildcardParametrizedList", method = RequestMethod.GET)
+	public @ResponseBody @ApiResponseObject
+	List<?> wildcardParametrizedList(@ApiParam(name="wildcardParametrizedList", paramType=ApiParamType.QUERY) String wildcardParametrizedList) {
+		List<User> users = new ArrayList<User>();
+		users.add(new User(1, "jsondoc-user-1", 1, "M"));
+		return users;
+	}
 
 }
