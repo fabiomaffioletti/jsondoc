@@ -464,6 +464,9 @@ ol.linenums li {
 <script id="object" type="text/x-handlebars-template">
 <table class="table table-condensed table-striped table-bordered">
 	<tr><th style="width:15%;">Name</th><td><code>{{name}}</code></td></tr>
+	{{#if description}}
+		<tr><th>Description</th><td>{{description}}</td></tr>
+	{{/if}}
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
 		{{#each fields}}
