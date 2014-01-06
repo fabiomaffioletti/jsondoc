@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>jsondoc-master</artifactId>
+		<groupId>org.jsondoc</groupId>
+		<version>1.0.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<artifactId>jsondoc-sample-external</artifactId>
+	<packaging>jar</packaging>
+	
+	<name>jsondoc-sample-external</name>
+	<description>External classes for the sample project of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-core</artifactId>
+		</dependency>
+	</dependencies>
+	
+</project>

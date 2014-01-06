@@ -1,4 +1,4 @@
-package org.jsondoc.core;
+package org.jsondoc.core.util.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -10,6 +10,7 @@ import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.core.util.pojo.Parent;
 import org.springframework.http.MediaType;
 
 @Api(name="Test2Controller", description="My test controller #2")

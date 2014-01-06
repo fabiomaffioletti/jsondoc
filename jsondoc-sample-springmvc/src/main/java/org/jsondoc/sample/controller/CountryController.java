@@ -14,6 +14,7 @@ import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.sample.data.SampleData;
 import org.jsondoc.sample.pojo.City;
 import org.jsondoc.sample.pojo.Country;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class CountryController {
 	@ApiMethod(
 		path="/countries/{name}", 
 		verb=ApiVerb.GET, 
-		description="Gets a country with the given name",
+		description="Gets a country with the given name.",
 		produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiErrors(apierrors={
@@ -58,20 +59,7 @@ public class CountryController {
 	)
 	@RequestMapping(method=RequestMethod.GET)
 	public @ResponseBody @ApiResponseObject List<Country> getAllCountries() {
-		List<Country> countries = new ArrayList<Country>();
-		List<City> cities = new ArrayList<City>();
-		cities.add(new City("Sydney", 19329, 43));
-		cities.add(new City("Melbourne", 85743, 12));
-		cities.add(new City("Perth", 58735, 39));
-		Country australia = new Country(32198, 5487, "Australia", cities);
-		countries.add(australia);
-		cities = new ArrayList<City>();
-		cities.add(new City("Milan", 19329, 43));
-		cities.add(new City("Rome", 85743, 12));
-		cities.add(new City("Florence", 58735, 39));
-		Country italy = new Country(4326, 127376, "Italy", cities);
-		countries.add(italy);
- 		return countries;
+		return SampleData.countries;
 	}
 	
 	@ApiMethod(

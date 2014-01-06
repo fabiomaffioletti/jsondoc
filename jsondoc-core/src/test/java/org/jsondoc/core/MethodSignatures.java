@@ -1,8 +1,10 @@
 package org.jsondoc.core;
 
-import java.util.List;
+
 import java.util.Map;
-import java.util.Set;
+
+import org.jsondoc.core.util.pojo.Child;
+import org.jsondoc.core.util.pojo.Parent;
 
 public class MethodSignatures extends TypeCheckerTest {
 	

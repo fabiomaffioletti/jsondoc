@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Api(name = "User Services", description = "Methods for managing users")
+@Api(name = "user services", description = "Methods for managing users")
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {

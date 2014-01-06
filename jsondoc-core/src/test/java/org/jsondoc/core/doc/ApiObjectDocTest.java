@@ -1,4 +1,4 @@
-package org.jsondoc.core.pojo;
+package org.jsondoc.core.doc;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.pojo.ApiObjectDoc;
+import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.util.JSONDocUtils;
 import org.junit.Assert;
 import org.junit.Test;

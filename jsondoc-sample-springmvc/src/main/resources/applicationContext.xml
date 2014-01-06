@@ -16,6 +16,13 @@
 	<bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController">
 		<property name="version" value="1.0" />
 		<property name="basePath" value="${base.path}" />
+		<property name="packages">
+			<list>
+				<value>org.jsondoc.sample.controller</value>
+				<value>org.jsondoc.sample.pojo</value>
+				<value>com.sample.external.pojo</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="viewResolver"

@@ -1,4 +1,4 @@
-package org.jsondoc.core.pojo;
+package org.jsondoc.core.doc;
 
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +10,11 @@ import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiDoc;
+import org.jsondoc.core.pojo.ApiMethodDoc;
+import org.jsondoc.core.pojo.ApiParamDoc;
+import org.jsondoc.core.pojo.ApiParamType;
+import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.JSONDocUtils;
 import org.junit.Assert;
 import org.junit.Test;

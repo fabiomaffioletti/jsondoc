@@ -1,4 +1,4 @@
-package org.jsondoc.core;
+package org.jsondoc.core.util.controller;
 
 import java.util.List;
 

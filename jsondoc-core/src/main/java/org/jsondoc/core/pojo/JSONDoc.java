@@ -46,4 +46,9 @@ public class JSONDoc {
 		this.basePath = basePath;
 	}
 
+	@Override
+	public String toString() {
+		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + "]";
+	}
+
 }

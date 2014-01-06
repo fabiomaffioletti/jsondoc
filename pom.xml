@@ -24,6 +24,7 @@
 		<module>jsondoc-core</module>
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-sample-springmvc</module>
+		<module>jsondoc-sample-external</module>
     	<module>jsondoc-ui</module>
   	</modules>
   	
@@ -64,7 +65,7 @@
 			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
-				<version>0.9.8</version>
+				<version>0.9.9-RC1</version>
 			</dependency>
 			
 			<!-- Json -->

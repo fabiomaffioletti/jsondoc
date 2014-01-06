@@ -9,6 +9,7 @@ import java.util.Map;
 import org.jsondoc.core.annotation.ApiObject;
 import org.junit.Assert;
 import org.junit.Test;
+import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -18,7 +19,7 @@ public class TypeCheckerTest {
 	
 	@Test
 	public void test() {
-		Class<?> methodSignatures = Reflections.forName("org.jsondoc.core.MethodSignatures");
+		Class<?> methodSignatures = ReflectionUtils.forName("org.jsondoc.core.MethodSignatures");
 		Assert.assertNotNull(methodSignatures);
 		
 		try {
@@ -79,7 +80,7 @@ public class TypeCheckerTest {
 	}
 	
 	private String getObjectNameFromAnnotatedClass(Class<?> clazz, boolean collection) {
-		Class<?> annotatedClass = Reflections.forName(clazz.getName());
+		Class<?> annotatedClass = ReflectionUtils.forName(clazz.getName());
 		if(annotatedClass.isAnnotationPresent(ApiObject.class)) {
 			return annotatedClass.getAnnotation(ApiObject.class).name();
 		}
