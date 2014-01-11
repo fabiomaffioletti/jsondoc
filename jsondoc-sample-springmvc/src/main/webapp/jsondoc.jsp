@@ -211,11 +211,45 @@ ol.linenums li {
 							</tr>
 						{{/each}}
 					{{/if}}
-					{{#if urlparameters}}
+					{{#if pathparameters}}
 						<tr>
-							<th colspan=2>URL parameters</th>
+							<th colspan=2>Path parameters</th>
 						</tr>
-						{{#each urlparameters}}
+						{{#each pathparameters}}
+							<tr>
+								<td><code>{{this.name}}</code></td>
+								<td>Required: {{this.required}}</td>
+								
+							</tr>
+							<tr>
+								<td></td>
+								<td>Type: {{this.type}}</td>
+							</tr>
+							{{#if this.description}}
+							<tr>
+								<td></td>
+								<td>Description: {{this.description}}</td>
+							</tr>
+							{{/if}}
+							{{#if this.allowedvalues}}
+							<tr>
+								<td></td>
+								<td>Allowed values: {{this.allowedvalues}}</td>
+							</tr>
+							{{/if}}
+							{{#if this.format}}
+							<tr>
+								<td></td>
+								<td>Format: {{this.format}}</td>
+							</tr>
+							{{/if}}
+						{{/each}}
+					{{/if}}
+					{{#if queryparameters}}
+						<tr>
+							<th colspan=2>Query parameters</th>
+						</tr>
+						{{#each queryparameters}}
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
@@ -255,7 +289,7 @@ ol.linenums li {
 						</tr>
 						<tr>
 							<td>Multiple</td>
-							<td>{{bodyobject.multiple}} ddd</td>
+							<td>{{bodyobject.multiple}}</td>
 						</tr>
 						{{#if bodyobject.map}}
 							<tr>
@@ -355,15 +389,28 @@ ol.linenums li {
 	{{/if}}
 	{{/if}}
 
-	{{#if urlparameters}}
+	{{#if pathparameters}}
 	<div class="span12" style="margin-left:0px">
-		<div id="urlparameters" class="playground-spacer">
-			<h4>URL parameters</h4>
-			{{#urlparameters}}
+		<div id="pathparameters" class="playground-spacer">
+			<h4>Path parameters</h4>
+			{{#pathparameters}}
 				<div class="input-prepend">
 					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
 				</div>
-			{{/urlparameters}}
+			{{/pathparameters}}
+		</div>
+	</div>
+	{{/if}}
+
+	{{#if queryparameters}}
+	<div class="span12" style="margin-left:0px">
+		<div id="queryparameters" class="playground-spacer">
+			<h4>Query parameters</h4>
+			{{#queryparameters}}
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				</div>
+			{{/queryparameters}}
 		</div>
 	</div>
 	{{/if}}
@@ -417,6 +464,9 @@ ol.linenums li {
 <script id="object" type="text/x-handlebars-template">
 <table class="table table-condensed table-striped table-bordered">
 	<tr><th style="width:15%;">Name</th><td><code>{{name}}</code></td></tr>
+	{{#if description}}
+		<tr><th>Description</th><td>{{description}}</td></tr>
+	{{/if}}
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
 		{{#each fields}}
@@ -560,7 +610,12 @@ ol.linenums li {
 									
 									var replacedPath = method.path;
 									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
-									$("#urlparameters input").each(function() {
+									$("#pathparameters input").each(function() {
+										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+										replacedPath = tempReplacedPath;
+									});
+
+									$("#queryparameters input").each(function() {
 										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
 										replacedPath = tempReplacedPath;
 									});

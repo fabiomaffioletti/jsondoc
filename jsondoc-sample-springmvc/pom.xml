@@ -18,6 +18,7 @@
 	
 	<properties>
 		<base.path>http://localhost:8080/api</base.path>
+		<jsondoc.core.log.level>debug</jsondoc.core.log.level>
 	</properties>
 	
 	<profiles>
@@ -25,6 +26,7 @@
 			<id>appfog</id>
 			<properties>
 				<base.path>http://jsondoc.eu01.aws.af.cm/api</base.path>
+				<jsondoc.core.log.level>warn</jsondoc.core.log.level>
 			</properties>
 		</profile>
 	</profiles>

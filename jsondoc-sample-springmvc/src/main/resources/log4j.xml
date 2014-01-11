@@ -10,7 +10,7 @@
     </appender>
 
 	<logger name="org.jsondoc.core">
-        <level value="debug"/>
+        <level value="${jsondoc.core.log.level}"/>
     </logger>
 
 	<root>
