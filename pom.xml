@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-master</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<packaging>pom</packaging>
 	<name>jsondoc-master</name>
-	
+
 	<developers>
 		<developer>
 			<name>Fabio Maffioletti</name>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<connection>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</connection>
 		<url>scm:git:git@github.com:fabiomaffioletti/jsondoc.git</url>
@@ -25,20 +26,20 @@
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-sample-springmvc</module>
 		<module>jsondoc-sample-external</module>
-    	<module>jsondoc-ui</module>
-  	</modules>
-  	
-  	<properties>
+		<module>jsondoc-ui</module>
+	</modules>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>springource-artifactory</id>
 			<url>http://repo.springsource.org/libs-milestone</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- Jsondoc -->
@@ -47,41 +48,41 @@
 				<artifactId>jsondoc-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jsondoc</groupId>
 				<artifactId>jsondoc-springmvc</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Spring -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>3.1.2.RELEASE</version>
 			</dependency>
-			
+
 			<!-- Reflection -->
 			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
 				<version>0.9.9-RC1</version>
 			</dependency>
-			
+
 			<!-- Json -->
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
 				<version>1.9.8</version>
 			</dependency>
-			
+
 			<!-- Logging -->
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.17</version>
 			</dependency>
-			
+
 			<!-- Test -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -89,21 +90,21 @@
 				<version>3.1.2.RELEASE</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test-mvc</artifactId>
 				<version>1.0.0.M1</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<!-- Other -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.4</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -115,8 +116,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -124,19 +125,19 @@
 					<groupId>org.mortbay.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>2.2</version>
 				</plugin>
-				
+
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -146,7 +147,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -159,16 +160,22 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.5.1</version>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.8.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 		</plugins>
 	</build>
