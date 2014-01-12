@@ -1,0 +1,105 @@
+---
+layout: default
+title: Examples
+---
+
+<h3>Annotation on an exposed rest service class</h3>
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.Api;
+
+@Api(name = "city services", description = "Methods for managing cities")
+// mvc framework annotations ommited
+public class CityApi {
+{% endhighlight %}
+
+<h3 class="spaced">Annotations for exposed methods of a rest service class</h3>
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.ApiError;
+import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiVerb;
+
+// class declaration
+
+@ApiMethod(
+        path="/city/get/{name}",
+        verb=ApiVerb.GET,
+        description="Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
+        produces={MediaType.APPLICATION_JSON_VALUE},
+        consumes={MediaType.APPLICATION_JSON_VALUE}
+)
+@ApiHeaders(headers={
+        @ApiHeader(name="api_id", description="The api identifier")
+})
+@ApiErrors(apierrors={
+        @ApiError(code="2000", description="City not found"),
+        @ApiError(code="9000", description="Illegal argument")
+})
+// mvc framework annotations ommited
+public @ApiResponseObject City getCityByName(@ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name) {
+        // Here goes the method implementation
+}
+{% endhighlight %}
+
+<h3 class="spaced">Annotations for objects to be documented</h3>
+{% highlight java %}
+package org.jsondoc.sample.pojo;
+
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
+
+@ApiObject(name = "city")
+public class City extends Location {
+
+        @ApiObjectField(description = "The name of the city")
+        private String name;
+
+        public City(String name) {
+                super();
+                this.name = name;
+        }
+
+        public String getName() {
+                return name;
+        }
+
+}
+{% endhighlight %}
+
+<h3 class="spaced">Annotations for objects that won't be shown but will be considered in building documentation</h3>
+{% highlight java %}
+package org.jsondoc.sample.pojo;
+
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
+
+@ApiObject(name="location", show=false)
+public class Location {
+
+        @ApiObjectField(description="The population of the location")
+        private Integer population;
+        @ApiObjectField(description="The square km of the location")
+        private Integer squarekm;
+
+        public Integer getPopulation() {
+                return population;
+        }
+
+        public Integer getSquarekm() {
+                return squarekm;
+        }
+
+}
+{% endhighlight %}
+
+
+
+<script type="text/javascript">
+	$('#examples').addClass('active');
+</script>

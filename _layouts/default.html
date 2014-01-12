@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Fabio Maffioletti">
+    <title>JSONDoc | {{ page.title }}</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+    
+    <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Hammersmith+One|Oswald' rel='stylesheet' type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/jsondoc.css">
+
+    <script type="text/javascript" src="{{ site.baseurl }}/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-9">
+          <h1>JSONDoc <small><p style="font-size:18px">easily generate docs and playground for your RESTful API</p></small></h1>
+        </div>
+        <div class="col-md-3">
+          <h2>Contacts</h2>
+          <p><i class="fa fa-envelope"></i>  <a href="mailto:fabio.maffioletti@gmail.com" target="blank">Email</a> <i class="fa fa-globe"></i> <a href="http://fabio-maffioletti.appspot.com" target="blank">Personal website</a></p>
+        </div>
+      </div>
+
+      <hr class="main">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <ul class="nav nav-pills nav-stacked">
+            <li id="home"><a href="index.html">Home</a></li>
+            <li id="getting-started"><a href="getting-started.html">Getting started</a></li>
+            <li id="documentation"><a href="documentation.html">Documentation</a></li>
+            <li id="downloads"><a href="downloads.html">Downloads</a></li>
+            <li id="changelog"><a href="changelog.html">Changelog</a></li>
+            <li id="examples"><a href="examples.html">Examples</a></li>
+            <li id="demo"><a target="_blank" href="{{ site.demourl }}">Demo</a></li>
+          </ul>
+
+        </div>
+
+        <div class="col-md-9">
+            {{ content }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <hr class="main" style="margin-top: 20px;">
+
+          <p class="center">
+            Version {{ site.version }} | Licensed under <a href="http://opensource.org/licenses/mit-license.html" target="_blank">MIT License</a>
+          </p>
+          <p class="center">
+            <iframe src="http://ghbtns.com/github-btn.html?user=fabiomaffioletti&repo=jsondoc&type=watch&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="90" height="20"></iframe>
+            <iframe src="http://ghbtns.com/github-btn.html?user=fabiomaffioletti&repo=jsondoc&type=fork&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+          </p>
+          <p class="center">
+            <a href="https://github.com/fabiomaffioletti/jsondoc" target="_blank">GitHub Project</a> | <a href="https://github.com/fabiomaffioletti/jsondoc/issues" target="_blank">Issues</a>
+          </p>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+  </body>
+</html>

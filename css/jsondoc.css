@@ -1,0 +1,53 @@
+html, body {
+  background-color: #eee;
+  background-image: url('../img/classy_fabric.png');
+  font-size: 12px;
+  color: #404040;
+  text-align: justify;
+}
+
+body {
+  padding-top: 20px;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 20px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  font-size: 70px;
+}
+
+h3, h4 {
+  margin-top: 0px; 
+}
+
+h3.spaced {
+  margin-top: 40px;
+}
+
+pre {
+  font-size: 11px;
+}
+
+.container {
+  background-color: #fff;
+}
+
+hr.main {
+  margin-top: 0px;
+  border-bottom: 7px solid #eee;
+}
+
+hr.slave {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+p.center {
+  text-align: center;
+}
