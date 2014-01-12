@@ -1,5 +1,5 @@
 name: JSONDoc
-baseurl: /jsondoc
+baseurl: 
 markdown: redcarpet
 pygments: true
 version: 1.0.2
