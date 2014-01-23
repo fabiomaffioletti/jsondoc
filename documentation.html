@@ -141,6 +141,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JSONDocController {
 	private String version;
 	private String basePath;
+	private List<String>packages;
 	 
 	public void setVersion(String version) {
 		this.version = version;
@@ -148,6 +149,10 @@ public class JSONDocController {
 	 
 	public void setBasePath(String basePath) {
 		this.basePath = basePath;
+	}
+
+	public void setPackages(List<String> packages) {
+		this.packages = packages;
 	}
 	 
 	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
