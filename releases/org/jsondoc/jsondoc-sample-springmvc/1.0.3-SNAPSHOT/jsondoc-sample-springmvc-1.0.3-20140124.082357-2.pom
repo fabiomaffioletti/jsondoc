@@ -1,0 +1,196 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>jsondoc-master</artifactId>
+		<groupId>org.jsondoc</groupId>
+		<version>1.0.3-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<artifactId>jsondoc-sample-springmvc</artifactId>
+	<packaging>war</packaging>
+	
+	<name>jsondoc-sample-springmvc</name>
+	<description>The sample project of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
+	
+	<properties>
+		<base.path>http://localhost:8080/api</base.path>
+		<jsondoc.core.log.level>debug</jsondoc.core.log.level>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>appfog</id>
+			<properties>
+				<base.path>http://jsondoc.eu01.aws.af.cm/api</base.path>
+				<jsondoc.core.log.level>warn</jsondoc.core.log.level>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>springource-artifactory</id>
+			<url>http://repo.springsource.org/libs-milestone</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-sample-external</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-springmvc</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test-mvc</artifactId>
+			<version>1.0.0.M1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.1.2.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>ROOT</finalName>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>org.eclipse.wst.common.project.facet.core.builder</projectnature>
+					</additionalProjectnatures>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>
+					</additionalBuildcommands>
+					<additionalBuildcommands>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+					</additionalBuildcommands>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>1.5</wtpversion>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-war-for-appfog-deploy</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="../jsondoc-cloud/" flatten="true"
+									overwrite="true" verbose="true" failonerror="true">
+									<fileset dir="target" includes="*.war" />
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
+</project>
