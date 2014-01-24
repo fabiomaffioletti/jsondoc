@@ -108,7 +108,7 @@ ol.linenums li {
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			
+
 			<div class="span3">
 				<div id="maindiv" style="display:none;"></div>
 				<div class="well sidebar-nav" id="apidiv" style="display:none;"></div>
@@ -116,11 +116,11 @@ ol.linenums li {
 			</div>
 
 			<div class="span5">
-				<div id="content"></div>			
+				<div id="content"></div>
 			</div>
-			
+
 			<div class="span4">
-				<div id="testContent"></div>			
+				<div id="testContent"></div>
 			</div>
 		</div>
 
@@ -219,7 +219,7 @@ ol.linenums li {
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
-								
+
 							</tr>
 							<tr>
 								<td></td>
@@ -253,7 +253,7 @@ ol.linenums li {
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
-								
+
 							</tr>
 							<tr>
 								<td></td>
@@ -352,7 +352,7 @@ ol.linenums li {
 
 <div class="row-fluid">
 
-	{{#if headers}}	
+	{{#if headers}}
 	<div class="span12">
 		<div id="headers">
 			<h4>Headers</h4>
@@ -366,9 +366,9 @@ ol.linenums li {
 	{{/if}}
 
 	{{#if produces}}
-		<div class="span6" style="margin-left:0px">		
+		<div class="span6" style="margin-left:0px">
 		<div id="produces" class="playground-spacer">
-		<h4>Accept</h4>	
+		<h4>Accept</h4>
 		{{#produces}}
 			<label class="radio"><input type="radio" name="produces" value="{{this}}">{{this}}</label>
 		{{/produces}}
@@ -378,9 +378,9 @@ ol.linenums li {
 
 	{{#if bodyobject}}
 	{{#if consumes}}
-		<div class="span6" style="margin-left:0px">		
+		<div class="span6" style="margin-left:0px">
 		<div id="consumes" class="playground-spacer">
-		<h4>Content type</h4>	
+		<h4>Content type</h4>
 		{{#consumes}}
 			<label class="radio"><input type="radio" name="consumes" value="{{this}}">{{this}}</label>
 		{{/consumes}}
@@ -475,7 +475,7 @@ ol.linenums li {
 			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
 			{{#if map}}
 				{{#if this.mapKeyObject}}
-				<tr>	
+				<tr>
 					<td></td>
 					<td>Map key: {{this.mapKeyObject}}</td>
 				</tr>
@@ -492,7 +492,7 @@ ol.linenums li {
 
 <script>
 	var model;
-	
+
 	function checkURLExistence() {
 		var value = $("#jsondocfetch").val();
 		if(value.trim() == '') {
@@ -502,26 +502,26 @@ ol.linenums li {
 			return fetchdoc(value);
 		}
 	}
-	
+
 	$("#jsondocfetch").keypress(function(event) {
 		if (event.which == 13) {
 			checkURLExistence();
 			return false;
 		}
 	});
-	
+
 	$("#getDocButton").click(function() {
 		checkURLExistence();
 		return false;
 	});
-	
+
 	function printResponse(data, res, url) {
 		if(res.responseXML != null) {
 			$("#response").text(formatXML(res.responseText));
 		} else {
 			$("#response").text(JSON.stringify(data, undefined, 2));
 		}
-		
+
 		prettyPrint();
 		$("#responseStatus").text(res.status);
 		$("#responseHeaders").text(res.getAllResponseHeaders());
@@ -529,7 +529,7 @@ ol.linenums li {
 		$('#testButton').button('reset');
 		$("#resInfo").show();
 	}
-	
+
 	function formatXML(xml) {
 	    var formatted = '';
 	    var reg = /(>)(<)(\/*)/g;
@@ -560,7 +560,7 @@ ol.linenums li {
 
 	    return formatted;
 	}
-	
+
 	function fetchdoc(jsondocurl) {
 		$.ajax({
 			url : jsondocurl,
@@ -573,12 +573,12 @@ ol.linenums li {
 				var mainHTML = main(data);
 				$("#maindiv").html(mainHTML);
 				$("#maindiv").show();
-				
+
 				var apis = Handlebars.compile($("#apis").html());
 				var apisHTML = apis(data);
 				$("#apidiv").html(apisHTML);
 				$("#apidiv").show();
-				
+
 				$("#apidiv a").each(function() {
 					$(this).click(function() {
 						var api = jlinq.from(data.apis).equals("jsondocId", this.id).first();
@@ -589,7 +589,7 @@ ol.linenums li {
 						$("#apiName").text(api.name);
 						$("#apiDescription").text(api.description);
 						$("#testContent").hide();
-						
+
 						$('#content a[rel="method"]').each(function() {
 							$(this).click(function() {
 								var method = jlinq.from(api.methods).equals("jsondocId", this.id).first();
@@ -597,17 +597,17 @@ ol.linenums li {
 								var testHTML = test(method);
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
-								
+
 								$("#produces input:first").attr("checked", "checked");
-								
+
 								$("#testButton").click(function() {
 									var headers = new Object();
 									$("#headers input").each(function() {
 										headers[this.name] = $(this).val();
 									});
-									
+
 									headers["Accept"] = $("#produces input:checked").val();
-									
+
 									var replacedPath = method.path;
 									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
 									$("#pathparameters input").each(function() {
@@ -615,15 +615,19 @@ ol.linenums li {
 										replacedPath = tempReplacedPath;
 									});
 
-									$("#queryparameters input").each(function() {
-										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-										replacedPath = tempReplacedPath;
-									});
-									
-									$('#testButton').button('loading');
-									
-									var res = $.ajax({
-										url : model.basePath + replacedPath,
+                                    var parameters = [];
+                                    $("#queryparameters input").each(function () {
+                                        var val = $(this).val();
+                                        if (val && val.length > 0) {
+                                            parameters.push(encodeURIComponent($(this).attr("name")) + "=" + encodeURIComponent(val));
+                                        }
+                                    });
+                                    var query = parameters.length > 0 ? "?" + parameters.join("&") : "";
+
+                                    $('#testButton').button('loading');
+
+                                    var res = $.ajax({
+                                        url: model.basePath + replacedPath + query,
 										type: method.verb,
 										data: $("#inputJson").val(),
 										headers: headers,
@@ -635,19 +639,19 @@ ol.linenums li {
 											printResponse(data, res, this.url);
 										}
 									});
-									
+
 								});
-								
+
 							});
 						});
 					});
 				});
-				
+
 				var objects = Handlebars.compile($("#objects").html());
 				var objectsHTML = objects(data);
 				$("#objectdiv").html(objectsHTML);
 				$("#objectdiv").show();
-				
+
 				$("#objectdiv a").each(function() {
 					$(this).click(function() {
 						var o = jlinq.from(data.objects).equals("jsondocId", this.id).first();
@@ -655,7 +659,7 @@ ol.linenums li {
 						var objectHTML = object(o);
 						$("#content").html(objectHTML);
 						$("#content").show();
-						
+
 						$("#testContent").hide();
 					});
 				});
@@ -666,7 +670,7 @@ ol.linenums li {
 			}
 		});
 	}
-	
+
 </script>
 
 </body>

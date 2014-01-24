@@ -1,5 +1,9 @@
 package org.jsondoc.core.pojo;
 
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
+import org.jsondoc.core.util.JSONDocUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -9,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
-import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiParamDoc {
 	public String jsondocId = UUID.randomUUID().toString();
@@ -34,6 +35,19 @@ public class ApiParamDoc {
 
 	public static List<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
 		List<ApiParamDoc> docs = new ArrayList<ApiParamDoc>();
+        Annotation[] methodAnnotations = method.getDeclaredAnnotations();
+        for (int i = 0; i < methodAnnotations.length; i++) {
+            Annotation a = methodAnnotations[i];
+            if (a instanceof ApiParams) {
+                for (ApiParam ap : ((ApiParams) a).parameters()) {
+                    ApiParamDoc apiParamDoc = buildFromAnnotation(ap, JSONDocUtils.getObjectNameFromAnnotatedClass(ap.type()), paramType);
+                    if (apiParamDoc != null) {
+                        docs.add(apiParamDoc);
+                    }
+                }
+
+            }
+        }
 		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
 		for (int i = 0; i < parametersAnnotations.length; i++) {
 			for (int j = 0; j < parametersAnnotations[i].length; j++) {
