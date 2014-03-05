@@ -3,7 +3,7 @@ package org.jsondoc.springmvc.controller;
 import java.util.List;
 
 import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.springmvc.util.SpringMvcDocUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +32,6 @@ public class JSONDocController {
 	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	JSONDoc getApi() {
-		return JSONDocUtils.getApiDoc(version, basePath, packages);
+		return SpringMvcDocUtils.getApiDoc( version, basePath, packages );
 	}
 }

@@ -3,6 +3,7 @@ package org.jsondoc.core.pojo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
@@ -21,6 +22,10 @@ public class ApiMethodDoc {
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
 
+	public ApiParamDoc[] pathParam;
+    public ApiParamDoc[] queryParam;
+    public Map<String,ApiHeaderDoc> headerMap;
+	
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(annotation.path());

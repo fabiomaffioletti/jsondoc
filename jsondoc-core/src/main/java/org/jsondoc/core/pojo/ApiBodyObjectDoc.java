@@ -43,7 +43,7 @@ public class ApiBodyObjectDoc {
 		return -1;
 	}
 
-	private static String[] getBodyObject(Method method, Integer index) {
+	public static String[] getBodyObject(Method method, Integer index) {
 		Class<?> parameter = method.getParameterTypes()[index];
 		Type generic = method.getGenericParameterTypes()[index];
 		if (Map.class.isAssignableFrom(parameter)) {
@@ -107,5 +107,30 @@ public class ApiBodyObjectDoc {
 	public String getMap() {
 		return map;
 	}
+    
+    public void setObject( String object )
+    {
+        this.object = object;
+    }
+    
+    public void setMultiple( String multiple )
+    {
+        this.multiple = multiple;
+    }
+    
+    public void setMapKeyObject( String mapKeyObject )
+    {
+        this.mapKeyObject = mapKeyObject;
+    }
+    
+    public void setMapValueObject( String mapValueObject )
+    {
+        this.mapValueObject = mapValueObject;
+    }
+
+    public void setMap( String map )
+    {
+        this.map = map;
+    }
 
 }
