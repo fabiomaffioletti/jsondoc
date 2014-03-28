@@ -1,7 +1,9 @@
 package org.jsondoc.core.annotation;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -15,10 +17,16 @@ import org.jsondoc.core.pojo.ApiParamType;
  *
  */
 @Documented
-@Target(value=ElementType.PARAMETER)
+@Target({ METHOD, PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParam {
-
+	
+	/**
+	 * Parameter class to be used when ApiParam applied on Method
+	 * @return
+	 */
+	public Class<?> clazz() default NullClass.class;
+	
 	/**
 	 * The name of the url parameter, as expected by the server
 	 * @return
