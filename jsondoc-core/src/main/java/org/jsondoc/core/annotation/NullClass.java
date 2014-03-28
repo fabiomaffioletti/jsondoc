@@ -1,5 +1,6 @@
 package org.jsondoc.core.annotation;
 
-public class NullClass {
+//annotation values don't support null default value. Use this for default Class<?> values.
+public final class NullClass {
 	//empty
 }

@@ -42,6 +42,12 @@ public class ApiDocTest {
 			return null;
 		}
 
+		@ApiMethod(path = "/implicitResponseObject", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiResponseObject(Integer.class)
+		public String implicitResponseObject(@ApiParam(name = "name", paramType = ApiParamType.PATH) String name, @ApiBodyObject String body) {
+			return null;
+		}
+
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
 		String name(@ApiParam(name = "name", paramType = ApiParamType.PATH) String name, @ApiBodyObject String body) {
@@ -122,6 +128,17 @@ public class ApiDocTest {
 				}
 			}
 			
+			if (apiMethodDoc.getPath().equals("/implicitResponseObject")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("integer", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("name")) {
+						Assert.assertEquals("string", apiParamDoc.getType());
+					}
+				}
+			}
+
 			if (apiMethodDoc.getPath().equals("/name")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getObject());
