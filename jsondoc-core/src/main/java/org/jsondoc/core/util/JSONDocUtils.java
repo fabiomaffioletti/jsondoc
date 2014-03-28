@@ -51,9 +51,13 @@ public class JSONDocUtils {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
-		log.debug("Found " + packages.size() + " package(s) to scan...");
+		if (log.isDebugEnabled()) {
+			log.debug("Found " + packages.size() + " package(s) to scan...");
+		}
 		for (String pkg : packages) {
-			log.debug("Adding package to JSONDoc recursive scan: " + pkg);
+			if (log.isDebugEnabled()) {
+				log.debug("Adding package to JSONDoc recursive scan: " + pkg);
+			}
 			urls.addAll(ClasspathHelper.forPackage(pkg, cl));
 			filter.includePackage(pkg);
 		}
@@ -73,7 +77,9 @@ public class JSONDocUtils {
 	public static Set<ApiDoc> getApiDocs(Set<Class<?>> classes) {
 		Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
 		for (Class<?> controller : classes) {
-			log.debug("Getting JSONDoc for class: " + controller.getName());
+			if (log.isDebugEnabled()) {
+				log.debug("Getting JSONDoc for class: " + controller.getName());
+			}
 			ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
 			apiDoc.setMethods(getApiMethodDocs(controller));
 			apiDocs.add(apiDoc);
@@ -84,7 +90,9 @@ public class JSONDocUtils {
 	public static Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
 		Set<ApiObjectDoc> pojoDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> pojo : classes) {
-			log.debug("Getting JSONDoc for class: " + pojo.getName());
+			if (log.isDebugEnabled()) {
+				log.debug("Getting JSONDoc for class: " + pojo.getName());
+			}
 			ApiObject annotation = pojo.getAnnotation(ApiObject.class);
 			ApiObjectDoc pojoDoc = ApiObjectDoc.buildFromAnnotation(annotation, pojo);
 			if(annotation.show()) {
