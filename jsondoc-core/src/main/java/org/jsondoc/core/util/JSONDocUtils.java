@@ -44,19 +44,24 @@ public class JSONDocUtils {
 	 * @return An <code>ApiDoc</code> object
 	 */
 	public static JSONDoc getApiDoc(String version, String basePath, List<String> packages) {
+		return getApiDoc(version, basePath, packages, Thread.currentThread().getContextClassLoader());
+	}
+	
+	public static JSONDoc getApiDoc(String version, String basePath, List<String> packages, ClassLoader cl) {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
 		log.debug("Found " + packages.size() + " package(s) to scan...");
 		for (String pkg : packages) {
 			log.debug("Adding package to JSONDoc recursive scan: " + pkg);
-			urls.addAll(ClasspathHelper.forPackage(pkg));
+			urls.addAll(ClasspathHelper.forPackage(pkg, cl));
 			filter.includePackage(pkg);
 		}
 
 		reflections = new Reflections(new ConfigurationBuilder()
 			.filterInputsBy(filter)
 			.setUrls(urls)
+			.addClassLoader(cl)
 			);
 		
 		JSONDoc apiDoc = new JSONDoc(version, basePath);
