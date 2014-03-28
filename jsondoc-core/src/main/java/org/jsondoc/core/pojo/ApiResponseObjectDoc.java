@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.NullClass;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiResponseObjectDoc {
@@ -20,14 +21,20 @@ public class ApiResponseObjectDoc {
 	private String map;
 
 	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
-		return new ApiResponseObjectDoc(getReturnObject(method)[0], getReturnObject(method)[1], getReturnObject(method)[2], String.valueOf(JSONDocUtils.isMultiple(method)), getReturnObject(method)[3]);
+		Class<?> returnType;
+		if( annotation.value() != NullClass.class ) {
+			returnType = annotation.value();
+		} else {
+			returnType = method.getReturnType();
+		}
+		return new ApiResponseObjectDoc(getReturnObject(method, returnType)[0], getReturnObject(method, returnType)[1], getReturnObject(method, returnType)[2], String.valueOf(JSONDocUtils.isMultiple(method)), getReturnObject(method, returnType)[3]);
 	}
 
-	public static String[] getReturnObject(Method method) {
-		if (Map.class.isAssignableFrom(method.getReturnType())) {
+	public static String[] getReturnObject(Method method, Class<?> type) {
+		if (Map.class.isAssignableFrom(type)) {
 			Class<?> mapKeyClazz = null;
 			Class<?> mapValueClazz = null;
-
+			
 			if (method.getGenericReturnType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
 				Type mapKeyType = parameterizedType.getActualTypeArguments()[0];
@@ -35,27 +42,27 @@ public class ApiResponseObjectDoc {
 				mapKeyClazz = (Class<?>) mapKeyType;
 				mapValueClazz = (Class<?>) mapValueType;
 			}
-			return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(method.getReturnType()), (mapKeyClazz != null) ? mapKeyClazz.getSimpleName().toLowerCase() : null, (mapValueClazz != null) ? mapValueClazz.getSimpleName().toLowerCase() : null, "map" };
+			return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(type), (mapKeyClazz != null) ? mapKeyClazz.getSimpleName().toLowerCase() : null, (mapValueClazz != null) ? mapValueClazz.getSimpleName().toLowerCase() : null, "map" };
 
-		} else if (Collection.class.isAssignableFrom(method.getReturnType())) {
+		} else if (Collection.class.isAssignableFrom(type)) {
 			if (method.getGenericReturnType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) method.getGenericReturnType();
-				Type type = parameterizedType.getActualTypeArguments()[0];
-				if(type instanceof WildcardType) {
+				Type actualType = parameterizedType.getActualTypeArguments()[0];
+				if(actualType instanceof WildcardType) {
 					return new String[] { JSONDocUtils.WILDCARD, null, null, null };
 				}
-				Class<?> clazz = (Class<?>) type;
+				Class<?> clazz = (Class<?>) actualType;
 				return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(clazz), null, null, null };
 			} else {
 				return new String[] { JSONDocUtils.UNDEFINED, null, null, null };
 			}
-		} else if (method.getReturnType().isArray()) {
-			Class<?> classArr = method.getReturnType();
+		} else if (type.isArray()) {
+			Class<?> classArr = type;
 			return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(classArr.getComponentType()), null, null, null };
 
 		}
 
-		return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(method.getReturnType()), null, null, null };
+		return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(type), null, null, null };
 	}
 
 	public ApiResponseObjectDoc(String object, String mapKeyObject, String mapValueObject, String multiple, String map) {
