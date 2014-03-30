@@ -14,7 +14,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,7 +77,7 @@ public class JSONDocMojo extends AbstractMojo {
 			}
 
 			URLClassLoader newLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
-			result = JSONDocUtils.getApiDoc(version, basePath, listPackages, newLoader);
+			result = new GenerateOnThread(version, basePath, listPackages, newLoader, getLog()).getDoc();
 		} catch (Exception e) {
 			throw new MojoExecutionException("unable to generate jsondoc", e);
 		}
