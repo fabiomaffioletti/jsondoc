@@ -14,80 +14,103 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ApiObjectDocTest {
-	
+
 	@ApiObject(name="test-object")
 	private class TestObject {
-		
+
 		@ApiObjectField(description="the test name")
 		private String name;
-		
+
 		@ApiObjectField(description="the test age")
 		private Integer age;
-		
+
 		@ApiObjectField(description="the test avg")
 		private Long avg;
-		
+
 		@ApiObjectField(description="the test map")
 		private Map<String, Integer> map;
-		
+
 		@SuppressWarnings("rawtypes")
-		@ApiObjectField(description="an unparametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
-		private List unparametrizedList;
-		
-		@ApiObjectField(description="a parametrized list")
-		private List<String> parametrizedList;
-		
-		@ApiObjectField(description="a wildcard parametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
-		private List<?> wildcardParametrized;
-		
+		@ApiObjectField(description="an unparameterized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
+		private List unparameterizedList;
+
+		@ApiObjectField(description="a parameterized list")
+		private List<String> parameterizedList;
+
+		@ApiObjectField(description="a wildcard parameterized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
+		private List<?> wildcardParameterized;
+
+		@ApiObjectField(description="a parameterized list where the Type Param is generically typed")
+		private List<Set<?>> parameterizedListOfGenericType;
+
+		@ApiObjectField(description="an array parameterized list where the Type Param is an array")
+		private List<String[]> parameterizedListOfArray;
+
 	}
-	
+
 	@Test
 	public void testApiObjectDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(TestObject.class);
-		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
+		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next();
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(7, childDoc.getFields().size());
-		
-		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
-			if(fieldDoc.getName().equals("wildcardParametrized")) {
-				Assert.assertEquals("wildcard", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("unparametrizedList")) {
-				Assert.assertEquals("undefined", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("parametrizedList")) {
-				Assert.assertEquals("string", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("name")) {
-				Assert.assertEquals("string", fieldDoc.getType());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("age")) {
-				Assert.assertEquals("integer", fieldDoc.getType());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("avg")) {
-				Assert.assertEquals("long", fieldDoc.getType());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
-			}
-			
-			if(fieldDoc.getName().equals("map")) {
-				Assert.assertEquals("map", fieldDoc.getType());
-				Assert.assertEquals("string", fieldDoc.getMapKeyObject());
-				Assert.assertEquals("integer", fieldDoc.getMapValueObject());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
+		Assert.assertEquals(9, childDoc.getFields().size());
+
+		ApiObjectFieldDoc fieldDoc = getFieldDoc(childDoc.getFields(), "parameterizedListOfArray");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("string", fieldDoc.getType());
+		Assert.assertEquals("true", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "parameterizedListOfGenericType");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("set", fieldDoc.getType());
+		Assert.assertEquals("true", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "wildcardParameterized");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("wildcard", fieldDoc.getType());
+		Assert.assertEquals("true", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "unparameterizedList");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("undefined", fieldDoc.getType());
+		Assert.assertEquals("true", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "parameterizedList");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("string", fieldDoc.getType());
+		Assert.assertEquals("true", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "name");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("string", fieldDoc.getType());
+		Assert.assertEquals("false", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "age");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("integer", fieldDoc.getType());
+		Assert.assertEquals("false", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "avg");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("long", fieldDoc.getType());
+		Assert.assertEquals("false", fieldDoc.getMultiple());
+
+		fieldDoc = getFieldDoc(childDoc.getFields(), "map");
+		Assert.assertNotNull(fieldDoc);
+		Assert.assertEquals("map", fieldDoc.getType());
+		Assert.assertEquals("string", fieldDoc.getMapKeyObject());
+		Assert.assertEquals("integer", fieldDoc.getMapValueObject());
+		Assert.assertEquals("false", fieldDoc.getMultiple());
+	}
+
+	private ApiObjectFieldDoc getFieldDoc(List<ApiObjectFieldDoc> fieldDocs, String fieldName) {
+		for (ApiObjectFieldDoc fieldDoc : fieldDocs) {
+			if (fieldDoc.getName().equals(fieldName)) {
+				return fieldDoc;
 			}
 		}
+		return null;
 	}
 
 }

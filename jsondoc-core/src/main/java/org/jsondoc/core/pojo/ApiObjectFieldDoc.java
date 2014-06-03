@@ -56,10 +56,15 @@ public class ApiObjectFieldDoc {
 			if (field.getGenericType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
 				Type type = parameterizedType.getActualTypeArguments()[0];
+				Class<?> clazz;
 				if(type instanceof WildcardType) {
 					return new String[] { JSONDocUtils.WILDCARD, null, null, null };
+				} else if (type instanceof ParameterizedType) {
+					Type parameterType = ((ParameterizedType) type).getRawType();
+					clazz = (Class<?>) parameterType;
+				} else {
+					clazz = (Class<?>) type;
 				}
-				Class<?> clazz = (Class<?>) type;
 				return new String[] { JSONDocUtils.getObjectNameFromAnnotatedClass(clazz), null, null, null };
 			} else {
 				return new String[] { JSONDocUtils.UNDEFINED, null, null, null };
