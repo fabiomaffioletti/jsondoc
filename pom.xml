@@ -5,7 +5,7 @@
 
 	<groupId>org.jsondoc</groupId>
 	<artifactId>jsondoc-master</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 	<name>jsondoc-master</name>
 	<url>http://jsondoc.org</url>
@@ -222,7 +222,7 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 
