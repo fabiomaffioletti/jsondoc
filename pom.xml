@@ -8,6 +8,7 @@
 	<version>1.0.3</version>
 	<packaging>pom</packaging>
 	<name>jsondoc-master</name>
+	<description>Easily generate docs and playground for your RESTful API</description>
 	<url>http://jsondoc.org</url>
 
 	<developers>
