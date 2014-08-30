@@ -3,8 +3,8 @@ layout: default
 title: Getting started
 ---
 
-<h3>Download the core library</h3>
-<p>Download <code>jsondoc-core</code>, install it to your local maven repository or company artifactory and include it as a dependency in your project.</p>
+<h3>Declare the core library in your pom</h3>
+<p>Include <code>jsondoc-core</code> as a dependency in your pom.</p>
 {% highlight xml %}
 <dependency>
         <groupId>org.jsondoc</groupId>
@@ -13,16 +13,8 @@ title: Getting started
 </dependency>
 {% endhighlight %}
 
-<div class="alert alert-warning">
-<strong>Hint: manually installing artifacts into your maven repo</strong>
-<p>mvn install:install-file -Dfile=[path-to-file] -DgroupId=[group-id] -DartifactId=[artifact-id] -Dversion=[version] -Dpackaging=[packaging]</p>
-<br>
-<strong>So, for example, for jsondoc-core you can run:</strong>
-<p>mvn install:install-file -Dfile=jsondoc-core.jar -DgroupId=org.jsondoc -DartifactId=jsondoc-core -Dversion=1.0.2 -Dpackaging=jar</p>
-</div>
-
 <h3 class="spaced">Expose your documentation</h3>
-<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath);</code> or you can download, install and use the <code>jsondoc-springmvc</code> library.</p>
+<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath, List&lt;String&gt; packages);</code> or you can declare and use the <code>jsondoc-springmvc</code> library in your pom.</p>
 {% highlight xml %}
 <dependency>
         <groupId>org.jsondoc</groupId>
@@ -33,6 +25,11 @@ title: Getting started
 
 <h3 class="spaced">Display the docs</h3>
 <p>This is optional, but you most probably want it. If you are using the <code>jsondoc-springmvc</code> library, your documentation will be at <code>/jsondoc</code>. Otherwise at the path you defined for your generation class. You may want to display the docs in a human readable way, and for his purpose you can use the <code>jsondoc-ui</code> project, which you can download from this website. Simply copy things under <code>src/main/webapps</code> to your project's webapps folder. Maybe you will need to modify some paths if you decide to put that stuff in a different location, but in any case everything is in the <code>head</code> of <code>jsondoc.jsp</code>. At this point you only have to point your browser to <code>http://localhost:8080/jsondoc.jsp</code> (or whatever path your server has), insert the <code>/jsondoc</code> path in the upper box, like for example <code>http://localhost:8080/api/jsondoc</code> and hit enter to see the documentation.</p>
+
+<div class="alert alert-info" style="margin-top: 30px;">
+<strong>Worth noting</strong>
+<p>JSONDoc has a dependency to Google reflections library</p>
+</div>
 
 <script type="text/javascript">
 	$('#getting-started').addClass('active');

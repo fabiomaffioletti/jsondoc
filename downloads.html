@@ -2,21 +2,11 @@
 layout: default
 title: Downloads
 ---
+
 <h3>Current version {{ site.version }}</h3>
-<table class="table">
-	<thead>
-		<tr>
-			<th style="width: 130px;">Project</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr><td><a href="{{ site.baseurl }}/distro/jsondoc-core-{{ site.version }}.tar.gz">jsondoc-core</a></td><td>This includes the set of annotations. Download only this if your web application is not using Spring MVC and you want to use your favourite MVC framework</td></tr>
-		<tr><td><a href="{{ site.baseurl }}/distro/jsondoc-springmvc-{{ site.version }}.tar.gz">jsondoc-springmvc</a></td><td>Download this if you want to use the jsondoc controller to automatically generate json documentation</td></tr>
-        <tr><td><a href="{{ site.baseurl }}/distro/jsondoc-ui-{{ site.version }}.tar.gz">jsondoc-ui</a></td><td>Standard interface to display the generated documentation</td></tr>
-        <tr><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-{{ site.version }}.tar.gz">jsondoc-bundle</a></td><td>Bundle containing jsondoc-core, jsondoc-springmvc and jsondoc-ui</td></tr>
-	</tbody>
-</table>
+<div class="alert alert-info">
+JSONDoc has been finally released to maven central!
+</div>
 
 <h4>Previous versions</h4>
 <table class="table">
@@ -24,6 +14,7 @@ title: Downloads
         	<tr><th style="width: 130px;">Version</th><th>Download bundle <code>*</code></th></tr>
         </thead>
         <tbody>
+        	<tr><td>1.0.2</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.2.tar.gz">jsondoc-bundle-1.0.2</a></td></tr>
 	        <tr><td>1.0.1</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.1.tar.gz">jsondoc-bundle-1.0.1</a></td></tr>
 	        <tr><td>1.0.0</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.0.tar.gz">jsondoc-bundle-1.0.0</a></td></tr>
         </tbody>
