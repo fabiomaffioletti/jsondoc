@@ -1,6 +1,7 @@
 package org.jsondoc.core.pojo;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.annotation.ApiObjectGetter;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiObjectFieldDoc {
@@ -23,7 +25,8 @@ public class ApiObjectFieldDoc {
 	private String mapValueObject;
 	private String map;
 
-	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
+	public static ApiObjectFieldDoc buildFromAnnotation( ApiObjectField annotation, Field field )
+	{
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
 		apiPojoFieldDoc.setName(field.getName());
 		apiPojoFieldDoc.setDescription(annotation.description());
@@ -36,6 +39,28 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setMapValueObject(typeChecks[2]);
 		apiPojoFieldDoc.setMap(typeChecks[3]);
 		return apiPojoFieldDoc;
+	}
+
+	public static ApiObjectFieldDoc buildFromAnnotation( ApiObjectGetter annotation, Method getter )
+	{
+	    
+	    final ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
+	    
+	    String name = getter.getName();
+	    final char firstChar = Character.toLowerCase( name.charAt(3) );
+	    name = firstChar + name.substring(4);
+	    
+	    apiPojoFieldDoc.setName( name );
+	    apiPojoFieldDoc.setDescription(annotation.description());
+	    apiPojoFieldDoc.setType( JSONDocUtils.getReturnType(getter) );
+	    apiPojoFieldDoc.setMultiple( String.valueOf(JSONDocUtils.isMultiple(getter.getReturnType())) );
+	    apiPojoFieldDoc.setFormat(annotation.format());
+	    apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
+	    apiPojoFieldDoc.setMapKeyObject( null );
+	    apiPojoFieldDoc.setMapValueObject( null );
+	    apiPojoFieldDoc.setMap( null );
+	    
+	    return apiPojoFieldDoc;
 	}
 
 	public static String[] getFieldObject(Field field) {

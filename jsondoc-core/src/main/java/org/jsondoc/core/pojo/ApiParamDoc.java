@@ -106,5 +106,35 @@ public class ApiParamDoc {
 	public String getFormat() {
 		return format;
 	}
+    
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+    
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+    
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+    
+    public void setRequired( String required )
+    {
+        this.required = required;
+    }
+    
+    public void setAllowedvalues( String[] allowedvalues )
+    {
+        this.allowedvalues = allowedvalues;
+    }
+    
+    public void setFormat( String format )
+    {
+        this.format = format;
+    }
 
 }

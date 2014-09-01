@@ -19,8 +19,21 @@ public class ApiResponseObjectDoc {
 	private String mapValueObject;
 	private String map;
 
-	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
-		return new ApiResponseObjectDoc(getReturnObject(method)[0], getReturnObject(method)[1], getReturnObject(method)[2], String.valueOf(JSONDocUtils.isMultiple(method)), getReturnObject(method)[3]);
+	public static ApiResponseObjectDoc buildFromAnnotation( ApiResponseObject annotation, Method method )
+	{
+	    final String[] returnObj = getReturnObject( method );
+		return new ApiResponseObjectDoc( returnObj[0], returnObj[1], returnObj[2], String.valueOf(JSONDocUtils.isMultiple(method)), returnObj[3] );
+		
+	}
+
+	public static ApiResponseObjectDoc buildFromAnnotation( Method method )
+	{
+	    if( method.getReturnType().equals(Void.class) )
+	        return null;
+	    
+	    final String[] returnObj = getReturnObject( method );
+	    return new ApiResponseObjectDoc( returnObj[0], returnObj[1], returnObj[2], String.valueOf(JSONDocUtils.isMultiple(method)), returnObj[3] );
+	    
 	}
 
 	public static String[] getReturnObject(Method method) {

@@ -1,7 +1,9 @@
 package org.jsondoc.core.pojo;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.Api;
@@ -11,6 +13,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private String name;
 	private String description;
 	private List<ApiMethodDoc> methods;
+	public Map<Method,ApiMethodDoc> methodMap;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();

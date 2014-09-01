@@ -15,7 +15,7 @@ import org.jsondoc.core.pojo.ApiParamType;
  *
  */
 @Documented
-@Target(value=ElementType.PARAMETER)
+@Target(value={ElementType.PARAMETER,ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParam {
 
@@ -23,7 +23,7 @@ public @interface ApiParam {
 	 * The name of the url parameter, as expected by the server
 	 * @return
 	 */
-	public String name();
+	public String name() default "";
 
 	/**
 	 * A description of what the parameter is needed for
@@ -53,6 +53,6 @@ public @interface ApiParam {
 	 * Whether this is a path parameter or a query parameter
 	 * @return
 	 */
-	public ApiParamType paramType();
+	public ApiParamType paramType() default ApiParamType.QUERY;
 	
 }

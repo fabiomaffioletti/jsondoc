@@ -615,10 +615,20 @@ ol.linenums li {
 										replacedPath = tempReplacedPath;
 									});
 
-									$("#queryparameters input").each(function() {
-										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-										replacedPath = tempReplacedPath;
-									});
+									var queryString = '';
+                                    $("#queryparameters input").each(function()
+                                    {
+                                        if( this.value != null && this.value.length > 0 )
+                                        {
+                                            if( queryString == '' )
+                                                queryString = '?' + this.name + "=" + this.value;
+                                            else
+                                                  queryString += '&' + this.name + "=" + this.value;
+                                        }
+                                    });
+                                    
+                                    tempReplacedPath += queryString;
+                                    replacedPath = tempReplacedPath;
 									
 									$('#testButton').button('loading');
 									
