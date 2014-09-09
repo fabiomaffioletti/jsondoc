@@ -25,6 +25,12 @@ public @interface ApiMethod {
 	public String path();
 
 	/**
+	 * The role(s) needed for the method
+	 * @return
+	 */
+	public String role() default "anonymous";
+
+	/**
 	 * A description of what the method does
 	 * @return
 	 */

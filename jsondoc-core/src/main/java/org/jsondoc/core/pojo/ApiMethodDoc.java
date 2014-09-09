@@ -12,6 +12,7 @@ public class ApiMethodDoc {
 	private String path;
 	private String description;
 	private ApiVerb verb;
+	private String role;
 	private List<String> produces;
 	private List<String> consumes;
 	private List<ApiHeaderDoc> headers;
@@ -25,6 +26,7 @@ public class ApiMethodDoc {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(annotation.path());
 		apiMethodDoc.setDescription(annotation.description());
+		apiMethodDoc.setRole(annotation.role());
 		apiMethodDoc.setVerb(annotation.verb());
 		apiMethodDoc.setConsumes(Arrays.asList(annotation.consumes()));
 		apiMethodDoc.setProduces(Arrays.asList(annotation.produces()));
@@ -125,6 +127,14 @@ public class ApiMethodDoc {
 
 	public void setApierrors(List<ApiErrorDoc> apierrors) {
 		this.apierrors = apierrors;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }
