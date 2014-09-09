@@ -53,6 +53,6 @@ public @interface ApiParam {
 	 * Whether this is a path parameter or a query parameter
 	 * @return
 	 */
-	public ApiParamType paramType();
+	public ApiParamType paramType() default ApiParamType.PATH;
 	
 }
