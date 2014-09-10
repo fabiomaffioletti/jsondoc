@@ -28,7 +28,7 @@ public @interface ApiMethod {
 	 * The role(s) needed for the method
 	 * @return
 	 */
-	public String role() default "anonymous";
+	public String role() default "ROLE_ANONYMOUS";
 
 	/**
 	 * A description of what the method does
@@ -41,7 +41,7 @@ public @interface ApiMethod {
 	 * @see ApiVerb
 	 * @return
 	 */
-	public ApiVerb verb();
+	public ApiVerb verb() default ApiVerb.GET;
 	
 	/**
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...
