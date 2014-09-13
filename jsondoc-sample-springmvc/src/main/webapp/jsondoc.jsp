@@ -473,6 +473,9 @@ ol.linenums li {
 			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
 			<tr><td></td><td>Type: {{type}}</td></tr>
 			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
+			{{#if allowedvalues}}
+			<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
+			{{/if}}
 			<tr><td></td><td>Mandatory: {{mandatory}}</td></tr>
 			{{#if map}}
 				{{#if this.mapKeyObject}}
