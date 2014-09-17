@@ -26,7 +26,11 @@ public class ApiObjectFieldDoc {
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-		apiPojoFieldDoc.setName(field.getName());
+		if (!"".equales(annotation.getName())) {
+			apiPojoFieldDoc.setName(annotation.getName());
+		} else {
+			apiPojoFieldDoc.setName(field.getName());	
+		}
 		apiPojoFieldDoc.setDescription(annotation.description());
 		String[] typeChecks = getFieldObject(field);
 		apiPojoFieldDoc.setType(typeChecks[0]);
