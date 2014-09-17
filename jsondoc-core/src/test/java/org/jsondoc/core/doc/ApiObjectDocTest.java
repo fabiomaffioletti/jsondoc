@@ -39,6 +39,12 @@ public class ApiObjectDocTest {
 		
 		@ApiObjectField(description="a wildcard parametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
 		private List<?> wildcardParametrized;
+
+		@ApiObjectField(description="a Long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
+		private Long[] LongArray;
+
+		@ApiObjectField(description="a long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
+		private long[] longArray;
 		
 	}
 	
@@ -48,7 +54,7 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(7, childDoc.getFields().size());
+		Assert.assertEquals(9, childDoc.getFields().size());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
@@ -90,6 +96,19 @@ public class ApiObjectDocTest {
 				Assert.assertEquals("integer", fieldDoc.getMapValueObject());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
 			}
+			
+			if(fieldDoc.getName().equals("LongArray")) {
+				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("false", fieldDoc.getRequired());
+			}
+
+			if(fieldDoc.getName().equals("longArray")) {
+				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("false", fieldDoc.getRequired());
+			}
+			
 		}
 	}
 

@@ -66,6 +66,18 @@ public class ApiDocTest {
 		List<?> wildcardParametrizedList(@ApiParam(name = "wildcardParametrizedList", paramType = ApiParamType.PATH) List<?> wildcardParametrizedList, @ApiBodyObject List<?> body) {
 			return null;
 		}
+		
+		@ApiMethod(path = "/LongArray", verb = ApiVerb.GET, description = "a-test-method")
+		public @ApiResponseObject
+		Long[] LongArray(@ApiParam(name = "LongArray", paramType = ApiParamType.PATH) Long[] LongArray, @ApiBodyObject Long[] body) {
+			return null;
+		}
+
+		@ApiMethod(path = "/longArray", verb = ApiVerb.GET, description = "a-test-method")
+		public @ApiResponseObject
+		long[] longArray(@ApiParam(name = "longArray", paramType = ApiParamType.PATH) long[] LongArray, @ApiBodyObject long[] body) {
+			return null;
+		}
 
 	}
 
@@ -164,6 +176,32 @@ public class ApiDocTest {
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("wildcardParametrizedList")) {
 						Assert.assertEquals("wildcard", apiParamDoc.getType());
+					}
+				}
+			}
+
+			if (apiMethodDoc.getPath().equals("/LongArray")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("long", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
+				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getObject());
+				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("LongArray")) {
+						Assert.assertEquals("long", apiParamDoc.getType());
+					}
+				}
+			}
+
+			if (apiMethodDoc.getPath().equals("/longArray")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("long", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
+				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getObject());
+				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("longArray")) {
+						Assert.assertEquals("long", apiParamDoc.getType());
 					}
 				}
 			}
