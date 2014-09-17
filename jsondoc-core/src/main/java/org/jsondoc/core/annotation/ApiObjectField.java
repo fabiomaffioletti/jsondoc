@@ -35,9 +35,9 @@ public @interface ApiObjectField {
 	public String[] allowedvalues() default {};
 	
 	/**
-	 * If the field is mandatory
+	 * If the field is required
 	 * @return
 	 */
-	public boolean mandatory() default false;
+	public boolean required() default false;
 
 }

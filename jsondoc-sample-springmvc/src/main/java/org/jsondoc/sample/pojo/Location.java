@@ -11,7 +11,7 @@ public class Location {
 	@ApiObjectField(description = "The population of the location")
 	@XmlElement
 	private Integer population;
-	@ApiObjectField(description = "The square km of the location")
+	@ApiObjectField(description = "The square km of the location", format = "##0.00")
 	@XmlElement
 	private Integer squarekm;
 

@@ -16,13 +16,13 @@ public class User {
 	@ApiObjectField(description = "The ID of the user")
 	@XmlElement(name = "id")
 	private Integer id;
-	@ApiObjectField(description = "The username of the user")
+	@ApiObjectField(description = "The username of the user", required = true)
 	@XmlElement(name = "username")
 	private String username;
-	@ApiObjectField(description = "The age of the user")
+	@ApiObjectField(description = "The age of the user", required = true)
 	@XmlElement(name = "age")
 	private Integer age;
-	@ApiObjectField(description = "The gender of the user")
+	@ApiObjectField(description = "The gender of the user", required = false)
 	@XmlElement(name = "gender")
 	private String gender;
 

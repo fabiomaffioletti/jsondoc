@@ -18,10 +18,10 @@ public class ApiObjectDocTest {
 	@ApiObject(name="test-object")
 	private class TestObject {
 		
-		@ApiObjectField(description="the test name", mandatory = true)
+		@ApiObjectField(description="the test name", required = true)
 		private String name;
 		
-		@ApiObjectField(description="the test age", mandatory = false)
+		@ApiObjectField(description="the test age", required = false)
 		private Integer age;
 		
 		@ApiObjectField(description="the test avg")
@@ -69,19 +69,19 @@ public class ApiObjectDocTest {
 			if(fieldDoc.getName().equals("name")) {
 				Assert.assertEquals("string", fieldDoc.getType());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
-				Assert.assertEquals("true", fieldDoc.getMandatory());
+				Assert.assertEquals("true", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("age")) {
 				Assert.assertEquals("integer", fieldDoc.getType());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
-				Assert.assertEquals("false", fieldDoc.getMandatory());
+				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("avg")) {
 				Assert.assertEquals("long", fieldDoc.getType());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
-				Assert.assertEquals("false", fieldDoc.getMandatory());
+				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("map")) {

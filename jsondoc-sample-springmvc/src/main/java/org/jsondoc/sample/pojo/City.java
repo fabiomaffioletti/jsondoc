@@ -10,7 +10,7 @@ import org.jsondoc.core.annotation.ApiObjectField;
 @XmlRootElement
 public class City extends Location {
 
-	@ApiObjectField(description = "The name of the city")
+	@ApiObjectField(description = "The name of the city", allowedvalues = { "Melbourne", "Sydney", "Perth" })
 	@XmlElement
 	private String name;
 
