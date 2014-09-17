@@ -22,6 +22,7 @@ public class ApiObjectFieldDoc {
 	private String mapKeyObject;
 	private String mapValueObject;
 	private String map;
+	private String mandatory;
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
@@ -32,6 +33,7 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setMultiple(String.valueOf(JSONDocUtils.isMultiple(field.getType())));
 		apiPojoFieldDoc.setFormat(annotation.format());
 		apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
+		apiPojoFieldDoc.setMandatory(annotation.mandatory() ? "true" : "false");
 		apiPojoFieldDoc.setMapKeyObject(typeChecks[1]);
 		apiPojoFieldDoc.setMapValueObject(typeChecks[2]);
 		apiPojoFieldDoc.setMap(typeChecks[3]);
@@ -143,6 +145,14 @@ public class ApiObjectFieldDoc {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String getMandatory() {
+		return mandatory;
+	}
+	
+	public void setMandatory(String mandatory) {
+		this.mandatory = mandatory;
 	}
 
 	public ApiObjectFieldDoc() {
