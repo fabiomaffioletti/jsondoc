@@ -39,5 +39,12 @@ public @interface ApiObjectField {
 	 * @return
 	 */
 	public boolean required() default false;
+	
+	/**
+	 * The display name for this field if different
+	 * from the java name
+	 * @return
+	 */
+	public String name() default "";
 
 }
