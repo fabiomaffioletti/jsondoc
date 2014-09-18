@@ -10,12 +10,14 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
+	private String role;
 	private List<ApiMethodDoc> methods;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
 		apiDoc.setDescription(api.description());
 		apiDoc.setName(api.name());
+		apiDoc.setRole(api.role());
 		return apiDoc;
 	}
 
@@ -54,6 +56,14 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	@Override
 	public int compareTo(ApiDoc o) {
 		return name.compareTo(o.getName());
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

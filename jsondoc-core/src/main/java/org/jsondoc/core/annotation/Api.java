@@ -21,7 +21,13 @@ public @interface Api {
 	 * @return
 	 */
 	public String description();
-	
+
+	/**
+	 * The role needed to show the controller
+	 * @return
+	 */
+	public String role() default "ROLE_ANONYMOUS";
+
 	/**
 	 * The name of the API
 	 * @return
