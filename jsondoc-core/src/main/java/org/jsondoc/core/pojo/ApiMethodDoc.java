@@ -20,6 +20,7 @@ public class ApiMethodDoc {
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
+	private ApiVersionDoc apiVersion;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
@@ -125,6 +126,14 @@ public class ApiMethodDoc {
 
 	public void setApierrors(List<ApiErrorDoc> apierrors) {
 		this.apierrors = apierrors;
+	}
+
+	public ApiVersionDoc getApiVersion() {
+		return apiVersion;
+	}
+
+	public void setApiVersion(ApiVersionDoc apiVersion) {
+		this.apiVersion = apiVersion;
 	}
 
 }

@@ -7,19 +7,27 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.annotation.ApiVersion;
 
 public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private List<ApiObjectFieldDoc> fields;
-	
+	private ApiVersionDoc apiVersion;
+
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
-				fieldDocs.add(ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field));
+				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
+				
+				if(field.isAnnotationPresent(ApiVersion.class)) {
+					fieldDoc.setApiVersion(ApiVersionDoc.buildFromAnnotation(field.getAnnotation(ApiVersion.class)));
+				}
+				
+				fieldDocs.add(fieldDoc);
 			}
 		}
 
@@ -56,6 +64,14 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	@Override
 	public int compareTo(ApiObjectDoc o) {
 		return name.compareTo(o.getName());
+	}
+
+	public ApiVersionDoc getApiVersion() {
+		return apiVersion;
+	}
+
+	public void setApiVersion(ApiVersionDoc apiVersion) {
+		this.apiVersion = apiVersion;
 	}
 
 }

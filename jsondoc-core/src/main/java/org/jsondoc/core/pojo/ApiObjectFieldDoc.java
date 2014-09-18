@@ -23,13 +23,14 @@ public class ApiObjectFieldDoc {
 	private String mapValueObject;
 	private String map;
 	private String required;
+	private ApiVersionDoc apiVersion;
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
 		if (!annotation.name().equals("")) {
 			apiPojoFieldDoc.setName(annotation.name());
 		} else {
-			apiPojoFieldDoc.setName(field.getName());	
+			apiPojoFieldDoc.setName(field.getName());
 		}
 		apiPojoFieldDoc.setDescription(annotation.description());
 		String[] typeChecks = getFieldObject(field);
@@ -62,7 +63,7 @@ public class ApiObjectFieldDoc {
 			if (field.getGenericType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
 				Type type = parameterizedType.getActualTypeArguments()[0];
-				if(type instanceof WildcardType) {
+				if (type instanceof WildcardType) {
 					return new String[] { JSONDocUtils.WILDCARD, null, null, null };
 				}
 				Class<?> clazz = (Class<?>) type;
@@ -150,13 +151,21 @@ public class ApiObjectFieldDoc {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getRequired() {
 		return required;
 	}
 
 	public void setRequired(String required) {
 		this.required = required;
+	}
+
+	public ApiVersionDoc getApiVersion() {
+		return apiVersion;
+	}
+
+	public void setApiVersion(ApiVersionDoc apiVersion) {
+		this.apiVersion = apiVersion;
 	}
 
 	public ApiObjectFieldDoc() {

@@ -16,6 +16,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiErrorDoc;
@@ -25,6 +26,7 @@ import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
+import org.jsondoc.core.pojo.ApiVersionDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
@@ -70,6 +72,9 @@ public class JSONDocUtils {
 		for (Class<?> controller : classes) {
 			log.debug("Getting JSONDoc for class: " + controller.getName());
 			ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
+			if(controller.isAnnotationPresent(ApiVersion.class)) {
+				apiDoc.setApiVersion(ApiVersionDoc.buildFromAnnotation(controller.getAnnotation(ApiVersion.class)));
+			}
 			apiDoc.setMethods(getApiMethodDocs(controller));
 			apiDocs.add(apiDoc);
 		}
@@ -82,6 +87,10 @@ public class JSONDocUtils {
 			log.debug("Getting JSONDoc for class: " + pojo.getName());
 			ApiObject annotation = pojo.getAnnotation(ApiObject.class);
 			ApiObjectDoc pojoDoc = ApiObjectDoc.buildFromAnnotation(annotation, pojo);
+			if(pojo.isAnnotationPresent(ApiVersion.class)) {
+				pojoDoc.setApiVersion(ApiVersionDoc.buildFromAnnotation(pojo.getAnnotation(ApiVersion.class)));
+			}
+			
 			if(annotation.show()) {
 				pojoDocs.add(pojoDoc);
 			}
@@ -112,6 +121,10 @@ public class JSONDocUtils {
 				
 				if(method.isAnnotationPresent(ApiErrors.class)) {
 					apiMethodDoc.setApierrors(ApiErrorDoc.buildFromAnnotation(method.getAnnotation(ApiErrors.class)));
+				}
+				
+				if(method.isAnnotationPresent(ApiVersion.class)) {
+					apiMethodDoc.setApiVersion(ApiVersionDoc.buildFromAnnotation(method.getAnnotation(ApiVersion.class)));
 				}
 				
 				apiMethodDocs.add(apiMethodDoc);

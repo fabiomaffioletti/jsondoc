@@ -11,11 +11,13 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.http.MediaType;
 
 @Api(name="Test1Controller", description="My test controller #1")
+@ApiVersion(since = "1.0")
 public class Test1Controller {
 	
 	@ApiMethod(
@@ -25,6 +27,7 @@ public class Test1Controller {
 			consumes={MediaType.APPLICATION_JSON_VALUE},
 			produces={MediaType.APPLICATION_JSON_VALUE}
 	)
+	@ApiVersion(since = "1.0")
 	@ApiHeaders(headers={
 			@ApiHeader(name="application_id", description="The application's ID")
 	})

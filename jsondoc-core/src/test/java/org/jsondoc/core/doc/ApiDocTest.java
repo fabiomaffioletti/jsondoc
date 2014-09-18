@@ -10,6 +10,7 @@ import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
@@ -22,6 +23,7 @@ import org.junit.Test;
 public class ApiDocTest {
 
 	@Api(name = "test-controller", description = "a-test-controller")
+	@ApiVersion(since = "1.0", until = "2.12")
 	private class TestController {
 
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
@@ -78,6 +80,13 @@ public class ApiDocTest {
 		long[] longArray(@ApiParam(name = "longArray", paramType = ApiParamType.PATH) long[] LongArray, @ApiBodyObject long[] body) {
 			return null;
 		}
+		
+		@ApiMethod(path = "/version", verb = ApiVerb.GET, description = "a-test-method for api version feature")
+		@ApiVersion(since = "1.0", until = "2.12")
+		public @ApiResponseObject
+		String version(@ApiParam(name = "version", paramType = ApiParamType.PATH) String version, @ApiBodyObject String body) {
+			return null;
+		}
 
 	}
 
@@ -88,6 +97,8 @@ public class ApiDocTest {
 		ApiDoc apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-controller", apiDoc.getName());
 		Assert.assertEquals("a-test-controller", apiDoc.getDescription());
+		Assert.assertEquals("1.0", apiDoc.getApiVersion().getSince());
+		Assert.assertEquals("2.12", apiDoc.getApiVersion().getUntil());
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -204,6 +215,12 @@ public class ApiDocTest {
 						Assert.assertEquals("long", apiParamDoc.getType());
 					}
 				}
+			}
+			
+			if (apiMethodDoc.getPath().equals("/version")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("1.0", apiMethodDoc.getApiVersion().getSince());
+				Assert.assertEquals("2.12", apiMethodDoc.getApiVersion().getUntil());
 			}
 
 		}

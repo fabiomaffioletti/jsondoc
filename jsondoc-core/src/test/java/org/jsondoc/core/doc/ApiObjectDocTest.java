@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.util.JSONDocUtils;
@@ -16,6 +17,7 @@ import org.junit.Test;
 public class ApiObjectDocTest {
 	
 	@ApiObject(name="test-object")
+	@ApiVersion(since = "1.0", until = "2.12")
 	private class TestObject {
 		
 		@ApiObjectField(description="the test name", required = true)
@@ -48,6 +50,10 @@ public class ApiObjectDocTest {
 		
 		@ApiObjectField(name = "foo_bar", description="a property to test https://github.com/fabiomaffioletti/jsondoc/pull/31", required = true)
 		private String fooBar;
+		
+		@ApiObjectField(name = "version", description="a property to test version since and until", required = true)
+		@ApiVersion(since = "1.0", until = "2.12")
+		private String version;
 	}
 	
 	@Test
@@ -56,7 +62,9 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(10, childDoc.getFields().size());
+		Assert.assertEquals(11, childDoc.getFields().size());
+		Assert.assertEquals("1.0", childDoc.getApiVersion().getSince());
+		Assert.assertEquals("2.12", childDoc.getApiVersion().getUntil());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
@@ -121,6 +129,12 @@ public class ApiObjectDocTest {
 				Assert.assertEquals("foo_bar", fieldDoc.getName());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
+			}
+			
+			if(fieldDoc.getName().equals("version")) {
+				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("1.0", fieldDoc.getApiVersion().getSince());
+				Assert.assertEquals("2.12", fieldDoc.getApiVersion().getUntil());
 			}
 			
 		}

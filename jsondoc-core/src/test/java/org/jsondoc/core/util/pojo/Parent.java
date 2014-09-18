@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.annotation.ApiVersion;
 
 @ApiObject(name = "parent")
 public class Parent extends Grandparent {
@@ -12,5 +13,6 @@ public class Parent extends Grandparent {
 	private String name;
 
 	@ApiObjectField(description = "the test name")
+	@ApiVersion(since = "1.0", until = "2.12")
 	private List<Child> children;
 }
