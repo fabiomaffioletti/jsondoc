@@ -26,8 +26,8 @@ public class ApiObjectFieldDoc {
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-		if (!"".equales(annotation.getName())) {
-			apiPojoFieldDoc.setName(annotation.getName());
+		if (!annotation.name().equals("")) {
+			apiPojoFieldDoc.setName(annotation.name());
 		} else {
 			apiPojoFieldDoc.setName(field.getName());	
 		}

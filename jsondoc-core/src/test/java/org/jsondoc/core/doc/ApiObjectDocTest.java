@@ -46,6 +46,8 @@ public class ApiObjectDocTest {
 		@ApiObjectField(description="a long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
 		private long[] longArray;
 		
+		@ApiObjectField(name = "foo_bar", description="a property to test https://github.com/fabiomaffioletti/jsondoc/pull/31", required = true)
+		private String fooBar;
 	}
 	
 	@Test
@@ -54,7 +56,7 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(9, childDoc.getFields().size());
+		Assert.assertEquals(10, childDoc.getFields().size());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
@@ -74,18 +76,21 @@ public class ApiObjectDocTest {
 			
 			if(fieldDoc.getName().equals("name")) {
 				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("name", fieldDoc.getName());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("true", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("age")) {
 				Assert.assertEquals("integer", fieldDoc.getType());
+				Assert.assertEquals("age", fieldDoc.getName());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("avg")) {
 				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("avg", fieldDoc.getName());
 				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
@@ -99,13 +104,22 @@ public class ApiObjectDocTest {
 			
 			if(fieldDoc.getName().equals("LongArray")) {
 				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("LongArray", fieldDoc.getName());
 				Assert.assertEquals("true", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 
 			if(fieldDoc.getName().equals("longArray")) {
 				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("longArray", fieldDoc.getName());
 				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("false", fieldDoc.getRequired());
+			}
+			
+			if(fieldDoc.getName().equals("fooBar")) {
+				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("foo_bar", fieldDoc.getName());
+				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
