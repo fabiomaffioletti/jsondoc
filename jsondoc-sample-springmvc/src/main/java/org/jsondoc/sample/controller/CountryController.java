@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.data.SampleData;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Api(name="country services", description="Methods for managing countries")
 @Controller
+@ApiVersion(since = "1.0", until = "2.12")
 @RequestMapping(value="/countries")
 public class CountryController {
 	

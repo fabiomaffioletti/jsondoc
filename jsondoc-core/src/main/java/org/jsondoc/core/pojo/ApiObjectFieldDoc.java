@@ -23,7 +23,7 @@ public class ApiObjectFieldDoc {
 	private String mapValueObject;
 	private String map;
 	private String required;
-	private ApiVersionDoc apiVersion;
+	private ApiVersionDoc supportedversions;
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
@@ -160,12 +160,12 @@ public class ApiObjectFieldDoc {
 		this.required = required;
 	}
 
-	public ApiVersionDoc getApiVersion() {
-		return apiVersion;
+	public ApiVersionDoc getSupportedversions() {
+		return supportedversions;
 	}
 
-	public void setApiVersion(ApiVersionDoc apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setSupportedversions(ApiVersionDoc supportedversions) {
+		this.supportedversions = supportedversions;
 	}
 
 	public ApiObjectFieldDoc() {

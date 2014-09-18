@@ -14,7 +14,7 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private String name;
 	private String description;
 	private List<ApiObjectFieldDoc> fields;
-	private ApiVersionDoc apiVersion;
+	private ApiVersionDoc supportedversions;
 
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
@@ -22,11 +22,11 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
 				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
-				
-				if(field.isAnnotationPresent(ApiVersion.class)) {
-					fieldDoc.setApiVersion(ApiVersionDoc.buildFromAnnotation(field.getAnnotation(ApiVersion.class)));
+
+				if (field.isAnnotationPresent(ApiVersion.class)) {
+					fieldDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(field.getAnnotation(ApiVersion.class)));
 				}
-				
+
 				fieldDocs.add(fieldDoc);
 			}
 		}
@@ -66,12 +66,12 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		return name.compareTo(o.getName());
 	}
 
-	public ApiVersionDoc getApiVersion() {
-		return apiVersion;
+	public ApiVersionDoc getSupportedversions() {
+		return supportedversions;
 	}
 
-	public void setApiVersion(ApiVersionDoc apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setSupportedversions(ApiVersionDoc supportedversions) {
+		this.supportedversions = supportedversions;
 	}
 
 }

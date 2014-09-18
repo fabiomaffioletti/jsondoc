@@ -63,8 +63,8 @@ public class ApiObjectDocTest {
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
 		Assert.assertEquals(11, childDoc.getFields().size());
-		Assert.assertEquals("1.0", childDoc.getApiVersion().getSince());
-		Assert.assertEquals("2.12", childDoc.getApiVersion().getUntil());
+		Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());
+		Assert.assertEquals("2.12", childDoc.getSupportedversions().getUntil());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
@@ -133,8 +133,8 @@ public class ApiObjectDocTest {
 			
 			if(fieldDoc.getName().equals("version")) {
 				Assert.assertEquals("string", fieldDoc.getType());
-				Assert.assertEquals("1.0", fieldDoc.getApiVersion().getSince());
-				Assert.assertEquals("2.12", fieldDoc.getApiVersion().getUntil());
+				Assert.assertEquals("1.0", fieldDoc.getSupportedversions().getSince());
+				Assert.assertEquals("2.12", fieldDoc.getSupportedversions().getUntil());
 			}
 			
 		}

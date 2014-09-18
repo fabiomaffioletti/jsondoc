@@ -97,8 +97,8 @@ public class ApiDocTest {
 		ApiDoc apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-controller", apiDoc.getName());
 		Assert.assertEquals("a-test-controller", apiDoc.getDescription());
-		Assert.assertEquals("1.0", apiDoc.getApiVersion().getSince());
-		Assert.assertEquals("2.12", apiDoc.getApiVersion().getUntil());
+		Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
+		Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -219,8 +219,8 @@ public class ApiDocTest {
 			
 			if (apiMethodDoc.getPath().equals("/version")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("1.0", apiMethodDoc.getApiVersion().getSince());
-				Assert.assertEquals("2.12", apiMethodDoc.getApiVersion().getUntil());
+				Assert.assertEquals("1.0", apiMethodDoc.getSupportedversions().getSince());
+				Assert.assertEquals("2.12", apiMethodDoc.getSupportedversions().getUntil());
 			}
 
 		}

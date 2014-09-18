@@ -11,7 +11,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private String name;
 	private String description;
 	private List<ApiMethodDoc> methods;
-	private ApiVersionDoc apiVersion;
+	private ApiVersionDoc supportedversions;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
@@ -57,12 +57,12 @@ public class ApiDoc implements Comparable<ApiDoc> {
 		return name.compareTo(o.getName());
 	}
 
-	public ApiVersionDoc getApiVersion() {
-		return apiVersion;
+	public ApiVersionDoc getSupportedversions() {
+		return supportedversions;
 	}
 
-	public void setApiVersion(ApiVersionDoc apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setSupportedversions(ApiVersionDoc supportedversions) {
+		this.supportedversions = supportedversions;
 	}
 
 }

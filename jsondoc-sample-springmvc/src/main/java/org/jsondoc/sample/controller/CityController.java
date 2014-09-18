@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.pojo.City;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Api(name = "city services", description = "Methods for managing cities")
 @Controller
+@ApiVersion(since = "1.0")
 @RequestMapping(value = "/cities")
 public class CityController {
 
 	@ApiMethod(path = "/cities/{name}", verb = ApiVerb.GET, description = "Gets a city with the given name. (Allowed values are just to demonstrate the annotation attribute)", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiErrors(apierrors = { @ApiError(code = "2000", description = "City not found"), @ApiError(code = "9000", description = "Illegal argument") })
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public @ResponseBody
@@ -40,6 +43,7 @@ public class CityController {
 	}
 
 	@ApiMethod(path = "/cities", verb = ApiVerb.POST, description = "Saves a city", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@ApiVersion(since = "1.2-SNAPSHOT")
 	@ApiHeaders(headers = { @ApiHeader(name = "api_id", description = "The api identifier") })
 	@ApiErrors(apierrors = { @ApiError(code = "3000", description = "City already existing"), @ApiError(code = "9000", description = "Illegal argument") })
 	@RequestMapping(method = RequestMethod.POST)

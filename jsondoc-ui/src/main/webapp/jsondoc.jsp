@@ -155,7 +155,8 @@ ol.linenums li {
 <script id="methods" type="text/x-handlebars-template">
 <blockquote>
   <p style="text-transform: uppercase;"><span id="apiName"></span></p>
-  <small><span id="apiDescription"></span></cite></small>
+  <small><span id="apiDescription"></span></small>
+  <small><span id="apiSupportedVersions"></span></small>
 </blockquote>
 
 <div class="accordion" id="accordion">
@@ -169,9 +170,21 @@ ol.linenums li {
 			<div class="accordion-inner">
 				<table class="table table-condensed table-striped table-bordered">
 					<tr>
-						<th style="width:15%;">Path</th>
+						<th style="width:18%;">Path</th>
 						<td><code>{{path}}</code></td>
 					</tr>
+					{{#if supportedversions}}
+						<tr>
+							<td>Since version</td>
+							<td>{{supportedversions.since}}</td>
+						</tr>
+						{{#if supportedversions.until}}
+							<tr>
+								<td>Until version</td>
+								<td>{{supportedversions.until}}</td>
+							</tr>
+						{{/if}}	
+					{{/if}}
 					<tr>
 						<th>Description</th>
 						<td>{{description}}</td>
@@ -463,9 +476,21 @@ ol.linenums li {
 
 <script id="object" type="text/x-handlebars-template">
 <table class="table table-condensed table-striped table-bordered">
-	<tr><th style="width:15%;">Name</th><td><code>{{name}}</code></td></tr>
+	<tr><th style="width:18%;">Name</th><td><code>{{name}}</code></td></tr>
 	{{#if description}}
 		<tr><th>Description</th><td>{{description}}</td></tr>
+	{{/if}}
+	{{#if supportedversions}}
+		<tr>
+			<td>Since version</td>
+			<td>{{supportedversions.since}}</td>
+		</tr>
+		{{#if supportedversions.until}}
+			<tr>
+				<td>Until version</td>
+				<td>{{supportedversions.until}}</td>	
+			</tr>
+		{{/if}}	
 	{{/if}}
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
@@ -479,6 +504,12 @@ ol.linenums li {
 			<tr><td></td><td>Required: {{required}}</td></tr>
 			{{#if allowedvalues}}
 				<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
+			{{/if}}
+			{{#if supportedversions}}
+				<tr><td></td><td>Since version {{supportedversions.since}}</td></tr>
+				{{#if supportedversions.until}}
+					<tr><td></td><td>Until version {{supportedversions.until}}</td></tr>
+				{{/if}}
 			{{/if}}
 			{{#if map}}
 				{{#if this.mapKeyObject}}
@@ -595,6 +626,12 @@ ol.linenums li {
 						$("#content").show();
 						$("#apiName").text(api.name);
 						$("#apiDescription").text(api.description);
+						if(api.supportedversions) {
+							$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
+							if(api.supportedversions.until) {
+								$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
+							}
+						}
 						$("#testContent").hide();
 						
 						$('#content a[rel="method"]').each(function() {

@@ -20,7 +20,7 @@ public class ApiMethodDoc {
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
-	private ApiVersionDoc apiVersion;
+	private ApiVersionDoc supportedversions;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
@@ -128,12 +128,12 @@ public class ApiMethodDoc {
 		this.apierrors = apierrors;
 	}
 
-	public ApiVersionDoc getApiVersion() {
-		return apiVersion;
+	public ApiVersionDoc getSupportedversions() {
+		return supportedversions;
 	}
 
-	public void setApiVersion(ApiVersionDoc apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setSupportedversions(ApiVersionDoc supportedversions) {
+		this.supportedversions = supportedversions;
 	}
 
 }
