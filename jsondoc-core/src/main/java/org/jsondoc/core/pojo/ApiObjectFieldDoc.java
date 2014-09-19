@@ -37,7 +37,11 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setType(typeChecks[0]);
 		apiPojoFieldDoc.setMultiple(String.valueOf(JSONDocUtils.isMultiple(field.getType())));
 		apiPojoFieldDoc.setFormat(annotation.format());
-		apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
+		if(field.getType().isEnum()) {
+			apiPojoFieldDoc.setAllowedvalues(JSONDocUtils.enumConstantsToStringArray(field.getType().getEnumConstants()));
+		} else {
+			apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
+		}
 		apiPojoFieldDoc.setRequired(String.valueOf(annotation.required()));
 		apiPojoFieldDoc.setMapKeyObject(typeChecks[1]);
 		apiPojoFieldDoc.setMapValueObject(typeChecks[2]);

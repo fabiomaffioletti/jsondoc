@@ -54,6 +54,26 @@ public class ApiObjectDocTest {
 		@ApiObjectField(name = "version", description="a property to test version since and until", required = true)
 		@ApiVersion(since = "1.0", until = "2.12")
 		private String version;
+		
+		@ApiObjectField(name = "test-enum", description = "a test enum")
+		private TestEnum testEnum;
+	}
+	
+	@ApiObject(name = "test-enum")
+	private enum TestEnum {
+		TESTENUM1, TESTENUM2, TESTENUM3;
+	}
+	
+	@Test
+	public void testEnumObjectDoc() {
+		Set<Class<?>> classes = new HashSet<Class<?>>();
+		classes.add(TestEnum.class);
+		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
+		Assert.assertEquals("test-enum", childDoc.getName());
+		Assert.assertEquals(0, childDoc.getFields().size());
+		Assert.assertEquals(TestEnum.TESTENUM1.name(), childDoc.getAllowedvalues()[0]);
+		Assert.assertEquals(TestEnum.TESTENUM2.name(), childDoc.getAllowedvalues()[1]);
+		Assert.assertEquals(TestEnum.TESTENUM3.name(), childDoc.getAllowedvalues()[2]);
 	}
 	
 	@Test
@@ -62,7 +82,7 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = JSONDocUtils.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(11, childDoc.getFields().size());
+		Assert.assertEquals(12, childDoc.getFields().size());
 		Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", childDoc.getSupportedversions().getUntil());
 		
@@ -135,6 +155,13 @@ public class ApiObjectDocTest {
 				Assert.assertEquals("string", fieldDoc.getType());
 				Assert.assertEquals("1.0", fieldDoc.getSupportedversions().getSince());
 				Assert.assertEquals("2.12", fieldDoc.getSupportedversions().getUntil());
+			}
+			
+			if(fieldDoc.getName().equals("test-enum")) {
+				Assert.assertEquals("test-enum", fieldDoc.getName());
+				Assert.assertEquals(TestEnum.TESTENUM1.name(), fieldDoc.getAllowedvalues()[0]);
+				Assert.assertEquals(TestEnum.TESTENUM2.name(), fieldDoc.getAllowedvalues()[1]);
+				Assert.assertEquals(TestEnum.TESTENUM3.name(), fieldDoc.getAllowedvalues()[2]);
 			}
 			
 		}

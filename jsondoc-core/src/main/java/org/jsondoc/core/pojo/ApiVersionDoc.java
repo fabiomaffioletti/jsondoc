@@ -1,11 +1,8 @@
 package org.jsondoc.core.pojo;
 
-import java.util.UUID;
-
 import org.jsondoc.core.annotation.ApiVersion;
 
 public class ApiVersionDoc {
-	public String jsondocId = UUID.randomUUID().toString();
 	private String since;
 	private String until;
 

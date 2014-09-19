@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.annotation.ApiVersion;
+import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
@@ -15,9 +16,12 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private String description;
 	private List<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
+	private String[] allowedvalues;
 
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
+		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
+
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
@@ -39,31 +43,43 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 			}
 		}
 
-		return new ApiObjectDoc(annotation.name(), annotation.description(), fieldDocs);
+		if (clazz.isEnum()) {
+			apiObjectDoc.setAllowedvalues(JSONDocUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
+		}
+
+		apiObjectDoc.setName(annotation.name());
+		apiObjectDoc.setDescription(annotation.description());
+		apiObjectDoc.setFields(fieldDocs);
+
+		return apiObjectDoc;
 	}
 
-	public ApiObjectDoc(String name, String description, List<ApiObjectFieldDoc> fields) {
+	public ApiObjectDoc() {
 		super();
-		this.name = name;
-		this.description = description;
-		this.fields = fields;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getDescription() {
 		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<ApiObjectFieldDoc> getFields() {
 		return fields;
 	}
 
-	@Override
-	public int compareTo(ApiObjectDoc o) {
-		return name.compareTo(o.getName());
+	public void setFields(List<ApiObjectFieldDoc> fields) {
+		this.fields = fields;
 	}
 
 	public ApiVersionDoc getSupportedversions() {
@@ -72,6 +88,19 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 
 	public void setSupportedversions(ApiVersionDoc supportedversions) {
 		this.supportedversions = supportedversions;
+	}
+
+	public String[] getAllowedvalues() {
+		return allowedvalues;
+	}
+
+	public void setAllowedvalues(String[] allowedvalues) {
+		this.allowedvalues = allowedvalues;
+	}
+
+	@Override
+	public int compareTo(ApiObjectDoc o) {
+		return name.compareTo(o.getName());
 	}
 
 }

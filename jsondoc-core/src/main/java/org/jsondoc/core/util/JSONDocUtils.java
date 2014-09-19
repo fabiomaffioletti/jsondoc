@@ -156,4 +156,12 @@ public class JSONDocUtils {
 		return false;
 	}
 	
+	public static String[] enumConstantsToStringArray(Object[] enumConstants) {
+		String[] sarr = new String[enumConstants.length];
+		for (int i = 0; i < enumConstants.length; i++) {
+			sarr[i] = String.valueOf(enumConstants[i]);
+		}
+		return sarr;
+	}
+	
 }

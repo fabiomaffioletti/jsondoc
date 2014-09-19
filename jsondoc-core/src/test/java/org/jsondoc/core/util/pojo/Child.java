@@ -18,5 +18,9 @@ public class Child extends Parent {
 
 	@ApiObjectField(description = "the scores for each game")
 	private Map<String, Integer> scores;
+	
+	@ApiObjectField(name = "gender", description = "the gender of this person")
+	@ApiVersion(since = "1.2")
+	private Gender gender;
 
 }

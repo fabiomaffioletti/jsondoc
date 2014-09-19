@@ -20,14 +20,19 @@ public class Country extends Location {
 	@XmlElement
 	private List<City> cities;
 
+	@ApiObjectField(description = "The continent of the country")
+	@XmlElement
+	private Continent continent;
+
 	public Country() {
 
 	}
 
-	public Country(Integer population, Integer squarekm, String name, List<City> cities) {
+	public Country(Integer population, Integer squarekm, String name, List<City> cities, Continent continent) {
 		super(population, squarekm);
 		this.name = name;
 		this.cities = cities;
+		this.continent = continent;
 	}
 
 	public String getName() {
@@ -36,6 +41,10 @@ public class Country extends Location {
 
 	public List<City> getCities() {
 		return cities;
+	}
+
+	public Continent getContinent() {
+		return continent;
 	}
 
 }

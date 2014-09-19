@@ -17,6 +17,7 @@ import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.sample.data.SampleData;
 import org.jsondoc.sample.pojo.City;
+import org.jsondoc.sample.pojo.Continent;
 import org.jsondoc.sample.pojo.Country;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,7 +51,7 @@ public class CountryController {
 		cities.add(new City("Sydney", 19329, 43));
 		cities.add(new City("Melbourne", 85743, 12));
 		cities.add(new City("Perth", 58735, 39));
-		return new Country(32198, 5487, "Australia", cities);
+		return new Country(32198, 5487, "Australia", cities, Continent.AUSTRALIA);
 	}
 	
 	@ApiMethod(

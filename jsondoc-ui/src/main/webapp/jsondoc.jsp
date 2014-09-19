@@ -83,6 +83,10 @@ ol.linenums li {
   line-height: 20px;
   text-shadow: 0 1px 0 #fff;
 }
+
+table td {
+	word-wrap: break-word;
+}
 </style>
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
@@ -475,7 +479,7 @@ ol.linenums li {
 </script>
 
 <script id="object" type="text/x-handlebars-template">
-<table class="table table-condensed table-striped table-bordered">
+<table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
 	<tr><th style="width:18%;">Name</th><td><code>{{name}}</code></td></tr>
 	{{#if description}}
 		<tr><th>Description</th><td>{{description}}</td></tr>
@@ -491,6 +495,9 @@ ol.linenums li {
 				<td>{{supportedversions.until}}</td>	
 			</tr>
 		{{/if}}	
+	{{/if}}
+	{{#if allowedvalues}}
+		<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
 	{{/if}}
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
