@@ -11,12 +11,15 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
+import org.jsondoc.core.pojo.ApiAuthDoc;
 import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiErrorDoc;
@@ -37,6 +40,7 @@ import org.reflections.util.FilterBuilder;
 public class JSONDocUtils {
 	public static final String UNDEFINED = "undefined";
 	public static final String WILDCARD = "wildcard";
+	public static final String ANONYMOUS = "anonymous";
 	private static Reflections reflections = null;
 	
 	private static Logger log = Logger.getLogger(JSONDocUtils.class);
@@ -75,6 +79,8 @@ public class JSONDocUtils {
 			if(controller.isAnnotationPresent(ApiVersion.class)) {
 				apiDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(controller.getAnnotation(ApiVersion.class)));
 			}
+			
+			apiDoc.setAuth(getApiAuthDocForController(controller));
 			apiDoc.setMethods(getApiMethodDocs(controller));
 			apiDocs.add(apiDoc);
 		}
@@ -127,6 +133,8 @@ public class JSONDocUtils {
 					apiMethodDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(method.getAnnotation(ApiVersion.class)));
 				}
 				
+				apiMethodDoc.setAuth(getApiAuthDocForMethod(method, method.getDeclaringClass()));
+				
 				apiMethodDocs.add(apiMethodDoc);
 			}
 			
@@ -162,6 +170,30 @@ public class JSONDocUtils {
 			sarr[i] = String.valueOf(enumConstants[i]);
 		}
 		return sarr;
+	}
+	
+	private static ApiAuthDoc getApiAuthDocForController(Class<?> clazz) {
+		if(clazz.isAnnotationPresent(ApiAuthNone.class)) {
+			return ApiAuthDoc.buildFromApiAuthNoneAnnotation(clazz.getAnnotation(ApiAuthNone.class));
+		}
+		
+		if(clazz.isAnnotationPresent(ApiAuthBasic.class)) {
+			return ApiAuthDoc.buildFromApiAuthBasicAnnotation(clazz.getAnnotation(ApiAuthBasic.class));
+		}
+		
+		return null;
+	}
+	
+	private static ApiAuthDoc getApiAuthDocForMethod(Method method, Class<?> clazz) {
+		if(method.isAnnotationPresent(ApiAuthNone.class)) {
+			return ApiAuthDoc.buildFromApiAuthNoneAnnotation(method.getAnnotation(ApiAuthNone.class));
+		}
+		
+		if(method.isAnnotationPresent(ApiAuthBasic.class)) {
+			return ApiAuthDoc.buildFromApiAuthBasicAnnotation(method.getAnnotation(ApiAuthBasic.class));
+		}
+		
+		return getApiAuthDocForController(clazz);
 	}
 	
 }

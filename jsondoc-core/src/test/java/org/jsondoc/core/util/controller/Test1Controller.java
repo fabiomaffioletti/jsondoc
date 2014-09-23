@@ -3,6 +3,7 @@ package org.jsondoc.core.util.controller;
 import java.util.List;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType;
 
 @Api(name="Test1Controller", description="My test controller #1")
 @ApiVersion(since = "1.0")
+@ApiAuthNone
 public class Test1Controller {
 	
 	@ApiMethod(

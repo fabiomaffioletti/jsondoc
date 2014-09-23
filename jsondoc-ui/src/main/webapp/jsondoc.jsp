@@ -172,7 +172,7 @@ table td {
 		</div>
 		<div class="accordion-body collapse" id="_{{jsondocId}}">
 			<div class="accordion-inner">
-				<table class="table table-condensed table-striped table-bordered">
+				<table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
 					<tr>
 						<th style="width:18%;">Path</th>
 						<td><code>{{path}}</code></td>
@@ -197,6 +197,14 @@ table td {
 						<th>Method</th>
 						<td><span class="label {{verb}}">{{verb}}</span></td>
 					</tr>
+
+					{{#if auth}}
+						<tr>
+							<th>Auth</th>
+							<td>{{auth.type}}, Roles: {{auth.roles}}</td>
+						</tr>
+					{{/if}}
+
 					{{#if produces}}
 						<tr>
 							<th colspan=2>Produces</th>
@@ -270,7 +278,6 @@ table td {
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
-								
 							</tr>
 							<tr>
 								<td></td>
@@ -369,7 +376,21 @@ table td {
 
 <div class="row-fluid">
 
-	{{#if headers}}	
+	{{#if auth}}
+		{{#equal auth.type "BASIC_AUTH"}}
+			<div class="span12">
+				<h4>Authentication</h4>
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">Username</span><input type="text" class="span8" name="{{auth.username}}" value="{{auth.username}}" placeholder="{{auth.username}}">
+				</div>
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">Password</span><input type="text" class="span8" name="{{auth.password}}" value="{{auth.password}}" placeholder="{{auth.password}}">
+				</div>
+			</div>
+		{{/equal}}
+	{{/if}}
+
+	{{#if headers}}
 	<div class="span12">
 		<div id="headers">
 			<h4>Headers</h4>
@@ -537,6 +558,14 @@ table td {
 
 <script>
 	var model;
+
+	Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+		if(lvalue!=rvalue) {
+			return options.inverse(this);
+		} else {
+			return options.fn(this);
+		}
+	});
 	
 	function checkURLExistence() {
 		var value = $("#jsondocfetch").val();
@@ -658,6 +687,12 @@ table td {
 									});
 									
 									headers["Accept"] = $("#produces input:checked").val();
+
+									if(method.auth) {
+										if(method.auth.type == "BASIC_AUTH") {
+											headers["Authorization"] = "Basic " + window.btoa(method.auth.username + ":" + method.auth.password);
+										}
+									}
 									
 									var replacedPath = method.path;
 									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url

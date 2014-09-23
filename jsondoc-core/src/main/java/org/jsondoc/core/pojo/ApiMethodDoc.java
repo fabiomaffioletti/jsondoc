@@ -21,6 +21,7 @@ public class ApiMethodDoc {
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
+	private ApiAuthDoc auth;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
@@ -134,6 +135,14 @@ public class ApiMethodDoc {
 
 	public void setSupportedversions(ApiVersionDoc supportedversions) {
 		this.supportedversions = supportedversions;
+	}
+
+	public ApiAuthDoc getAuth() {
+		return auth;
+	}
+
+	public void setAuth(ApiAuthDoc auth) {
+		this.auth = auth;
 	}
 
 }

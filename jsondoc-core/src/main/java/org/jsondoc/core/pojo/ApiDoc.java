@@ -12,6 +12,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private String description;
 	private List<ApiMethodDoc> methods;
 	private ApiVersionDoc supportedversions;
+	private ApiAuthDoc auth;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
@@ -63,6 +64,14 @@ public class ApiDoc implements Comparable<ApiDoc> {
 
 	public void setSupportedversions(ApiVersionDoc supportedversions) {
 		this.supportedversions = supportedversions;
+	}
+
+	public ApiAuthDoc getAuth() {
+		return auth;
+	}
+
+	public void setAuth(ApiAuthDoc auth) {
+		this.auth = auth;
 	}
 
 }

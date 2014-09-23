@@ -6,11 +6,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
+import org.jsondoc.core.pojo.ApiAuthType;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
@@ -24,6 +27,7 @@ public class ApiDocTest {
 
 	@Api(name = "test-controller", description = "a-test-controller")
 	@ApiVersion(since = "1.0", until = "2.12")
+	@ApiAuthNone
 	private class TestController {
 
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
@@ -89,7 +93,52 @@ public class ApiDocTest {
 		}
 
 	}
-
+	
+	@Api(name = "test-controller-with-basic-auth", description = "a-test-controller with basic auth annotation")
+	@ApiAuthBasic(roles = { "ROLE_USER", "ROLE_ADMIN" }, username = "test-username", password = "test-password")
+	private class TestControllerWithBasicAuth {
+		
+		@ApiMethod(path="/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
+		@ApiAuthBasic(roles = {"ROLE_USER"}, username = "test-username", password = "test-password")
+		public String basicAuth() {
+			return null;
+		}
+		
+		@ApiMethod(path="/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
+		@ApiAuthNone
+		public String noAuth() {
+			return null;
+		}
+		
+		@ApiMethod(path="/undefinedAuthWithAuthOnClass", description = "A method with undefined auth but with auth info on class declaration", verb = ApiVerb.GET)
+		public String undefinedAuthWithAuthOnClass() {
+			return null;
+		}
+		
+	}
+	
+	@Api(name = "test-controller-with-no-auth-annotation", description = "a-test-controller with no auth annotation")
+	private class TestControllerWithNoAuthAnnotation {
+		
+		@ApiMethod(path="/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
+		@ApiAuthBasic(roles = {"ROLE_USER"}, username = "test-username", password = "test-password")
+		public String basicAuth() {
+			return null;
+		}
+		
+		@ApiMethod(path="/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
+		@ApiAuthNone
+		public String noAuth() {
+			return null;
+		}
+		
+		@ApiMethod(path="/undefinedAuthWithoutAuthOnClass", description = "A method with undefined auth and without auth info on class declaration", verb = ApiVerb.GET)
+		public String undefinedAuthWithoutAuthOnClass() {
+			return null;
+		}
+		
+	}
+	
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -99,6 +148,8 @@ public class ApiDocTest {
 		Assert.assertEquals("a-test-controller", apiDoc.getDescription());
 		Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
+		Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
+		Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -225,6 +276,63 @@ public class ApiDocTest {
 
 		}
 
+		classes.clear();
+		classes.add(TestControllerWithBasicAuth.class);
+		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
+		Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
+		Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
+		Assert.assertEquals("ROLE_ADMIN", apiDoc.getAuth().getRoles().get(1));
+		Assert.assertEquals("test-username", apiDoc.getAuth().getUsername());
+		Assert.assertEquals("test-password", apiDoc.getAuth().getPassword());
+		
+		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			if (apiMethodDoc.getPath().equals("/basicAuth")) {
+				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
+				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
+				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/noAuth")) {
+				Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
+				Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+			}
+			
+			if (apiMethodDoc.getPath().equals("/undefinedAuthWithAuthOnClass")) {
+				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
+				Assert.assertEquals("ROLE_ADMIN", apiMethodDoc.getAuth().getRoles().get(1));
+				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
+				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
+			}
+			
+		}
+		
+		classes.clear();
+		classes.add(TestControllerWithNoAuthAnnotation.class);
+		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("test-controller-with-no-auth-annotation", apiDoc.getName());
+		Assert.assertNull(apiDoc.getAuth());
+		
+		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			if (apiMethodDoc.getPath().equals("/basicAuth")) {
+				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
+				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
+				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/noAuth")) {
+				Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
+				Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+			}
+			
+			if (apiMethodDoc.getPath().equals("/undefinedAuthWithoutAuthOnClass")) {
+				Assert.assertNull(apiMethodDoc.getAuth());
+			}
+			
+		}
 	}
 
 }

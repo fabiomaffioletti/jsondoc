@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
@@ -25,6 +26,7 @@ public class Test2Controller {
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
 	@ApiVersion(since = "1.0", until = "2.12")
+	@ApiAuthBasic(roles = "ROLE_USER", username = "test-username", password = "test-password")
 	public @ApiResponseObject String save(@ApiBodyObject List<String> names) {
 		return null;
 	}
