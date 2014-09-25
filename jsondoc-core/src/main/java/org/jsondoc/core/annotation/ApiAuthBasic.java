@@ -28,6 +28,6 @@ public @interface ApiAuthBasic {
 	 * A list of test users that can be used to test methods with different username/password/roles combinations
 	 * @return
 	 */
-	public ApiAuthBasicUser[] testusers();
+	public ApiAuthBasicUser[] testusers() default {};
 
 }

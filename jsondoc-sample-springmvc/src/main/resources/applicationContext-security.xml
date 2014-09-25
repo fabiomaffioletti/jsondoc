@@ -11,6 +11,7 @@
 
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/api/auth/basicauth" access="ROLE_USER, ROLE_ADMIN" />
+		<security:intercept-url pattern="/api/auth/basicauthnouser" access="ROLE_USER, ROLE_ADMIN" />
 		<security:http-basic />
 	</security:http>
 

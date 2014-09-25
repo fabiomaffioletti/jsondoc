@@ -30,6 +30,16 @@ public class AuthenticationController {
 		return "basicauth";
 	}
 	
+	@ApiMethod(path = "/auth/basicauthnouser", verb = ApiVerb.GET, description = "A basic authenticated method with no test users", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"})
+	@ApiErrors(apierrors = { @ApiError(code = "8000", description = "Invalid credentials") })
+	@RequestMapping(value = "/basicauthnouser", method = RequestMethod.GET)
+	public @ResponseBody
+	@ApiResponseObject
+	String basicauthnouser() {
+		return "basicauthnouser";
+	}
+	
 	@ApiMethod(path = "/auth/noauth", verb = ApiVerb.GET, description = "A method available to everyone ", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiAuthNone
 	@RequestMapping(value = "/noauth", method = RequestMethod.GET)
