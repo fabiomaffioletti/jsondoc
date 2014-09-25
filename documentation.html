@@ -28,6 +28,34 @@ title: Documentation
 			</td>
 		</tr>			
 		<tr>
+			<td><code>@ApiVersion</code></td>
+			<td>Class,Method,Field</td>
+			<td>
+				<p>This annotation lets you specify since and until which version the class, method, object or field is supported</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthNone</code></td>
+			<td>Class,Method</td>
+			<td>
+				<p>Annotate a class or method with this annotation to specify that it does not require authentication to be accessed</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthBasic</code></td>
+			<td>Class,Method</td>
+			<td>
+				<p>Annotate a class or method with this annotation to specify that it requires Basic Authentication to be accessed. You must also specify roles that can access the method and a list of <code>@ApiAuthBasicUser</code> test users</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthBasicUser</code></td>
+			<td>Annotation</td>
+			<td>
+				<p>This annotation is used inside <code>@ApiAuthBasic</code> to specify test users' username and password</p>
+			</td>
+		</tr>
+		<tr>
 			<td><code>@ApiHeaders</code></td>
 			<td>Method</td>
 			<td>

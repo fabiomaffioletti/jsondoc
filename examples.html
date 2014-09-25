@@ -10,6 +10,8 @@ package org.jsondoc.sample.controller;
 import org.jsondoc.core.annotation.Api;
 
 @Api(name = "city services", description = "Methods for managing cities")
+@ApiVersion(since = "1.0", until = "2.12")
+@ApiAuthNone
 // mvc framework annotations ommited
 public class CityApi {
 {% endhighlight %}
@@ -34,6 +36,7 @@ import org.jsondoc.core.pojo.ApiVerb;
         produces={MediaType.APPLICATION_JSON_VALUE},
         consumes={MediaType.APPLICATION_JSON_VALUE}
 )
+@ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"}, testusers = {@ApiAuthBasicUser(username = "user", password = "123456")})
 @ApiHeaders(headers={
         @ApiHeader(name="api_id", description="The api identifier")
 })
