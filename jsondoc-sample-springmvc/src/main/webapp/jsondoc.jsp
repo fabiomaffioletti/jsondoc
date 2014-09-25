@@ -83,6 +83,10 @@ ol.linenums li {
   line-height: 20px;
   text-shadow: 0 1px 0 #fff;
 }
+
+table td {
+	word-wrap: break-word;
+}
 </style>
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
@@ -99,7 +103,7 @@ ol.linenums li {
 			<div class="container-fluid">
 				<a class="brand" href="#">JSONDoc</a>
 				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" value="http://jsondoc.eu01.aws.af.cm/api/jsondoc" autocomplete="off" />
+					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" />
 					    <button id="getDocButton" class="btn">Get documentation</button>
 					</form>
 			</div>
@@ -155,7 +159,8 @@ ol.linenums li {
 <script id="methods" type="text/x-handlebars-template">
 <blockquote>
   <p style="text-transform: uppercase;"><span id="apiName"></span></p>
-  <small><span id="apiDescription"></span></cite></small>
+  <small><span id="apiDescription"></span></small>
+  <small><span id="apiSupportedVersions"></span></small>
 </blockquote>
 
 <div class="accordion" id="accordion">
@@ -167,11 +172,23 @@ ol.linenums li {
 		</div>
 		<div class="accordion-body collapse" id="_{{jsondocId}}">
 			<div class="accordion-inner">
-				<table class="table table-condensed table-striped table-bordered">
+				<table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
 					<tr>
-						<th style="width:15%;">Path</th>
+						<th style="width:18%;">Path</th>
 						<td><code>{{path}}</code></td>
 					</tr>
+					{{#if supportedversions}}
+						<tr>
+							<td>Since version</td>
+							<td>{{supportedversions.since}}</td>
+						</tr>
+						{{#if supportedversions.until}}
+							<tr>
+								<td>Until version</td>
+								<td>{{supportedversions.until}}</td>
+							</tr>
+						{{/if}}	
+					{{/if}}
 					<tr>
 						<th>Description</th>
 						<td>{{description}}</td>
@@ -180,6 +197,14 @@ ol.linenums li {
 						<th>Method</th>
 						<td><span class="label {{verb}}">{{verb}}</span></td>
 					</tr>
+
+					{{#if auth}}
+						<tr>
+							<th>Auth</th>
+							<td>{{auth.type}}, Roles: {{auth.roles}}</td>
+						</tr>
+					{{/if}}
+
 					{{#if produces}}
 						<tr>
 							<th colspan=2>Produces</th>
@@ -253,7 +278,6 @@ ol.linenums li {
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
-								
 							</tr>
 							<tr>
 								<td></td>
@@ -352,7 +376,30 @@ ol.linenums li {
 
 <div class="row-fluid">
 
-	{{#if headers}}	
+	{{#if auth}}
+		{{#equal auth.type "BASIC_AUTH"}}
+			<div class="span12">
+				<h4>Basic Authentication</h4>
+				<div class="input">
+					<select class="span12" id="basicAuthSelect" onchange="fillBasicAuthFields(); return false;">
+						<option disabled="disabled" selected="selected">Select a test user or fill inputs below</option>
+						{{#eachInMap auth.testusers}}
+							<option value="{{value}}">{{key}}</option>
+						{{/eachInMap}}
+						<option value="a-wrong-password">invalidate-credentials-cache-user</option>
+					</select>
+				</div>
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">Username</span><input type="text" id="basicAuthUsername" name="basicAuthUsername" placeholder="Username">
+				</div>
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">Password</span><input type="text" id="basicAuthPassword" name="basicAuthPassword" placeholder="Password">
+				</div>
+			</div>
+		{{/equal}}
+	{{/if}}
+
+	{{#if headers}}
 	<div class="span12">
 		<div id="headers">
 			<h4>Headers</h4>
@@ -462,10 +509,25 @@ ol.linenums li {
 </script>
 
 <script id="object" type="text/x-handlebars-template">
-<table class="table table-condensed table-striped table-bordered">
-	<tr><th style="width:15%;">Name</th><td><code>{{name}}</code></td></tr>
+<table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
+	<tr><th style="width:18%;">Name</th><td><code>{{name}}</code></td></tr>
 	{{#if description}}
 		<tr><th>Description</th><td>{{description}}</td></tr>
+	{{/if}}
+	{{#if supportedversions}}
+		<tr>
+			<td>Since version</td>
+			<td>{{supportedversions.since}}</td>
+		</tr>
+		{{#if supportedversions.until}}
+			<tr>
+				<td>Until version</td>
+				<td>{{supportedversions.until}}</td>	
+			</tr>
+		{{/if}}	
+	{{/if}}
+	{{#if allowedvalues}}
+		<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
 	{{/if}}
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
@@ -473,10 +535,19 @@ ol.linenums li {
 			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
 			<tr><td></td><td>Type: {{type}}</td></tr>
 			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
-			{{#if allowedvalues}}
-			<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
+			{{#if format}}
+				<tr><td></td><td>Format: {{format}}</td></tr>
 			{{/if}}
-			<tr><td></td><td>Mandatory: {{mandatory}}</td></tr>
+			<tr><td></td><td>Required: {{required}}</td></tr>
+			{{#if allowedvalues}}
+				<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
+			{{/if}}
+			{{#if supportedversions}}
+				<tr><td></td><td>Since version {{supportedversions.since}}</td></tr>
+				{{#if supportedversions.until}}
+					<tr><td></td><td>Until version {{supportedversions.until}}</td></tr>
+				{{/if}}
+			{{/if}}
 			{{#if map}}
 				{{#if this.mapKeyObject}}
 				<tr>	
@@ -496,6 +567,22 @@ ol.linenums li {
 
 <script>
 	var model;
+
+	Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+		if(lvalue!=rvalue) {
+			return options.inverse(this);
+		} else {
+			return options.fn(this);
+		}
+	});
+
+	Handlebars.registerHelper( 'eachInMap', function ( map, block ) {
+		var out = '';
+		Object.keys( map ).map(function( prop ) {
+			out += block.fn( {key: prop, value: map[ prop ]} );
+		});
+		return out;
+	} );
 	
 	function checkURLExistence() {
 		var value = $("#jsondocfetch").val();
@@ -518,6 +605,11 @@ ol.linenums li {
 		checkURLExistence();
 		return false;
 	});
+
+	function fillBasicAuthFields() {
+		$("#basicAuthPassword").val($("#basicAuthSelect").val());
+		$("#basicAuthUsername").val($("#basicAuthSelect").find(":selected").text());
+	}
 	
 	function printResponse(data, res, url) {
 		if(res.responseXML != null) {
@@ -592,6 +684,12 @@ ol.linenums li {
 						$("#content").show();
 						$("#apiName").text(api.name);
 						$("#apiDescription").text(api.description);
+						if(api.supportedversions) {
+							$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
+							if(api.supportedversions.until) {
+								$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
+							}
+						}
 						$("#testContent").hide();
 						
 						$('#content a[rel="method"]').each(function() {
@@ -611,6 +709,12 @@ ol.linenums li {
 									});
 									
 									headers["Accept"] = $("#produces input:checked").val();
+
+									if(method.auth) {
+										if(method.auth.type == "BASIC_AUTH") {
+											headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
+										}
+									}
 									
 									var replacedPath = method.path;
 									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url

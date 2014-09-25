@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target(value = { ElementType.TYPE, ElementType.METHOD})
+@Target(value = { ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiAuthBasic {
+public @interface ApiAuthBasicUser {
 	
-	public String[] roles();
+	public String username();
 	
-	public ApiAuthBasicUser[] testusers();
+	public String password();
 
 }

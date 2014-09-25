@@ -2,18 +2,20 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiAuthDoc {
 	private String type;
 	private List<String> roles = new ArrayList<String>();
-	private String username;
-	private String password;
-	
+	private Map<String, String> testusers = new HashMap<String, String>();
+
 	public static ApiAuthDoc buildFromUndefined() {
 		ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
 		apiAuthDoc.setType(JSONDocUtils.UNDEFINED);
@@ -31,8 +33,9 @@ public class ApiAuthDoc {
 		ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
 		apiAuthDoc.setType(ApiAuthType.BASIC_AUTH.name());
 		apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
-		apiAuthDoc.setUsername(annotation.username());
-		apiAuthDoc.setPassword(annotation.password());
+		for (ApiAuthBasicUser testuser : annotation.testusers()) {
+			apiAuthDoc.addTestUser(testuser.username(), testuser.password());
+		}
 		return apiAuthDoc;
 	}
 
@@ -56,20 +59,16 @@ public class ApiAuthDoc {
 		this.roles.add(role);
 	}
 
-	public String getUsername() {
-		return username;
+	public void addTestUser(String username, String password) {
+		this.testusers.put(username, password);
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public Map<String, String> getTestusers() {
+		return testusers;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setTestusers(Map<String, String> testusers) {
+		this.testusers = testusers;
 	}
 
 }

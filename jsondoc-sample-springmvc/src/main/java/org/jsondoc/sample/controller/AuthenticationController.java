@@ -2,6 +2,7 @@ package org.jsondoc.sample.controller;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AuthenticationController {
 
 	@ApiMethod(path = "/auth/basicauth", verb = ApiVerb.GET, description = "A basic authenticated method", produces = { MediaType.APPLICATION_JSON_VALUE })
-	@ApiAuthBasic(roles = {"ROLE_USER"}, username = "user", password = "userpwd")
+	@ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"}, testusers = {@ApiAuthBasicUser(username = "user", password = "123456"), @ApiAuthBasicUser(username = "admin", password = "123456")})
 	@ApiErrors(apierrors = { @ApiError(code = "8000", description = "Invalid credentials") })
 	@RequestMapping(value = "/basicauth", method = RequestMethod.GET)
 	public @ResponseBody

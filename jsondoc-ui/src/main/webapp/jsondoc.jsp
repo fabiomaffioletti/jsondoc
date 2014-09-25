@@ -379,12 +379,21 @@ table td {
 	{{#if auth}}
 		{{#equal auth.type "BASIC_AUTH"}}
 			<div class="span12">
-				<h4>Authentication</h4>
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">Username</span><input type="text" class="span8" name="{{auth.username}}" value="{{auth.username}}" placeholder="{{auth.username}}">
+				<h4>Basic Authentication</h4>
+				<div class="input">
+					<select class="span12" id="basicAuthSelect" onchange="fillBasicAuthFields(); return false;">
+						<option disabled="disabled" selected="selected">Select a test user or fill inputs below</option>
+						{{#eachInMap auth.testusers}}
+							<option value="{{value}}">{{key}}</option>
+						{{/eachInMap}}
+						<option value="a-wrong-password">invalidate-credentials-cache-user</option>
+					</select>
 				</div>
 				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">Password</span><input type="text" class="span8" name="{{auth.password}}" value="{{auth.password}}" placeholder="{{auth.password}}">
+					<span style="text-align:left;" class="add-on span4">Username</span><input type="text" id="basicAuthUsername" name="basicAuthUsername" placeholder="Username">
+				</div>
+				<div class="input-prepend">
+					<span style="text-align:left;" class="add-on span4">Password</span><input type="text" id="basicAuthPassword" name="basicAuthPassword" placeholder="Password">
 				</div>
 			</div>
 		{{/equal}}
@@ -566,6 +575,14 @@ table td {
 			return options.fn(this);
 		}
 	});
+
+	Handlebars.registerHelper( 'eachInMap', function ( map, block ) {
+		var out = '';
+		Object.keys( map ).map(function( prop ) {
+			out += block.fn( {key: prop, value: map[ prop ]} );
+		});
+		return out;
+	} );
 	
 	function checkURLExistence() {
 		var value = $("#jsondocfetch").val();
@@ -588,6 +605,11 @@ table td {
 		checkURLExistence();
 		return false;
 	});
+
+	function fillBasicAuthFields() {
+		$("#basicAuthPassword").val($("#basicAuthSelect").val());
+		$("#basicAuthUsername").val($("#basicAuthSelect").find(":selected").text());
+	}
 	
 	function printResponse(data, res, url) {
 		if(res.responseXML != null) {
@@ -690,7 +712,7 @@ table td {
 
 									if(method.auth) {
 										if(method.auth.type == "BASIC_AUTH") {
-											headers["Authorization"] = "Basic " + window.btoa(method.auth.username + ":" + method.auth.password);
+											headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
 										}
 									}
 									

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -95,11 +96,11 @@ public class ApiDocTest {
 	}
 	
 	@Api(name = "test-controller-with-basic-auth", description = "a-test-controller with basic auth annotation")
-	@ApiAuthBasic(roles = { "ROLE_USER", "ROLE_ADMIN" }, username = "test-username", password = "test-password")
+	@ApiAuthBasic(roles = { "ROLE_USER", "ROLE_ADMIN" }, testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
 	private class TestControllerWithBasicAuth {
 		
 		@ApiMethod(path="/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
-		@ApiAuthBasic(roles = {"ROLE_USER"}, username = "test-username", password = "test-password")
+		@ApiAuthBasic(roles = {"ROLE_USER"}, testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
 		public String basicAuth() {
 			return null;
 		}
@@ -121,7 +122,7 @@ public class ApiDocTest {
 	private class TestControllerWithNoAuthAnnotation {
 		
 		@ApiMethod(path="/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
-		@ApiAuthBasic(roles = {"ROLE_USER"}, username = "test-username", password = "test-password")
+		@ApiAuthBasic(roles = {"ROLE_USER"}, testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
 		public String basicAuth() {
 			return null;
 		}
@@ -283,15 +284,13 @@ public class ApiDocTest {
 		Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
 		Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
 		Assert.assertEquals("ROLE_ADMIN", apiDoc.getAuth().getRoles().get(1));
-		Assert.assertEquals("test-username", apiDoc.getAuth().getUsername());
-		Assert.assertEquals("test-password", apiDoc.getAuth().getPassword());
+		Assert.assertTrue(apiDoc.getAuth().getTestusers().size() > 0);
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if (apiMethodDoc.getPath().equals("/basicAuth")) {
 				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
 				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
-				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
-				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
+				Assert.assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
 			}
 			
 			if (apiMethodDoc.getPath().equals("/noAuth")) {
@@ -303,8 +302,6 @@ public class ApiDocTest {
 				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
 				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
 				Assert.assertEquals("ROLE_ADMIN", apiMethodDoc.getAuth().getRoles().get(1));
-				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
-				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
 			}
 			
 		}
@@ -319,8 +316,7 @@ public class ApiDocTest {
 			if (apiMethodDoc.getPath().equals("/basicAuth")) {
 				Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
 				Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
-				Assert.assertEquals("test-username", apiMethodDoc.getAuth().getUsername());
-				Assert.assertEquals("test-password", apiMethodDoc.getAuth().getPassword());
+				Assert.assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
 			}
 			
 			if (apiMethodDoc.getPath().equals("/noAuth")) {
