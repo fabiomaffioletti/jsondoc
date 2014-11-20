@@ -723,15 +723,20 @@ table td {
 										replacedPath = tempReplacedPath;
 									});
 
-									$("#queryparameters input").each(function() {
-										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-										replacedPath = tempReplacedPath;
-									});
+									var parameters = [];
+
+									$("#queryparameters input").each(function () {
+									    var val = $(this).val();
+									    if (val && val.length > 0) {
+									    	parameters.push(encodeURIComponent($(this).attr("name")) + "=" + encodeURIComponent(val));
+										}
+								    });
+									var query = parameters.length > 0 ? "?" + parameters.join("&") : "";
 									
 									$('#testButton').button('loading');
 									
 									var res = $.ajax({
-										url : model.basePath + replacedPath,
+										url : model.basePath + replacedPath + query,
 										type: method.verb,
 										data: $("#inputJson").val(),
 										headers: headers,

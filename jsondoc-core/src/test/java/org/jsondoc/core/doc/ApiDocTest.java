@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiAuthType;
@@ -30,6 +31,29 @@ public class ApiDocTest {
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiAuthNone
 	private class TestController {
+
+		@ApiMethod(path = "/methodParams", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiParams(apiparams = {
+			@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class),
+			@ApiParam(name = "value", paramType = ApiParamType.PATH, clazz = String.class)
+		})
+		public @ApiResponseObject
+		String methodParams(String name, @ApiBodyObject String body) {
+			return null;
+		}
+
+		@ApiMethod(path = "/methodParam", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class)
+		public @ApiResponseObject
+		String methodParam(String name, @ApiBodyObject String body) {
+			return null;
+		}
+
+		@ApiMethod(path = "/implicitResponseObject", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiResponseObject(Integer.class)
+		public String implicitResponseObject(@ApiParam(name = "name", paramType = ApiParamType.PATH) String name, @ApiBodyObject String body) {
+			return null;
+		}
 
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
@@ -153,6 +177,42 @@ public class ApiDocTest {
 		Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			
+			if (apiMethodDoc.getPath().equals("/methodParams")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("name")) {
+						Assert.assertEquals("string", apiParamDoc.getType());
+					}
+					if(apiParamDoc.getName().equals("value")) {
+						Assert.assertEquals("string", apiParamDoc.getType());
+					}
+				}
+			}
+
+			if (apiMethodDoc.getPath().equals("/methodParam")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("name")) {
+						Assert.assertEquals("string", apiParamDoc.getType());
+					}
+				}
+			}
+			
+			if (apiMethodDoc.getPath().equals("/implicitResponseObject")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("integer", apiMethodDoc.getResponse().getObject());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
+				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+					if(apiParamDoc.getName().equals("name")) {
+						Assert.assertEquals("string", apiParamDoc.getType());
+					}
+				}
+			}
 
 			if (apiMethodDoc.getPath().equals("/name")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
