@@ -1,6 +1,8 @@
 package org.jsondoc.sample.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jsondoc.core.annotation.Api;
@@ -79,6 +81,30 @@ public class CityController {
 		cities.put("m", new City("Melbourne", 9080, 12));
 		cities.put("p", new City("Perth", 743534, 5));
 		cities.put("s", new City("Sydney", 54654, 32));
+		return cities;
+	}
+	
+	@ApiMethod(path = "/cities/map/list", verb = ApiVerb.GET, description = "Gets a map of list of cities", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/map/list", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ApiResponseObject
+	@ResponseBody
+	Map<List<String>, City> mapList() {
+		Map<List<String>, City> cities = new HashMap<List<String>, City>();
+		List<String> a = new ArrayList<String>();
+		a.add("a1");
+		a.add("a2");
+		List<String> m = new ArrayList<String>();
+		m.add("m1");
+		List<String> p = new ArrayList<String>();
+		p.add("p1");
+		List<String> s = new ArrayList<String>();
+		s.add("s1");
+		s.add("s2");
+		s.add("s3");
+		cities.put(a, new City("Adelaide", 4322, 8));
+		cities.put(m, new City("Melbourne", 9080, 12));
+		cities.put(p, new City("Perth", 743534, 5));
+		cities.put(s, new City("Sydney", 54654, 32));
 		return cities;
 	}
 

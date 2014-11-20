@@ -9,6 +9,7 @@
 <meta name="author" content="">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<!-- <script src="js/jquery.min.js"></script> -->
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
 <script type="text/javascript" src="js/jlinq.js"></script>
@@ -193,10 +194,6 @@ table td {
 						<th>Description</th>
 						<td>{{description}}</td>
 					</tr>
-					<tr>
-						<th>Method</th>
-						<td><span class="label {{verb}}">{{verb}}</span></td>
-					</tr>
 
 					{{#if auth}}
 						<tr>
@@ -209,21 +206,21 @@ table td {
 						<tr>
 							<th colspan=2>Produces</th>
 						</tr>
-						{{#each produces}}
-							<tr>
-								<td colspan=2><code>{{this}}</code></td>
-							</tr>
-						{{/each}}
+						<tr>
+							<td colspan=2>
+								{{#each produces}} <code>{{this}}</code> {{/each}}
+							</td>
+						</tr>
 					{{/if}}
 					{{#if consumes}}
 						<tr>
 							<th colspan=2>Consumes</th>
 						</tr>
-						{{#each consumes}}
-							<tr>
-								<td colspan=2><code>{{this}}</code></td>
-							</tr>
-						{{/each}}
+						<tr>
+							<td colspan=2>
+								{{#each consumes}} <code>{{this}}</code> {{/each}}
+							</td>
+						</tr>
 					{{/if}}
 					{{#if headers}}
 						<tr>
@@ -244,11 +241,6 @@ table td {
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
-								
-							</tr>
-							<tr>
-								<td></td>
-								<td>Type: {{this.type}}</td>
 							</tr>
 							{{#if this.description}}
 							<tr>
@@ -256,6 +248,10 @@ table td {
 								<td>Description: {{this.description}}</td>
 							</tr>
 							{{/if}}
+							<tr>
+								<td></td>
+								<td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json this.jsondocType}}</pre></td>
+							</tr>
 							{{#if this.allowedvalues}}
 							<tr>
 								<td></td>
@@ -279,16 +275,16 @@ table td {
 								<td><code>{{this.name}}</code></td>
 								<td>Required: {{this.required}}</td>
 							</tr>
-							<tr>
-								<td></td>
-								<td>Type: {{this.type}}</td>
-							</tr>
 							{{#if this.description}}
 							<tr>
 								<td></td>
 								<td>Description: {{this.description}}</td>
 							</tr>
 							{{/if}}
+							<tr>
+								<td></td>
+								<td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json this.jsondocType}}</pre></td>
+							</tr>
 							{{#if this.allowedvalues}}
 							<tr>
 								<td></td>
@@ -308,46 +304,20 @@ table td {
 							<th colspan=2>Body object</th>
 						</tr>
 						<tr>
-							<td>Object</td>
-							<td><code>{{bodyobject.object}}</code></td>
+							<td colspan=2>
+								<pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json bodyobject.jsondocType}}</pre>
+							</td>
 						</tr>
-						<tr>
-							<td>Multiple</td>
-							<td>{{bodyobject.multiple}}</td>
-						</tr>
-						{{#if bodyobject.map}}
-							<tr>
-								<td>Map key</td>
-								<td><code>{{bodyobject.mapKeyObject}}</code></td>
-							</tr>
-							<tr>
-								<td>Map value</td>
-								<td><code>{{bodyobject.mapValueObject}}</code></td>
-							</tr>
-						{{/if}}
 					{{/if}}
 					{{#if response}}
 						<tr>
 							<th colspan=2>Response object</th>
 						</tr>
 						<tr>
-							<td>Object</td>
-							<td><code>{{response.object}}</code></td>
+							<td colspan=2>
+								<pre class="prettyprint" style="background-color:inherit; border: none;">{{json response.jsondocType}}</pre>
+							</td>
 						</tr>
-						<tr>
-							<td>Multiple</td>
-							<td>{{response.multiple}}</td>
-						</tr>
-						{{#if response.map}}
-							<tr>
-								<td>Map key</td>
-								<td><code>{{response.mapKeyObject}}</code></td>
-							</tr>
-							<tr>
-								<td>Map value</td>
-								<td><code>{{response.mapValueObject}}</code></td>
-							</tr>
-						{{/if}}
 					{{/if}}
 					{{#if apierrors}}
 						<tr>
@@ -533,12 +503,11 @@ table td {
 	<tr><th colspan=2>Fields</th></tr>
 		{{#each fields}}
 			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
-			<tr><td></td><td>Type: {{type}}</td></tr>
-			<tr><td></td><td>Multiple: {{multiple}}</td></tr>
+			<tr><td></td><td>Required: {{required}}</td></tr>
+			<tr><td></td><td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json jsondocType}}</pre></td></tr>
 			{{#if format}}
 				<tr><td></td><td>Format: {{format}}</td></tr>
 			{{/if}}
-			<tr><td></td><td>Required: {{required}}</td></tr>
 			{{#if allowedvalues}}
 				<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
 			{{/if}}
@@ -546,18 +515,6 @@ table td {
 				<tr><td></td><td>Since version {{supportedversions.since}}</td></tr>
 				{{#if supportedversions.until}}
 					<tr><td></td><td>Until version {{supportedversions.until}}</td></tr>
-				{{/if}}
-			{{/if}}
-			{{#if map}}
-				{{#if this.mapKeyObject}}
-				<tr>	
-					<td></td>
-					<td>Map key: {{this.mapKeyObject}}</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>Map value: {{this.mapValueObject}}</td>
-				</tr>
 				{{/if}}
 			{{/if}}
 		{{/each}}
@@ -583,6 +540,15 @@ table td {
 		});
 		return out;
 	} );
+	
+	function replacer(key, value) {
+	    if (value == null) return undefined;
+	    else return value;
+	}
+	
+	Handlebars.registerHelper('json', function(context) {
+	    return JSON.stringify(context, replacer, 2);
+	});
 	
 	function checkURLExistence() {
 		var value = $("#jsondocfetch").val();
@@ -692,6 +658,9 @@ table td {
 						}
 						$("#testContent").hide();
 						
+						prettyPrint(); // this is needed to pretty print json description of types (return types, parameters, fields, ...)
+						
+						// Playground
 						$('#content a[rel="method"]').each(function() {
 							$(this).click(function() {
 								var method = jlinq.from(api.methods).equals("jsondocId", this.id).first();
@@ -763,6 +732,8 @@ table td {
 						var objectHTML = object(o);
 						$("#content").html(objectHTML);
 						$("#content").show();
+						
+						prettyPrint();
 						
 						$("#testContent").hide();
 					});

@@ -88,71 +88,61 @@ public class ApiObjectDocTest {
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
-				Assert.assertEquals("wildcard", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("list of wildcard", fieldDoc.getJsondocType().getType());
 			}
 			
 			if(fieldDoc.getName().equals("unparametrizedList")) {
-				Assert.assertEquals("undefined", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("list", fieldDoc.getJsondocType().getType());
 			}
 			
 			if(fieldDoc.getName().equals("parametrizedList")) {
-				Assert.assertEquals("string", fieldDoc.getType());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
+				Assert.assertEquals("list of string", fieldDoc.getJsondocType().getType());
 			}
 			
 			if(fieldDoc.getName().equals("name")) {
-				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("string", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("name", fieldDoc.getName());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("true", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("age")) {
-				Assert.assertEquals("integer", fieldDoc.getType());
+				Assert.assertEquals("integer", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("age", fieldDoc.getName());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("avg")) {
-				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("long", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("avg", fieldDoc.getName());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("map")) {
-				Assert.assertEquals("map", fieldDoc.getType());
-				Assert.assertEquals("string", fieldDoc.getMapKeyObject());
-				Assert.assertEquals("integer", fieldDoc.getMapValueObject());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
+				Assert.assertEquals("map", fieldDoc.getJsondocType().getType());
+				Assert.assertEquals("string", fieldDoc.getJsondocType().getMapKey().getType());
+				Assert.assertEquals("integer", fieldDoc.getJsondocType().getMapValue().getType());
 			}
 			
 			if(fieldDoc.getName().equals("LongArray")) {
-				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("array of long", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("LongArray", fieldDoc.getName());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 
 			if(fieldDoc.getName().equals("longArray")) {
-				Assert.assertEquals("long", fieldDoc.getType());
+				Assert.assertEquals("array of long", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("longArray", fieldDoc.getName());
-				Assert.assertEquals("true", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("fooBar")) {
-				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("string", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("foo_bar", fieldDoc.getName());
-				Assert.assertEquals("false", fieldDoc.getMultiple());
 				Assert.assertEquals("false", fieldDoc.getRequired());
 			}
 			
 			if(fieldDoc.getName().equals("version")) {
-				Assert.assertEquals("string", fieldDoc.getType());
+				Assert.assertEquals("string", fieldDoc.getJsondocType().getType());
 				Assert.assertEquals("1.0", fieldDoc.getSupportedversions().getSince());
 				Assert.assertEquals("2.12", fieldDoc.getSupportedversions().getUntil());
 			}
