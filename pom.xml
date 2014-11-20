@@ -37,6 +37,7 @@
 		<module>jsondoc-sample-springmvc</module>
 		<module>jsondoc-sample-external</module>
 		<module>jsondoc-ui</module>
+		<module>jsondoc-maven-plugin</module>
 	</modules>
 
 	<distributionManagement>
@@ -189,6 +190,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>

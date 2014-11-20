@@ -50,19 +50,28 @@ public class JSONDocUtils {
 	 * @return An <code>ApiDoc</code> object
 	 */
 	public static JSONDoc getApiDoc(String version, String basePath, List<String> packages) {
+		return getApiDoc(version, basePath, packages, Thread.currentThread().getContextClassLoader());
+	}
+	
+	public static JSONDoc getApiDoc(String version, String basePath, List<String> packages, ClassLoader cl) {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
-		log.debug("Found " + packages.size() + " package(s) to scan...");
+		if (log.isDebugEnabled()) {
+			log.debug("Found " + packages.size() + " package(s) to scan...");
+		}
 		for (String pkg : packages) {
-			log.debug("Adding package to JSONDoc recursive scan: " + pkg);
-			urls.addAll(ClasspathHelper.forPackage(pkg));
+			if (log.isDebugEnabled()) {
+				log.debug("Adding package to JSONDoc recursive scan: " + pkg);
+			}
+			urls.addAll(ClasspathHelper.forPackage(pkg, cl));
 			filter.includePackage(pkg);
 		}
 
 		reflections = new Reflections(new ConfigurationBuilder()
 			.filterInputsBy(filter)
 			.setUrls(urls)
+			.addClassLoader(cl)
 			);
 		
 		JSONDoc apiDoc = new JSONDoc(version, basePath);
@@ -74,7 +83,9 @@ public class JSONDocUtils {
 	public static Set<ApiDoc> getApiDocs(Set<Class<?>> classes) {
 		Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
 		for (Class<?> controller : classes) {
-			log.debug("Getting JSONDoc for class: " + controller.getName());
+			if (log.isDebugEnabled()) {
+				log.debug("Getting JSONDoc for class: " + controller.getName());
+			}
 			ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
 			if(controller.isAnnotationPresent(ApiVersion.class)) {
 				apiDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(controller.getAnnotation(ApiVersion.class)));
@@ -90,7 +101,9 @@ public class JSONDocUtils {
 	public static Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
 		Set<ApiObjectDoc> pojoDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> pojo : classes) {
-			log.debug("Getting JSONDoc for class: " + pojo.getName());
+			if (log.isDebugEnabled()) {
+				log.debug("Getting JSONDoc for class: " + pojo.getName());
+			}
 			ApiObject annotation = pojo.getAnnotation(ApiObject.class);
 			ApiObjectDoc pojoDoc = ApiObjectDoc.buildFromAnnotation(annotation, pojo);
 			if(pojo.isAnnotationPresent(ApiVersion.class)) {

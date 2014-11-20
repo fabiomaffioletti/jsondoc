@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
+import org.jsondoc.core.annotation.NullClass;
 import org.jsondoc.core.util.JSONDocUtils;
 
 public class ApiParamDoc {
@@ -38,11 +40,38 @@ public class ApiParamDoc {
 		for (int i = 0; i < parametersAnnotations.length; i++) {
 			for (int j = 0; j < parametersAnnotations[i].length; j++) {
 				if (parametersAnnotations[i][j] instanceof ApiParam) {
-					ApiParamDoc apiParamDoc = buildFromAnnotation((ApiParam) parametersAnnotations[i][j], getParamObjects(method, i), paramType);
-					if(apiParamDoc != null) {
+					ApiParam cur = (ApiParam) parametersAnnotations[i][j];
+					String type;
+					if( cur.clazz() != NullClass.class ) {
+						type = getParamObjects(cur.clazz());
+					} else {
+						type = getParamObjects(method, i);
+					}
+					ApiParamDoc apiParamDoc = buildFromAnnotation(cur, type, paramType);
+					if (apiParamDoc != null) {
 						docs.add(apiParamDoc);
 					}
 				}
+			}
+		}
+		ApiParams params = method.getAnnotation(ApiParams.class);
+		if (params != null) {
+			ApiParam[] apiParams = params.apiparams();
+			for (ApiParam cur : apiParams) {
+				if( cur.clazz() == NullClass.class ) {
+					continue;
+				}
+				ApiParamDoc apiParamDoc = buildFromAnnotation(cur, getParamObjects(cur.clazz()), paramType);
+				if (apiParamDoc != null) {
+					docs.add(apiParamDoc);
+				}
+			}
+		}
+		ApiParam standaloneParam = method.getAnnotation(ApiParam.class);
+		if (standaloneParam != null && standaloneParam.clazz() != NullClass.class) {
+			ApiParamDoc apiParamDoc = buildFromAnnotation(standaloneParam, getParamObjects(standaloneParam.clazz()), paramType);
+			if (apiParamDoc != null) {
+				docs.add(apiParamDoc);
 			}
 		}
 
@@ -56,7 +85,7 @@ public class ApiParamDoc {
 			if (generic instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) generic;
 				Type type = parameterizedType.getActualTypeArguments()[0];
-				if(type instanceof WildcardType) {
+				if (type instanceof WildcardType) {
 					return JSONDocUtils.WILDCARD;
 				}
 				Class<?> clazz = (Class<?>) type;
@@ -72,8 +101,15 @@ public class ApiParamDoc {
 		return JSONDocUtils.getObjectNameFromAnnotatedClass(parameter);
 	}
 
+	private static String getParamObjects(Class<?> clazz) {
+		if (clazz.isArray()) {
+			return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz.getComponentType());
+		}
+		return JSONDocUtils.getObjectNameFromAnnotatedClass(clazz);
+	}
+
 	public static ApiParamDoc buildFromAnnotation(ApiParam annotation, String type, ApiParamType paramType) {
-		if(annotation.paramType().equals(paramType)) {
+		if (annotation.paramType().equals(paramType)) {
 			return new ApiParamDoc(annotation.name(), annotation.description(), type, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
 		}
 		return null;
