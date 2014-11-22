@@ -103,7 +103,7 @@ table td {
 			<div class="container-fluid">
 				<a class="brand" href="#">JSONDoc</a>
 				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" />
+					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" value="http://jsondoc.eu01.aws.af.cm/api/jsondoc" />
 					    <button id="getDocButton" class="btn">Get documentation</button>
 					</form>
 			</div>
