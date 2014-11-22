@@ -249,7 +249,7 @@ table td {
 							{{/if}}
 							<tr>
 								<td></td>
-								<td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json this.jsondocType}}</pre></td>
+								<td>Type: <code>{{this.jsondocType.oneLineText}}</code></td>
 							</tr>
 							{{#if this.allowedvalues}}
 							<tr>
@@ -282,7 +282,7 @@ table td {
 							{{/if}}
 							<tr>
 								<td></td>
-								<td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json this.jsondocType}}</pre></td>
+								<td>Type: <code>{{this.jsondocType.oneLineText}}</code></td>
 							</tr>
 							{{#if this.allowedvalues}}
 							<tr>
@@ -303,9 +303,7 @@ table td {
 							<th colspan=2>Body object</th>
 						</tr>
 						<tr>
-							<td colspan=2>
-								<pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json bodyobject.jsondocType}}</pre>
-							</td>
+							<td colspan=2><code>{{bodyobject.jsondocType.oneLineText}}</code></td>
 						</tr>
 					{{/if}}
 					{{#if response}}
@@ -313,9 +311,7 @@ table td {
 							<th colspan=2>Response object</th>
 						</tr>
 						<tr>
-							<td colspan=2>
-								<pre class="prettyprint" style="background-color:inherit; border: none;">{{json response.jsondocType}}</pre>
-							</td>
+							<td colspan=2><code>{{response.jsondocType.oneLineText}}</code></td>
 						</tr>
 					{{/if}}
 					{{#if apierrors}}
@@ -503,7 +499,7 @@ table td {
 		{{#each fields}}
 			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
 			<tr><td></td><td>Required: {{required}}</td></tr>
-			<tr><td></td><td><pre class="prettyprint" style="background-color:inherit; border: none; margin-bottom: 0;">{{json jsondocType}}</pre></td></tr>
+			<tr><td></td><td>Type: <code>{{jsondocType.oneLineText}}</code></td></tr>
 			{{#if format}}
 				<tr><td></td><td>Format: {{format}}</td></tr>
 			{{/if}}
@@ -657,9 +653,6 @@ table td {
 						}
 						$("#testContent").hide();
 						
-						prettyPrint(); // this is needed to pretty print json description of types (return types, parameters, fields, ...)
-						
-						// Playground
 						$('#content a[rel="method"]').each(function() {
 							$(this).click(function() {
 								var method = jlinq.from(api.methods).equals("jsondocId", this.id).first();
@@ -731,8 +724,6 @@ table td {
 						var objectHTML = object(o);
 						$("#content").html(objectHTML);
 						$("#content").show();
-						
-						prettyPrint();
 						
 						$("#testContent").hide();
 					});

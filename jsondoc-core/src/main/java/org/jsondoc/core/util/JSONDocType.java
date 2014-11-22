@@ -22,6 +22,24 @@ public class JSONDocType {
 	public void addItemToType(String item) {
 		this.type.add(item);
 	}
+	
+	public String getOneLineText() {
+		StringBuffer stringType = new StringBuffer();
+		for (int i = 0; i < type.size(); i++) {
+			stringType.append(type.get(i));
+			if(i < type.size() - 1) {
+				stringType.append(" of ");
+			}
+		}
+		if(mapKey != null && mapValue != null) {
+			stringType.append("[");
+			stringType.append(mapKey.getOneLineText());
+			stringType.append(", ");
+			stringType.append(mapValue.getOneLineText());
+			stringType.append("]");
+		}
+		return stringType.toString();
+	}
 
 	public String getType() {
 		StringBuffer stringType = new StringBuffer();

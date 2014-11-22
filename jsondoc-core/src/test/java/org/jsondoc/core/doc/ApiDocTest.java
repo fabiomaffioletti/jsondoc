@@ -170,48 +170,48 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/name")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("name")) {
-						Assert.assertEquals("string", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("string", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/age")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("age")) {
-						Assert.assertEquals("integer", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("integer", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/avg")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("long", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("avg")) {
-						Assert.assertEquals("long", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/map")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("map", apiMethodDoc.getResponse().getJsondocType().getType());
+				Assert.assertEquals("map[string, integer]", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getMapKey().getType());
 				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getMapValue().getType());
-				Assert.assertEquals("map", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("map[string, integer]", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getMapKey().getType());
 				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getMapValue().getType());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("map")) {
-						Assert.assertEquals("map", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("map[string, integer]", apiParamDoc.getJsondocType().getOneLineText());
 						//TODO there is no check on the map key and value objects
 					}
 				}
@@ -219,11 +219,11 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/parametrizedList")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("list of string", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("list of string", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("list of string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("list of string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("parametrizedList")) {
-						Assert.assertEquals("list of string", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("list of string", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 				
@@ -231,8 +231,8 @@ public class ApiDocTest {
 
 //			if (apiMethodDoc.getPath().equals("/unparametrizedList")) {
 //				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-//				Assert.assertEquals("undefined", apiMethodDoc.getResponse().getJsondocType().getJsondocType().getType());
-//				Assert.assertEquals("undefined", apiMethodDoc.getBodyobject().getJsondocType().getType());
+//				Assert.assertEquals("undefined", apiMethodDoc.getResponse().getJsondocType().getJsondocType().getOneLineText());
+//				Assert.assertEquals("undefined", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 //				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
 //				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 //					if(apiParamDoc.getName().equals("unparametrizedList")) {
@@ -243,33 +243,33 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/wildcardParametrizedList")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("list of wildcard", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("list of wildcard", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("list of wildcard", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("list of wildcard", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("wildcardParametrizedList")) {
-						Assert.assertEquals("list of wildcard", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("list of wildcard", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/LongArray")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("LongArray")) {
-						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/longArray")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getType());
-				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getType());
+				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("longArray")) {
-						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getType());
+						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
@@ -282,12 +282,12 @@ public class ApiDocTest {
 			
 			if (apiMethodDoc.getPath().equals("/child")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("child", apiMethodDoc.getResponse().getJsondocType().getType());
+				Assert.assertEquals("child", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
 			
 			if (apiMethodDoc.getPath().equals("/pizza")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("customPizzaObject", apiMethodDoc.getResponse().getJsondocType().getType());
+				Assert.assertEquals("customPizzaObject", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
 
 		}
