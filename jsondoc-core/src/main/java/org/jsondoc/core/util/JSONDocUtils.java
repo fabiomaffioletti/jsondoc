@@ -39,7 +39,6 @@ import org.reflections.util.FilterBuilder;
 
 public class JSONDocUtils {
 	public static final String UNDEFINED = "undefined";
-	public static final String WILDCARD = "wildcard";
 	public static final String ANONYMOUS = "anonymous";
 	private static Reflections reflections = null;
 	
