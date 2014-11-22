@@ -21,6 +21,8 @@ import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.pojo.Child;
+import org.jsondoc.core.util.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -92,6 +94,18 @@ public class ApiDocTest {
 		String version(@ApiParam(name = "version", paramType = ApiParamType.PATH) String version, @ApiBodyObject String body) {
 			return null;
 		}
+		
+		@ApiMethod(path="/child", description = "A method returning a child", verb = ApiVerb.GET)
+		public @ApiResponseObject 
+		Child child(@ApiParam(name = "child", paramType = ApiParamType.PATH) Child child, @ApiBodyObject Child body) {
+			return null;
+		}
+		
+		@ApiMethod(path="/pizza", description = "A method returning a pizza", verb = ApiVerb.GET)
+		public @ApiResponseObject 
+		Pizza pizza(@ApiParam(name = "pizza", paramType = ApiParamType.PATH) Pizza pizza, @ApiBodyObject Pizza body) {
+			return null;
+		}
 
 	}
 	
@@ -156,48 +170,48 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/name")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("string", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("name")) {
-						Assert.assertEquals("string", apiParamDoc.getType());
+						Assert.assertEquals("string", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/age")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("integer", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getObject());
+				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("age")) {
-						Assert.assertEquals("integer", apiParamDoc.getType());
+						Assert.assertEquals("integer", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/avg")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("long", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getObject());
+				Assert.assertEquals("long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("avg")) {
-						Assert.assertEquals("long", apiParamDoc.getType());
+						Assert.assertEquals("long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/map")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("map", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("string", apiMethodDoc.getResponse().getMapKeyObject());
-				Assert.assertEquals("integer", apiMethodDoc.getResponse().getMapValueObject());
-				Assert.assertEquals("map", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getMapKeyObject());
-				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getMapValueObject());
+				Assert.assertEquals("map[string, integer]", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getMapKey().getType());
+				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getMapValue().getType());
+				Assert.assertEquals("map[string, integer]", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getMapKey().getType());
+				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getMapValue().getType());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("map")) {
-						Assert.assertEquals("map", apiParamDoc.getType());
+						Assert.assertEquals("map[string, integer]", apiParamDoc.getJsondocType().getOneLineText());
 						//TODO there is no check on the map key and value objects
 					}
 				}
@@ -205,66 +219,57 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/parametrizedList")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("string", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
-				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				Assert.assertEquals("list of string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("list of string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("parametrizedList")) {
-						Assert.assertEquals("string", apiParamDoc.getType());
+						Assert.assertEquals("list of string", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 				
 			}
 
-			if (apiMethodDoc.getPath().equals("/unparametrizedList")) {
-				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("undefined", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
-				Assert.assertEquals("undefined", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
-				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
-					if(apiParamDoc.getName().equals("unparametrizedList")) {
-						Assert.assertEquals("undefined", apiParamDoc.getType());
-					}
-				}
-			}
+//			if (apiMethodDoc.getPath().equals("/unparametrizedList")) {
+//				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+//				Assert.assertEquals("undefined", apiMethodDoc.getResponse().getJsondocType().getJsondocType().getOneLineText());
+//				Assert.assertEquals("undefined", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
+//				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+//				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+//					if(apiParamDoc.getName().equals("unparametrizedList")) {
+//						Assert.assertEquals("undefined", apiParamDoc.getType());
+//					}
+//				}
+//			}
 
 			if (apiMethodDoc.getPath().equals("/wildcardParametrizedList")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("wildcard", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
-				Assert.assertEquals("wildcard", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				Assert.assertEquals("list of wildcard", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("list of wildcard", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("wildcardParametrizedList")) {
-						Assert.assertEquals("wildcard", apiParamDoc.getType());
+						Assert.assertEquals("list of wildcard", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/LongArray")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("long", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
-				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("LongArray")) {
-						Assert.assertEquals("long", apiParamDoc.getType());
+						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
 
 			if (apiMethodDoc.getPath().equals("/longArray")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-				Assert.assertEquals("long", apiMethodDoc.getResponse().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getResponse().getMultiple());
-				Assert.assertEquals("long", apiMethodDoc.getBodyobject().getObject());
-				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
+				Assert.assertEquals("array of long", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("array of long", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("longArray")) {
-						Assert.assertEquals("long", apiParamDoc.getType());
+						Assert.assertEquals("array of long", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
 			}
@@ -273,6 +278,16 @@ public class ApiDocTest {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
 				Assert.assertEquals("1.0", apiMethodDoc.getSupportedversions().getSince());
 				Assert.assertEquals("2.12", apiMethodDoc.getSupportedversions().getUntil());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/child")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("child", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/pizza")) {
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("customPizzaObject", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
 
 		}
