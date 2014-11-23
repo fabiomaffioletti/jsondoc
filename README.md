@@ -10,6 +10,3 @@ Official website: http://jsondoc.org
 3. Do not develop multiple features or bugfixes in the same branch, each feature/bugfix should have its branch and its code
 4. Before submitting a pull request, please write unit tests. I think it's fair to say that pull requests without unit tests will not be merged
 5. Submit the pull request
-
--------
-[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc)
