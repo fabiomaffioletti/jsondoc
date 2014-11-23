@@ -1,6 +1,8 @@
 # JSONDoc
 Official website: http://jsondoc.org
 
+[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc)
+
 ## Want to contribute? Please follow these few guidelines:
 
 1. Open issue on Github so that we can discuss it
