@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Api(name = "city services", description = "Methods for managing cities")
+@Api(name = "city services", description = "Methods for managing cities", group = "Geography")
 @Controller
 @ApiVersion(since = "1.0")
 @RequestMapping(value = "/cities")

@@ -1,12 +1,15 @@
 package org.jsondoc.core.pojo;
 
+import java.util.Map;
 import java.util.Set;
 
 public class JSONDoc {
 	private String version;
 	private String basePath;
-	private Set<ApiDoc> apis;
-	private Set<ApiObjectDoc> objects;
+	// The key is the group these apis belongs to. It can be empty.
+	private Map<String, Set<ApiDoc>> apis;
+	// The key is the group these objects belongs to. It can be empty.
+	private Map<String, Set<ApiObjectDoc>> objects;
 
 	public JSONDoc(String version, String basePath) {
 		super();
@@ -22,19 +25,19 @@ public class JSONDoc {
 		this.version = version;
 	}
 
-	public Set<ApiDoc> getApis() {
-		return apis;
-	}
-
-	public void setApis(Set<ApiDoc> apis) {
-		this.apis = apis;
-	}
-
-	public Set<ApiObjectDoc> getObjects() {
+	public Map<String, Set<ApiObjectDoc>> getObjects() {
 		return objects;
 	}
 
-	public void setObjects(Set<ApiObjectDoc> objects) {
+	public Map<String, Set<ApiDoc>> getApis() {
+		return apis;
+	}
+
+	public void setApis(Map<String, Set<ApiDoc>> apis) {
+		this.apis = apis;
+	}
+
+	public void setObjects(Map<String, Set<ApiObjectDoc>> objects) {
 		this.objects = objects;
 	}
 

@@ -13,11 +13,13 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private List<ApiMethodDoc> methods;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
+	private String group;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
 		apiDoc.setDescription(api.description());
 		apiDoc.setName(api.name());
+		apiDoc.setGroup(api.group());
 		return apiDoc;
 	}
 
@@ -72,6 +74,14 @@ public class ApiDoc implements Comparable<ApiDoc> {
 
 	public void setAuth(ApiAuthDoc auth) {
 		this.auth = auth;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 }

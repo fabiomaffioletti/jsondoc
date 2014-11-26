@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Api(name="country services", description="Methods for managing countries")
+@Api(name="country services", description="Methods for managing countries", group = "Geography")
 @Controller
 @ApiVersion(since = "1.0", until = "2.12")
 @RequestMapping(value="/countries")

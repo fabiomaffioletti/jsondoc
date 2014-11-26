@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
@@ -65,8 +67,9 @@ public class JSONDocUtils {
 			);
 		
 		JSONDoc apiDoc = new JSONDoc(version, basePath);
-		apiDoc.setApis(getApiDocs(reflections.getTypesAnnotatedWith(Api.class)));
-		apiDoc.setObjects(getApiObjectDocs(reflections.getTypesAnnotatedWith(ApiObject.class)));
+		apiDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class)));
+		apiDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class)));
+		
 		return apiDoc;
 	}
 	
@@ -86,6 +89,21 @@ public class JSONDocUtils {
 		return apiDocs;
 	}
 	
+	public static Map<String, Set<ApiDoc>> getApiDocsMap(Set<Class<?>> classes) {
+		Map<String, Set<ApiDoc>> apiDocsMap = new TreeMap<String, Set<ApiDoc>>();
+		Set<ApiDoc> apiDocSet = getApiDocs(classes);
+		for (ApiDoc apiDoc : apiDocSet) {
+			if(apiDocsMap.containsKey(apiDoc.getGroup())) {
+				apiDocsMap.get(apiDoc.getGroup()).add(apiDoc);
+			} else {
+				Set<ApiDoc> groupedPojoDocs = new TreeSet<ApiDoc>();
+				groupedPojoDocs.add(apiDoc);
+				apiDocsMap.put(apiDoc.getGroup(), groupedPojoDocs);
+			}
+		}
+		return apiDocsMap;
+	}
+	
 	public static Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
 		Set<ApiObjectDoc> pojoDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> pojo : classes) {
@@ -101,6 +119,21 @@ public class JSONDocUtils {
 			}
 		}
 		return pojoDocs;
+	}
+	
+	public static Map<String, Set<ApiObjectDoc>> getApiObjectsMap(Set<Class<?>> classes) {
+		Map<String, Set<ApiObjectDoc>> objectsMap = new TreeMap<String, Set<ApiObjectDoc>>();
+		Set<ApiObjectDoc> apiObjectDocSet = getApiObjectDocs(classes); 
+		for (ApiObjectDoc apiObjectDoc : apiObjectDocSet) {
+			if(objectsMap.containsKey(apiObjectDoc.getGroup())) {
+				objectsMap.get(apiObjectDoc.getGroup()).add(apiObjectDoc);
+			} else {
+				Set<ApiObjectDoc> groupedPojoDocs = new TreeSet<ApiObjectDoc>();
+				groupedPojoDocs.add(apiObjectDoc);
+				objectsMap.put(apiObjectDoc.getGroup(), groupedPojoDocs);
+			}
+		}
+		return objectsMap;
 	}
 	
 	private static List<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {

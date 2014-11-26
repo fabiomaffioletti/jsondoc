@@ -8,7 +8,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+<script src="js/jquery-1.7.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
 <script type="text/javascript" src="js/jlinq.js"></script>
@@ -103,7 +104,7 @@ table td {
 			<div class="container-fluid">
 				<a class="brand" href="#">JSONDoc</a>
 				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" value="http://jsondoc.eu01.aws.af.cm/api/jsondoc" />
+					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" />
 					    <button id="getDocButton" class="btn">Get documentation</button>
 					</form>
 			</div>
@@ -117,6 +118,7 @@ table td {
 				<div id="maindiv" style="display:none;"></div>
 				<div class="well sidebar-nav" id="apidiv" style="display:none;"></div>
 				<div class="well sidebar-nav" id="objectdiv" style="display:none;"></div>
+				<div class="well sidebar-nav" id="objectmapdiv" style="display:none;"></div>
 			</div>
 
 			<div class="span5">
@@ -141,19 +143,33 @@ table td {
 <script id="apis" type="text/x-handlebars-template">
 <ul class="nav nav-list">
 	<li class="nav-header">APIs</li>
-	{{#apis}}
-		<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
-	{{/apis}}
 </ul>
+{{#eachInMap apis}}
+	<ul class="nav nav-list">
+		{{#if key}}
+		<li class="nav-header">{{key}}</li>
+		{{/if}}
+		{{#each value}}
+			<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
+		{{/each}}
+	</ul>
+{{/eachInMap}}
 </script>
 
 <script id="objects" type="text/x-handlebars-template">
 <ul class="nav nav-list">
 	<li class="nav-header">Objects</li>
-	{{#objects}}
-		<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
-	{{/objects}}
 </ul>
+{{#eachInMap objects}}
+	<ul class="nav nav-list">
+		{{#if key}}
+		<li class="nav-header">{{key}}</li>
+		{{/if}}
+		{{#each value}}
+			<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
+		{{/each}}
+	</ul>
+{{/eachInMap}}
 </script>
 
 <script id="methods" type="text/x-handlebars-template">
@@ -528,7 +544,7 @@ table td {
 		}
 	});
 
-	Handlebars.registerHelper( 'eachInMap', function ( map, block ) {
+	Handlebars.registerHelper('eachInMap', function ( map, block ) {
 		var out = '';
 		Object.keys( map ).map(function( prop ) {
 			out += block.fn( {key: prop, value: map[ prop ]} );
@@ -636,9 +652,17 @@ table td {
 				$("#apidiv").html(apisHTML);
 				$("#apidiv").show();
 				
+				// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
+				var plainApis = [];
+				$.each(data.apis, function(i, v) {
+					$.each(v, function(j, p) {
+						plainApis.push(p);	
+					});
+				});
+				
 				$("#apidiv a").each(function() {
 					$(this).click(function() {
-						var api = jlinq.from(data.apis).equals("jsondocId", this.id).first();
+						var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
 						var methods = Handlebars.compile($("#methods").html());
 						var methodsHTML = methods(api);
 						$("#content").html(methodsHTML);
@@ -717,9 +741,17 @@ table td {
 				$("#objectdiv").html(objectsHTML);
 				$("#objectdiv").show();
 				
+				// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
+				var plainObjects = [];
+				$.each(data.objects, function(i, v) {
+					$.each(v, function(j, p) {
+						plainObjects.push(p);	
+					});
+				});
+				
 				$("#objectdiv a").each(function() {
 					$(this).click(function() {
-						var o = jlinq.from(data.objects).equals("jsondocId", this.id).first();
+						var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
 						var object = Handlebars.compile($("#object").html());
 						var objectHTML = object(o);
 						$("#content").html(objectHTML);

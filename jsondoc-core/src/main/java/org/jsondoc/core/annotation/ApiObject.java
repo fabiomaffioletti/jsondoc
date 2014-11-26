@@ -36,4 +36,11 @@ public @interface ApiObject {
 	 */
 	public boolean show() default true;
 	
+	/**
+	 * With this it is possible to specify the logical grouping of this object. For example, if you have objects like "city", "country", "continent", "author" and "book", you can say that "city"
+	 * "country" and "continent" are grouped in the "Geography" group, and "author" and "book" are grouped in the "Library" group.  
+	 * @return
+	 */
+	public String group() default "";
+	
 }

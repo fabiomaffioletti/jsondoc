@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 
-@ApiObject(name = "country")
+@ApiObject(name = "country", group = "Geography")
 @XmlRootElement
 public class Country extends Location {
 

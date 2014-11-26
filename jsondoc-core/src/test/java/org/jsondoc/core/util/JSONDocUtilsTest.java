@@ -23,8 +23,20 @@ public class JSONDocUtilsTest {
 	@Test
 	public void getJSONDoc() throws JsonGenerationException, JsonMappingException, IOException {
 		JSONDoc jsondoc = JSONDocUtils.getApiDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"));
-		Assert.assertEquals(2, jsondoc.getApis().size());
-		Assert.assertEquals(4, jsondoc.getObjects().size());
+		Assert.assertEquals(1, jsondoc.getApis().size());
+		Integer countApis = 0;
+		for (String string : jsondoc.getApis().keySet()) {
+			countApis += jsondoc.getApis().get(string).size();
+		}
+		Assert.assertEquals(2, countApis.intValue());
+		
+		Assert.assertEquals(2, jsondoc.getObjects().size());
+		Integer countObjects = 0;
+		for (String string : jsondoc.getObjects().keySet()) {
+			countObjects += jsondoc.getObjects().get(string).size();
+		}
+		Assert.assertEquals(4, countObjects.intValue());
+		
 		log.debug(objectMapper.writeValueAsString(jsondoc));
 	}
 	

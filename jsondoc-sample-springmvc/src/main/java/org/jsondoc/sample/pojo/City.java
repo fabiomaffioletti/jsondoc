@@ -7,7 +7,7 @@ import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.annotation.ApiVersion;
 
-@ApiObject(name = "city")
+@ApiObject(name = "city", group = "Geography")
 @ApiVersion(since = "1.3", until = "1.4")
 @XmlRootElement
 public class City extends Location {

@@ -28,4 +28,10 @@ public @interface Api {
 	 */
 	public String name();
 
+	/**
+	 * With this it is possible to specify the logical grouping of this API. For example, if you have APIs like city services or country services, you can group them
+	 * in the "Geography" group, while if you have author services and book services you can group them in the "Library" group.
+	 * @return
+	 */
+	public String group() default "";
 }

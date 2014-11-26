@@ -17,6 +17,7 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private List<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
+	private String group;
 
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
@@ -50,6 +51,7 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		apiObjectDoc.setName(annotation.name());
 		apiObjectDoc.setDescription(annotation.description());
 		apiObjectDoc.setFields(fieldDocs);
+		apiObjectDoc.setGroup(annotation.group());
 
 		return apiObjectDoc;
 	}
@@ -96,6 +98,14 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 
 	public void setAllowedvalues(String[] allowedvalues) {
 		this.allowedvalues = allowedvalues;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 	@Override
