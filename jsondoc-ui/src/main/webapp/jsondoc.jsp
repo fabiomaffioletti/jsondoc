@@ -8,7 +8,6 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
 <script src="js/jquery-1.7.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
