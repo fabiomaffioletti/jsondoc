@@ -136,7 +136,7 @@ public class JSONDocTypeBuilderTest {
 		JSONDocType jsonDocType = new JSONDocType();
 		
 		Method method = JSONDocTypeBuilderTest.class.getMethod("getString");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("string", jsonDocType.getType());
@@ -145,7 +145,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("integer", jsonDocType.getType());
@@ -154,7 +154,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getInt");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("int", jsonDocType.getType());
@@ -163,7 +163,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getLong");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("long", jsonDocType.getType());
@@ -172,7 +172,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getlong");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("long", jsonDocType.getType());
@@ -181,7 +181,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListString");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("list of string", jsonDocType.getType());
@@ -190,7 +190,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListSetString");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("list of set of string", jsonDocType.getType());
@@ -199,7 +199,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getStringArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of string", jsonDocType.getType());
@@ -208,7 +208,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getIntegerArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of integer", jsonDocType.getType());
@@ -217,7 +217,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListOfStringArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of list of string", jsonDocType.getType());
@@ -226,7 +226,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getSetOfStringArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of set of string", jsonDocType.getType());
@@ -235,7 +235,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getList");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("list", jsonDocType.getType());
@@ -244,7 +244,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListOfWildcard");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("list of wildcard", jsonDocType.getType());
@@ -253,7 +253,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListOfWildcardArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of list of wildcard", jsonDocType.getType());
@@ -262,7 +262,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getListArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of list", jsonDocType.getType());
@@ -271,7 +271,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getSetArray");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("array of set", jsonDocType.getType());
@@ -280,7 +280,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMap");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -289,7 +289,7 @@ public class JSONDocTypeBuilderTest {
 		
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getHashMap");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("hashmap", jsonDocType.getType());
@@ -298,7 +298,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapStringInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -309,7 +309,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapListOfStringInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -320,7 +320,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapStringSetOfInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -331,7 +331,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapListOfStringSetOfInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -342,7 +342,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapListOfSetOfStringSetOfInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -353,7 +353,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapWildcardInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -364,7 +364,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapWildcardWildcard");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -375,7 +375,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapListOfWildcardWildcard");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -386,7 +386,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapMapInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());
@@ -397,7 +397,7 @@ public class JSONDocTypeBuilderTest {
 
 		jsonDocType = new JSONDocType();
 		method = JSONDocTypeBuilderTest.class.getMethod("getMapMapStringLongInteger");
-		JSONDocTypeBuilder.reflex(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("map", jsonDocType.getType());

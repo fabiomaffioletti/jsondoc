@@ -15,7 +15,7 @@ public class ApiBodyObjectDoc {
 	public static ApiBodyObjectDoc buildFromAnnotation(Method method) {
 		Integer index = getApiBodyObjectIndex(method);
 		if (index != -1) {
-			return new ApiBodyObjectDoc(JSONDocTypeBuilder.reflex(new JSONDocType(), method.getParameterTypes()[index], method.getGenericParameterTypes()[index]));
+			return new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[index], method.getGenericParameterTypes()[index]));
 		}
 		return null;
 	}

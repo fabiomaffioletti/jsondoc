@@ -14,7 +14,7 @@ public class JSONDocTypeBuilder {
 	private static final String WILDCARD = "wildcard";
 	private static final String ARRAY = "array";
 
-	public static JSONDocType reflex(JSONDocType jsondocType, Class<?> clazz, Type type) {
+	public static JSONDocType build(JSONDocType jsondocType, Class<?> clazz, Type type) {
 
 		if (Map.class.isAssignableFrom(clazz)) {
 			jsondocType.addItemToType(getCustomClassName(clazz));
@@ -31,7 +31,7 @@ public class JSONDocTypeBuilder {
 				} else if (mapKeyType instanceof WildcardType) {
 					jsondocType.setMapKey(new JSONDocType(WILDCARD));
 				} else {
-					jsondocType.setMapKey(reflex(jsondocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
+					jsondocType.setMapKey(build(jsondocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
 				}
 
 				if (mapValueType instanceof Class) {
@@ -39,7 +39,7 @@ public class JSONDocTypeBuilder {
 				} else if (mapValueType instanceof WildcardType) {
 					jsondocType.setMapValue(new JSONDocType(WILDCARD));
 				} else {
-					jsondocType.setMapValue(reflex(jsondocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
+					jsondocType.setMapValue(build(jsondocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
 				}
 
 			}
@@ -54,10 +54,10 @@ public class JSONDocTypeBuilder {
 				} else if (parametrizedType instanceof WildcardType) {
 					jsondocType.addItemToType(WILDCARD);
 				} else {
-					return reflex(jsondocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType);
+					return build(jsondocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType);
 				}
 			} else if (type instanceof GenericArrayType) {
-				return reflex(jsondocType, clazz, ((GenericArrayType) type).getGenericComponentType());
+				return build(jsondocType, clazz, ((GenericArrayType) type).getGenericComponentType());
 			} else {
 				jsondocType.addItemToType(getCustomClassName(clazz));
 			}
@@ -65,7 +65,7 @@ public class JSONDocTypeBuilder {
 		} else if (clazz.isArray()) {
 			jsondocType.addItemToType(ARRAY);
 			Class<?> componentType = clazz.getComponentType();
-			return reflex(jsondocType, componentType, type);
+			return build(jsondocType, componentType, type);
 
 		} else {
 			jsondocType.addItemToType(getCustomClassName(clazz));

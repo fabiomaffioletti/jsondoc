@@ -12,7 +12,7 @@ public class ApiResponseObjectDoc {
 	private JSONDocType jsondocType;
 
 	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
-		return new ApiResponseObjectDoc(JSONDocTypeBuilder.reflex(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
+		return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
 	}
 
 	public ApiResponseObjectDoc(JSONDocType jsondocType) {

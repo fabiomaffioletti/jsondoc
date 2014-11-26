@@ -26,7 +26,7 @@ public class ApiObjectFieldDoc {
 			apiPojoFieldDoc.setName(field.getName());
 		}
 		apiPojoFieldDoc.setDescription(annotation.description());
-		apiPojoFieldDoc.setJsondocType(JSONDocTypeBuilder.reflex(new JSONDocType(), field.getType(), field.getGenericType()));
+		apiPojoFieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
 		if (field.getType().isEnum()) {
 			apiPojoFieldDoc.setAllowedvalues(JSONDocUtils.enumConstantsToStringArray(field.getType().getEnumConstants()));

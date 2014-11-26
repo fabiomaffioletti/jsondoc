@@ -50,7 +50,7 @@ public class ApiParamDoc {
 	private static JSONDocType getJSONDocType(Method method, Integer index) {
 		Class<?> type = method.getParameterTypes()[index];
 		Type genericType = method.getGenericParameterTypes()[index];
-		return JSONDocTypeBuilder.reflex(new JSONDocType(), type, genericType);
+		return JSONDocTypeBuilder.build(new JSONDocType(), type, genericType);
 	}
 
 	public static ApiParamDoc buildFromAnnotation(ApiParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
