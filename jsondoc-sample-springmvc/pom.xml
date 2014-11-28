@@ -196,6 +196,23 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jsondoc</groupId>
+				<artifactId>jsondoc-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<configuration>
+					<version>1.1</version>
+					<basePath>http://localhost:8080/api</basePath>
+					<packages>
+						<package>org.jsondoc.sample.controller</package>
+						<package>org.jsondoc.sample.pojo</package>
+						<package>com.sample</package>
+					</packages>
+					<outputFile>/tmp/jsondoc.json</outputFile>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 
 		<resources>
