@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jsondoc</groupId>
@@ -36,8 +37,8 @@
 		<module>jsondoc-sample-springmvc</module>
 		<module>jsondoc-sample-external</module>
 		<module>jsondoc-ui</module>
-    	<module>jsondoc-maven-plugin</module>
-  </modules>
+		<module>jsondoc-maven-plugin</module>
+	</modules>
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -83,6 +84,13 @@
 				<version>0.9.9</version>
 			</dependency>
 
+			<!-- IO -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+
 			<!-- Json -->
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
@@ -126,11 +134,11 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -208,9 +216,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.8.1</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
+				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
