@@ -8,40 +8,34 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
 <script type="text/javascript" src="js/jlinq.js"></script>
 <script type="text/javascript" src="js/prettify.js"></script>
-<script src="js/bootstrap-button.js"></script>
 
 <!-- Le styles -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.css" rel="stylesheet" >
 <style type="text/css">
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
 
-.sidebar-nav {
-	padding: 9px 0;
-}
-
 .GET {
-	padding-top : 3px;
+	padding-top : 5px;
 	background-color: #468847;
 }
 .POST {
-	padding-top : 3px;
+	padding-top : 5px;
 	background-color: #3A87AD;
 }
 .PUT {
-	padding-top : 3px;
+	padding-top : 5px;
 	background-color: #F89406;
 }
 .DELETE {
-	padding-top : 3px;
+	padding-top : 5px;
 	background-color: #B94A48;
 }
 
@@ -88,7 +82,6 @@ table td {
 	word-wrap: break-word;
 }
 </style>
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -98,37 +91,37 @@ table td {
 
 <body>
 
-	<div class="navbar navbar-fixed-top navbar-inverse">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<a class="brand" href="#">JSONDoc</a>
-				    <form class="navbar-form pull-left">
-					    <input id="jsondocfetch" class="span5" type="text" placeholder="Insert here the JSONDoc URL" autocomplete="off" value="http://jsondoc.eu01.aws.af.cm/api/jsondoc" />
-					    <button id="getDocButton" class="btn">Get documentation</button>
-					</form>
-			</div>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+		    	<a class="navbar-brand" href="#">JSONDoc</a>
+    		</div>
+    		<form class="navbar-form navbar-left col-md-8" role="search">
+				<div class="form-group">
+		        	<input id="jsondocfetch" type="text" class="form-control" style="width:350px" placeholder="Insert here the JSONDoc URL" autocomplete="off">
+		        </div>
+		        <button id="getDocButton" class="btn btn-default">Get documentation</button>
+		    </form>
 		</div>
-	</div>
+	</nav>
 
 	<div class="container-fluid">
-		<div class="row-fluid">
+		<div class="row">
 			
-			<div class="span3">
+			<div class="col-md-3">
 				<div id="maindiv" style="display:none;"></div>
-				<div class="well sidebar-nav" id="apidiv" style="display:none;"></div>
-				<div class="well sidebar-nav" id="objectdiv" style="display:none;"></div>
-				<div class="well sidebar-nav" id="objectmapdiv" style="display:none;"></div>
+				<div id="apidiv" style="display:none;"></div>
+				<div id="objectdiv" style="display:none;"></div>
 			</div>
 
-			<div class="span5">
+			<div class="col-md-5">
 				<div id="content"></div>			
 			</div>
 			
-			<div class="span4">
+			<div class="col-md-4">
 				<div id="testContent"></div>			
 			</div>
 		</div>
-
 	</div>
 
 <script id="main" type="text/x-handlebars-template">
@@ -140,35 +133,43 @@ table td {
 </script>
 
 <script id="apis" type="text/x-handlebars-template">
-<ul class="nav nav-list">
-	<li class="nav-header">APIs</li>
-</ul>
-{{#eachInMap apis}}
-	<ul class="nav nav-list">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">API</h3>
+	</div>
+	<div class="panel-body">
+	{{#eachInMap apis}}
+	<ul class="list-unstyled">
 		{{#if key}}
-		<li class="nav-header">{{key}}</li>
+		<li style="text-transform: uppercase;">{{key}}</li>
 		{{/if}}
 		{{#each value}}
 			<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
 		{{/each}}
 	</ul>
-{{/eachInMap}}
+	{{/eachInMap}}	
+	</div>
+</div>
 </script>
 
 <script id="objects" type="text/x-handlebars-template">
-<ul class="nav nav-list">
-	<li class="nav-header">Objects</li>
-</ul>
-{{#eachInMap objects}}
-	<ul class="nav nav-list">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Objects</h3>
+	</div>
+	<div class="panel-body">
+	{{#eachInMap objects}}
+	<ul class="list-unstyled">
 		{{#if key}}
-		<li class="nav-header">{{key}}</li>
+		<li style="text-transform: uppercase;">{{key}}</li>
 		{{/if}}
 		{{#each value}}
 			<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
 		{{/each}}
 	</ul>
-{{/eachInMap}}
+	{{/eachInMap}}
+	</div>
+</div>
 </script>
 
 <script id="methods" type="text/x-handlebars-template">
@@ -178,16 +179,18 @@ table td {
   <small><span id="apiSupportedVersions"></span></small>
 </blockquote>
 
-<div class="accordion" id="accordion">
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{#methods}}
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<span class="label pull-right {{verb}}" style="margin-right: 5px; margin-top: 8px;">{{verb}}</span>
-			<a href="#_{{jsondocId}}" id="{{jsondocId}}" rel="method" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle">{{path}}</a>
+	<div class="panel panel-default">
+		<div class="panel-heading" id="{{jsondocId}}">
+			<h4 class="panel-title">
+				<span class="label pull-right {{verb}}">{{verb}}</span>
+				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">{{path}}</a>
+			</h4>
 		</div>
-		<div class="accordion-body collapse" id="_{{jsondocId}}">
-			<div class="accordion-inner">
-				<table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
+		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+			<div class="panel-body">
+				<table class="table table-condensed table-bordered" style="table-layout: fixed;">
 					<tr>
 						<th style="width:18%;">Path</th>
 						<td><code>{{path}}</code></td>
@@ -354,14 +357,13 @@ table td {
   <small>{{path}}</small>
 </blockquote>
 
-<div class="row-fluid">
-
+<div class="row">
 	{{#if auth}}
 		{{#equal auth.type "BASIC_AUTH"}}
-			<div class="span12">
+			<div class="col-md-12">
 				<h4>Basic Authentication</h4>
-				<div class="input">
-					<select class="span12" id="basicAuthSelect" onchange="fillBasicAuthFields(); return false;">
+				<div class="form-group">
+					<select class="form-control" id="basicAuthSelect" onchange="fillBasicAuthFields(); return false;">
 						<option disabled="disabled" selected="selected">Select a test user or fill inputs below</option>
 						{{#eachInMap auth.testusers}}
 							<option value="{{value}}">{{key}}</option>
@@ -369,23 +371,26 @@ table td {
 						<option value="a-wrong-password">invalidate-credentials-cache-user</option>
 					</select>
 				</div>
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">Username</span><input type="text" id="basicAuthUsername" name="basicAuthUsername" placeholder="Username">
+				<div class="form-group" style="margin-bottom:5px;">
+					<label for="basicAuthUsername">Username</label>
+					<input class="form-control" type="text" id="basicAuthUsername" name="basicAuthUsername" placeholder="Username">
 				</div>
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">Password</span><input type="text" id="basicAuthPassword" name="basicAuthPassword" placeholder="Password">
+				<div class="form-group">
+					<label for="basicAuthPassword">Password</label>
+					<input class="form-control" type="text" id="basicAuthPassword" name="basicAuthPassword" placeholder="Password">
 				</div>
 			</div>
 		{{/equal}}
 	{{/if}}
 
 	{{#if headers}}
-	<div class="span12">
+	<div class="col-md-12">
 		<div id="headers">
 			<h4>Headers</h4>
 			{{#headers}}
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				<div class="form-group">
+					<label for="i_{{name}}">{{name}}</label>
+					<input type="text" class="form-control" name="{{name}}" placeholder="{{name}}">
 				</div>
 			{{/headers}}
 		</div>
@@ -393,11 +398,11 @@ table td {
 	{{/if}}
 
 	{{#if produces}}
-		<div class="span6" style="margin-left:0px">		
+		<div class="col-md-6" style="margin-left:0px">		
 		<div id="produces" class="playground-spacer">
 		<h4>Accept</h4>	
 		{{#produces}}
-			<label class="radio"><input type="radio" name="produces" value="{{this}}">{{this}}</label>
+			<label><input type="radio" name="produces" value="{{this}}"> {{this}}</label><br/>
 		{{/produces}}
 		</div>
 		</div>
@@ -405,11 +410,11 @@ table td {
 
 	{{#if bodyobject}}
 	{{#if consumes}}
-		<div class="span6" style="margin-left:0px">		
+		<div class="col-md-6" style="margin-left:0px">		
 		<div id="consumes" class="playground-spacer">
 		<h4>Content type</h4>	
 		{{#consumes}}
-			<label class="radio"><input type="radio" name="consumes" value="{{this}}">{{this}}</label>
+			<label><input type="radio" name="consumes" value="{{this}}"> {{this}}</label>
 		{{/consumes}}
 		</div>
 		</div>
@@ -417,12 +422,13 @@ table td {
 	{{/if}}
 
 	{{#if pathparameters}}
-	<div class="span12" style="margin-left:0px">
+	<div class="col-md-12">
 		<div id="pathparameters" class="playground-spacer">
 			<h4>Path parameters</h4>
 			{{#pathparameters}}
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				<div class="form-group">
+					<label for="i_{{name}}">{{name}}</label>
+					<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}">
 				</div>
 			{{/pathparameters}}
 		</div>
@@ -430,12 +436,13 @@ table td {
 	{{/if}}
 
 	{{#if queryparameters}}
-	<div class="span12" style="margin-left:0px">
+	<div class="col-md-12">
 		<div id="queryparameters" class="playground-spacer">
 			<h4>Query parameters</h4>
 			{{#queryparameters}}
-				<div class="input-prepend">
-					<span style="text-align:left;" class="add-on span4">{{name}}</span><input type="text" class="span8" name="{{name}}" placeholder="{{name}}">
+				<div class="form-group">
+					<label for="i_{{name}}">{{name}}</label>
+					<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}">
 				</div>
 			{{/queryparameters}}
 		</div>
@@ -443,47 +450,48 @@ table td {
 	{{/if}}
 
 	{{#if bodyobject}}
-	<div class="span12" style="margin-left:0px">
+	<div class="col-md-12">
 		<div id="bodyobject" class="playground-spacer">
 			<h4>Body object</h4>
-			<textarea class="span12" id="inputJson" rows=10 />
+			<textarea class="form-control" id="inputJson" rows=10 />
 		</div>
 	</div>
 	{{/if}}
 
-	<div class="span12" style="margin-left:0px">
-		<div class="form-actions">
-			<button class="btn btn-primary" id="testButton" data-loading-text="Loading...">Submit</button>
-		</div>
+	<div class="col-md-12 playground-spacer">
+		<button class="btn btn-primary" id="testButton" data-loading-text="Loading...">Submit</button>
 	</div>
-
+</div>
 </div>
 
-<div class="tabbable" id="resInfo" style="display:none;">
+<div class="row">
+<div class="col-md-12">
+<div class="tabbable" id="resInfo" style="display:none; margin-top: 20px;">
 	<ul class="nav nav-tabs">
   		<li class="active"><a href="#tab1" data-toggle="tab">Response text</a></li>
   		<li><a href="#tab2" data-toggle="tab">Response info</a></li>
   		<li><a href="#tab3" data-toggle="tab">Request info</a></li>
 	</ul>
-	<div class="tab-content">
+	<div class="tab-content" style="margin-top: 20px">
     	<div class="tab-pane active" id="tab1">
     		<pre id="response" class="prettyprint">
 			</pre>
    		</div>
     	<div class="tab-pane" id="tab2">
-			<p class="nav-header" style="padding:0px">Response code</p>
+			<h5 style="padding:0px">Response code</p>
       		<pre id="responseStatus" class="prettyprint">
 			</pre>
-			<p class="nav-header" style="padding:0px">Response headers</p>
+			<h5 style="padding:0px">Response headers</p>
       		<pre id="responseHeaders" class="prettyprint">
 			</pre>
     	</div>
 		<div class="tab-pane" id="tab3">
-      		<p class="nav-header" style="padding:0px">Request URL</p>
+      		<h5 style="padding:0px">Request URL</p>
       		<pre id="requestURL" class="prettyprint">
 			</pre>
     	</div>
 	</div>
+</div>
 </div>
 
 </script>
