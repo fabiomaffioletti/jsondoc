@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping(value = "/cities")
 public class CityController {
 
-	@ApiMethod(path = "/cities/{name}", verb = ApiVerb.GET, description = "Gets a city with the given name. (Allowed values are just to demonstrate the annotation attribute)", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@ApiMethod(path = "/cities/name/{name}", verb = ApiVerb.GET, description = "Gets a city with the given name. (Allowed values are just to demonstrate the annotation attribute)", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiErrors(apierrors = { @ApiError(code = "2000", description = "City not found"), @ApiError(code = "9000", description = "Illegal argument") })
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
 	public @ResponseBody
 	@ApiResponseObject
 	City get(@PathVariable @ApiParam(name = "name", description = "The city name", allowedvalues = { "Melbourne", "Sydney", "Perth" }, paramType=ApiParamType.PATH) String name) {
@@ -61,6 +61,14 @@ public class CityController {
 	public @ResponseBody
 	void delete(@PathVariable @ApiParam(name = "id", description = "The city ID", paramType=ApiParamType.PATH) Integer id) {
 
+	}
+	
+	@ApiMethod(path = "/cities/{id}", verb = ApiVerb.GET, description = "Gets a city by its ID", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody
+	@ApiResponseObject
+	City getById(@PathVariable @ApiParam(name = "id", description = "The city ID", paramType=ApiParamType.PATH) Integer id) {
+		return new City("cityById", 1982700, 52);
 	}
 
 	@ApiMethod(path = "/cities/{id}", verb = ApiVerb.PUT, description = "Modifies a city", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
