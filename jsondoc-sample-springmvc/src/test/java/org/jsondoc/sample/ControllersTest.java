@@ -15,9 +15,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ControllersTest extends BaseControllerTest {
 
 	@Test
-    public void testGetCity() {
+    public void testGetCityByName() {
     	try {
-    		mockMvc.perform(get("/cities/sydney")
+    		mockMvc.perform(get("/cities/name/sydney")
 					.accept(MediaType.APPLICATION_XML))
 					.andDo(print())
 					.andExpect(status().isOk());
@@ -40,6 +40,20 @@ public class ControllersTest extends BaseControllerTest {
 			Assert.fail();
 		}
     }
+	
+	@Test
+    public void testGetCityById() {
+    	try {
+    		mockMvc.perform(get("/cities/1"))
+					.andDo(print())
+					.andExpect(status().isOk());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+    }
+
 	
 	@Test
     public void testGetCountry() {
