@@ -2,7 +2,9 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
@@ -15,8 +17,8 @@ public class ApiMethodDoc {
 	private List<String> produces;
 	private List<String> consumes;
 	private List<ApiHeaderDoc> headers;
-	private List<ApiParamDoc> pathparameters;
-	private List<ApiParamDoc> queryparameters;
+	private Set<ApiParamDoc> pathparameters;
+	private Set<ApiParamDoc> queryparameters;
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private List<ApiErrorDoc> apierrors;
@@ -36,8 +38,8 @@ public class ApiMethodDoc {
 	public ApiMethodDoc() {
 		super();
 		this.headers = new ArrayList<ApiHeaderDoc>();
-		this.pathparameters = new ArrayList<ApiParamDoc>();
-		this.queryparameters = new ArrayList<ApiParamDoc>();
+		this.pathparameters = new HashSet<ApiParamDoc>();
+		this.queryparameters = new HashSet<ApiParamDoc>();
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 	}
 
@@ -89,19 +91,19 @@ public class ApiMethodDoc {
 		this.description = description;
 	}
 
-	public List<ApiParamDoc> getPathparameters() {
+	public Set<ApiParamDoc> getPathparameters() {
 		return pathparameters;
 	}
 
-	public void setPathparameters(List<ApiParamDoc> pathparameters) {
+	public void setPathparameters(Set<ApiParamDoc> pathparameters) {
 		this.pathparameters = pathparameters;
 	}
 
-	public List<ApiParamDoc> getQueryparameters() {
+	public Set<ApiParamDoc> getQueryparameters() {
 		return queryparameters;
 	}
 
-	public void setQueryparameters(List<ApiParamDoc> queryparameters) {
+	public void setQueryparameters(Set<ApiParamDoc> queryparameters) {
 		this.queryparameters = queryparameters;
 	}
 

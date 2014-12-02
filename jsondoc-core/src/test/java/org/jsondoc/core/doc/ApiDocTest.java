@@ -12,6 +12,7 @@ import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiAuthType;
@@ -154,6 +155,46 @@ public class ApiDocTest {
 		
 	}
 	
+	@Api(name = "test-old-style-servlets", description = "a-test-old-style-servlet")
+	private class TestOldStyleServlets {
+		
+		@ApiMethod(path="/oldStyle", description = "A method params on method level", verb = ApiVerb.GET)
+		@ApiParams(params = {
+				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class)
+		})
+		public String oldStyle() {
+			return null;
+		}
+		
+		@ApiMethod(path="/oldStyleWithList", description = "A method params on method level", verb = ApiVerb.GET)
+		@ApiParams(params = {
+				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = List.class)
+		})
+		public String oldStyleWithList() {
+			return null;
+		}
+		
+		@ApiMethod(path="/oldStyleWithMap", description = "A method params on method level", verb = ApiVerb.GET)
+		@ApiParams(params = {
+				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = Map.class)
+		})
+		public String oldStyleWithMap() {
+			return null;
+		}
+		
+		@ApiMethod(path="/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
+		@ApiParams(params = {
+				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class),
+				@ApiParam(name = "age", paramType = ApiParamType.PATH, clazz = Integer.class),
+				@ApiParam(name = "undefined", paramType = ApiParamType.PATH),
+				@ApiParam(name = "q", paramType = ApiParamType.QUERY, clazz = String.class)
+		})
+		public String oldStyleMixed(@ApiParam(name = "age", paramType = ApiParamType.PATH) Integer age) {
+			return null;
+		}
+
+	}
+	
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -212,7 +253,6 @@ public class ApiDocTest {
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("map")) {
 						Assert.assertEquals("map[string, integer]", apiParamDoc.getJsondocType().getOneLineText());
-						//TODO there is no check on the map key and value objects
 					}
 				}
 			}
@@ -228,18 +268,6 @@ public class ApiDocTest {
 				}
 				
 			}
-
-//			if (apiMethodDoc.getPath().equals("/unparametrizedList")) {
-//				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
-//				Assert.assertEquals("undefined", apiMethodDoc.getResponse().getJsondocType().getJsondocType().getOneLineText());
-//				Assert.assertEquals("undefined", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
-//				Assert.assertEquals("true", apiMethodDoc.getBodyobject().getMultiple());
-//				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
-//					if(apiParamDoc.getName().equals("unparametrizedList")) {
-//						Assert.assertEquals("undefined", apiParamDoc.getType());
-//					}
-//				}
-//			}
 
 			if (apiMethodDoc.getPath().equals("/wildcardParametrizedList")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
@@ -344,6 +372,31 @@ public class ApiDocTest {
 			}
 			
 		}
+		
+		classes.clear();
+		classes.add(TestOldStyleServlets.class);
+		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("test-old-style-servlets", apiDoc.getName());
+		
+		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			if (apiMethodDoc.getPath().equals("/oldStyle")) {
+				Assert.assertEquals(1, apiMethodDoc.getPathparameters().size());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/oldStyleWithList")) {
+				Assert.assertEquals(1, apiMethodDoc.getPathparameters().size());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/oldStyleWithMap")) {
+				Assert.assertEquals(1, apiMethodDoc.getPathparameters().size());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/oldStyleMixed")) {
+				Assert.assertEquals(3, apiMethodDoc.getPathparameters().size());
+				Assert.assertEquals(1, apiMethodDoc.getQueryparameters().size());
+			}
+		}
+	
 	}
 
 }

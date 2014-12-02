@@ -3,11 +3,12 @@ package org.jsondoc.core.pojo;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
@@ -30,8 +31,18 @@ public class ApiParamDoc {
 		this.format = format;
 	}
 
-	public static List<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
-		List<ApiParamDoc> docs = new ArrayList<ApiParamDoc>();
+	public static Set<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
+		Set<ApiParamDoc> docs = new HashSet<ApiParamDoc>();
+
+		if (method.isAnnotationPresent(ApiParams.class)) {
+			for (ApiParam apiParam : method.getAnnotation(ApiParams.class).params()) {
+				ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, JSONDocTypeBuilder.build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()), paramType);
+				if (apiParamDoc != null) {
+					docs.add(apiParamDoc);
+				}
+			}
+		}
+
 		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
 		for (int i = 0; i < parametersAnnotations.length; i++) {
 			for (int j = 0; j < parametersAnnotations[i].length; j++) {
@@ -86,6 +97,31 @@ public class ApiParamDoc {
 
 	public String getFormat() {
 		return format;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ApiParamDoc other = (ApiParamDoc) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 }

@@ -12,9 +12,14 @@ import org.jsondoc.core.annotation.ApiObject;
 public class JSONDocTypeBuilder {
 	
 	private static final String WILDCARD = "wildcard";
+	private static final String UNDEFINED = "undefined";
 	private static final String ARRAY = "array";
 
 	public static JSONDocType build(JSONDocType jsondocType, Class<?> clazz, Type type) {
+		if(clazz.isAssignableFrom(JSONDocDefaultType.class)) {
+			jsondocType.addItemToType(UNDEFINED);
+			return jsondocType;
+		}
 
 		if (Map.class.isAssignableFrom(clazz)) {
 			jsondocType.addItemToType(getCustomClassName(clazz));
