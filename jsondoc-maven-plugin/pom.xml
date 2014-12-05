@@ -8,6 +8,7 @@
 		<groupId>org.jsondoc</groupId>
 		<artifactId>jsondoc-master</artifactId>
 		<version>1.0.6-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>jsondoc-maven-plugin</artifactId>
