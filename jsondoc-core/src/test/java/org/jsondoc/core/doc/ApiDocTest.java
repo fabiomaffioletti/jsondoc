@@ -192,6 +192,12 @@ public class ApiDocTest {
 		public String oldStyleMixed(@ApiParam(name = "age", paramType = ApiParamType.PATH) Integer age) {
 			return null;
 		}
+		
+		@ApiMethod(path="/oldStyleResponseObject", description = "A method with populated ApiResponseObject annotation", verb = ApiVerb.GET)
+		@ApiResponseObject(clazz = List.class)
+		public void oldStyleResponseObject() {
+			return;
+		}
 
 	}
 	
@@ -394,6 +400,10 @@ public class ApiDocTest {
 			if (apiMethodDoc.getPath().equals("/oldStyleMixed")) {
 				Assert.assertEquals(3, apiMethodDoc.getPathparameters().size());
 				Assert.assertEquals(1, apiMethodDoc.getQueryparameters().size());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/oldStyleResponseObject")) {
+				Assert.assertEquals("list", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
 		}
 	

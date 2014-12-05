@@ -36,6 +36,7 @@
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-sample-springmvc</module>
 		<module>jsondoc-sample-external</module>
+		<module>jsondoc-sample-spark</module>
 		<module>jsondoc-ui</module>
 		<module>jsondoc-maven-plugin</module>
 	</modules>
