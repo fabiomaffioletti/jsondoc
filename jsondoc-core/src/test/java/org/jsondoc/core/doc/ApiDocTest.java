@@ -198,6 +198,12 @@ public class ApiDocTest {
 		public void oldStyleResponseObject() {
 			return;
 		}
+		
+		@ApiMethod(path="/oldStyleBodyObject", description = "A method with populated ApiBodyObject annotation", verb = ApiVerb.GET)
+		@ApiBodyObject(clazz = List.class)
+		public void oldStyleBodyObject() {
+			return;
+		}
 
 	}
 	
@@ -404,6 +410,10 @@ public class ApiDocTest {
 			
 			if (apiMethodDoc.getPath().equals("/oldStyleResponseObject")) {
 				Assert.assertEquals("list", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+			}
+			
+			if (apiMethodDoc.getPath().equals("/oldStyleBodyObject")) {
+				Assert.assertEquals("list", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 			}
 		}
 	

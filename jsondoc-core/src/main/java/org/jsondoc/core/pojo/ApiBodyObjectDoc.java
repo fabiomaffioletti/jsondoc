@@ -13,6 +13,10 @@ public class ApiBodyObjectDoc {
 	private JSONDocType jsondocType;
 
 	public static ApiBodyObjectDoc buildFromAnnotation(Method method) {
+		if (method.isAnnotationPresent(ApiBodyObject.class)) {
+			return new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getAnnotation(ApiBodyObject.class).clazz(), method.getAnnotation(ApiBodyObject.class).clazz()));
+		}
+		
 		Integer index = getApiBodyObjectIndex(method);
 		if (index != -1) {
 			return new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[index], method.getGenericParameterTypes()[index]));
