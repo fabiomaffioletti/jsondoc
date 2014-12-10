@@ -199,6 +199,31 @@ public class JSONDocController {
 }
 {% endhighlight %}
 
+<h4>Using the jsondoc-maven-plugin</h4>
+<p>You can also use the jsondoc-maven-plugin to generate the documentation. In this case the plugin will generate a file containing the documentation in json format, ready to be used in the <code>jsondoc-ui</code> or in your custom documentation viewer. Here is how to declare and use the plugin in your project:</p>
+{% highlight xml %}
+<plugin>
+	<groupId>org.jsondoc</groupId>
+	<artifactId>jsondoc-maven-plugin</artifactId>
+	<version>{{ site.version }}</version>
+	<configuration>
+		<version>1.1</version>
+		<basePath>http://localhost:8080/api</basePath>
+		<packages>
+			<package>org.jsondoc.sample.controller</package>
+			<package>org.jsondoc.sample.pojo</package>
+			<package>com.sample</package>
+		</packages>
+		<outputFile>/tmp/jsondoc.json</outputFile>
+	</configuration>
+</plugin>
+{% endhighlight %}
+
+<p>And in a terminal:</p>
+{% highlight bash %}
+mvn jsondoc:generate
+{% endhighlight %}
+
 <h3 class="spaced">Display the generated docs</h3>
 <h4>With jsondoc-ui</h4>
 <p>You can include the <code>jsondoc-ui</code> project in your web application. This provides an interface to browse the generated documentation and a playground to test methods. It is built on Twitter Bootstrap and can be easily customized for you needs. Check out the <a href="{{ site.demourl }}" target="_blank">live demo here.</a></p>
