@@ -34,11 +34,8 @@
 	<modules>
 		<module>jsondoc-core</module>
 		<module>jsondoc-springmvc</module>
-		<module>jsondoc-sample-springmvc</module>
-		<module>jsondoc-sample-external</module>
-		<module>jsondoc-sample-spark</module>
-		<module>jsondoc-ui</module>
 		<module>jsondoc-maven-plugin</module>
+		<module>jsondoc-ui</module>
 	</modules>
 
 	<distributionManagement>
@@ -58,6 +55,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+
 			<!-- Jsondoc -->
 			<dependency>
 				<groupId>org.jsondoc</groupId>
@@ -190,8 +188,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 

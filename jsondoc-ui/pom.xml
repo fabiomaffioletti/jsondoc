@@ -2,34 +2,26 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<artifactId>jsondoc-master</artifactId>
 		<groupId>org.jsondoc</groupId>
 		<version>1.0.7-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<artifactId>jsondoc-ui</artifactId>
-	<packaging>war</packaging>
-	
+	<packaging>pom</packaging>
+
 	<name>jsondoc-ui</name>
 	<description>The interface of the jsondoc project</description>
 	<url>http://www.jsondoc.org</url>
-	
-	<dependencies>
-
-		<dependency>
-			<groupId>org.jsondoc</groupId>
-			<artifactId>jsondoc-sample-springmvc</artifactId>
-			<version>${project.version}</version>
-			<type>war</type>
-		</dependency>
-		
-	</dependencies>
 
 	<build>
-		<plugins>			
+		<finalName>jsondoc-ui</finalName>
+
+		<plugins>
+
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -38,7 +30,6 @@
 					<webApp>
 						<contextPath>/</contextPath>
 					</webApp>
-
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>8080</port>
@@ -49,17 +40,25 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<overlays>
-						<overlay>
-							<groupId>org.jsondoc</groupId>
-							<artifactId>jsondoc-sample-springmvc</artifactId>
-						</overlay>
-					</overlays>
-				</configuration>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-distribution</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>assembly/jsondoc-ui.xml</descriptor>
+								<descriptor>assembly/jsondoc-ui-javadoc.xml</descriptor>
+								<descriptor>assembly/jsondoc-ui-sources.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 </project>

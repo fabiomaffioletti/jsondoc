@@ -98,7 +98,7 @@ table td {
     		</div>
     		<form class="navbar-form navbar-left col-md-8" role="search">
 				<div class="form-group">
-		        	<input id="jsondocfetch" type="text" class="form-control" style="width:350px" placeholder="Insert here the JSONDoc URL" autocomplete="off">
+		        	<input id="jsondocfetch" type="text" class="form-control" style="width:350px" placeholder="Insert here the JSONDoc URL" value="${jsondoc.path}" autocomplete="off">
 		        </div>
 		        <button id="getDocButton" class="btn btn-default">Get documentation</button>
 		    </form>
