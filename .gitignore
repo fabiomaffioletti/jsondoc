@@ -1,3 +1,10 @@
+#Intellij Files
+*.iml
+*.ipr
+*.iws
+.idea
+
+
 .project
 /target
 .settings/
