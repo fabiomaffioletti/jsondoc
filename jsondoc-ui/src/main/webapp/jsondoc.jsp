@@ -26,6 +26,10 @@ body {
 	padding-top : 5px;
 	background-color: #468847;
 }
+.PATCH {
+    padding-top : 5px;
+    background-color: #5bc0de;
+}
 .POST {
 	padding-top : 5px;
 	background-color: #3A87AD;
