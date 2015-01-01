@@ -17,7 +17,7 @@
 	<url>http://www.jsondoc.org</url>
 
 	<properties>
-		<destinationDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destinationDir>
+		<destinationDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}</destinationDir>
 	</properties>
 
 	<build>
@@ -125,7 +125,7 @@
 			</resource>
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
-				<targetPath>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
+				<targetPath>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}</targetPath>
 				<includes>
 					<include>**/*.js</include>
 					<include>**/*.css</include>
