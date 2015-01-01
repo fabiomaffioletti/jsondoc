@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>jsondoc-master</artifactId>
 		<groupId>org.jsondoc</groupId>
-		<version>1.0.7-SNAPSHOT</version>
+		<version>1.0.7</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
