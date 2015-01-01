@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>jsondoc-master</artifactId>
+		<groupId>org.jsondoc</groupId>
+		<version>1.0.7-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>jsondoc-ui-webjar</artifactId>
+	<packaging>jar</packaging>
+
+	<name>jsondoc-ui-webjar</name>
+	<description>The interface webjar of the jsondoc project</description>
+	<url>http://www.jsondoc.org</url>
+
+	<properties>
+		<destinationDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destinationDir>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								
+								<artifactItem>
+									<groupId>org.webjars</groupId>
+									<artifactId>bootstrap</artifactId>
+									<version>3.3.1</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/bootstrap</outputDirectory>
+								</artifactItem>
+								
+								<artifactItem>
+									<groupId>org.webjars</groupId>
+									<artifactId>jquery</artifactId>
+									<version>1.11.1</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/jquery</outputDirectory>
+								</artifactItem>
+								
+								<artifactItem>
+									<groupId>org.webjars</groupId>
+									<artifactId>handlebars</artifactId>
+									<version>2.0.0</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/handlebars</outputDirectory>
+								</artifactItem>
+								
+								<artifactItem>
+									<groupId>org.webjars</groupId>
+									<artifactId>prettify</artifactId>
+									<version>4-Mar-2013</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/prettify</outputDirectory>
+								</artifactItem>
+								
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy 
+									file="${project.build.directory}/bootstrap/META-INF/resources/webjars/bootstrap/3.3.1/js/bootstrap.min.js" 
+									todir="${destinationDir}/js" />
+								<copy 
+									file="${project.build.directory}/jquery/META-INF/resources/webjars/jquery/1.11.1/jquery.min.js" 
+									todir="${destinationDir}/js" />
+								<copy 
+									file="${project.build.directory}/jquery/META-INF/resources/webjars/jquery/1.11.1/jquery.min.map" 
+									todir="${destinationDir}/js" />	
+									
+								<copy 
+									file="${project.build.directory}/handlebars/META-INF/resources/webjars/handlebars/2.0.0/handlebars.min.js" 
+									todir="${destinationDir}/js" />
+								<copy 
+									file="${project.build.directory}/prettify/META-INF/resources/webjars/prettify/4-Mar-2013/prettify.js" 
+									todir="${destinationDir}/js" />
+								<copy 
+									file="${project.build.directory}/bootstrap/META-INF/resources/webjars/bootstrap/3.3.1/css/bootstrap.min.css" 
+									todir="${destinationDir}/css" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<targetPath>${project.build.outputDirectory}/META-INF/resources</targetPath>
+				<includes>
+					<include>**/*.html</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<targetPath>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
+				<includes>
+					<include>**/*.js</include>
+					<include>**/*.css</include>
+					<include>**/*.map</include>
+				</includes>
+			</resource>
+			
+		</resources>
+
+	</build>
+
+</project>

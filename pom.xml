@@ -36,6 +36,8 @@
 		<module>jsondoc-springmvc</module>
 		<module>jsondoc-maven-plugin</module>
 		<module>jsondoc-ui</module>
+		<module>jsondoc-ui-webjar</module>
+		<module>spring-boot-starter-jsondoc</module>
 	</modules>
 
 	<distributionManagement>
@@ -74,6 +76,13 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>3.1.2.RELEASE</version>
+			</dependency>
+
+			<!-- Spring boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>1.2.0.RELEASE</version>
 			</dependency>
 
 			<!-- Reflection -->
@@ -117,13 +126,6 @@
 				<artifactId>spring-test-mvc</artifactId>
 				<version>1.0.0.M1</version>
 				<scope>test</scope>
-			</dependency>
-
-			<!-- Other -->
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.4</version>
 			</dependency>
 
 		</dependencies>
