@@ -2,7 +2,7 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -38,8 +38,8 @@ public class ApiMethodDoc {
 	public ApiMethodDoc() {
 		super();
 		this.headers = new ArrayList<ApiHeaderDoc>();
-		this.pathparameters = new HashSet<ApiParamDoc>();
-		this.queryparameters = new HashSet<ApiParamDoc>();
+		this.pathparameters = new LinkedHashSet<ApiParamDoc>();
+		this.queryparameters = new LinkedHashSet<ApiParamDoc>();
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 	}
 

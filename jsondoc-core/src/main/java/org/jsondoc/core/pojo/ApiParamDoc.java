@@ -3,7 +3,7 @@ package org.jsondoc.core.pojo;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class ApiParamDoc {
 	}
 
 	public static Set<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
-		Set<ApiParamDoc> docs = new HashSet<ApiParamDoc>();
+		Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
 
 		if (method.isAnnotationPresent(ApiParams.class)) {
 			for (ApiParam apiParam : method.getAnnotation(ApiParams.class).params()) {
