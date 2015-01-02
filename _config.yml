@@ -1,7 +1,7 @@
 name: JSONDoc
 baseurl: 
 markdown: redcarpet
-pygments: true
-version: 1.0.6
+highlighter: true
+version: 1.0.9
 demourl: http://jsondoc.eu01.aws.af.cm/jsondoc.jsp
 downloadurl: distro/jsondoc-bundle-1.0.2.tar.gz

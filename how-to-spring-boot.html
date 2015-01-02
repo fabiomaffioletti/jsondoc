@@ -1,0 +1,69 @@
+---
+layout: default
+title: Documentation
+---
+
+<h3>How to: with Spring Boot</h4>
+<p>With the <code>spring-boot-starter-jsondoc</code> integrating JSONDoc with Spring Boot application is really simple. Here are the steps:</p>
+
+<h4>Declare the dependency to spring-boot-starter-jsondoc:</h4>
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>spring-boot-starter-jsondoc</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4>Configure JSONDoc in application.properties file</h4>
+{% highlight xml %}
+jsondoc.version=1.0
+jsondoc.basePath=http://localhost:8080
+jsondoc.packages[0]=com.example.controller
+jsondoc.packages[1]=com.example.model
+{% endhighlight %}
+
+<h4>Enable JSONDoc on you configuration class</h4>
+{% highlight java %}
+@EnableAutoConfiguration
+@ComponentScan
+@EnableJSONDoc
+public class MyWebapp {
+	public static void main(String[] args) {
+		SpringApplication.run(MyWebapp.class, args);
+	}
+}
+{% endhighlight %}
+
+<p>At this point it is possible to start up the application and go to <code>http://localhost:8080/jsondoc</code> to see the documentation (provided that you wrote the documentation on your services and objects), ready to be used with jsondoc-ui or with your custom documentation viewer.</p>
+
+<h4>Optional (but recomended): use jsondoc-ui-webjar to see the documentation</h4>
+<p>Declare the dependency to the <code>jsondoc-ui-webjar</code> project:</p>
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-ui-webjar</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+<p>And now you can go to <code>http://localhost:8080/jsondoc-ui.html</code>, insert <code>http://localhost:8080/jsondoc</code> in the box and get the documentation.</p>
+
+<hr/>
+<p>In case you are using <code>@EnableWebMvc</code> annotation, then you need to also register resource handlers for static ui resources, in particular:</p>
+{% highlight java %}
+@Configuration
+public class WebConfig extends WebMvcConfigurationSupport {
+        
+        @Override
+        protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+                registry.addResourceHandler("**/*.css", "**/*.js", "**/*.map", "*.html").addResourceLocations("classpath:META-INF/resources/").setCachePeriod(0);
+        }
+
+}
+{% endhighlight %}
+
+
+
+<script type="text/javascript">
+	$('#howtospringboot').addClass('active');
+</script>

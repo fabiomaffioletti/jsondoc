@@ -1,0 +1,70 @@
+---
+layout: default
+title: Documentation
+---
+
+<h3>How to: with Spring MVC</h3>
+<h4 class="spaced">Declare the needed dependencies</h4>
+<p>If your web application already uses Spring MVC, then it's easy: the project <code>jsondoc-springmvc</code> already does it for you, so you need to include both <code>jsondoc-core</code> and <code>jsondoc-springmvc</code> dependencies.</p>
+
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-core</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-springmvc</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4 class="spaced">Configure JSONDoc controller</h4>
+<p>The only thing to do on your side is to declare the jsondoc controller in your spring context.xml file:</p>
+{% highlight xml %}
+<mvc:annotation-driven />
+<context:component-scan base-package="your.base.package" />
+ 
+<bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController">
+	<property name="version" value="1.0" />
+	<property name="basePath" value="http://localhost:8080/api" />
+	<property name="packages">
+		<list>
+			<value>com.mycompany.controller</value> <!-- put here packages in which you have your spring controllers -->
+			<value>com.mycompany.pojo</value> <!-- put here packages in which you have your objects -->
+			<value>org.external.stuff</value> <!-- they can also belong to external jars: provide here their package -->
+		</list>
+	</property>
+</bean>
+{% endhighlight %}
+
+<p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
+
+<div class="alert alert-info">
+Change the <strong>base path</strong> of your web application, or better put a placeholder here and in the pom.xml and filter this file to have it replaced for free for different environments
+</div>
+
+<div class="alert alert-warning">
+In the <strong>packages</strong> list property you should put packages that contain spring controllers and objects needed for the documentation generation, as far as they are on the classpath. The scan is <strong>recursive</strong>.
+</div>
+
+<h4 class="spaced">Display the generated docs</h4>
+<h5>With jsondoc-ui</h5>
+<p>You can include the <code>jsondoc-ui</code> project in your web application. This provides an interface to browse the generated documentation and a playground to test methods. It is built on Twitter Bootstrap and can be easily customized for you needs. To do this you need to get the <code>jsondoc-ui</code> jar, extract it and copy <code>css, js, font, jsondoc.jsp</code> to your project's webapp folder. Check out the <a href="{{ site.demourl }}" target="_blank">live demo here</a> or the <a href="https://github.com/fabiomaffioletti/jsondoc" target="_blank">sample applications code.</a> Here is the dependency to the <code>jsondoc-ui</code>:</p>
+
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-ui</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h5>Build your own viewer</h5>
+<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
+
+<script type="text/javascript">
+	$('#howtospringmvc').addClass('active');
+</script>

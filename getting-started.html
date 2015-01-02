@@ -3,28 +3,26 @@ layout: default
 title: Getting started
 ---
 
-<h3>Declare the core library in your pom</h3>
-<p>Include <code>jsondoc-core</code> as a dependency in your pom.</p>
-{% highlight xml %}
-<dependency>
-        <groupId>org.jsondoc</groupId>
-        <artifactId>jsondoc-core</artifactId>
-        <version>{{ site.version }}</version>
-</dependency>
-{% endhighlight %}
+<h3>Why JSONDoc</h3>
+<p>Writing a good API is often not enough for the clients that will need to use it. Even with the greatest improvements provided by HATEOAS, API users need a more human readable way to understand the meaning of an API and how to use it. JSONDoc's goal is to provide an easy and fast way to do that while coding your API.</p>
 
-<h3 class="spaced">Expose your documentation</h3>
-<p>After having annotated your code you need to create and expose your documentation. To do this you can build you own class using <code>JSONDocUtils.getApiDoc(servletContext, version, basePath, List&lt;String&gt; packages);</code> or you can declare and use the <code>jsondoc-springmvc</code> library in your pom.</p>
-{% highlight xml %}
-<dependency>
-        <groupId>org.jsondoc</groupId>
-        <artifactId>jsondoc-springmvc</artifactId>
-        <version>{{ site.version }}</version>
-</dependency>
-{% endhighlight %}
+<h3>What is JSONDoc</h3>
+<p>JSONDoc is a java library useful to build the documentation of your RESTful services.
+	<ul>
+		<li>It is framework agnostic, meaning that you can use the jsondoc-core module with any MVC framework</li>
+		<li>It has a Spring MVC module useful if your application already uses spring-mvc and a starter for Spring Boot</li>
+		<li>It has a UI module useful to display the generated documentation and that also includes a playground to test API methods</li>
+	</ul>
+</p>
 
-<h3 class="spaced">Display the docs</h3>
-<p>This is optional, but you most probably want it. If you are using the <code>jsondoc-springmvc</code> library, your documentation will be at <code>/jsondoc</code>. Otherwise at the path you defined for your generation class. You may want to display the docs in a human readable way, and for his purpose you can use the <code>jsondoc-ui</code> project, which you can download from this website. Simply copy things under <code>src/main/webapps</code> to your project's webapps folder. Maybe you will need to modify some paths if you decide to put that stuff in a different location, but in any case everything is in the <code>head</code> of <code>jsondoc.jsp</code>. At this point you only have to point your browser to <code>http://localhost:8080/jsondoc.jsp</code> (or whatever path your server has), insert the <code>/jsondoc</code> path in the upper box, like for example <code>http://localhost:8080/api/jsondoc</code> and hit enter to see the documentation.</p>
+<h3>How does it work?</h3>
+<p>The steps are the following:</p>
+<ul>
+	<li>Declare the modules you need in your pom file</li>
+	<li>Annotate your API and objects with the JSONDoc annotations (see the annotation page, the how to pages and the examples page for more info)</li>
+	<li>Expose your documentation with the UI jsondoc module or with a custom viewer</li>
+	<li>Done!</li>
+</ul>
 
 <div class="alert alert-info" style="margin-top: 30px;">
 <strong>Worth noting</strong>

@@ -1,0 +1,132 @@
+---
+layout: default
+title: Documentation
+---
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Annotation</th>
+			<th>Level</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>@Api</code></td>
+			<td>Class</td>
+			<td>
+				<p>This annotation has to be used on your controller class in an MVC pattern. It describes in a few words what the API does</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiMethod</code></td>
+			<td>Method</td>
+			<td>
+				<p>This annotation describes your exposed methods in a generic way: which verb has to be used, which is the path for the call, which type it accepts, which one produces, etc</p>
+			</td>
+		</tr>			
+		<tr>
+			<td><code>@ApiVersion</code></td>
+			<td>Class,Method,Field</td>
+			<td>
+				<p>This annotation lets you specify since and until which version the class, method, object or field is supported</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthNone</code></td>
+			<td>Class,Method</td>
+			<td>
+				<p>Annotate a class or method with this annotation to specify that it does not require authentication to be accessed</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthBasic</code></td>
+			<td>Class,Method</td>
+			<td>
+				<p>Annotate a class or method with this annotation to specify that it requires Basic Authentication to be accessed. You must also specify roles that can access the method and a list of <code>@ApiAuthBasicUser</code> test users</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiAuthBasicUser</code></td>
+			<td>Annotation</td>
+			<td>
+				<p>This annotation is used inside <code>@ApiAuthBasic</code> to specify test users' username and password</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiHeaders</code></td>
+			<td>Method</td>
+			<td>
+				<p>This annotation contains all the useful information to insert in the call headers. It is just a container for the following annotation, which describes headers in detail</p>
+			</td>
+		</tr>															
+		<tr>
+			<td><code>@ApiHeader</code></td>
+			<td>Annotation</td>
+			<td>
+				<p>This annotation has to be used inside an annotation of type <code>@ApiHeaders</code></p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiParams</code></td>
+			<td>Method</td>
+			<td>
+				<p>This annotation contains a list of <code>@ApiParam</code> annotations. It's possible to use it at method level, enabling writing documentation for old style servlets in which methods' signatures did not allow explicit parameter specification</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiParam</code></td>
+			<td>Annotation, Parameter</td>
+			<td>
+				<p>This annotation describes the parameters to be passed to the method</p>
+			</td>
+		</tr>					
+		<tr>
+			<td><code>@ApiBodyObject</code></td>
+			<td>Parameter</td>
+			<td>
+				<p>This annotation has to be used on your method and represents the parameter passed in the body of the requests</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiResponseObject</code></td>
+			<td>Method</td>
+			<td>
+				<p>This annotation has to be used on your method and represents the returned object</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiErrors</code></td>
+			<td>Method</td>
+			<td>
+				<p>This annotation has to be used on your method and represents the possible errors returned by the method</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiError</code></td>
+			<td>Annotation</td>
+			<td>
+				<p>This annotation is to be used inside an annotation of type <code>@ApiErrors</code> and describes the error code and the error message for the returned error</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiObject</code></td>
+			<td>Class</td>
+			<td>
+				<p>This annotation is to be used on your object classes and represents an object used for communication between clients and server</p>
+			</td>
+		</tr>
+		<tr>
+			<td><code>@ApiObjectField</code></td>
+			<td>Field</td>
+			<td>
+				<p>This annotation is to be used on your objects' fields and represents a field of an object</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$('#annotations').addClass('active');
+</script>

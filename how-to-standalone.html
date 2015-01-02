@@ -1,0 +1,79 @@
+---
+layout: default
+title: Documentation
+---
+
+<h3>How to: standalone</h3>
+<h4>Declare the needed dependency</h4>
+<p>JSONDoc is framework agnostic, meaning that you can use it with your favourite MVC framework. In this case you should only include <code>jsondoc-core</code></p>
+
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-core</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+and use the <code>JSONDocUtils</code> static class to generate an object of kind <code>JSONDoc</code> that can be later marshalled in JSON with your favourite marshaller.</p>
+
+<hr/>
+<p>Here is the code of a Spring MVC controller that returns the JSON containing the documentation, maybe you will find it useful:</p>
+{% highlight java %}
+package org.jsondoc.springmvc.controller;
+ 
+import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.util.JSONDocUtils;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+ 
+@Controller
+@RequestMapping(value = "/jsondoc")
+public class JSONDocController {
+	private String version;
+	private String basePath;
+	private List<String>packages;
+	 
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	 
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+
+	public void setPackages(List<String> packages) {
+		this.packages = packages;
+	}
+	 
+	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody
+	JSONDoc getApi() {
+		return JSONDocUtils.getApiDoc(servletContext, version, basePath, List<String> packages);
+	}
+ 
+}
+{% endhighlight %}
+
+<hr/>
+<h4 class="spaced">Display the generated docs</h4>
+<h5>With jsondoc-ui</h5>
+<p>You can include the <code>jsondoc-ui</code> project in your web application. This provides an interface to browse the generated documentation and a playground to test methods. It is built on Twitter Bootstrap and can be easily customized for you needs. To do this you need to get the <code>jsondoc-ui</code> jar, extract it and copy <code>css, js, font, jsondoc.jsp</code> to your project's webapp folder. Check out the <a href="{{ site.demourl }}" target="_blank">live demo here</a> or the <a href="https://github.com/fabiomaffioletti/jsondoc" target="_blank">sample applications code.</a> Here is the dependency to the <code>jsondoc-ui</code>:</p>
+
+{% highlight xml %}
+<dependency>
+        <groupId>org.jsondoc</groupId>
+        <artifactId>jsondoc-ui</artifactId>
+        <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h5>Build your own viewer</h5>
+<p>If you are not satisfied with the standard interface, you can use the generated JSON documentation in a fully customized interface!</p>
+
+<script type="text/javascript">
+	$('#howtostandalone').addClass('active');
+</script>

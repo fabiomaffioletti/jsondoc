@@ -1,0 +1,33 @@
+---
+layout: default
+title: Documentation
+---
+
+<h3>How to: with the jsondoc-maven-plugin</h3>
+<p>You can use the jsondoc-maven-plugin to generate the documentation and save it to a static text file. In this case the plugin will generate a file containing the documentation in json format, ready to be used in the <code>jsondoc-ui</code> or in your custom documentation viewer. Here is how to declare and use the plugin in your project:</p>
+{% highlight xml %}
+<plugin>
+	<groupId>org.jsondoc</groupId>
+	<artifactId>jsondoc-maven-plugin</artifactId>
+	<version>{{ site.version }}</version>
+	<configuration>
+		<version>1.1</version>
+		<basePath>http://localhost:8080/api</basePath>
+		<packages>
+			<package>org.jsondoc.sample.controller</package>
+			<package>org.jsondoc.sample.pojo</package>
+			<package>com.sample</package>
+		</packages>
+		<outputFile>/tmp/jsondoc.json</outputFile>
+	</configuration>
+</plugin>
+{% endhighlight %}
+
+<p>And in a terminal:</p>
+{% highlight bash %}
+mvn jsondoc:generate
+{% endhighlight %}
+
+<script type="text/javascript">
+	$('#howtomavenplugin').addClass('active');
+</script>
