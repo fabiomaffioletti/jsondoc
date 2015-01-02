@@ -3,3 +3,9 @@
 /target
 .settings/
 *.versionsBackup
+
+#intellij files
+.idea
+*.iml
+*.ipr
+*.iws
