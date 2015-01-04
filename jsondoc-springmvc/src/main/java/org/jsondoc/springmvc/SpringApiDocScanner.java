@@ -8,10 +8,7 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiVersionDoc;
 import org.jsondoc.core.util.ApiDocScanner;
 import org.jsondoc.springmvc.annotation.SpringApiMethod;
-import org.jsondoc.springmvc.pojo.SpringApiBodyObjectDoc;
-import org.jsondoc.springmvc.pojo.SpringApiMethodDoc;
-import org.jsondoc.springmvc.pojo.SpringApiParamDoc;
-import org.jsondoc.springmvc.pojo.SpringApiResponseObjectDoc;
+import org.jsondoc.springmvc.pojo.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
@@ -49,10 +46,9 @@ public class SpringApiDocScanner implements ApiDocScanner {
                 ApiMethodDoc apiMethodDoc = SpringApiMethodDoc.buildFromSpringAnnotation(
                         method.getAnnotation(SpringApiMethod.class), method.getAnnotation(RequestMapping.class));
 
-//                if (method.isAnnotationPresent(ApiHeaders.class)) {
-//                    apiMethodDoc.setHeaders(ApiHeaderDoc.buildFromAnnotation(method.getAnnotation(ApiHeaders.class)));
-//                }
-//
+
+                apiMethodDoc.setHeaders(SpringApiHeaderDoc.buildFromAnnotation(method));
+
                 apiMethodDoc.setPathparameters(SpringApiParamDoc.getPathVariables(method));
 //
                 apiMethodDoc.setQueryparameters(SpringApiParamDoc.getRequestParams(method));

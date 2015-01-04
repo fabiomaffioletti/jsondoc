@@ -24,6 +24,12 @@ public class SampleController {
         return new Sample();
     }
 
+    @SpringApiMethod(description = "retrieve sample with headers")
+    @RequestMapping(value = "/samplesWithHeaders", method = RequestMethod.GET)
+    public @ResponseBody Sample getSampleWithHeaders(@RequestHeader("one") String one, @RequestHeader("two") String two) {
+        return new Sample();
+    }
+
     @SpringApiMethod(description = "retrieve sample by id")
     @RequestMapping(value = "/samples", method = RequestMethod.GET)
     public @ResponseBody Sample getSampleWithParam(@RequestParam("id") String id) {

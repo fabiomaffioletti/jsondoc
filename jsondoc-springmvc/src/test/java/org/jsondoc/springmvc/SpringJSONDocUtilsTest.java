@@ -5,6 +5,7 @@ import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocUtils;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class SpringJSONDocUtilsTest {
     public void allMethodsAreFound() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 5);
+        assertEquals(sampleDoc.getMethods().size(), 6);
     }
 
     @Test
@@ -55,6 +56,19 @@ public class SpringJSONDocUtilsTest {
         ApiMethodDoc getSampleById = findMethod(sampleDoc, "/samples/{id}", ApiVerb.GET);
 
         assertTrue(getSampleById.getConsumes().containsAll(asList("application/json", "application/xml")));
+    }
+
+    @Test
+    public void requestMappingWithHeaders() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc headerRequest = findMethod(sampleDoc, "/samplesWithHeaders", ApiVerb.GET);
+
+        List<ApiHeaderDoc> headers = headerRequest.getHeaders();
+        assertEquals(2, headers.size());
+        assertEquals(headers.get(0).getName(), "one");
+        assertEquals(headers.get(1).getName(), "two");
     }
 
     @Test
