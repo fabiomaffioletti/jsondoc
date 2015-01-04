@@ -54,7 +54,7 @@ public class SpringJSONDocUtilsTest {
     public void allMethodsAreFound() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 8);
+        assertEquals(sampleDoc.getMethods().size(), 9);
     }
 
     @Test
@@ -88,6 +88,15 @@ public class SpringJSONDocUtilsTest {
         assertEquals(2, headers.size());
         assertEquals(headers.get(0).getName(), "one");
         assertEquals(headers.get(1).getName(), "two");
+    }
+
+    @Test
+    public void requestMappingWithUndefinedMethodGetsTranslatedToGet() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc method = findMethod(sampleDoc, "/samplesWithoutMethod", ApiVerb.GET);
+        assertEquals("sample without method", method.getDescription());
     }
 
     @Test

@@ -21,10 +21,17 @@ public class SpringApiMethodDoc {
         apiMethodDoc.setPath(mapping.value()[0]);
         apiMethodDoc.setSupportedversions(getVersionInfo(method, versionDoc));
         apiMethodDoc.setDescription(springMethod.description());
-        apiMethodDoc.setVerb(ApiVerb.valueOf(mapping.method()[0].name()));
+        apiMethodDoc.setVerb(getVerb(mapping));
         apiMethodDoc.setConsumes(Arrays.asList(mapping.consumes()));
         apiMethodDoc.setProduces(Arrays.asList(mapping.produces()));
         return apiMethodDoc;
+    }
+
+    private static ApiVerb getVerb(RequestMapping mapping) {
+        if (mapping.method() != null && mapping.method().length > 0) {
+            return ApiVerb.valueOf(mapping.method()[0].name());
+        }
+        return ApiVerb.GET;
     }
 
     private static ApiVersionDoc getVersionInfo(Method method, ApiVersionDoc versionDoc) {

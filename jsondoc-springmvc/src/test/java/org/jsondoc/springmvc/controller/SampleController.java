@@ -67,6 +67,12 @@ public class SampleController {
         return null;
     }
 
+    @SpringApiMethod(description = "sample without method")
+    @RequestMapping(value = "/samplesWithoutMethod")
+    public @ResponseBody Sample sampleWithoutMethod() {
+        return null;
+    }
+
     @RequestMapping(value = "/unmappedMethod", method = RequestMethod.GET)
     public ResponseEntity<Sample> unmappedMethod() {
         return null;
