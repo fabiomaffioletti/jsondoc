@@ -51,21 +51,6 @@ public class SpringApiDocScanner implements ApiDocScanner {
         return pojoDocs;
     }
 
-    public static Map<String, Set<ApiObjectDoc>> getApiObjectsMap(Set<Class<?>> classes) {
-        Map<String, Set<ApiObjectDoc>> objectsMap = new TreeMap<String, Set<ApiObjectDoc>>();
-        Set<ApiObjectDoc> apiObjectDocSet = getApiObjectDocs(classes);
-        for (ApiObjectDoc apiObjectDoc : apiObjectDocSet) {
-            if (objectsMap.containsKey(apiObjectDoc.getGroup())) {
-                objectsMap.get(apiObjectDoc.getGroup()).add(apiObjectDoc);
-            } else {
-                Set<ApiObjectDoc> groupedPojoDocs = new TreeSet<ApiObjectDoc>();
-                groupedPojoDocs.add(apiObjectDoc);
-                objectsMap.put(apiObjectDoc.getGroup(), groupedPojoDocs);
-            }
-        }
-        return objectsMap;
-    }
-
     private static List<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {
         List<ApiMethodDoc> apiMethodDocs = new ArrayList<ApiMethodDoc>();
         Method[] methods = controller.getMethods();
@@ -80,7 +65,7 @@ public class SpringApiDocScanner implements ApiDocScanner {
 //
                 apiMethodDoc.setPathparameters(SpringApiParamDoc.getPathVariables(method));
 //
-//                apiMethodDoc.setQueryparameters(ApiParamDoc.getApiParamDocs(method, ApiParamType.QUERY));
+                apiMethodDoc.setQueryparameters(SpringApiParamDoc.getRequestParams(method));
 //
 //                apiMethodDoc.setBodyobject(ApiBodyObjectDoc.buildFromAnnotation(method));
 //

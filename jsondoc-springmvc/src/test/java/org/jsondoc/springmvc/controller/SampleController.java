@@ -16,4 +16,10 @@ public class SampleController {
         return new Sample();
     }
 
+    @SpringApiMethod(description = "retrieve sample by id")
+    @RequestMapping(value = "/samples", method = RequestMethod.GET)
+    public @ResponseBody Sample getSampleWithParam(@RequestParam("id") String id) {
+        return new Sample();
+    }
+
 }
