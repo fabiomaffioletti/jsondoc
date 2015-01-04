@@ -1,6 +1,7 @@
 package org.jsondoc.springmvc;
 
 import org.jsondoc.core.pojo.*;
+import org.jsondoc.core.util.JSONDocUtils;
 import org.junit.Test;
 
 import java.util.List;
@@ -18,14 +19,14 @@ public class SpringJSONDocUtilsTest {
 
     @Test
     public void basePathAndVersionAreMapped() throws Exception {
-        JSONDoc doc = SpringJSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         assertEquals(BASE_PATH, doc.getBasePath());
         assertEquals(VERSION, doc.getVersion());
     }
 
     @Test
     public void controllerValuesAreMapped()  {
-        JSONDoc doc = SpringJSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
 
         Map<String, Set<ApiDoc>> apis = doc.getApis();
         Set<ApiDoc> apiGroup = apis.get("api");
@@ -39,7 +40,7 @@ public class SpringJSONDocUtilsTest {
 
     @Test
     public void requestMapping()  {
-        JSONDoc doc = SpringJSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
 
         Map<String, Set<ApiDoc>> apis = doc.getApis();
         Set<ApiDoc> apiGroup = apis.get("api");
