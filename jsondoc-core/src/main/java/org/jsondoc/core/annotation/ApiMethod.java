@@ -18,7 +18,7 @@ public @interface ApiMethod {
 	 * The relative path for this method (ex. /country/get/{name})
 	 * @return
 	 */
-	public String path() default "";
+	public String path();
 
 	/**
 	 * A description of what the method does
@@ -31,7 +31,7 @@ public @interface ApiMethod {
 	 * @see ApiVerb
 	 * @return
 	 */
-	public ApiVerb verb() default ApiVerb.GET;
+	public ApiVerb verb();
 	
 	/**
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...
