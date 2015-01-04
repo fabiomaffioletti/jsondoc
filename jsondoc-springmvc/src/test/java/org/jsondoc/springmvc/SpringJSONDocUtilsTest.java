@@ -1,6 +1,7 @@
 package org.jsondoc.springmvc;
 
 import org.jsondoc.core.pojo.*;
+import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocUtils;
 import org.junit.Test;
 
@@ -73,6 +74,18 @@ public class SpringJSONDocUtilsTest {
         assertEquals("true", idParam.getRequired());
     }
 
+    @Test
+    public void requestMappingWithRequestBody() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc createSample = findMethod(sampleDoc, "/samples", ApiVerb.POST);
+
+        assertEquals("create sample", createSample.getDescription());
+        ApiBodyObjectDoc bodyobject = createSample.getBodyobject();
+        JSONDocType jsondocType = bodyobject.getJsondocType();
+        assertEquals("sample", jsondocType.getType());
+    }
 
     private ApiMethodDoc findMethod(ApiDoc sampleDoc, String path, ApiVerb verb) {
         for (ApiMethodDoc method : sampleDoc.getMethods()) {

@@ -22,4 +22,10 @@ public class SampleController {
         return new Sample();
     }
 
+    @SpringApiMethod(description = "create sample")
+    @RequestMapping(value = "/samples", method = RequestMethod.POST)
+    public @ResponseBody Sample postWithRequestBody(@RequestBody Sample sample) {
+        return new Sample();
+    }
+
 }
