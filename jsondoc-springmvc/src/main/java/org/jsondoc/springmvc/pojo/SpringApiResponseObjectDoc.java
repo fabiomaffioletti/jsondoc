@@ -20,25 +20,28 @@ public class SpringApiResponseObjectDoc {
             if (Collection.class.isAssignableFrom(returnType)) {
                 return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), returnType, method.getGenericReturnType()));
             } else if (ResponseEntity.class.equals(returnType)) {
-                Type type = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-
-                if (type instanceof ParameterizedType) {
-                    ParameterizedType parameterizedType = (ParameterizedType) type;
-
-                    Class<?> aClass = getClassForType(parameterizedType.getRawType());
-
-                    if (Collection.class.isAssignableFrom(aClass)) {
-                        return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, type));
-                    }
-                }
-
-                Class<?> aClass = getClassForType(type);
-                return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, aClass));
+                return mapResponseEntity(method.getGenericReturnType());
             }
-
             return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), returnType, returnType));
         }
         return null;
+    }
+
+    private static ApiResponseObjectDoc mapResponseEntity(Type genericReturnType) {
+        Type actualReturnType = ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
+
+        if (actualReturnType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) actualReturnType;
+
+            Class<?> aClass = getClassForType(parameterizedType.getRawType());
+
+            if (Collection.class.isAssignableFrom(aClass)) {
+                return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, actualReturnType));
+            }
+        }
+
+        Class<?> aClass = getClassForType(actualReturnType);
+        return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, aClass));
     }
 
     private static Class<?> getClassForType(Type type) {
