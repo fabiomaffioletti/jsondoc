@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SpringJSONDocUtilsTest {
@@ -44,6 +45,16 @@ public class SpringJSONDocUtilsTest {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
         assertEquals(sampleDoc.getMethods().size(), 5);
+    }
+
+    @Test
+    public void producesAndConsumesAreMapped() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc getSampleById = findMethod(sampleDoc, "/samples/{id}", ApiVerb.GET);
+
+        assertTrue(getSampleById.getConsumes().containsAll(asList("application/json", "application/xml")));
     }
 
     @Test

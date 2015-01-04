@@ -3,6 +3,7 @@ package org.jsondoc.springmvc.controller;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.springmvc.annotation.SpringApiMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,9 @@ import static java.util.Arrays.asList;
 public class SampleController {
 
     @SpringApiMethod(description = "retrieve sample by id")
-    @RequestMapping(value = "/samples/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/samples/{id}", method = RequestMethod.GET,
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public @ResponseBody Sample getSample(@PathVariable("id") String id) {
         return new Sample();
     }
