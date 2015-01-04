@@ -6,7 +6,7 @@ import org.jsondoc.core.annotation.ApiObjectField;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApiObject(name = "sample")
+@ApiObject(name = "sample", description = "a sample")
 public class Sample {
     @ApiObjectField(description = "the id of the sample")
     private String id;

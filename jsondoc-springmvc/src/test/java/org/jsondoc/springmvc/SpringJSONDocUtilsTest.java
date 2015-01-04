@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class SpringJSONDocUtilsTest {
 
@@ -21,10 +19,21 @@ public class SpringJSONDocUtilsTest {
     public static final String PACKAGE = "org.jsondoc.springmvc";
 
     @Test
-    public void basePathAndVersionAreMapped() throws Exception {
+    public void basePathAndVersionAreMapped() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         assertEquals(BASE_PATH, doc.getBasePath());
         assertEquals(VERSION, doc.getVersion());
+    }
+
+    @Test
+    public void objectsAreMappedJustLikeTheyUsedToBe() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+        Set<ApiObjectDoc> sample = doc.getObjects().get("");
+        assertEquals(1, sample.size());
+        ApiObjectDoc sampleObject = sample.iterator().next();
+        assertEquals("sample", sampleObject.getName());
+        assertEquals("a sample", sampleObject.getDescription());
+        assertEquals(4, sampleObject.getFields().size());
     }
 
     @Test
