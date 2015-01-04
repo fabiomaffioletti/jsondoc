@@ -67,4 +67,9 @@ public class SampleController {
         return null;
     }
 
+    @RequestMapping(value = "/unmappedMethod", method = RequestMethod.GET)
+    public ResponseEntity<Sample> unmappedMethod() {
+        return null;
+    }
+
 }
