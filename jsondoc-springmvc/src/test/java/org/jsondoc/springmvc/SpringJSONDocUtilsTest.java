@@ -45,7 +45,14 @@ public class SpringJSONDocUtilsTest {
     public void allMethodsAreFound() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 6);
+        assertEquals(sampleDoc.getMethods().size(), 7);
+    }
+
+    @Test
+    public void customVersionIsRecorded() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        assertEquals(sampleDoc.getMethods().size(), 7);
     }
 
     @Test
@@ -59,16 +66,32 @@ public class SpringJSONDocUtilsTest {
     }
 
     @Test
+    public void customVersionsAreMapped() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc headerRequest = findMethod(sampleDoc, "/samplesCustomVersion", ApiVerb.GET);
+        assertSupported("1.1", "1.1", headerRequest);
+    }
+
+    @Test
     public void requestMappingWithHeaders() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
 
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
         ApiMethodDoc headerRequest = findMethod(sampleDoc, "/samplesWithHeaders", ApiVerb.GET);
+        assertSupported("1.0", "", headerRequest);
 
         List<ApiHeaderDoc> headers = headerRequest.getHeaders();
         assertEquals(2, headers.size());
         assertEquals(headers.get(0).getName(), "one");
         assertEquals(headers.get(1).getName(), "two");
+    }
+
+    private void assertSupported(String since, String until, ApiMethodDoc headerRequest) {
+        ApiVersionDoc supportedversions = headerRequest.getSupportedversions();
+        assertEquals(supportedversions.getSince(), since);
+        assertEquals(supportedversions.getUntil(), until);
     }
 
     @Test

@@ -40,12 +40,17 @@ public class SpringApiDocScanner implements ApiDocScanner {
 
     private static List<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {
         List<ApiMethodDoc> apiMethodDocs = new ArrayList<ApiMethodDoc>();
+        ApiVersionDoc apiVersionDoc = new ApiVersionDoc();
+        if (controller.isAnnotationPresent(ApiVersion.class)) {
+            ApiVersion annotation = controller.getAnnotation(ApiVersion.class);
+            apiVersionDoc.setSince(annotation.since());
+            apiVersionDoc.setUntil(annotation.until());
+        }
+
         Method[] methods = controller.getMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(SpringApiMethod.class) && method.isAnnotationPresent(RequestMapping.class)) {
-                ApiMethodDoc apiMethodDoc = SpringApiMethodDoc.buildFromSpringAnnotation(
-                        method.getAnnotation(SpringApiMethod.class), method.getAnnotation(RequestMapping.class));
-
+                ApiMethodDoc apiMethodDoc = SpringApiMethodDoc.buildFromSpringAnnotation(apiVersionDoc, method);
 
                 apiMethodDoc.setHeaders(SpringApiHeaderDoc.buildFromAnnotation(method));
 

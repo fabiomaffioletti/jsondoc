@@ -36,6 +36,13 @@ public class SampleController {
         return new Sample();
     }
 
+    @ApiVersion(since = "1.1", until = "1.1")
+    @SpringApiMethod(description = "custom version for retrieving samples")
+    @RequestMapping(value = "/samplesCustomVersion", method = RequestMethod.GET)
+    public @ResponseBody Sample customVersion() {
+        return new Sample();
+    }
+
     @SpringApiMethod(description = "create sample")
     @RequestMapping(value = "/samples", method = RequestMethod.POST)
     public @ResponseBody Sample postWithRequestBody(@RequestBody Sample sample) {
