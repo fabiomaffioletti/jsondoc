@@ -12,7 +12,9 @@ import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class SpringApiParamDoc extends ApiParamDoc {
+public class SpringApiParamDoc {
+    private SpringApiParamDoc() {
+    }
 
     public static Set<ApiParamDoc> getPathVariables(Method method) {
         Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();

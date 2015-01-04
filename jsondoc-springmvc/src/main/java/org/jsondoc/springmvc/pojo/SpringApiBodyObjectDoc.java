@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-public class SpringApiBodyObjectDoc extends ApiBodyObjectDoc {
-    public SpringApiBodyObjectDoc(JSONDocType jsondocType) {
-        super(jsondocType);
+public class SpringApiBodyObjectDoc  {
+    private SpringApiBodyObjectDoc() {
     }
 
     public static ApiBodyObjectDoc buildFromAnnotation(Method method) {

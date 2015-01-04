@@ -5,6 +5,10 @@ import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.springmvc.annotation.SpringApiMethod;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 @Api(name = "sample", group="api", description = "manages samples")
 @ApiVersion(since = "1.0")
 @RestController
@@ -25,7 +29,13 @@ public class SampleController {
     @SpringApiMethod(description = "create sample")
     @RequestMapping(value = "/samples", method = RequestMethod.POST)
     public @ResponseBody Sample postWithRequestBody(@RequestBody Sample sample) {
-        return new Sample();
+        return sample;
+    }
+
+    @SpringApiMethod(description = "get all samples")
+    @RequestMapping(value = "/allsamples", method = RequestMethod.GET)
+    public @ResponseBody List<Sample> allSamples() {
+        return asList(new Sample());
     }
 
 }

@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
 
-public class SpringApiMethodDoc extends ApiMethodDoc {
+public class SpringApiMethodDoc {
+    private SpringApiMethodDoc() {
+    }
+
     public static ApiMethodDoc buildFromSpringAnnotation(SpringApiMethod method, RequestMapping mapping) {
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setPath(mapping.value()[0]);
