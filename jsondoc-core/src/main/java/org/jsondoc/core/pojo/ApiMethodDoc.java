@@ -1,13 +1,8 @@
 package org.jsondoc.core.pojo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import org.jsondoc.core.annotation.ApiMethod;
+
+import java.util.*;
 
 public class ApiMethodDoc {
 	public String jsondocId = UUID.randomUUID().toString();
@@ -146,5 +141,4 @@ public class ApiMethodDoc {
 	public void setAuth(ApiAuthDoc auth) {
 		this.auth = auth;
 	}
-
 }
