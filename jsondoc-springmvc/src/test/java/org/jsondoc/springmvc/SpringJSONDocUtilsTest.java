@@ -43,7 +43,7 @@ public class SpringJSONDocUtilsTest {
     public void allMethodsAreFound() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 4);
+        assertEquals(sampleDoc.getMethods().size(), 5);
     }
 
     @Test
@@ -102,6 +102,29 @@ public class SpringJSONDocUtilsTest {
 
         assertEquals("get all samples", createSample.getDescription());
         assertEquals("list of sample", createSample.getResponse().getJsondocType().getType());
+    }
+
+    //todo : implement next
+//    @Test
+//    public void requestMappingWithResponseEntityCollectionResponseType() {
+//        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+//
+//        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+//        ApiMethodDoc createSample = findMethod(sampleDoc, "/allsamplesWithEntities", ApiVerb.GET);
+//
+//        assertEquals("get all samples with response entity", createSample.getDescription());
+//        assertEquals("list of sample", createSample.getResponse().getJsondocType().getType());
+//    }
+
+    @Test
+    public void requestMappingWithResponseEntitySampleResponseType() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc createSample = findMethod(sampleDoc, "/samplesEntity", ApiVerb.GET);
+
+        assertEquals("get sample with response entity", createSample.getDescription());
+        assertEquals("sample", createSample.getResponse().getJsondocType().getType());
     }
 
     private ApiMethodDoc findMethod(ApiDoc sampleDoc, String path, ApiVerb verb) {

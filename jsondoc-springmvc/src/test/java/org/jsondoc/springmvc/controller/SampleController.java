@@ -3,6 +3,7 @@ package org.jsondoc.springmvc.controller;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.springmvc.annotation.SpringApiMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,19 @@ public class SampleController {
     @RequestMapping(value = "/allsamples", method = RequestMethod.GET)
     public @ResponseBody List<Sample> allSamples() {
         return asList(new Sample());
+    }
+
+    //todo: next, handle response entity collections
+//    @SpringApiMethod(description = "get all samples with response entity")
+//    @RequestMapping(value = "/allsamplesWithEntities", method = RequestMethod.GET)
+//    public ResponseEntity<List<Sample>> allSamplesWithEntity() {
+//        return null;
+//    }
+
+    @SpringApiMethod(description = "get sample with response entity")
+    @RequestMapping(value = "/samplesEntity", method = RequestMethod.GET)
+    public ResponseEntity<Sample> aSampleWithEntity() {
+        return null;
     }
 
 }
