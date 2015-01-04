@@ -55,12 +55,11 @@ public class SampleController {
         return asList(new Sample());
     }
 
-    //todo: next, handle response entity collections
-//    @SpringApiMethod(description = "get all samples with response entity")
-//    @RequestMapping(value = "/allsamplesWithEntities", method = RequestMethod.GET)
-//    public ResponseEntity<List<Sample>> allSamplesWithEntity() {
-//        return null;
-//    }
+    @SpringApiMethod(description = "get all samples with response entity")
+    @RequestMapping(value = "/allsamplesWithEntities", method = RequestMethod.GET)
+    public ResponseEntity<List<Sample>> allSamplesWithEntity() {
+        return null;
+    }
 
     @SpringApiMethod(description = "get sample with response entity")
     @RequestMapping(value = "/samplesEntity", method = RequestMethod.GET)

@@ -55,17 +55,13 @@ public class SpringApiDocScanner implements ApiDocScanner {
                 apiMethodDoc.setHeaders(SpringApiHeaderDoc.buildFromAnnotation(method));
 
                 apiMethodDoc.setPathparameters(SpringApiParamDoc.getPathVariables(method));
-//
+
                 apiMethodDoc.setQueryparameters(SpringApiParamDoc.getRequestParams(method));
-//
+
                 apiMethodDoc.setBodyobject(SpringApiBodyObjectDoc.buildFromAnnotation(method));
-//
+
                 apiMethodDoc.setResponse(SpringApiResponseObjectDoc.build(method));
-//
-//                if (method.isAnnotationPresent(ApiVersion.class)) {
-//                    apiMethodDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(method.getAnnotation(ApiVersion.class)));
-//                }
-//
+
                 // todo: method level auth?
                 apiMethodDocs.add(apiMethodDoc);
             }

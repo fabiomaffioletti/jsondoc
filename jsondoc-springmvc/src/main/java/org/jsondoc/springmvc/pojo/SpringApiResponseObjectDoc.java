@@ -19,20 +19,21 @@ public class SpringApiResponseObjectDoc {
         if (returnType != null) {
             if (Collection.class.isAssignableFrom(returnType)) {
                 return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), returnType, method.getGenericReturnType()));
-            }
-            else if (ResponseEntity.class.equals(returnType)) {
+            } else if (ResponseEntity.class.equals(returnType)) {
                 Type type = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+
+                if (type instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) type;
+
+                    Class<?> aClass = getClassForType(parameterizedType.getRawType());
+
+                    if (Collection.class.isAssignableFrom(aClass)) {
+                        return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, type));
+                    }
+                }
+
                 Class<?> aClass = getClassForType(type);
                 return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, aClass));
-
-//                if (type instanceof ParameterizedType) {
-//                    ParameterizedType parameterizedType = (ParameterizedType) type;
-//
-//                    Class<?> aClass = getClassForType(parameterizedType);
-//
-//                    if (Collection.class.isAssignableFrom(aClass)) {
-//                        return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), aClass, parameterizedType.getActualTypeArguments()[0]));
-//                    }
             }
 
             return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), returnType, returnType));

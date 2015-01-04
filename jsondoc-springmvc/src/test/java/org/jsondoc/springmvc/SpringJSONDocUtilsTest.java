@@ -45,14 +45,7 @@ public class SpringJSONDocUtilsTest {
     public void allMethodsAreFound() {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 7);
-    }
-
-    @Test
-    public void customVersionIsRecorded() {
-        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
-        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-        assertEquals(sampleDoc.getMethods().size(), 7);
+        assertEquals(sampleDoc.getMethods().size(), 8);
     }
 
     @Test
@@ -86,12 +79,6 @@ public class SpringJSONDocUtilsTest {
         assertEquals(2, headers.size());
         assertEquals(headers.get(0).getName(), "one");
         assertEquals(headers.get(1).getName(), "two");
-    }
-
-    private void assertSupported(String since, String until, ApiMethodDoc headerRequest) {
-        ApiVersionDoc supportedversions = headerRequest.getSupportedversions();
-        assertEquals(supportedversions.getSince(), since);
-        assertEquals(supportedversions.getUntil(), until);
     }
 
     @Test
@@ -152,17 +139,16 @@ public class SpringJSONDocUtilsTest {
         assertEquals("list of sample", createSample.getResponse().getJsondocType().getType());
     }
 
-    //todo : implement next
-//    @Test
-//    public void requestMappingWithResponseEntityCollectionResponseType() {
-//        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
-//
-//        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
-//        ApiMethodDoc createSample = findMethod(sampleDoc, "/allsamplesWithEntities", ApiVerb.GET);
-//
-//        assertEquals("get all samples with response entity", createSample.getDescription());
-//        assertEquals("list of sample", createSample.getResponse().getJsondocType().getType());
-//    }
+    @Test
+    public void requestMappingWithResponseEntityCollectionResponseType() {
+        JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
+
+        ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
+        ApiMethodDoc createSample = findMethod(sampleDoc, "/allsamplesWithEntities", ApiVerb.GET);
+
+        assertEquals("get all samples with response entity", createSample.getDescription());
+        assertEquals("list of sample", createSample.getResponse().getJsondocType().getType());
+    }
 
     @Test
     public void requestMappingWithResponseEntitySampleResponseType() {
@@ -201,5 +187,11 @@ public class SpringJSONDocUtilsTest {
 
         fail(String.format("Unable to locate api doc \"%s\":\"%s\"", groupName, apiDocName));
         return null;
+    }
+
+    private void assertSupported(String since, String until, ApiMethodDoc headerRequest) {
+        ApiVersionDoc supportedversions = headerRequest.getSupportedversions();
+        assertEquals(supportedversions.getSince(), since);
+        assertEquals(supportedversions.getUntil(), until);
     }
 }
