@@ -1,16 +1,16 @@
 package org.jsondoc.core.pojo;
 
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiParams;
+import org.jsondoc.core.util.JSONDocType;
+import org.jsondoc.core.util.JSONDocTypeBuilder;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.annotation.ApiParams;
-import org.jsondoc.core.util.JSONDocType;
-import org.jsondoc.core.util.JSONDocTypeBuilder;
 
 public class ApiParamDoc {
 	public String jsondocId = UUID.randomUUID().toString();
@@ -58,7 +58,7 @@ public class ApiParamDoc {
 		return docs;
 	}
 
-	private static JSONDocType getJSONDocType(Method method, Integer index) {
+	protected static JSONDocType getJSONDocType(Method method, Integer index) {
 		Class<?> type = method.getParameterTypes()[index];
 		Type genericType = method.getGenericParameterTypes()[index];
 		return JSONDocTypeBuilder.build(new JSONDocType(), type, genericType);

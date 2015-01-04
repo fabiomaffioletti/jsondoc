@@ -1,12 +1,8 @@
 package org.jsondoc.core.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.jsondoc.core.pojo.ApiVerb;
+
+import java.lang.annotation.*;
 
 /**
  * This annotation is to be used on your exposed methods.
@@ -22,7 +18,7 @@ public @interface ApiMethod {
 	 * The relative path for this method (ex. /country/get/{name})
 	 * @return
 	 */
-	public String path();
+	public String path() default "";
 
 	/**
 	 * A description of what the method does
@@ -35,7 +31,7 @@ public @interface ApiMethod {
 	 * @see ApiVerb
 	 * @return
 	 */
-	public ApiVerb verb();
+	public ApiVerb verb() default ApiVerb.GET;
 	
 	/**
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...
