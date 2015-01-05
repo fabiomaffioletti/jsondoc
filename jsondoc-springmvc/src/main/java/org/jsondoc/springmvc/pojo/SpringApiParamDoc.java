@@ -6,8 +6,8 @@ import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,11 +18,18 @@ public class SpringApiParamDoc {
 
     public static Set<ApiParamDoc> getPathVariables(Method method) {
         Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
+        Class<?>[] parameterTypes = method.getParameterTypes();
 
-        for (Parameter parameter : method.getParameters()) {
-            if (parameter.getAnnotation(PathVariable.class) != null) {
-                ApiParamDoc apiParamDoc = buildDocFrom(parameter.getAnnotation(PathVariable.class), parameter);
-                docs.add(apiParamDoc);
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+
+        for (int i = 0; i < method.getParameterAnnotations().length; i++) {
+            Annotation[] parameterAnnotation = parameterAnnotations[i];
+            for (Annotation annotation : parameterAnnotation) {
+                if (annotation.annotationType().equals(PathVariable.class)) {
+                    PathVariable pathVariable = (PathVariable) annotation;
+                    ApiParamDoc apiParamDoc = buildDocFrom(pathVariable, parameterTypes[i]);
+                    docs.add(apiParamDoc);
+                }
             }
         }
 
@@ -32,28 +39,35 @@ public class SpringApiParamDoc {
     public static Set<ApiParamDoc> getRequestParams(Method method) {
         Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
 
-        for (Parameter parameter : method.getParameters()) {
-            if (parameter.getAnnotation(RequestParam.class) != null) {
-                ApiParamDoc apiParamDoc = buildDocFrom(parameter.getAnnotation(RequestParam.class), parameter);
-                docs.add(apiParamDoc);
+        Class<?>[] parameterTypes = method.getParameterTypes();
+
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+
+        for (int i = 0; i < method.getParameterAnnotations().length; i++) {
+            Annotation[] parameterAnnotation = parameterAnnotations[i];
+            for (Annotation annotation : parameterAnnotation) {
+                if (annotation.annotationType().equals(RequestParam.class)) {
+                    RequestParam requestParam = (RequestParam) annotation;
+                    ApiParamDoc apiParamDoc = buildDocFrom(requestParam, parameterTypes[i]);
+                    docs.add(apiParamDoc);
+                }
             }
         }
 
         return docs;
     }
 
-    private static JSONDocType getJSONDocType(Parameter parameter) {
-        Class<?> type = parameter.getType();
-        Type genericType = parameter.getType().getGenericSuperclass();
-        return JSONDocTypeBuilder.build(new JSONDocType(), type, genericType);
+    private static JSONDocType getJSONDocType(Class<?> parameter) {
+        Type genericType = parameter.getGenericSuperclass();
+        return JSONDocTypeBuilder.build(new JSONDocType(), parameter, genericType);
     }
 
-    private static ApiParamDoc buildDocFrom(PathVariable annotation, Parameter parameter) {
+    private static ApiParamDoc buildDocFrom(PathVariable annotation, Class<?> parameter) {
         //todo description, allowed values, format
         return new ApiParamDoc(annotation.value(), "", getJSONDocType(parameter), "true", new String[]{}, "");
     }
 
-    private static ApiParamDoc buildDocFrom(RequestParam annotation, Parameter parameter) {
+    private static ApiParamDoc buildDocFrom(RequestParam annotation, Class<?> parameter) {
         //todo description, allowed values, format
         return new ApiParamDoc(annotation.value(),
                 "",

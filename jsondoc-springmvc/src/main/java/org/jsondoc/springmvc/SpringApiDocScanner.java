@@ -24,15 +24,17 @@ public class SpringApiDocScanner implements ApiDocScanner {
     @Override
     public Set<ApiDoc> scan(Set<Class<?>> classes) {
         Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
+        System.out.println(classes.size());
         for (Class<?> controller : classes) {
             log.debug("Getting JSONDoc for class: " + controller.getName());
             ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
             if (controller.isAnnotationPresent(ApiVersion.class)) {
                 apiDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(controller.getAnnotation(ApiVersion.class)));
             }
-
             //todo : auths
-            apiDoc.setMethods(getApiMethodDocs(controller));
+            List<ApiMethodDoc> apiMethodDocs = getApiMethodDocs(controller);
+            System.out.println("methods" + apiMethodDocs.size());
+            apiDoc.setMethods(apiMethodDocs);
             apiDocs.add(apiDoc);
         }
         return apiDocs;

@@ -45,15 +45,10 @@ public class SpringApiResponseObjectDoc {
     }
 
     private static Class<?> getClassForType(Type type) {
-        Class<?> aClass = null;
-        String className = type.getTypeName();
-
-        try {
-            aClass = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't determine class for " + className, e);
+        if (type instanceof Class) {
+            return (Class) type;
         }
-        return aClass;
+        throw new RuntimeException("Can't determine class for " + type);
     }
 
 }

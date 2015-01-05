@@ -19,7 +19,6 @@ import java.util.*;
 public class JSONDocUtils {
     public static final String UNDEFINED = "undefined";
     public static final String ANONYMOUS = "anonymous";
-    private static Reflections reflections = null;
 
     private static Logger log = Logger.getLogger(JSONDocUtils.class);
 
@@ -39,7 +38,7 @@ public class JSONDocUtils {
             filter.includePackage(pkg);
         }
 
-        reflections = new Reflections(new ConfigurationBuilder()
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .filterInputsBy(filter)
                 .setUrls(urls)
         );
@@ -52,14 +51,17 @@ public class JSONDocUtils {
     }
 
     public static Set<ApiDoc> getApiDocs(Set<Class<?>> classes) {
-        Set<Class<? extends ApiDocScanner>> finderClasses = new Reflections("org.jsondoc").getSubTypesOf(ApiDocScanner.class);
-
+        Set<Class<? extends ApiDocScanner>> scanners = new Reflections("org.jsondoc").getSubTypesOf(ApiDocScanner.class);
+        System.out.println("FINDERS = " + scanners.size());
         Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
 
-        for (Class<? extends ApiDocScanner> finderClass : finderClasses) {
+        for (Class<? extends ApiDocScanner> scanner : scanners) {
             try {
-                ApiDocScanner apiDocScanner = finderClass.newInstance();
-                apiDocs.addAll(apiDocScanner.scan(classes));
+                ApiDocScanner apiDocScanner = scanner.newInstance();
+
+                Set<ApiDoc> scan = apiDocScanner.scan(classes);
+
+                apiDocs.addAll(scan);
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("failed to create ApiDocFinder of class " + ApiDocScanner.class, e);
             }

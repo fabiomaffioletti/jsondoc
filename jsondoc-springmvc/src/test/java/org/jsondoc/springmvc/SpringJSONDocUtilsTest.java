@@ -158,7 +158,7 @@ public class SpringJSONDocUtilsTest {
     }
 
     @Test
-    public void requestMappingWithResponseEntityCollectionResponseType() {
+    public void requestMappingWithResponseEntityCollectionResponseType() throws InterruptedException {
         JSONDoc doc = JSONDocUtils.getApiDoc(VERSION, BASE_PATH, asList(PACKAGE));
 
         ApiDoc sampleDoc = getApiDoc(doc, "api", "sample");
