@@ -85,6 +85,10 @@ ol.linenums li {
 table td {
 	word-wrap: break-word;
 }
+
+.border-radius-none {
+	border-radius: 0px;
+}
 </style>
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -194,6 +198,14 @@ table td {
 		</div>
 		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
 			<div class="panel-body">
+				{{#if jsondocerrors}}
+					<div class="alert alert-danger border-radius-none">
+						<p><strong>The following errors prevent a correct functionality of the playground and do not provide enough documentation data for API users:</strong></p>
+						<ul class="list-unstyled">
+						{{#each jsondocerrors}} <li>- {{this}}</li> {{/each}}
+						</ul>
+					</div>
+				{{/if}}
 				<table class="table table-condensed table-bordered" style="table-layout: fixed;">
 					<tr>
 						<th style="width:18%;">Path</th>
@@ -211,10 +223,13 @@ table td {
 							</tr>
 						{{/if}}	
 					{{/if}}
+					
+					{{#if description}}
 					<tr>
 						<th>Description</th>
 						<td>{{description}}</td>
 					</tr>
+					{{/if}}
 
 					{{#if auth}}
 						<tr>
@@ -348,6 +363,24 @@ table td {
 						{{/each}}
 					{{/if}}
 				</table>
+				{{#if jsondocwarnings}}
+					<div class="alert alert-warning alert-dismissible border-radius-none">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<p><strong>Warnings that may prevent a correct playground functionality:</strong></p>
+						<ul class="list-unstyled">
+						{{#each jsondocwarnings}} <li>- {{this}}</li> {{/each}}
+						</ul>
+					</div>
+				{{/if}}
+				{{#if jsondochints}}
+					<div class="alert alert-info alert-dismissible border-radius-none">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<p><strong>Hints to provide a better understanding of your API:</strong></p>
+						<ul class="list-unstyled">
+						{{#each jsondochints}} <li>- {{this}}</li> {{/each}}
+						</ul>
+					</div>
+				{{/if}}
 			</div>
 		</div>
 	</div>
@@ -542,6 +575,15 @@ table td {
 		{{/each}}
 	{{/if}}
 </table>
+{{#if jsondochints}}
+	<div class="alert alert-info alert-dismissible border-radius-none">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<p><strong>Hints to provide a better understanding of your API:</strong></p>
+		<ul class="list-unstyled">
+		{{#each jsondochints}} <li>- {{this}}</li> {{/each}}
+		</ul>
+	</div>
+{{/if}}
 </script>
 
 <script>
@@ -697,6 +739,7 @@ table td {
 								$("#testContent").show();
 								
 								$("#produces input:first").attr("checked", "checked");
+								$("#consumes input:first").attr("checked", "checked");
 								
 								$("#testButton").click(function() {
 									var headers = new Object();

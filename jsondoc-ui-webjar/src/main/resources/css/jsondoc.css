@@ -66,3 +66,7 @@ ol.linenums li {
 table td {
 	word-wrap: break-word;
 }
+
+.border-radius-none {
+	border-radius: 0px;
+}
