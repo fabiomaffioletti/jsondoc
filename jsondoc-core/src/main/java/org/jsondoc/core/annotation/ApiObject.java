@@ -22,7 +22,7 @@ public @interface ApiObject {
 	 * @see ApiResponseObject
 	 * @return
 	 */
-	public String name();
+	public String name() default "";
 	
 	/**
 	 * A description of what the object contains or represents

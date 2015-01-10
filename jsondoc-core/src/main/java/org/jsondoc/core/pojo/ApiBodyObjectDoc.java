@@ -12,7 +12,7 @@ public class ApiBodyObjectDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 
-	public static ApiBodyObjectDoc buildFromAnnotation(Method method) {
+	public static ApiBodyObjectDoc build(Method method) {
 		if (method.isAnnotationPresent(ApiBodyObject.class)) {
 			return new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getAnnotation(ApiBodyObject.class).clazz(), method.getAnnotation(ApiBodyObject.class).clazz()));
 		}

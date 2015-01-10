@@ -11,23 +11,26 @@ import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiMethod;
-import org.jsondoc.core.annotation.ApiParam;
 import org.jsondoc.core.annotation.ApiParams;
+import org.jsondoc.core.annotation.ApiPathParam;
+import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiAuthType;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
-import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiVerb;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.DefaultJSONDocScanner;
+import org.jsondoc.core.util.JSONDocScanner;
 import org.jsondoc.core.util.pojo.Child;
 import org.jsondoc.core.util.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ApiDocTest {
+	
+	private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
 
 	@Api(name = "test-controller", description = "a-test-controller")
 	@ApiVersion(since = "1.0", until = "2.12")
@@ -36,75 +39,75 @@ public class ApiDocTest {
 
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		String name(@ApiParam(name = "name", paramType = ApiParamType.PATH) String name, @ApiBodyObject String body) {
+		String name(@ApiPathParam(name = "name") String name, @ApiBodyObject String body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/age", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		Integer age(@ApiParam(name = "age", paramType = ApiParamType.PATH) Integer age, @ApiBodyObject Integer body) {
+		Integer age(@ApiPathParam(name = "age") Integer age, @ApiBodyObject Integer body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/avg", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		Long avg(@ApiParam(name = "avg", paramType = ApiParamType.PATH) Long avg, @ApiBodyObject Long body) {
+		Long avg(@ApiPathParam(name = "avg") Long avg, @ApiBodyObject Long body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/map", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		Map<String, Integer> map(@ApiParam(name = "map", paramType = ApiParamType.PATH) Map<String, Integer> map, @ApiBodyObject Map<String, Integer> body) {
+		Map<String, Integer> map(@ApiPathParam(name = "map") Map<String, Integer> map, @ApiBodyObject Map<String, Integer> body) {
 			return null;
 		}
 
 		@SuppressWarnings("rawtypes")
 		@ApiMethod(path = "/unparametrizedList", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		List unparametrizedList(@ApiParam(name = "unparametrizedList", paramType = ApiParamType.PATH) List unparametrizedList, @ApiBodyObject List body) {
+		List unparametrizedList(@ApiPathParam(name = "unparametrizedList") List unparametrizedList, @ApiBodyObject List body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/parametrizedList", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		List<String> parametrizedList(@ApiParam(name = "parametrizedList", paramType = ApiParamType.PATH) List<String> parametrizedList, @ApiBodyObject List<String> body) {
+		List<String> parametrizedList(@ApiPathParam(name = "parametrizedList") List<String> parametrizedList, @ApiBodyObject List<String> body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/wildcardParametrizedList", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		List<?> wildcardParametrizedList(@ApiParam(name = "wildcardParametrizedList", paramType = ApiParamType.PATH) List<?> wildcardParametrizedList, @ApiBodyObject List<?> body) {
+		List<?> wildcardParametrizedList(@ApiPathParam(name = "wildcardParametrizedList") List<?> wildcardParametrizedList, @ApiBodyObject List<?> body) {
 			return null;
 		}
 		
 		@ApiMethod(path = "/LongArray", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		Long[] LongArray(@ApiParam(name = "LongArray", paramType = ApiParamType.PATH) Long[] LongArray, @ApiBodyObject Long[] body) {
+		Long[] LongArray(@ApiPathParam(name = "LongArray") Long[] LongArray, @ApiBodyObject Long[] body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/longArray", verb = ApiVerb.GET, description = "a-test-method")
 		public @ApiResponseObject
-		long[] longArray(@ApiParam(name = "longArray", paramType = ApiParamType.PATH) long[] LongArray, @ApiBodyObject long[] body) {
+		long[] longArray(@ApiPathParam(name = "longArray") long[] LongArray, @ApiBodyObject long[] body) {
 			return null;
 		}
 		
 		@ApiMethod(path = "/version", verb = ApiVerb.GET, description = "a-test-method for api version feature")
 		@ApiVersion(since = "1.0", until = "2.12")
 		public @ApiResponseObject
-		String version(@ApiParam(name = "version", paramType = ApiParamType.PATH) String version, @ApiBodyObject String body) {
+		String version(@ApiPathParam(name = "version") String version, @ApiBodyObject String body) {
 			return null;
 		}
 		
 		@ApiMethod(path="/child", description = "A method returning a child", verb = ApiVerb.GET)
 		public @ApiResponseObject 
-		Child child(@ApiParam(name = "child", paramType = ApiParamType.PATH) Child child, @ApiBodyObject Child body) {
+		Child child(@ApiPathParam(name = "child") Child child, @ApiBodyObject Child body) {
 			return null;
 		}
 		
 		@ApiMethod(path="/pizza", description = "A method returning a pizza", verb = ApiVerb.GET)
 		public @ApiResponseObject 
-		Pizza pizza(@ApiParam(name = "pizza", paramType = ApiParamType.PATH) Pizza pizza, @ApiBodyObject Pizza body) {
+		Pizza pizza(@ApiPathParam(name = "pizza") Pizza pizza, @ApiBodyObject Pizza body) {
 			return null;
 		}
 
@@ -159,37 +162,38 @@ public class ApiDocTest {
 	private class TestOldStyleServlets {
 		
 		@ApiMethod(path="/oldStyle", description = "A method params on method level", verb = ApiVerb.GET)
-		@ApiParams(params = {
-				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class)
+		@ApiParams(pathparams = {
+				@ApiPathParam(name = "name", clazz = String.class)
 		})
 		public String oldStyle() {
 			return null;
 		}
 		
 		@ApiMethod(path="/oldStyleWithList", description = "A method params on method level", verb = ApiVerb.GET)
-		@ApiParams(params = {
-				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = List.class)
+		@ApiParams(pathparams = {
+				@ApiPathParam(name = "name", clazz = List.class)
 		})
 		public String oldStyleWithList() {
 			return null;
 		}
 		
 		@ApiMethod(path="/oldStyleWithMap", description = "A method params on method level", verb = ApiVerb.GET)
-		@ApiParams(params = {
-				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = Map.class)
+		@ApiParams(pathparams = {
+				@ApiPathParam(name = "name", clazz = Map.class)
 		})
 		public String oldStyleWithMap() {
 			return null;
 		}
 		
 		@ApiMethod(path="/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
-		@ApiParams(params = {
-				@ApiParam(name = "name", paramType = ApiParamType.PATH, clazz = String.class),
-				@ApiParam(name = "age", paramType = ApiParamType.PATH, clazz = Integer.class),
-				@ApiParam(name = "undefined", paramType = ApiParamType.PATH),
-				@ApiParam(name = "q", paramType = ApiParamType.QUERY, clazz = String.class)
-		})
-		public String oldStyleMixed(@ApiParam(name = "age", paramType = ApiParamType.PATH) Integer age) {
+		@ApiParams(pathparams = {
+					@ApiPathParam(name = "name", clazz = String.class),
+					@ApiPathParam(name = "age", clazz = Integer.class),
+					@ApiPathParam(name = "undefined")},
+				queryparams = {
+					@ApiQueryParam(name = "q", clazz = String.class)}
+		)
+		public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
 			return null;
 		}
 		
@@ -207,17 +211,27 @@ public class ApiDocTest {
 
 	}
 	
+	@Api(name = "test-errors-warnings-hints", description = "a-test-for-incomplete-documentation")
+	private class TestErrorsAndWarningsAndHints {
+		
+		@ApiMethod
+		public String oldStyle() {
+			return null;
+		}
+		
+	}
+	
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(TestController.class);
-		ApiDoc apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		ApiDoc apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-controller", apiDoc.getName());
 		Assert.assertEquals("a-test-controller", apiDoc.getDescription());
 		Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
 		Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
-		Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
+		Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -257,11 +271,7 @@ public class ApiDocTest {
 			if (apiMethodDoc.getPath().equals("/map")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
 				Assert.assertEquals("map[string, integer]", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
-				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getMapKey().getType());
-				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getMapValue().getType());
 				Assert.assertEquals("map[string, integer]", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
-				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getMapKey().getType());
-				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getMapValue().getType());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("map")) {
 						Assert.assertEquals("map[string, integer]", apiParamDoc.getJsondocType().getOneLineText());
@@ -334,7 +344,7 @@ public class ApiDocTest {
 
 		classes.clear();
 		classes.add(TestControllerWithBasicAuth.class);
-		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
 		Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
 		Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
@@ -350,7 +360,7 @@ public class ApiDocTest {
 			
 			if (apiMethodDoc.getPath().equals("/noAuth")) {
 				Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-				Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+				Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
 			}
 			
 			if (apiMethodDoc.getPath().equals("/undefinedAuthWithAuthOnClass")) {
@@ -363,7 +373,7 @@ public class ApiDocTest {
 		
 		classes.clear();
 		classes.add(TestControllerWithNoAuthAnnotation.class);
-		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-controller-with-no-auth-annotation", apiDoc.getName());
 		Assert.assertNull(apiDoc.getAuth());
 		
@@ -376,7 +386,7 @@ public class ApiDocTest {
 			
 			if (apiMethodDoc.getPath().equals("/noAuth")) {
 				Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-				Assert.assertEquals(JSONDocUtils.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+				Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
 			}
 			
 			if (apiMethodDoc.getPath().equals("/undefinedAuthWithoutAuthOnClass")) {
@@ -387,7 +397,7 @@ public class ApiDocTest {
 		
 		classes.clear();
 		classes.add(TestOldStyleServlets.class);
-		apiDoc = JSONDocUtils.getApiDocs(classes).iterator().next();
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-old-style-servlets", apiDoc.getName());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -416,7 +426,16 @@ public class ApiDocTest {
 				Assert.assertEquals("list", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 			}
 		}
-	
+		
+		classes.clear();
+		classes.add(TestErrorsAndWarningsAndHints.class);
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("test-errors-warnings-hints", apiDoc.getName());
+		
+		ApiMethodDoc apiMethodDoc = apiDoc.getMethods().get(0);
+		Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
+		Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
+		Assert.assertEquals(1, apiMethodDoc.getJsondochints().size());
 	}
 
 }

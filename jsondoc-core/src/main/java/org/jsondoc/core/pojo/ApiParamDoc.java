@@ -1,18 +1,12 @@
 package org.jsondoc.core.pojo;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
-import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.annotation.ApiParams;
+import org.jsondoc.core.annotation.ApiPathParam;
+import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.util.JSONDocType;
-import org.jsondoc.core.util.JSONDocTypeBuilder;
 
-public class ApiParamDoc {
+public class ApiParamDoc extends AbstractDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
@@ -20,7 +14,7 @@ public class ApiParamDoc {
 	private String required;
 	private String[] allowedvalues;
 	private String format;
-
+	
 	public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required, String[] allowedvalues, String format) {
 		super();
 		this.name = name;
@@ -31,48 +25,12 @@ public class ApiParamDoc {
 		this.format = format;
 	}
 
-	public static Set<ApiParamDoc> getApiParamDocs(Method method, ApiParamType paramType) {
-		Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
-
-		if (method.isAnnotationPresent(ApiParams.class)) {
-			for (ApiParam apiParam : method.getAnnotation(ApiParams.class).params()) {
-				ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, JSONDocTypeBuilder.build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()), paramType);
-				if (apiParamDoc != null) {
-					docs.add(apiParamDoc);
-				}
-			}
-		}
-
-		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-		for (int i = 0; i < parametersAnnotations.length; i++) {
-			for (int j = 0; j < parametersAnnotations[i].length; j++) {
-				if (parametersAnnotations[i][j] instanceof ApiParam) {
-					ApiParamDoc apiParamDoc = buildFromAnnotation((ApiParam) parametersAnnotations[i][j], getJSONDocType(method, i), paramType);
-					if (apiParamDoc != null) {
-						docs.add(apiParamDoc);
-					}
-				}
-			}
-		}
-
-		return docs;
+	public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
+		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
 	}
-
-	private static JSONDocType getJSONDocType(Method method, Integer index) {
-		Class<?> type = method.getParameterTypes()[index];
-		Type genericType = method.getGenericParameterTypes()[index];
-		return JSONDocTypeBuilder.build(new JSONDocType(), type, genericType);
-	}
-
-	public static ApiParamDoc buildFromAnnotation(ApiParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		if (annotation.paramType().equals(paramType)) {
-			return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
-		}
-		return null;
-	}
-
-	public ApiParamDoc() {
-		super();
+	
+	public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
+		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
 	}
 
 	public JSONDocType getJsondocType() {
@@ -97,6 +55,26 @@ public class ApiParamDoc {
 
 	public String getFormat() {
 		return format;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setRequired(String required) {
+		this.required = required;
+	}
+
+	public void setAllowedvalues(String[] allowedvalues) {
+		this.allowedvalues = allowedvalues;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 	@Override

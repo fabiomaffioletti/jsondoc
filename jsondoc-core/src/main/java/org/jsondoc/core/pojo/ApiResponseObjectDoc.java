@@ -12,12 +12,18 @@ public class ApiResponseObjectDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 
-	public static ApiResponseObjectDoc buildFromAnnotation(ApiResponseObject annotation, Method method) {
-		if(annotation.clazz().isAssignableFrom(JSONDocDefaultType.class)) {
-			return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
-		} else { 
-			return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), annotation.clazz(), annotation.clazz()));
+	public static ApiResponseObjectDoc build(Method method) {
+		if(method.isAnnotationPresent(ApiResponseObject.class)) {
+			ApiResponseObject annotation = method.getAnnotation(ApiResponseObject.class);
+			
+			if(annotation.clazz().isAssignableFrom(JSONDocDefaultType.class)) {
+				return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
+			} else { 
+				return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), annotation.clazz(), annotation.clazz()));
+			}
 		}
+		
+		return null;
 	}
 
 	public ApiResponseObjectDoc(JSONDocType jsondocType) {

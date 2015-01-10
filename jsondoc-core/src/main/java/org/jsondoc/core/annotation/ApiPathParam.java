@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.util.JSONDocDefaultType;
 
 /**
@@ -18,13 +17,13 @@ import org.jsondoc.core.util.JSONDocDefaultType;
 @Documented
 @Target(value = { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiParam {
+public @interface ApiPathParam {
 
 	/**
 	 * The name of the url parameter, as expected by the server
 	 * @return
 	 */
-	public String name();
+	public String name() default "";
 
 	/**
 	 * A description of what the parameter is needed for
@@ -50,11 +49,6 @@ public @interface ApiParam {
 	 */
 	public String format() default "";
 	
-	/**
-	 * Whether this is a path parameter or a query parameter
-	 * @return
-	 */
-	public ApiParamType paramType();
 	
 	/**
 	 * Specify this element if you need to use the ApiParam annotation on the method declaration and not inside the method's signature. This is to be able to document old style servlets'

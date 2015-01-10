@@ -3,7 +3,8 @@ package org.jsondoc.springmvc.controller;
 import java.util.List;
 
 import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.JSONDocScanner;
+import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,28 +12,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/jsondoc")
 public class JSONDocController {
 	private String version;
 	private String basePath;
 	private List<String> packages;
+	private JSONDocScanner jsondocScanner;
 
-	public void setVersion(String version) {
+	public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
+
+	public JSONDocController(String version, String basePath, List<String> packages) {
 		this.version = version;
-	}
-
-	public void setBasePath(String basePath) {
 		this.basePath = basePath;
-	}
-
-	public void setPackages(List<String> packages) {
 		this.packages = packages;
+		this.jsondocScanner = new SpringJSONDocScanner();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	JSONDoc getApi() {
-		return JSONDocUtils.getApiDoc(version, basePath, packages);
+	@RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody JSONDoc getApi() {
+		return jsondocScanner.getJSONDoc(version, basePath, packages);
 	}
-	
+
 }

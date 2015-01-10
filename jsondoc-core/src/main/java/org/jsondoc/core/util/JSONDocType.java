@@ -10,28 +10,28 @@ public class JSONDocType {
 	private JSONDocType mapKey;
 
 	private JSONDocType mapValue;
-	
+
 	public JSONDocType() {
-		
+
 	}
-	
+
 	public JSONDocType(String item) {
 		this.type.add(item);
 	}
-	
+
 	public void addItemToType(String item) {
 		this.type.add(item);
 	}
-	
+
 	public String getOneLineText() {
 		StringBuffer stringType = new StringBuffer();
 		for (int i = 0; i < type.size(); i++) {
 			stringType.append(type.get(i));
-			if(i < type.size() - 1) {
+			if (i < type.size() - 1) {
 				stringType.append(" of ");
 			}
 		}
-		if(mapKey != null && mapValue != null) {
+		if (mapKey != null && mapValue != null) {
 			stringType.append("[");
 			stringType.append(mapKey.getOneLineText());
 			stringType.append(", ");
@@ -41,15 +41,8 @@ public class JSONDocType {
 		return stringType.toString();
 	}
 
-	public String getType() {
-		StringBuffer stringType = new StringBuffer();
-		for (int i = 0; i < type.size(); i++) {
-			stringType.append(type.get(i));
-			if(i < type.size() - 1) {
-				stringType.append(" of ");
-			}
-		}
-		return stringType.toString();
+	public List<String> getType() {
+		return type;
 	}
 
 	public void setType(List<String> type) {

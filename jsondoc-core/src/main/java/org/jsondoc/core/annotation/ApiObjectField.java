@@ -20,7 +20,7 @@ public @interface ApiObjectField {
 	 * A drescription of what the field is
 	 * @return
 	 */
-	public String description();
+	public String description() default "";
 	
 	/**
 	 * The format pattern for this field

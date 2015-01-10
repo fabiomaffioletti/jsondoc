@@ -15,7 +15,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.DefaultJSONDocScanner;
+import org.jsondoc.core.util.JSONDocScanner;
 
 /**
  * Echos an object string to the output screen.
@@ -78,7 +79,8 @@ public class JSONDocMojo extends AbstractMojo {
 			URLClassLoader urlClassLoader = new URLClassLoader(runtimeClasspathElementsUrls, Thread.currentThread().getContextClassLoader());
 			Thread.currentThread().setContextClassLoader(urlClassLoader);
 
-			JSONDoc apiDoc = JSONDocUtils.getApiDoc(version, basePath, packages);
+			JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
 			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
 			

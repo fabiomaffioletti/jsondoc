@@ -1,5 +1,6 @@
 package org.jsondoc.core.pojo;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,12 +13,17 @@ public class ApiErrorDoc {
 	private String code;
 	private String description;
 
-	public static List<ApiErrorDoc> buildFromAnnotation(ApiErrors annotation) {
-		List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
-		for (ApiError apiError : annotation.apierrors()) {
-			apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
+	public static List<ApiErrorDoc> build(Method method) {
+		if(method.isAnnotationPresent(ApiErrors.class)) {
+			ApiErrors annotation = method.getAnnotation(ApiErrors.class);
+			List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
+			for (ApiError apiError : annotation.apierrors()) {
+				apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
+			}
+			return apiMethodDocs;
 		}
-		return apiMethodDocs;
+		
+		return new ArrayList<ApiErrorDoc>();
 	}
 
 	public ApiErrorDoc(String code, String description) {

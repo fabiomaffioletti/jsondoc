@@ -4,11 +4,11 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.util.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
-import org.jsondoc.core.util.JSONDocUtils;
 
-public class ApiObjectFieldDoc {
+public class ApiObjectFieldDoc extends AbstractDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
@@ -20,7 +20,7 @@ public class ApiObjectFieldDoc {
 
 	public static ApiObjectFieldDoc buildFromAnnotation(ApiObjectField annotation, Field field) {
 		ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-		if (!annotation.name().equals("")) {
+		if (!annotation.name().trim().isEmpty()) {
 			apiPojoFieldDoc.setName(annotation.name());
 		} else {
 			apiPojoFieldDoc.setName(field.getName());
@@ -29,7 +29,7 @@ public class ApiObjectFieldDoc {
 		apiPojoFieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
 		if (field.getType().isEnum()) {
-			apiPojoFieldDoc.setAllowedvalues(JSONDocUtils.enumConstantsToStringArray(field.getType().getEnumConstants()));
+			apiPojoFieldDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(field.getType().getEnumConstants()));
 		} else {
 			apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
 		}

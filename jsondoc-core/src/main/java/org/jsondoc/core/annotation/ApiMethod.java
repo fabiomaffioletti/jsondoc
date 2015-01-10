@@ -22,20 +22,20 @@ public @interface ApiMethod {
 	 * The relative path for this method (ex. /country/get/{name})
 	 * @return
 	 */
-	public String path();
+	public String path() default "";
 
 	/**
 	 * A description of what the method does
 	 * @return
 	 */
-	public String description();
+	public String description() default "";
 	
 	/**
 	 * The request verb (or method), to be filled with an ApiVerb value (GET, POST, PUT, DELETE)
 	 * @see ApiVerb
 	 * @return
 	 */
-	public ApiVerb verb();
+	public ApiVerb verb() default ApiVerb.GET;
 	
 	/**
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...

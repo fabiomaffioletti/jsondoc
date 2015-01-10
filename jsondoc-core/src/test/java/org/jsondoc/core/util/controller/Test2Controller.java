@@ -1,13 +1,19 @@
 package org.jsondoc.core.util.controller;
 
-import org.jsondoc.core.annotation.*;
-import org.jsondoc.core.pojo.ApiParamType;
+import java.util.List;
+import java.util.Map;
+
+import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthBasic;
+import org.jsondoc.core.annotation.ApiAuthBasicUser;
+import org.jsondoc.core.annotation.ApiBodyObject;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiPathParam;
+import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.pojo.Parent;
 import org.springframework.http.MediaType;
-
-import java.util.List;
-import java.util.Map;
 
 @Api(name="Test2Controller", description="My test controller #2")
 public class Test2Controller {
@@ -80,7 +86,7 @@ public class Test2Controller {
 			consumes={},
 			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
 	)
-	public @ApiResponseObject void delete(@ApiParam(name="parent", description="A parent object", paramType=ApiParamType.PATH) Parent parent) {
+	public @ApiResponseObject void delete(@ApiPathParam(name="parent", description="A parent object") Parent parent) {
 		
 	}
 

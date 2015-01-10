@@ -7,10 +7,9 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.annotation.ApiVersion;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.DefaultJSONDocScanner;
 
-public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
+public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
@@ -18,6 +17,10 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
 	private String group;
+	
+	public ApiObjectDoc() {
+		super();
+	}
 
 	@SuppressWarnings("rawtypes")
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
@@ -27,10 +30,7 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
 				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
-
-				if (field.isAnnotationPresent(ApiVersion.class)) {
-					fieldDoc.setSupportedversions(ApiVersionDoc.buildFromAnnotation(field.getAnnotation(ApiVersion.class)));
-				}
+				fieldDoc.setSupportedversions(ApiVersionDoc.build(field));
 
 				fieldDocs.add(fieldDoc);
 			}
@@ -45,19 +45,20 @@ public class ApiObjectDoc implements Comparable<ApiObjectDoc> {
 		}
 
 		if (clazz.isEnum()) {
-			apiObjectDoc.setAllowedvalues(JSONDocUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
+			apiObjectDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(clazz.getEnumConstants()));
 		}
 
-		apiObjectDoc.setName(annotation.name());
+		if(annotation.name().trim().isEmpty()) {
+			apiObjectDoc.setName(clazz.getSimpleName().toLowerCase());
+		} else {
+			apiObjectDoc.setName(annotation.name());
+		}
+		
 		apiObjectDoc.setDescription(annotation.description());
 		apiObjectDoc.setFields(fieldDocs);
 		apiObjectDoc.setGroup(annotation.group());
 
 		return apiObjectDoc;
-	}
-
-	public ApiObjectDoc() {
-		super();
 	}
 
 	public String getName() {

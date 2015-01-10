@@ -9,14 +9,14 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
 
-public class ApiMethodDoc {
+public class ApiMethodDoc extends AbstractDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String path;
 	private String description;
 	private ApiVerb verb;
-	private List<String> produces;
-	private List<String> consumes;
-	private List<ApiHeaderDoc> headers;
+	private Set<String> produces;
+	private Set<String> consumes;
+	private Set<ApiHeaderDoc> headers;
 	private Set<ApiParamDoc> pathparameters;
 	private Set<ApiParamDoc> queryparameters;
 	private ApiBodyObjectDoc bodyobject;
@@ -24,46 +24,48 @@ public class ApiMethodDoc {
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
-
+	
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(annotation.path());
 		apiMethodDoc.setDescription(annotation.description());
 		apiMethodDoc.setVerb(annotation.verb());
-		apiMethodDoc.setConsumes(Arrays.asList(annotation.consumes()));
-		apiMethodDoc.setProduces(Arrays.asList(annotation.produces()));
+		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
+		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(annotation.produces())));
 		return apiMethodDoc;
 	}
 
 	public ApiMethodDoc() {
 		super();
-		this.headers = new ArrayList<ApiHeaderDoc>();
+		this.headers = new LinkedHashSet<ApiHeaderDoc>();
 		this.pathparameters = new LinkedHashSet<ApiParamDoc>();
 		this.queryparameters = new LinkedHashSet<ApiParamDoc>();
 		this.apierrors = new ArrayList<ApiErrorDoc>();
+		this.produces = new LinkedHashSet<String>();
+		this.consumes = new LinkedHashSet<String>();
 	}
 
-	public List<ApiHeaderDoc> getHeaders() {
+	public Set<ApiHeaderDoc> getHeaders() {
 		return headers;
 	}
 
-	public void setHeaders(List<ApiHeaderDoc> headers) {
+	public void setHeaders(Set<ApiHeaderDoc> headers) {
 		this.headers = headers;
 	}
 
-	public List<String> getProduces() {
+	public Set<String> getProduces() {
 		return produces;
 	}
 
-	public void setProduces(List<String> produces) {
+	public void setProduces(Set<String> produces) {
 		this.produces = produces;
 	}
 
-	public List<String> getConsumes() {
+	public Set<String> getConsumes() {
 		return consumes;
 	}
 
-	public void setConsumes(List<String> consumes) {
+	public void setConsumes(Set<String> consumes) {
 		this.consumes = consumes;
 	}
 

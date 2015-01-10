@@ -9,7 +9,7 @@ import java.util.Map;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
-import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.util.DefaultJSONDocScanner;
 
 public class ApiAuthDoc {
 	private String type;
@@ -18,14 +18,14 @@ public class ApiAuthDoc {
 
 	public static ApiAuthDoc buildFromUndefined() {
 		ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
-		apiAuthDoc.setType(JSONDocUtils.UNDEFINED);
+		apiAuthDoc.setType(DefaultJSONDocScanner.UNDEFINED);
 		return apiAuthDoc;
 	}
 
 	public static ApiAuthDoc buildFromApiAuthNoneAnnotation(ApiAuthNone annotation) {
 		ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
 		apiAuthDoc.setType(ApiAuthType.NONE.name());
-		apiAuthDoc.addRole(JSONDocUtils.ANONYMOUS);
+		apiAuthDoc.addRole(DefaultJSONDocScanner.ANONYMOUS);
 		return apiAuthDoc;
 	}
 

@@ -18,10 +18,17 @@ import java.lang.annotation.Target;
 public @interface ApiParams {
 
 	/**
-	 * An array of ApiParam annotations
-	 * @see ApiParam
+	 * An array of ApiQueryParam annotations
+	 * @see ApiQueryParam
 	 * @return
 	 */
-	public ApiParam[] params();
+	public ApiQueryParam[] queryparams() default {};
+	
+	/**
+	 * An array of ApiPathParam annotations
+	 * @see ApiPathParam
+	 * @return
+	 */
+	public ApiPathParam[] pathparams() default {};
 	
 }

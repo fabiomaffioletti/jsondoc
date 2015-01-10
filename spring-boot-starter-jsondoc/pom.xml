@@ -28,7 +28,8 @@
 
 		<dependency>
 			<groupId>org.jsondoc</groupId>
-			<artifactId>jsondoc-core</artifactId>
+			<artifactId>jsondoc-springmvc</artifactId>
 		</dependency>
+		
 	</dependencies>
 </project>

@@ -15,16 +15,17 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class JSONDocUtilsTest {
+public class DefaultJSONDocScannerTest {
     private String version = "1.0";
     private String basePath = "http://localhost:8080/api";
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static Logger log = Logger.getLogger(JSONDocUtilsTest.class);
+    private static Logger log = Logger.getLogger(DefaultJSONDocScannerTest.class);
 
     @Test
     public void getJSONDoc() throws IOException {
-        JSONDoc jsondoc = JSONDocUtils.getApiDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"));
+    	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"));
         assertEquals(1, jsondoc.getApis().size());
 
         int countApis = 0;
