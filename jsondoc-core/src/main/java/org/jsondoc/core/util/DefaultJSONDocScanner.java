@@ -29,7 +29,5 @@ public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 	public ApiParamDoc mergeApiQueryParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc) {
 		return apiParamDoc;
 	}
-
-	
 	
 }

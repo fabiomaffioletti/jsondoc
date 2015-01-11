@@ -38,7 +38,7 @@ public class SpringJSONDocScannerTest {
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
 				@ApiQueryParam(name = "id") @RequestParam Integer id,
-				@ApiQueryParam(name = "query") @RequestParam(value = "myquery") Long query,
+				@ApiQueryParam(name = "query", defaultvalue = "test") @RequestParam(value = "myquery") Long query,
 				@RequestBody @ApiBodyObject String requestBody) {
 			return "ok";
 		}
@@ -69,9 +69,11 @@ public class SpringJSONDocScannerTest {
 		ApiParamDoc apiParamDoc = qpIterator.next();
 		Assert.assertEquals("id", apiParamDoc.getName());
 		Assert.assertEquals("true", apiParamDoc.getRequired());
+		Assert.assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
 		apiParamDoc = qpIterator.next();
 		Assert.assertEquals("myquery", apiParamDoc.getName());
 		Assert.assertEquals("true", apiParamDoc.getRequired());
+		Assert.assertEquals("test", apiParamDoc.getDefaultvalue());
 		
 		Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
 		Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();

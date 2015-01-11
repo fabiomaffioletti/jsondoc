@@ -17,6 +17,7 @@ import org.jsondoc.core.util.JSONDocDefaultType;
 @Documented
 @Target(value = { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
+@ApiPathParam
 public @interface ApiQueryParam {
 
 	/**
@@ -48,6 +49,12 @@ public @interface ApiQueryParam {
 	 * @return
 	 */
 	public String format() default "";
+	
+	/**
+	 * The default value for this parameter, if it is not passed in the query string
+	 * @return
+	 */
+	public String defaultvalue() default "";
 	
 	
 	/**

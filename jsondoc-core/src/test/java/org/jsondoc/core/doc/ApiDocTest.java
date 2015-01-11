@@ -191,7 +191,7 @@ public class ApiDocTest {
 					@ApiPathParam(name = "age", clazz = Integer.class),
 					@ApiPathParam(name = "undefined")},
 				queryparams = {
-					@ApiQueryParam(name = "q", clazz = String.class)}
+					@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")}
 		)
 		public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
 			return null;
@@ -416,6 +416,7 @@ public class ApiDocTest {
 			if (apiMethodDoc.getPath().equals("/oldStyleMixed")) {
 				Assert.assertEquals(3, apiMethodDoc.getPathparameters().size());
 				Assert.assertEquals(1, apiMethodDoc.getQueryparameters().size());
+				Assert.assertEquals("qTest", apiMethodDoc.getQueryparameters().iterator().next().getDefaultvalue());
 			}
 			
 			if (apiMethodDoc.getPath().equals("/oldStyleResponseObject")) {

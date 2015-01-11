@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ValueConstants;
 
 public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSONDocScanner {
 
@@ -78,6 +79,10 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSON
 					apiParamDoc.setName(requestParam.value());
 				}
 				apiParamDoc.setRequired(String.valueOf(requestParam.required()));
+				if(!requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE)) {
+					apiParamDoc.setDefaultvalue(requestParam.defaultValue());
+				}
+				
 			}
 		}
 		return apiParamDoc;

@@ -14,8 +14,9 @@ public class ApiParamDoc extends AbstractDoc {
 	private String required;
 	private String[] allowedvalues;
 	private String format;
-	
-	public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required, String[] allowedvalues, String format) {
+	private String defaultvalue;
+
+	public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required, String[] allowedvalues, String format, String defaultvalue) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -23,14 +24,15 @@ public class ApiParamDoc extends AbstractDoc {
 		this.required = required;
 		this.allowedvalues = allowedvalues;
 		this.format = format;
+		this.defaultvalue = defaultvalue;
 	}
 
 	public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
+		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(), null);
 	}
-	
+
 	public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format());
+		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(), annotation.defaultvalue());
 	}
 
 	public JSONDocType getJsondocType() {
@@ -75,6 +77,14 @@ public class ApiParamDoc extends AbstractDoc {
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public String getDefaultvalue() {
+		return defaultvalue;
+	}
+
+	public void setDefaultvalue(String defaultvalue) {
+		this.defaultvalue = defaultvalue;
 	}
 
 	@Override

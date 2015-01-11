@@ -333,6 +333,12 @@ table td {
 								<td>Format: {{this.format}}</td>
 							</tr>
 							{{/if}}
+							{{#if this.defaultvalue}}
+							<tr>
+								<td></td>
+								<td>Default value: {{this.defaultvalue}}</td>
+							</tr>
+							{{/if}}
 						{{/each}}
 					{{/if}}
 					{{#if bodyobject}}
