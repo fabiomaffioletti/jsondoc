@@ -44,12 +44,12 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSON
 	 */
 	@Override
 	public ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc) {
-		apiMethodDoc.setPath(getPathFromSpringAnnotation(method, controller));
 		apiMethodDoc.setVerb(getApiVerbFromSpringAnnotation(method, controller));
 		apiMethodDoc.getProduces().addAll(getProducesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getConsumes().addAll(getConsumesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getHeaders().addAll(getHeadersFromSpringAnnotation(method, controller));
 		apiMethodDoc.setResponse(getApiResponseObject(method, apiMethodDoc.getResponse()));
+		apiMethodDoc.setPath(getPathFromSpringAnnotation(apiMethodDoc, method, controller));
 		return apiMethodDoc;
 	}
 	
@@ -201,7 +201,7 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSON
 		return apiVerb;
 	}
 	
-	private String getPathFromSpringAnnotation(Method method, Class<?> controller) {
+	private String getPathFromSpringAnnotation(ApiMethodDoc apiMethodDoc, Method method, Class<?> controller) {
 		StringBuffer pathStringBuffer = new StringBuffer();
 		
 		if(controller.isAnnotationPresent(RequestMapping.class)) {
@@ -216,6 +216,16 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSON
 			if(requestMapping.value().length > 0) {
 				pathStringBuffer.append(requestMapping.value()[0]);
 			}
+		}
+		
+		if(!apiMethodDoc.getQueryparameters().isEmpty()) {
+			pathStringBuffer.append("?");
+			
+			for (ApiParamDoc apiParamDoc : apiMethodDoc.getQueryparameters()) {
+				pathStringBuffer.append(apiParamDoc.getName()).append("={").append(apiParamDoc.getName()).append("}").append("&");
+			}
+			
+			return pathStringBuffer.substring(0, pathStringBuffer.length() - 1).toString();
 		}
 		
 		return pathStringBuffer.toString();

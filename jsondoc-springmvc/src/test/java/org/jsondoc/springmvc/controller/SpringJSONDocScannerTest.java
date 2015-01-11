@@ -34,7 +34,7 @@ public class SpringJSONDocScannerTest {
 	private class SpringController {
 		
 		@ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verb = ApiVerb.GET)
-		@RequestMapping(value = "/string/{name}?id={id}&myquery={myquery}",  method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value = "/string/{name}",  method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
 				@ApiQueryParam(name = "id") @RequestParam Integer id,
