@@ -31,7 +31,7 @@ public @interface ApiMethod {
 	public String description() default "";
 	
 	/**
-	 * The request verb (or method), to be filled with an ApiVerb value (GET, POST, PUT, DELETE)
+	 * The request verb for this method. Defaults to "GET"
 	 * @see ApiVerb
 	 * @return
 	 */
@@ -48,5 +48,10 @@ public @interface ApiMethod {
 	 * @return
 	 */
 	public String[] consumes() default {};
+	
+	/**
+	 * Response status code that this method will return to the caller. Defaults to 200
+	 */
+	public String responsestatuscode() default "200";
 	
 }

@@ -17,6 +17,7 @@ import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class SpringJSONDocScannerTest {
 	
@@ -35,6 +37,7 @@ public class SpringJSONDocScannerTest {
 		
 		@ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verb = ApiVerb.GET)
 		@RequestMapping(value = "/string/{name}",  method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseStatus(value = HttpStatus.CREATED)
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
 				@ApiQueryParam(name = "id") @RequestParam Integer id,
@@ -63,6 +66,7 @@ public class SpringJSONDocScannerTest {
 		Assert.assertEquals("POST", apiMethodDoc.getVerb().name());
 		Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
 		Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
+		Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
 		
 		Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
 		Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();

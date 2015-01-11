@@ -89,5 +89,38 @@ public class Test2Controller {
 	public @ApiResponseObject void delete(@ApiPathParam(name="parent", description="A parent object") Parent parent) {
 		
 	}
+	
+	@ApiMethod(
+			path="/testOptions", 
+			verb=ApiVerb.OPTIONS, 
+			description="options test method for controller 2", 
+			consumes={},
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+	)
+	public @ApiResponseObject String options() {
+		return "options";
+	}
+	
+	@ApiMethod(
+			path="/testHead", 
+			verb=ApiVerb.HEAD, 
+			description="head test method for controller 2", 
+			consumes={},
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+	)
+	public @ApiResponseObject String head() {
+		return "head";
+	}
+
+	@ApiMethod(
+			path="/testtrace", 
+			verb=ApiVerb.TRACE, 
+			description="trace test method for controller 2", 
+			consumes={},
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			)
+	public @ApiResponseObject String trace() {
+		return "trace";
+	}
 
 }

@@ -273,6 +273,14 @@
 							<td colspan=2><code>{{bodyobject.jsondocType.oneLineText}}</code></td>
 						</tr>
 					{{/if}}
+					{{#if responsestatuscode}}
+						<tr>
+							<th colspan=2>Response status code</th>
+						</tr>
+						<tr>
+							<td colspan=2><code>{{responsestatuscode}}</code></td>
+						</tr>
+					{{/if}}
 					{{#if response}}
 						<tr>
 							<th colspan=2>Response object</th>

@@ -42,6 +42,18 @@ body {
 	padding-top : 5px;
 	background-color: #B94A48;
 }
+.OPTIONS {
+	padding-top : 5px;
+	background-color: #6B5463;
+}
+.TRACE {
+	padding-top : 5px;
+	background-color: #8E6C6E;
+}
+.HEAD {
+	padding-top : 5px;
+	background-color: #AA9A66;
+}
 
 blockquote small:before {
     content: "";
@@ -347,6 +359,14 @@ table td {
 						</tr>
 						<tr>
 							<td colspan=2><code>{{bodyobject.jsondocType.oneLineText}}</code></td>
+						</tr>
+					{{/if}}
+					{{#if responsestatuscode}}
+						<tr>
+							<th colspan=2>Response status code</th>
+						</tr>
+						<tr>
+							<td colspan=2><code>{{responsestatuscode}}</code></td>
 						</tr>
 					{{/if}}
 					{{#if response}}

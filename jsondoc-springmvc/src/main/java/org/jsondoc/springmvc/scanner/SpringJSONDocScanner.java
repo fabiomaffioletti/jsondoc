@@ -15,10 +15,12 @@ import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.AbstractJSONDocScanner;
 import org.jsondoc.core.util.JSONDocScanner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.ValueConstants;
 
 public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSONDocScanner {
@@ -49,10 +51,25 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSON
 		apiMethodDoc.getConsumes().addAll(getConsumesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getHeaders().addAll(getHeadersFromSpringAnnotation(method, controller));
 		apiMethodDoc.setResponse(getApiResponseObject(method, apiMethodDoc.getResponse()));
+		apiMethodDoc.setResponsestatuscode(getResponseStatusCodeFromSpringAnnotation(method));
 		apiMethodDoc.setPath(getPathFromSpringAnnotation(apiMethodDoc, method, controller));
 		return apiMethodDoc;
 	}
 	
+	private String getResponseStatusCodeFromSpringAnnotation(Method method) {
+		String responseStatusCode = null;
+		if(method.isAnnotationPresent(ResponseStatus.class)) {
+			ResponseStatus responseStatus = method.getAnnotation(ResponseStatus.class);
+			responseStatusCode = responseStatus.value().toString() + " - " + responseStatus.value().getReasonPhrase();
+		}
+		
+		if(responseStatusCode == null) {
+			responseStatusCode = HttpStatus.OK.toString();
+		}
+		
+		return responseStatusCode;
+	}
+
 	@Override
 	public ApiParamDoc mergeApiPathParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc) {
 		Annotation[] parameterAnnotations = method.getParameterAnnotations()[paramIndex];

@@ -24,7 +24,8 @@ public class ApiMethodDoc extends AbstractDoc {
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
-	
+	private String responsestatuscode;
+
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(annotation.path());
@@ -32,6 +33,7 @@ public class ApiMethodDoc extends AbstractDoc {
 		apiMethodDoc.setVerb(annotation.verb());
 		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
 		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(annotation.produces())));
+		apiMethodDoc.setResponsestatuscode(annotation.responsestatuscode());
 		return apiMethodDoc;
 	}
 
@@ -147,6 +149,14 @@ public class ApiMethodDoc extends AbstractDoc {
 
 	public void setAuth(ApiAuthDoc auth) {
 		this.auth = auth;
+	}
+
+	public String getResponsestatuscode() {
+		return responsestatuscode;
+	}
+
+	public void setResponsestatuscode(String responsestatuscode) {
+		this.responsestatuscode = responsestatuscode;
 	}
 
 }

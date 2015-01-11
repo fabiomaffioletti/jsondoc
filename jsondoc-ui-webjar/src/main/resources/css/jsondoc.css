@@ -23,6 +23,18 @@ body {
 	padding-top : 5px;
 	background-color: #B94A48;
 }
+.OPTIONS {
+	padding-top : 5px;
+	background-color: #6B5463;
+}
+.TRACE {
+	padding-top : 5px;
+	background-color: #8E6C6E;
+}
+.HEAD {
+	padding-top : 5px;
+	background-color: #AA9A66;
+}
 
 blockquote small:before {
     content: "";
