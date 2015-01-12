@@ -4,125 +4,426 @@ title: Documentation
 ---
 
 <table class="table">
-	<thead>
-		<tr>
-			<th>Annotation</th>
-			<th>Level</th>
-			<th>Description</th>
-		</tr>
-	</thead>
+	<tr>
+		<th>Services</th>
+		<th>Authentication</th>
+		<th>Objects</th>
+	</tr>
+	<tr><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td></tr>
+	<tr><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td></tr>
+	<tr><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td></tr>
+	<tr><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apiqueryparam">@ApiQueryParam</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apibodyobject">@ApiBodyObject</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apiresponseobject">@ApiResponseObject</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apierrors">@ApiErrors</a></td><td></td><td></td></tr>
+	<tr><td><a href="#apierror">@ApiError</a></td><td></td><td></td></tr>
+</table>
+
+<table class="table" id="api">
+	<thead><tr><th><h4>@Api</h4></th></tr></thead>
 	<tbody>
 		<tr>
-			<td><code>@Api</code></td>
-			<td>Class</td>
-			<td>
-				<p>This annotation has to be used on your controller class in an MVC pattern. It describes in a few words what the API does</p>
-			</td>
+			<td colspan="3">This annotation has to be used on your controller class in an MVC pattern. It describes in a few words what the API does</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the API</td>
 		</tr>
 		<tr>
-			<td><code>@ApiMethod</code></td>
-			<td>Method</td>
-			<td>
-				<p>This annotation describes your exposed methods in a generic way: which verb has to be used, which is the path for the call, which type it accepts, which one produces, etc</p>
-			</td>
-		</tr>			
-		<tr>
-			<td><code>@ApiVersion</code></td>
-			<td>Class,Method,Field</td>
-			<td>
-				<p>This annotation lets you specify since and until which version the class, method, object or field is supported</p>
-			</td>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the API does</td>
 		</tr>
 		<tr>
-			<td><code>@ApiAuthNone</code></td>
-			<td>Class,Method</td>
-			<td>
-				<p>Annotate a class or method with this annotation to specify that it does not require authentication to be accessed</p>
-			</td>
+			<td></td>
+			<td><code>group</code></td>
+			<td>Semantic grouping this API belongs to. For example it is possible to have a <i>Geography</i> group which will contain the <i>City API</i> and the <i>Country API</i></td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apimethod">
+	<thead><tr><th><h4>@ApiMethod</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation describes your exposed methods in a generic way: which verb has to be used, which is the path for the call, which type it accepts, which one produces, etc</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>path</code></td>
+			<td>The relative path for this method (ex. /country/get/{name})</td>
 		</tr>
 		<tr>
-			<td><code>@ApiAuthBasic</code></td>
-			<td>Class,Method</td>
-			<td>
-				<p>Annotate a class or method with this annotation to specify that it requires Basic Authentication to be accessed. You must also specify roles that can access the method and a list of <code>@ApiAuthBasicUser</code> test users</p>
-			</td>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the method does</td>
 		</tr>
 		<tr>
-			<td><code>@ApiAuthBasicUser</code></td>
-			<td>Annotation</td>
-			<td>
-				<p>This annotation is used inside <code>@ApiAuthBasic</code> to specify test users' username and password</p>
-			</td>
+			<td></td>
+			<td><code>verb</code></td>
+			<td>The request verb for this method. Defaults to <i>GET</i></td>
 		</tr>
 		<tr>
-			<td><code>@ApiHeaders</code></td>
-			<td>Method</td>
-			<td>
-				<p>This annotation contains all the useful information to insert in the call headers. It is just a container for the following annotation, which describes headers in detail</p>
-			</td>
-		</tr>															
-		<tr>
-			<td><code>@ApiHeader</code></td>
-			<td>Annotation</td>
-			<td>
-				<p>This annotation has to be used inside an annotation of type <code>@ApiHeaders</code></p>
-			</td>
+			<td></td>
+			<td><code>produces</code></td>
+			<td>An array of strings representing media types produced by the method, like application/json, application/xml, etc</td>
 		</tr>
 		<tr>
-			<td><code>@ApiParams</code></td>
-			<td>Method</td>
-			<td>
-				<p>This annotation contains a list of <code>@ApiParam</code> annotations. It's possible to use it at method level, enabling writing documentation for old style servlets in which methods' signatures did not allow explicit parameter specification</p>
-			</td>
+			<td></td>
+			<td><code>consumes</code></td>
+			<td>An array of strings representing media types consumed by the method, like application/json, application/xml, etc</td>
 		</tr>
 		<tr>
-			<td><code>@ApiParam</code></td>
-			<td>Annotation, Parameter</td>
-			<td>
-				<p>This annotation describes the parameters to be passed to the method</p>
-			</td>
-		</tr>					
+			<td></td>
+			<td><code>responsestatuscode</code></td>
+			<td>Response status code that this method will return to the caller. Defaults to <i>200</i></td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiversion">
+	<thead><tr><th><h4>@ApiVersion</h4></th></tr></thead>
+	<tbody>
 		<tr>
-			<td><code>@ApiBodyObject</code></td>
-			<td>Parameter</td>
-			<td>
-				<p>This annotation has to be used on your method and represents the parameter passed in the body of the requests</p>
-			</td>
+			<td colspan="3">This annotation has to be used on your controller class in an MVC pattern. It describes in a few words what the API does</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class, Method, Field</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>since</code></td>
+			<td>The version since the method/object/class is supported</td>
 		</tr>
 		<tr>
-			<td><code>@ApiResponseObject</code></td>
-			<td>Method</td>
-			<td>
-				<p>This annotation has to be used on your method and represents the returned object</p>
-			</td>
+			<td></td>
+			<td><code>until</code></td>
+			<td>The version until the method/object/class is supported</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiheaders">
+	<thead><tr><th><h4>@ApiHeaders</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation contains all the useful information to insert in the call headers. It is just a container for the following annotation, which describes headers in detail</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>headers</code></td>
+			<td>An array of <code>ApiHeader</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiheader">
+	<thead><tr><th><h4>@ApiHeader</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used inside an annotation of type <code>@ApiHeaders</code></td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the header parameter</td>
 		</tr>
 		<tr>
-			<td><code>@ApiErrors</code></td>
-			<td>Method</td>
-			<td>
-				<p>This annotation has to be used on your method and represents the possible errors returned by the method</p>
-			</td>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the parameter is needed for</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiparams">
+	<thead><tr><th><h4>@ApiParams</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation contains a list of <code>@ApiParam</code> annotations. It's possible to use it at method level, enabling writing documentation for old style servlets in which methods' signatures did not allow explicit parameter specification</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>queryparams</code></td>
+			<td>An array of <code>ApiQueryParam</code> annotations</td>
 		</tr>
 		<tr>
-			<td><code>@ApiError</code></td>
-			<td>Annotation</td>
-			<td>
-				<p>This annotation is to be used inside an annotation of type <code>@ApiErrors</code> and describes the error code and the error message for the returned error</p>
-			</td>
+			<td></td>
+			<td><code>pathparams</code></td>
+			<td>An array of <code>ApiPathParam</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apipathparam">
+	<thead><tr><th><h4>@ApiPathParam</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation describes a path parameter to be passed to the method</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation, Parameter</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the parameter, as expected by the server</td>
 		</tr>
 		<tr>
-			<td><code>@ApiObject</code></td>
-			<td>Class</td>
-			<td>
-				<p>This annotation is to be used on your object classes and represents an object used for communication between clients and server</p>
-			</td>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the parameter is needed for</td>
 		</tr>
 		<tr>
-			<td><code>@ApiObjectField</code></td>
-			<td>Field</td>
-			<td>
-				<p>This annotation is to be used on your objects' fields and represents a field of an object</p>
-			</td>
+			<td></td>
+			<td><code>required</code></td>
+			<td>Whether this parameter is required or not. Defaults to <i>true</i></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>allowedvalues</code></td>
+			<td>An array representing the allowed values this parameter can have</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>format</code></td>
+			<td>The format from the parameter (ex. yyyy-MM-dd HH:mm:ss)</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>clazz</code></td>
+			<td>Specify this element if you need to use the ApiParam annotation on the method declaration and not inside the method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This element, even if specified, is not taken into account when the annotation is put inside the method's signature</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiqueryparam">
+	<thead><tr><th><h4>@ApiQueryParam</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation describes a query parameter to be passed to the method</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation, Parameter</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the query parameter, as expected by the server</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the parameter is needed for</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>required</code></td>
+			<td>Whether this parameter is required or not. Defaults to <i>true</i></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>allowedvalues</code></td>
+			<td>An array representing the allowed values this parameter can have</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>format</code></td>
+			<td>The format from the parameter (ex. yyyy-MM-dd HH:mm:ss)</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>defaultvalue</code></td>
+			<td>The default value for this parameter, if it is not passed in the query string</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>clazz</code></td>
+			<td>Specify this element if you need to use the ApiParam annotation on the method declaration and not inside the method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This element, even if specified, is not taken into account when the annotation is put inside the method's signature</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apibodyobject">
+	<thead><tr><th><h4>@ApiBodyObject</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation represents the object passed in the body of the requests</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method, Parameter</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>clazz</code></td>
+			<td>Specify this element if you need to use the ApiBodyObject annotation on the method declaration and not inside the method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This element, even if specified, is not taken into account when the annotation is put inside the method's signature</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiresponseobject">
+	<thead><tr><th><h4>@ApiResponseObject</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used on your method and represents the returned object</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>clazz</code></td>
+			<td>Specify this element if are using old style servlets which return void for methods like doGet and doPost</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apierrors">
+	<thead><tr><th><h4>@ApiErrors</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used on your method and represents the possible errors returned by the method</td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>apierrors</code></td>
+			<td>An array of <code>ApiError</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apierror">
+	<thead><tr><th><h4>@ApiError</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used inside an annotation of type <code>@ApiErrors</code> and describes the error code and the error message for the returned error</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>code</code></td>
+			<td>The error code returned</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the error code means</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiauthnone">
+	<thead><tr><th><h4>@ApiAuthNone</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">Annotate a class or method with this annotation to specify that it does not require authentication to be accessed</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class, Method</code></td><td></td></tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiauthbasic">
+	<thead><tr><th><h4>@ApiAuthBasic</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">Annotate a class or method with this annotation to specify that it requires Basic Authentication to be accessed. You must also specify roles that can access the method and a list of <code>@ApiAuthBasicUser</code> test users</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class, Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>roles</code></td>
+			<td>The role(s) a user must have to correctly access the annotated controller/method</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>testusers</code></td>
+			<td>A list of test users that can be used to test methods with different username/password/roles combinations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiauthbasicuser">
+	<thead><tr><th><h4>@ApiAuthBasicUser</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is used inside <code>@ApiAuthBasic</code> to specify test users' username and password</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>username</code></td>
+			<td>The test user's username</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>password</code></td>
+			<td>The test user's password</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiobject">
+	<thead><tr><th><h4>@ApiObject</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used on your object classes and represents an object used for communication between clients and server</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the object, to be referenced by other annotations with an "object" attribute</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A description of what the object contains or represents</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>show</code></td>
+			<td>Whether to build the json documentation for this object or not. Default value is true</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>group</code></td>
+			<td>Semantic grouping for this object. For example, you can group <i>city</i> and <i>country</i> objects in the <i>Geography</i> group</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiobjectfield">
+	<thead><tr><th><h4>@ApiObjectField</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used on your objects' fields and represents a field of an object</td>
+		</tr>
+		<tr><td>Level</td><td><code>Field</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The display name for this field if different from the java name</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A drescription of what the field is</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>format</code></td>
+			<td>The format pattern for this field</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>allowedvalues</code></td>
+			<td>The allowed values for this field</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>required</code></td>
+			<td>If the field is required</td>
 		</tr>
 	</tbody>
 </table>

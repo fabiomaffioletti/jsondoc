@@ -1,0 +1,113 @@
+---
+layout: default
+title: Examples - Standalone
+---
+
+<h3>Annotation on an exposed rest service class</h3>
+<p>Here is an example on how to use JSONDoc annotations on your <i>controller</i> classes:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.Api;
+
+@Api(name = "city services", description = "Methods for managing cities")
+public class CityApi {
+        // ...
+}
+{% endhighlight %}
+
+<p>This is the minimum required to let JSONDoc know that there is an API to be documented. You can enrich the documentation by using other annotations:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.Api;
+
+@Api(name = "city services", description = "Methods for managing cities", group = "Geography")
+@ApiVersion(since = "1.0", until = "2.12")
+@ApiAuthNone
+public class CityApi {
+        // ...
+}
+{% endhighlight %}
+
+
+<h3 class="spaced">Annotations for exposed methods of a rest service class</h3>
+<p>Here is an example on how to use JSONDoc annotations on your api methods:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.ApiError;
+import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiVerb;
+
+// ...
+
+@ApiMethod(
+        path = "/city/get/{name}",
+        description = "Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
+        produces = { MediaType.APPLICATION_JSON_VALUE },
+        consumes = { MediaType.APPLICATION_JSON_VALUE }
+)
+public @ApiResponseObject City getCityByName(@ApiPathParam(name = "name", description = "The city name") String name) {
+        // ...
+}
+{% endhighlight %}
+
+<p>Notes:</p>
+<ul>
+        <li>When <i>verb</i> is not specified, the resulting will be <i>GET</i></li>
+        <li>When <i>response status code</i> is not specified, the resulting will be <i>200</i></li>
+        <li>If <i>path</i> is not specified in <code>@ApiMethod</code>, then an error will be shown in the JSONDoc UI and the playground will not work</li>
+        <li>If <i>produces</i> is not specified in <code>@ApiMethod</code>, then a warning will be shown in the JSONDoc UI, but the playground may still work</li>
+        <li>If <i>description</i> is not specified in <code>@ApiMethod</code>, then an hint will be shown in the JSONDoc UI, suggesting to add it for a more meaningful documentation</li>
+        <li>If <i>name</i> is not specified in <code>@ApiPathParam</code>, then an error will be shown in the JSONDoc UI and the playground will not work</li>
+        <li>If <i>description</i> in <code>@ApiPathParam</code> is not specified, then an hint will be shown in the JSONDoc UI, suggesting to add it for a more meaningful documentation</li>
+</ul>
+
+<p>Also in this case you can enrich the documentation by using annotation properties and other annotations:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.ApiError;
+import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiVerb;
+
+// ...
+
+@ApiMethod(
+        path = "/city/get/{name}",
+        verb = ApiVerb.POST,
+        description = "Gets a city with the given name, provided that the name is between sydney, melbourne and perth",
+        produces = { MediaType.APPLICATION_JSON_VALUE },
+        consumes = { MediaType.APPLICATION_JSON_VALUE },
+        group = "Geography",
+        responsestatuscode = "201 - Created"
+)
+@ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"}, testusers = {@ApiAuthBasicUser(username = "user", password = "123456")})
+@ApiHeaders(headers={
+        @ApiHeader(name="api_id", description="The api identifier")
+})
+@ApiErrors(apierrors={
+        @ApiError(code="2000", description="City not found"),
+        @ApiError(code="9000", description="Illegal argument")
+})
+public @ApiResponseObject City getCityByName(@ApiParam(name="name", description="The city name", allowedvalues={"Melbourne", "Sydney", "Perth"}) String name) {
+        // ...
+}
+{% endhighlight %}
+
+<p>See the annotations page for more info about other annotations' properties that can make the documentation richer.</p>
+
+<script type="text/javascript">
+	$('#examples-standalone').addClass('active');
+</script>

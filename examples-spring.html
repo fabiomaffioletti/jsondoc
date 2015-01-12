@@ -1,0 +1,76 @@
+---
+layout: default
+title: Examples - Spring framework
+---
+
+
+<h3>Annotation on an Spring MVC controller</h3>
+<p>Here is an example on how to use JSONDoc annotations on your <i> Spring MVC controller</i> classes:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.Api;
+
+@Api(name = "city services", description = "Methods for managing cities")
+@Controller // or @RestController
+public class CityApi {
+        // ...
+}
+{% endhighlight %}
+
+<p>This is the minimum required to let JSONDoc know that there is an API to be documented. You can enrich the documentation by using other annotations:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.Api;
+
+@Api(name = "city services", description = "Methods for managing cities", group = "Geography")
+@ApiVersion(since = "1.0", until = "2.12")
+@ApiAuthNone
+@Controller // or @RestController
+public class CityApi {
+        // ...
+}
+{% endhighlight %}
+
+
+<h3 class="spaced">Annotations for exposed methods of a Spring MVC controller class</h3>
+<p>Here is an example on how to use JSONDoc annotations on your Spring MVC api methods:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+import org.jsondoc.core.annotation.ApiError;
+import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiParam;
+import org.jsondoc.core.annotation.ApiResponseObject;
+import org.jsondoc.core.pojo.ApiVerb;
+
+// ...
+
+@ApiMethod
+@RequestMapping(value = "/city/get/{name}", 
+		method = RequestMethod.GET, 
+		produces = { MediaType.APPLICATION_JSON_VALUE }, 
+		consumes = { MediaType.APPLICATION_JSON_VALUE })
+public @ApiResponseObject @ResponseBody City getCityByName(@ApiPathParam @PathVariable(value = "name") String name) {
+        // ...
+}
+{% endhighlight %}
+
+<p>Notes:</p>
+<ul>
+	<li>JSONDoc will try to understand all the possible information from Spring's annotations and merge them with the JSONDoc ones</li>
+	<li>The result is that you write much less text in the JSONDoc annotations, and the result is a cleaner code</li>
+	<li>If the same information is found on both a JSONDoc and a Spring annotation, then the Spring's one wins and overrides the JSONDoc one</li>
+	<li>If some needed information is missing, then an error/warning/hint is shown in JSONDoc UI</lI>
+</ul>
+
+<p>Also in this case you can enrich the documentation by using annotation properties and other annotations: refer to the annotations' page and standalone examples for more info.</p>
+
+<script type="text/javascript">
+	$('#examples-spring').addClass('active');
+</script>

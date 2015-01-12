@@ -1,0 +1,35 @@
+---
+layout: default
+title: Migrate from 1.0.9 to 1.1.0 
+---
+
+<h3>How to migrate from 1.0.9 to 1.1.0</h3>
+<p>Unfortunately version 1.1.0 is not backward compatible with previous versions due to a modification needed to make the documentation writing and generation easier. Fortunately the changes you are required to do on your code are small and quickly doable with some find and replace in your IDE.</p>
+
+<h4>Changes in the annotations</h4>
+<p>The <code>@ApiParam</code> annotation is now split into <code>@ApiPathParam</code> and <code>@ApiQueryParam</code>. Moreover the <code>ApiParamType</code> has been removed from the <code>@ApiPathParam</code> and <code>@ApiQueryParam</code> annotations. To fix this, replace <code>@ApiParam</code> with the corresponding <code>@ApiPathParam</code> or <code>@ApiQueryParam</code> annotation and remove <code>ApiParamType</code> annotation property.</p>
+
+<h4>Changes in the Spring MVC controller declaration</h4>
+<p>When using Spring MVC, the class JSONDocController now wants initialization parameters injected on the constructor and not with properties setters. To fix this, replace the existing bean declaration in the Spring's XML application context (or in Java configuration) with:
+
+{% highlight xml %}
+
+<bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController">
+	<constructor-arg name="version" value="1.0" />
+	<constructor-arg name="basePath" value="http://localhost:8080/api" />
+	<constructor-arg name="packages">
+	  <list>
+		<value>org.jsondoc.sample.controller</value> <!-- packages in which you have your spring controllers -->
+		<value>org.jsondoc.sample.pojo</value> <!-- packages in which you have your objects -->
+		<value>com.sample.external.pojo</value> <!-- they can also belong to external jars -->
+	  </list>
+	</constructor-arg>
+</bean>
+
+{% endhighlight %}
+
+</p>
+
+<script type="text/javascript">
+	$('#migration-notes-109-110').addClass('active');
+</script>

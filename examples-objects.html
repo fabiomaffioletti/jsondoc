@@ -1,0 +1,62 @@
+---
+layout: default
+title: Examples - Objects
+---
+
+<h3>Documenting objects</h3>
+
+<p>Here is an example of writing documentation for a simple class.</p>
+{% highlight java %}
+package org.jsondoc.sample.pojo;
+
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
+
+@ApiObject
+public class City extends Location {
+
+        @ApiObjectField
+        private Long id;
+
+        @ApiObjectField(description = "The name of the city")
+        private String name;
+
+}
+{% endhighlight %}
+
+<p>Notes:</p>
+<ul>
+        <li>The resulting object name in this case will be <i>city</i> (lowercase of class name). If you want to override it, just specify a custom name in the <i>name</i> property of the annotation</li>
+        <li>Not writing a description for fields will result in a hint in the documentation (and in an informative message in the JSONDoc UI)</li>
+</ul>
+
+<h3 class="spaced">Documenting objects that won't be shown but will be considered in building documentation</h3>
+<p>Superclasses are not always needed from an API user perspective. They are still needed to build an effective documentation though. Here is how to do it:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.pojo;
+
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
+
+@ApiObject(show = false)
+public class Location {
+
+        @ApiObjectField(description = "The population of the location")
+        private Integer population;
+
+        @ApiObjectField(description = "The square km of the location")
+        private Integer squarekm;
+
+}
+{% endhighlight %}
+
+<p>Notes:</p>
+<ul>
+        <li>The object is annotated with <code>show = false</code>, indicating that this object will take part to the documentation build process, but it will not be shown as a stadalone object in the resulting documentation</li>
+</ul>
+
+
+<script type="text/javascript">
+	$('#examples-objects').addClass('active');
+</script>

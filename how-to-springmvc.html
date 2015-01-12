@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Documentation
+title: How to - Spring MVC
 ---
 
 <h3>How to: with Spring MVC</h3>
@@ -24,20 +24,19 @@ title: Documentation
 <h4 class="spaced">Configure JSONDoc controller</h4>
 <p>The only thing to do on your side is to declare the jsondoc controller in your spring context.xml file:</p>
 {% highlight xml %}
-<mvc:annotation-driven />
-<context:component-scan base-package="your.base.package" />
- 
+
 <bean id="documentationController" class="org.jsondoc.springmvc.controller.JSONDocController">
-	<property name="version" value="1.0" />
-	<property name="basePath" value="http://localhost:8080/api" />
-	<property name="packages">
-		<list>
-			<value>com.mycompany.controller</value> <!-- put here packages in which you have your spring controllers -->
-			<value>com.mycompany.pojo</value> <!-- put here packages in which you have your objects -->
-			<value>org.external.stuff</value> <!-- they can also belong to external jars: provide here their package -->
-		</list>
-	</property>
+	<constructor-arg name="version" value="1.0" />
+	<constructor-arg name="basePath" value="http://localhost:8080/api" />
+	<constructor-arg name="packages">
+	  <list>
+		<value>org.jsondoc.sample.controller</value> <!-- packages in which you have your spring controllers -->
+		<value>org.jsondoc.sample.pojo</value> <!-- packages in which you have your objects -->
+		<value>com.sample.external.pojo</value> <!-- they can also belong to external jars -->
+	  </list>
+	</constructor-arg>
 </bean>
+
 {% endhighlight %}
 
 <p>In this case the documentation will be generated at <code>http://localhost:8080/api/jsondoc</code>. You only have to specify the api version and the base path to give you readers a better information.</p>
