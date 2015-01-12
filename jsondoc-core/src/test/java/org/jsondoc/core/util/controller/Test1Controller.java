@@ -14,7 +14,6 @@ import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiVerb;
-import org.springframework.http.MediaType;
 
 @Api(name="Test1Controller", description="My test controller #1")
 @ApiVersion(since = "1.0")
@@ -25,8 +24,8 @@ public class Test1Controller {
 			path="/test1", 
 			verb=ApiVerb.GET, 
 			description="test method for controller 1", 
-			consumes={MediaType.APPLICATION_JSON_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE}
+			consumes={"application/json"},
+			produces={"application/json"}
 	)
 	@ApiVersion(since = "1.0")
 	@ApiHeaders(headers={

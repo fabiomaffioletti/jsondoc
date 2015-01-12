@@ -13,7 +13,6 @@ import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.pojo.Parent;
-import org.springframework.http.MediaType;
 
 @Api(name="Test2Controller", description="My test controller #2")
 public class Test2Controller {
@@ -22,8 +21,8 @@ public class Test2Controller {
 			path="/test2", 
 			verb=ApiVerb.POST, 
 			description="test method for controller 2", 
-			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes={"application/json", "application/xml"},
+			produces={"application/json", "application/xml"}
 	)
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiAuthBasic(roles = "ROLE_USER", testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
@@ -35,8 +34,8 @@ public class Test2Controller {
 			path="/test2",
 			verb=ApiVerb.PUT,
 			description="update method for controller 2",
-			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes={"application/json", "application/xml"},
+			produces={"application/json", "application/xml"}
 	)
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiAuthBasic(roles = "ROLE_USER", testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
@@ -48,8 +47,8 @@ public class Test2Controller {
 			path="/test2",
 			verb=ApiVerb.PATCH,
 			description="patch update method for controller 2",
-			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes={"application/json", "application/xml"},
+			produces={"application/json", "application/xml"}
 	)
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiAuthBasic(roles = "ROLE_USER", testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
@@ -61,8 +60,8 @@ public class Test2Controller {
 			path="/testMap", 
 			verb=ApiVerb.GET, 
 			description="map method for controller 2", 
-			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes={"application/json", "application/xml"},
+			produces={"application/json", "application/xml"}
 	)
 	public @ApiResponseObject Map<String, Parent> map(@ApiBodyObject List<String> names) {
 		return null;
@@ -72,8 +71,8 @@ public class Test2Controller {
 			path="/testMapBody", 
 			verb=ApiVerb.GET, 
 			description="map body method for controller 2", 
-			consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes={"application/json", "application/xml"},
+			produces={"application/json", "application/xml"}
 	)
 	public @ApiResponseObject String map(@ApiBodyObject Map<String, Parent> names) {
 		return null;
@@ -84,7 +83,7 @@ public class Test2Controller {
 			verb=ApiVerb.DELETE, 
 			description="delete test method for controller 2", 
 			consumes={},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			produces={"application/json", "application/xml"}
 	)
 	public @ApiResponseObject void delete(@ApiPathParam(name="parent", description="A parent object") Parent parent) {
 		
@@ -95,7 +94,7 @@ public class Test2Controller {
 			verb=ApiVerb.OPTIONS, 
 			description="options test method for controller 2", 
 			consumes={},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			produces={"application/json", "application/xml"}
 	)
 	public @ApiResponseObject String options() {
 		return "options";
@@ -106,7 +105,7 @@ public class Test2Controller {
 			verb=ApiVerb.HEAD, 
 			description="head test method for controller 2", 
 			consumes={},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			produces={"application/json", "application/xml"}
 	)
 	public @ApiResponseObject String head() {
 		return "head";
@@ -117,7 +116,7 @@ public class Test2Controller {
 			verb=ApiVerb.TRACE, 
 			description="trace test method for controller 2", 
 			consumes={},
-			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			produces={"application/json", "application/xml"}
 			)
 	public @ApiResponseObject String trace() {
 		return "trace";
