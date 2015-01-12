@@ -14,7 +14,6 @@ import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.AbstractJSONDocScanner;
-import org.jsondoc.core.util.JSONDocScanner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.ValueConstants;
 
-public class SpringJSONDocScanner extends AbstractJSONDocScanner implements JSONDocScanner {
+public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 
 	@Override
 	public ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc) {
