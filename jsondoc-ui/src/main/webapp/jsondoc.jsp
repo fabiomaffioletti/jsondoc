@@ -768,7 +768,10 @@ table td {
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
 								
-								$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));
+								// if bodyobject is not empty then put jsondocTemplate into textarea
+								if(method.bodyobject) {
+									$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
+								}
 								
 								$("#produces input:first").attr("checked", "checked");
 								$("#consumes input:first").attr("checked", "checked");
