@@ -676,6 +676,8 @@
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
 								
+								$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));
+								
 								$("#produces input:first").attr("checked", "checked");
 								$("#consumes input:first").attr("checked", "checked");
 								

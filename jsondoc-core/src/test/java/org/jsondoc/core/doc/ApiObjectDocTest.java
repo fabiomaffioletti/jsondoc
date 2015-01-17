@@ -73,6 +73,26 @@ public class ApiObjectDocTest {
 		private Long id;
 	}
 	
+	@ApiObject
+	private class TemplateApiObject {
+		@ApiObjectField
+		private Long id;
+		
+		@ApiObjectField
+		private String name;
+	}
+	
+	@Test
+	public void testTemplateApiObjectDoc() {
+		Set<Class<?>> classes = new HashSet<Class<?>>();
+		classes.add(TemplateApiObject.class);
+		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+		Assert.assertEquals("templateapiobject", apiObjectDoc.getName());
+		Assert.assertEquals("id", apiObjectDoc.getFields().get(0).getName());
+		Assert.assertEquals("name", apiObjectDoc.getFields().get(1).getName());
+		Assert.assertNotNull(apiObjectDoc.getJsondocTemplate());
+	}
+	
 	@Test
 	public void testNoNameApiObjectDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();

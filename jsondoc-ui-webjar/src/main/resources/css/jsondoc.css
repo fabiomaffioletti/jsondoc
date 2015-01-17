@@ -82,3 +82,7 @@ table td {
 .border-radius-none {
 	border-radius: 0px;
 }
+
+.font-monospace {
+	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}

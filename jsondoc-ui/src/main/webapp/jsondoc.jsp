@@ -101,6 +101,10 @@ table td {
 .border-radius-none {
 	border-radius: 0px;
 }
+
+.font-monospace {
+	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
 </style>
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -763,6 +767,8 @@ table td {
 								var testHTML = test(method);
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
+								
+								$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));
 								
 								$("#produces input:first").attr("checked", "checked");
 								$("#consumes input:first").attr("checked", "checked");
