@@ -105,6 +105,7 @@ table td {
 .font-monospace {
 	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
 }
+
 </style>
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -492,9 +493,13 @@ table td {
 	<div class="col-md-12">
 		<div id="pathparameters" class="playground-spacer">
 			<h4>Path parameters</h4>
+			<div id="pathparametererrors" class="alert alert-danger" style="display:none">
+				<strong>Validation errors:</strong>
+				<ul class="list-unstyled"></ul>
+			</div>
 			{{#pathparameters}}
 				<div class="form-group">
-					<label for="i_{{name}}">{{name}}</label>
+					<label class="control-label" for="i_{{name}}">{{name}}</label>
 					<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}">
 				</div>
 			{{/pathparameters}}
@@ -526,7 +531,7 @@ table td {
 	{{/if}}
 
 	<div class="col-md-12 playground-spacer">
-		<button class="btn btn-primary" id="testButton" data-loading-text="Loading...">Submit</button>
+		<button class="btn btn-primary col-md-12" id="testButton" data-loading-text="Loading...">Submit</button>
 	</div>
 </div>
 </div>
@@ -767,7 +772,7 @@ table td {
 								var testHTML = test(method);
 								$("#testContent").html(testHTML);
 								$("#testContent").show();
-								
+
 								// if bodyobject is not empty then put jsondocTemplate into textarea
 								if(method.bodyobject) {
 									$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
@@ -792,10 +797,32 @@ table td {
 									
 									var replacedPath = method.path;
 									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
+									
+									var validationErrors = [];
+									$('#pathparametererrors').hide();
+									$('#pathparametererrors ul').empty();
+									
 									$("#pathparameters input").each(function() {
-										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-										replacedPath = tempReplacedPath;
+										$('#' + this.id).parent().removeClass('has-error');
+										
+										if($(this).val()) {
+											tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+											replacedPath = tempReplacedPath;	
+										} else {
+											validationErrors.push(this.name + ' must not be empty');
+											$('#' + this.id).parent().addClass('has-error');
+										}
 									});
+									
+									if(validationErrors.length > 0) {
+										for (var k=0; k<validationErrors.length; k++) {
+											$('#pathparametererrors ul').append($('<li/>').text(validationErrors[k]));
+											
+										}
+										$('#pathparametererrors').show();
+										validationErrors = [];
+										return;
+									}
 
 									$("#queryparameters input").each(function() {
 										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
