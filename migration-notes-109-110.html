@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Migrate from 1.0.9 to 1.1.0 
+title: Migrate from 1.0.9
 ---
 
-<h3>How to migrate from 1.0.9 to 1.1.0</h3>
-<p>Unfortunately version 1.1.0 is not backward compatible with previous versions due to a modification needed to make the documentation writing and generation easier. Fortunately the changes you are required to do on your code are small and quickly doable with some find and replace in your IDE.</p>
+<h3>How to migrate from 1.0.9 to 1.1.0+</h3>
+<p>Unfortunately version 1.1.0+ is not backward compatible with previous versions due to a modification needed to make the documentation writing and generation easier. Fortunately the changes you are required to do on your code are small and quickly doable with some find and replace in your IDE.</p>
 
 <h4>Changes in the annotations</h4>
 <p>The <code>@ApiParam</code> annotation is now split into <code>@ApiPathParam</code> and <code>@ApiQueryParam</code>. Moreover the <code>ApiParamType</code> has been removed from the <code>@ApiPathParam</code> and <code>@ApiQueryParam</code> annotations. To fix this, replace <code>@ApiParam</code> with the corresponding <code>@ApiPathParam</code> or <code>@ApiQueryParam</code> annotation and remove <code>ApiParamType</code> annotation property.</p>
