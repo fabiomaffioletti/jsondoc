@@ -1,0 +1,77 @@
+---
+layout: default
+title: Examples - Flows
+---
+
+
+<h3>Annotation to document API flows</h3>
+<p>Suppose you want to document a flow of calls to your API methods to achieve a goal, for example, the flow of methods to subsequently call in order to purchase a book in a library application. With <code>@Api</code>, <code>@ApiMethod</code> and <code>@ApiObject</code> you can document single methods but these methods will be likely used to perform complex actions. You can document API flows with the <code>@ApiFlow</code> annotation. For example:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.flow;
+
+import org.jsondoc.core.annotation.ApiFlow;
+import org.jsondoc.core.annotation.ApiFlowSet;
+import org.jsondoc.core.annotation.ApiFlowStep;
+
+@ApiFlowSet
+public class BookFlows {
+	
+	@ApiFlow(
+		name = "Book purchase flow",
+		description = "The flow for purchasing a book",
+		preconditions = {
+				"To purchase a book there must be an existing user",
+				"The user must have an account with username and password",
+				"The user must have the role needed to purchase books"
+		},
+		steps = {
+			@ApiFlowStep(apimethodid = FlowConstants.USER_LOGIN_METHOD_ID),
+			@ApiFlowStep(apimethodid = FlowConstants.BOOK_LIST_METHOD_ID),
+			@ApiFlowStep(apimethodid = FlowConstants.BOOK_OBJECT_METHOD_ID),
+			@ApiFlowStep(apimethodid = FlowConstants.BOOK_PURCHASE_METHOD_ID)
+		})
+	public void bookPurchaseFlow() {
+		
+	}
+	
+	@ApiFlow(
+		name = "Similar books flow",
+		description = "The flow for getting books similar to a given book",
+		steps = {
+			@ApiFlowStep(apimethodid = FlowConstants.BOOK_OBJECT_METHOD_ID),
+			@ApiFlowStep(apimethodid = FlowConstants.BOOK_SIMILAR_METHOD_ID)
+		})
+	public void similarBooksFlow() {
+		
+	}
+
+}
+{% endhighlight %}
+
+<p>The <code>@ApiFlowSet</code> annotation informs JSONDoc that the class contains a set of flows to be documented. Each flow is then declared on a method in the class using the <code>@ApiFlow</code> annotation, which has some properties to better document the flow, in particular the <i>steps</i> property, made of <code>@ApiFlowStep</code> annotations.</p>
+
+<p>The <i>apimethodid</i> property is very important and mandatory, because it defines which method, documented with <code>@ApiMethod</code>, this step is referring to. Thus, if you want to document API flows, then you need to set the same <i>id</i> on both <code>@ApiMethod</code> and <code>@ApiFlowStep</code>. My suggestion is to put the IDs in a constants class, and refer those IDs in the two annotations. For example, here is an example class with IDs:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.flow;
+
+public class FlowConstants {
+
+	// User service
+	public static final String USER_LOGIN_METHOD_ID = "USER_LOGIN";
+
+	// Book service
+	public static final String BOOK_LIST_METHOD_ID = "BOOK_LIST";
+	public static final String BOOK_OBJECT_METHOD_ID = "BOOK_OBJECT";
+	public static final String BOOK_PURCHASE_METHOD_ID = "BOOK_PURCHASE";
+	public static final String BOOK_SIMILAR_METHOD_ID = "BOOK_SIMILAR";
+	
+}
+{% endhighlight %}
+
+<p>The value of these constants is not important. The important thing is that you have the same value on both the <code>@ApiMethod</code> <i>id</i> property and the <code>@ApiFlowStep</code> <i>apimethodid</i> property.</p>
+
+<script type="text/javascript">
+	$('#examples-flows').addClass('active');
+</script>

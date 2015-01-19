@@ -8,19 +8,20 @@ title: Documentation
 		<th>Services</th>
 		<th>Authentication</th>
 		<th>Objects</th>
+		<th>Flows</th>
 	</tr>
-	<tr><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td></tr>
-	<tr><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td></tr>
-	<tr><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td></tr>
-	<tr><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apiqueryparam">@ApiQueryParam</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apibodyobject">@ApiBodyObject</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apiresponseobject">@ApiResponseObject</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apierrors">@ApiErrors</a></td><td></td><td></td></tr>
-	<tr><td><a href="#apierror">@ApiError</a></td><td></td><td></td></tr>
+	<tr><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td><td><a href="#apiflowset">@ApiFlowSet</a></td></tr>
+	<tr><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td><td><a href="#apiflow">@ApiFlow</a></td></tr>
+	<tr><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td><td><a href="#apiflowstep">@ApiFlowStep</a></td></tr>
+	<tr><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apiqueryparam">@ApiQueryParam</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apibodyobject">@ApiBodyObject</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apiresponseobject">@ApiResponseObject</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apierrors">@ApiErrors</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apierror">@ApiError</a></td><td></td><td></td><td></td></tr>
 </table>
 
 <table class="table" id="api">
@@ -84,6 +85,11 @@ title: Documentation
 			<td></td>
 			<td><code>responsestatuscode</code></td>
 			<td>Response status code that this method will return to the caller. Defaults to <i>200</i></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>id</code></td>
+			<td>A custom identifier to be used inside JSONDoc. This string has to be unique inside the JSONDoc documentation. It's responsibility of the documentation writer to guarantee this uniqueness</td>
 		</tr>
 	</tbody>
 </table>
@@ -424,6 +430,66 @@ title: Documentation
 			<td></td>
 			<td><code>required</code></td>
 			<td>If the field is required</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiflowset">
+	<thead><tr><th><h4>@ApiFlowSet</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used on a type (typically on a class dedicated to flow description) and will trigger scanning for <code>@ApiFlow</code> annotations</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiflow">
+	<thead><tr><th><h4>@ApiFlow</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used on a method (typically on a class dedicated to flow description) and contains an array of <code>@ApiFlowStep</code></td>
+		</tr>
+		<tr><td>Level</td><td><code>Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>name</code></td>
+			<td>The name of the flow</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>description</code></td>
+			<td>A drescription of what the flow does</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>preconditions</code></td>
+			<td>The preconditions for this flow (example: "the user must be logged", "the user must have an administration role")</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>steps</code></td>
+			<td>An array of <code>@ApiFlowStep</code> annotations</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>group</code></td>
+			<td>With this it is possible to specify the logical grouping of this flow. See the same property in the <code>@Api</code> annotation.</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiflowstep">
+	<thead><tr><th><h4>@ApiFlowStep</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used inside an annotaion of type <code>@ApiFlow</code> and references a method previously documented with the JSONDoc <code>@ApiMethod</code> annotation in which the "id" property is specified</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>apimethodid</code></td>
+			<td>The api method identified by this id is the method used in the flow step</td>
 		</tr>
 	</tbody>
 </table>
