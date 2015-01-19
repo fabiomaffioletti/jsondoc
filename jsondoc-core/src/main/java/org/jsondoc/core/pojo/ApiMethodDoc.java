@@ -11,6 +11,7 @@ import org.jsondoc.core.annotation.ApiMethod;
 
 public class ApiMethodDoc extends AbstractDoc {
 	public String jsondocId = UUID.randomUUID().toString();
+	private String id;
 	private String path;
 	private String description;
 	private ApiVerb verb;
@@ -28,6 +29,7 @@ public class ApiMethodDoc extends AbstractDoc {
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+		apiMethodDoc.setId(annotation.id());
 		apiMethodDoc.setPath(annotation.path());
 		apiMethodDoc.setDescription(annotation.description());
 		apiMethodDoc.setVerb(annotation.verb());
@@ -157,6 +159,14 @@ public class ApiMethodDoc extends AbstractDoc {
 
 	public void setResponsestatuscode(String responsestatuscode) {
 		this.responsestatuscode = responsestatuscode;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

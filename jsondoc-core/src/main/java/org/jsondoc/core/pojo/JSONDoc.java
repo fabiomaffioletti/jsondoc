@@ -10,6 +10,8 @@ public class JSONDoc {
 	private Map<String, Set<ApiDoc>> apis;
 	// The key is the group these objects belongs to. It can be empty.
 	private Map<String, Set<ApiObjectDoc>> objects;
+	// The key is the group these flows belongs to. It can be empty.
+	private Map<String, Set<ApiFlowDoc>> flows;
 
 	public JSONDoc(String version, String basePath) {
 		super();
@@ -49,9 +51,17 @@ public class JSONDoc {
 		this.basePath = basePath;
 	}
 
+	public Map<String, Set<ApiFlowDoc>> getFlows() {
+		return flows;
+	}
+
+	public void setFlows(Map<String, Set<ApiFlowDoc>> flows) {
+		this.flows = flows;
+	}
+
 	@Override
 	public String toString() {
-		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + "]";
+		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + "]";
 	}
 
 }

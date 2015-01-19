@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthNone;
+import org.jsondoc.core.annotation.ApiFlow;
+import org.jsondoc.core.annotation.ApiFlowSet;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiParams;
@@ -25,6 +27,7 @@ import org.jsondoc.core.pojo.ApiAuthDoc;
 import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiErrorDoc;
+import org.jsondoc.core.pojo.ApiFlowDoc;
 import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
@@ -54,6 +57,8 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 
 	public abstract ApiParamDoc mergeApiQueryParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc);
 	
+	protected List<ApiMethodDoc> allApiMethodDocs = new ArrayList<ApiMethodDoc>();
+	
 	/**
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
 	 * @return An <code>ApiDoc</code> object
@@ -74,6 +79,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		JSONDoc jsondocDoc = new JSONDoc(version, basePath);
 		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class)));
 		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class)));
+		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class), allApiMethodDocs));
 		
 		return jsondocDoc;
 	}
@@ -118,6 +124,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			}
 			
 		}
+		allApiMethodDocs.addAll(apiMethodDocs);
 		return apiMethodDocs;
 	}
 
@@ -140,6 +147,29 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiMethodDoc;
 	}
 	
+	/**
+	 * Gets the API flow documentation for the set of classes passed as argument
+	 */
+	public Set<ApiFlowDoc> getApiFlowDocs(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
+		Set<ApiFlowDoc> apiFlowDocs = new TreeSet<ApiFlowDoc>();
+		for (Class<?> clazz : classes) {
+			log.debug("Getting JSONDoc for class: " + clazz.getName());
+			Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				if(method.isAnnotationPresent(ApiFlow.class)) {
+					ApiFlowDoc apiFlowDoc = getApiFlowDoc(method, apiMethodDocs);
+					apiFlowDocs.add(apiFlowDoc);
+				}	
+			}
+		}
+		return apiFlowDocs;
+	}
+	
+	private ApiFlowDoc getApiFlowDoc(Method method, List<ApiMethodDoc> apiMethodDocs) {
+		ApiFlowDoc apiFlowDoc = ApiFlowDoc.buildFromAnnotation(method.getAnnotation(ApiFlow.class), apiMethodDocs);
+		return apiFlowDoc;
+	}
+
 	/**
 	 * This checks that some of the properties are correctly set to produce a meaningful documentation and a working playground. In case this does not happen
 	 * an error string is added to the jsondocerrors list in ApiMethodDoc.
@@ -308,6 +338,21 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			}
 		}
 		return objectsMap;
+	}
+	
+	public Map<String, Set<ApiFlowDoc>> getApiFlowDocsMap(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
+		Map<String, Set<ApiFlowDoc>> apiFlowDocsMap = new TreeMap<String, Set<ApiFlowDoc>>();
+		Set<ApiFlowDoc> apiFlowDocSet = getApiFlowDocs(classes, apiMethodDocs);
+		for (ApiFlowDoc apiFlowDoc : apiFlowDocSet) {
+			if(apiFlowDocsMap.containsKey(apiFlowDoc.getGroup())) {
+				apiFlowDocsMap.get(apiFlowDoc.getGroup()).add(apiFlowDoc);
+			} else {
+				Set<ApiFlowDoc> groupedFlowDocs = new TreeSet<ApiFlowDoc>();
+				groupedFlowDocs.add(apiFlowDoc);
+				apiFlowDocsMap.put(apiFlowDoc.getGroup(), groupedFlowDocs);
+			}
+		}
+		return apiFlowDocsMap;
 	}
 
 	protected ApiAuthDoc getApiAuthDocForController(Class<?> clazz) {

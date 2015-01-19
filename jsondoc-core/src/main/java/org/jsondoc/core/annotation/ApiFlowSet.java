@@ -7,21 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your method and contains an array of ApiHeader
- * @see ApiHeader
+ * This annotation is to be used on a type (typically on a class dedicated to
+ * flow description) and will trigger scanning for @ApiFlow annotations
+ * 
+ * @see ApiFlowStep
  * @author Fabio Maffioletti
  *
  */
 @Documented
-@Target(value=ElementType.METHOD)
+@Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiHeaders {
-
-	/**
-	 * An array of ApiHeader annotations
-	 * @see ApiHeader
-	 * @return
-	 */
-	public ApiHeader[] headers();
+public @interface ApiFlowSet {
 	
 }

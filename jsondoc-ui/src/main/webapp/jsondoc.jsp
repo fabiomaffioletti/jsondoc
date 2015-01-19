@@ -135,8 +135,50 @@ table td {
 			
 			<div class="col-md-3">
 				<div id="maindiv" style="display:none;"></div>
-				<div id="apidiv" style="display:none;"></div>
-				<div id="objectdiv" style="display:none;"></div>
+				
+				<div class="panel-group" id="side-accordion" aria-multiselectable="true" style="display: none;">
+					
+					<div class="panel panel-default">
+						<div class="panel-heading" id="panel-apis">
+							<h4 class="panel-title">
+								<a id="panel-apis" href="#_panel-apis" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-apis" aria-expanded="true">API</a>
+							</h4>
+						</div>
+						<div id="_panel-apis" class="panel-collapse collapse in" aria-labelledby="panel-apis">
+							<div class="panel-body">
+								<div id="apidiv"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading" id="panel-objects">
+							<h4 class="panel-title">
+								<a id="panel-objects" href="#_panel-objects" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-objects" aria-expanded="true">Objects</a>
+							</h4>
+						</div>
+						<div id="_panel-objects" class="panel-collapse collapse" aria-labelledby="panel-objects">
+							<div class="panel-body">
+								<div id="objectdiv"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading" id="panel-flows">
+							<h4 class="panel-title">
+								<a id="panel-flows" href="#_panel-flows" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-flows" aria-expanded="true">Flows</a>
+							</h4>
+						</div>
+						<div id="_panel-flows" class="panel-collapse collapse" aria-labelledby="panel-flows">
+							<div class="panel-body">
+								<div id="flowdiv"></div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
 			</div>
 
 			<div class="col-md-5">
@@ -158,12 +200,7 @@ table td {
 </script>
 
 <script id="apis" type="text/x-handlebars-template">
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">API</h3>
-	</div>
-	<div class="panel-body">
-	{{#eachInMap apis}}
+{{#eachInMap apis}}
 	<ul class="list-unstyled">
 		{{#if key}}
 		<li style="text-transform: uppercase;">{{key}}</li>
@@ -172,18 +209,11 @@ table td {
 			<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
 		{{/each}}
 	</ul>
-	{{/eachInMap}}	
-	</div>
-</div>
+{{/eachInMap}}	
 </script>
 
 <script id="objects" type="text/x-handlebars-template">
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">Objects</h3>
-	</div>
-	<div class="panel-body">
-	{{#eachInMap objects}}
+{{#eachInMap objects}}
 	<ul class="list-unstyled">
 		{{#if key}}
 		<li style="text-transform: uppercase;">{{key}}</li>
@@ -192,17 +222,39 @@ table td {
 			<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
 		{{/each}}
 	</ul>
-	{{/eachInMap}}
-	</div>
-</div>
+{{/eachInMap}}
+</script>
+
+<script id="flows" type="text/x-handlebars-template">
+{{#eachInMap flows}}
+	<ul class="list-unstyled">
+		{{#if key}}
+		<li style="text-transform: uppercase;">{{key}}</li>
+		{{/if}}
+		{{#each value}}
+			<li><a href="#" id="{{jsondocId}}" rel="flow">{{name}}</a></li>
+		{{/each}}
+	</ul>
+{{/eachInMap}}
 </script>
 
 <script id="methods" type="text/x-handlebars-template">
 <blockquote>
-  <p style="text-transform: uppercase;"><span id="apiName"></span></p>
-  <small><span id="apiDescription"></span></small>
+  <p style="text-transform: uppercase;"><span id="apiName">{{name}}</span></p>
+  <small><span id="apiDescription">{{description}}</span></small>
   <small><span id="apiSupportedVersions"></span></small>
 </blockquote>
+
+{{#if preconditions}}
+	<div class="alert alert-info border-radius-none">
+		<p><strong>Preconditions: </strong></p>
+		<ul class="list-unstyled">
+		{{#each preconditions}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	</div>
+{{/if}}
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{#methods}}
@@ -621,6 +673,13 @@ table td {
 {{/if}}
 </script>
 
+<script id="objecttemplate" type="text/x-handlebars-template">
+<pre class="prettyprint">
+{{#json jsondocTemplate}}
+{{/json}}
+</pre>
+</script>
+
 <script>
 	var model;
 
@@ -722,6 +781,93 @@ table td {
 	    return formatted;
 	}
 	
+	function buildMethodsContent(items) {
+		$('#content a[rel="method"]').each(function() {
+			$(this).click(function() {
+				var method = jlinq.from(items).equals("jsondocId", this.id).first();
+				var test = Handlebars.compile($("#test").html());
+				var testHTML = test(method);
+				$("#testContent").html(testHTML);
+				$("#testContent").show();
+
+				// if bodyobject is not empty then put jsondocTemplate into textarea
+				if(method.bodyobject) {
+					$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
+				}
+				
+				$("#produces input:first").attr("checked", "checked");
+				$("#consumes input:first").attr("checked", "checked");
+				
+				$("#testButton").click(function() {
+					var headers = new Object();
+					$("#headers input").each(function() {
+						headers[this.name] = $(this).val();
+					});
+					
+					headers["Accept"] = $("#produces input:checked").val();
+
+					if(method.auth) {
+						if(method.auth.type == "BASIC_AUTH") {
+							headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
+						}
+					}
+					
+					var replacedPath = method.path;
+					var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
+					
+					var validationErrors = [];
+					$('#pathparametererrors').hide();
+					$('#pathparametererrors ul').empty();
+					
+					$("#pathparameters input").each(function() {
+						$('#' + this.id).parent().removeClass('has-error');
+						
+						if($(this).val()) {
+							tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+							replacedPath = tempReplacedPath;	
+						} else {
+							validationErrors.push(this.name + ' must not be empty');
+							$('#' + this.id).parent().addClass('has-error');
+						}
+					});
+					
+					if(validationErrors.length > 0) {
+						for (var k=0; k<validationErrors.length; k++) {
+							$('#pathparametererrors ul').append($('<li/>').text(validationErrors[k]));
+							
+						}
+						$('#pathparametererrors').show();
+						validationErrors = [];
+						return;
+					}
+
+					$("#queryparameters input").each(function() {
+						tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+						replacedPath = tempReplacedPath;
+					});
+					
+					$('#testButton').button('loading');
+					
+					var res = $.ajax({
+						url : model.basePath + replacedPath,
+						type: method.verb,
+						data: $("#inputJson").val(),
+						headers: headers,
+						contentType: $("#consumes input:checked").val(),
+						success : function(data) {
+							printResponse(data, res, this.url);
+						},
+						error: function(data) {
+							printResponse(data, res, this.url);
+						}
+					});
+					
+				});
+				
+			});
+		});
+	}
+	
 	function fetchdoc(jsondocurl) {
 		$.ajax({
 			url : jsondocurl,
@@ -733,12 +879,10 @@ table td {
 				var main = Handlebars.compile($("#main").html());
 				var mainHTML = main(data);
 				$("#maindiv").html(mainHTML);
-				$("#maindiv").show();
 				
 				var apis = Handlebars.compile($("#apis").html());
 				var apisHTML = apis(data);
 				$("#apidiv").html(apisHTML);
-				$("#apidiv").show();
 				
 				// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
 				var plainApis = [];
@@ -755,8 +899,6 @@ table td {
 						var methodsHTML = methods(api);
 						$("#content").html(methodsHTML);
 						$("#content").show();
-						$("#apiName").text(api.name);
-						$("#apiDescription").text(api.description);
 						if(api.supportedversions) {
 							$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
 							if(api.supportedversions.until) {
@@ -765,97 +907,13 @@ table td {
 						}
 						$("#testContent").hide();
 						
-						$('#content a[rel="method"]').each(function() {
-							$(this).click(function() {
-								var method = jlinq.from(api.methods).equals("jsondocId", this.id).first();
-								var test = Handlebars.compile($("#test").html());
-								var testHTML = test(method);
-								$("#testContent").html(testHTML);
-								$("#testContent").show();
-
-								// if bodyobject is not empty then put jsondocTemplate into textarea
-								if(method.bodyobject) {
-									$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
-								}
-								
-								$("#produces input:first").attr("checked", "checked");
-								$("#consumes input:first").attr("checked", "checked");
-								
-								$("#testButton").click(function() {
-									var headers = new Object();
-									$("#headers input").each(function() {
-										headers[this.name] = $(this).val();
-									});
-									
-									headers["Accept"] = $("#produces input:checked").val();
-
-									if(method.auth) {
-										if(method.auth.type == "BASIC_AUTH") {
-											headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
-										}
-									}
-									
-									var replacedPath = method.path;
-									var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
-									
-									var validationErrors = [];
-									$('#pathparametererrors').hide();
-									$('#pathparametererrors ul').empty();
-									
-									$("#pathparameters input").each(function() {
-										$('#' + this.id).parent().removeClass('has-error');
-										
-										if($(this).val()) {
-											tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-											replacedPath = tempReplacedPath;	
-										} else {
-											validationErrors.push(this.name + ' must not be empty');
-											$('#' + this.id).parent().addClass('has-error');
-										}
-									});
-									
-									if(validationErrors.length > 0) {
-										for (var k=0; k<validationErrors.length; k++) {
-											$('#pathparametererrors ul').append($('<li/>').text(validationErrors[k]));
-											
-										}
-										$('#pathparametererrors').show();
-										validationErrors = [];
-										return;
-									}
-
-									$("#queryparameters input").each(function() {
-										tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-										replacedPath = tempReplacedPath;
-									});
-									
-									$('#testButton').button('loading');
-									
-									var res = $.ajax({
-										url : model.basePath + replacedPath,
-										type: method.verb,
-										data: $("#inputJson").val(),
-										headers: headers,
-										contentType: $("#consumes input:checked").val(),
-										success : function(data) {
-											printResponse(data, res, this.url);
-										},
-										error: function(data) {
-											printResponse(data, res, this.url);
-										}
-									});
-									
-								});
-								
-							});
-						});
+						buildMethodsContent(api.methods);
 					});
 				});
 				
 				var objects = Handlebars.compile($("#objects").html());
 				var objectsHTML = objects(data);
 				$("#objectdiv").html(objectsHTML);
-				$("#objectdiv").show();
 				
 				// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
 				var plainObjects = [];
@@ -872,10 +930,45 @@ table td {
 						var objectHTML = object(o);
 						$("#content").html(objectHTML);
 						$("#content").show();
-						
 						$("#testContent").hide();
+						
+						var objecttemplate = Handlebars.compile($("#objecttemplate").html());
+						var objecttemplateHTML = objecttemplate(o);
+						$("#testContent").html(objecttemplateHTML);
+						$("#testContent").show();
+						prettyPrint();
 					});
 				});
+				
+				var flows = Handlebars.compile($("#flows").html());
+				var flowsHTML = flows(data);
+				$("#flowdiv").html(flowsHTML);
+				
+				// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
+				var plainFlows = [];
+				$.each(data.flows, function(i, v) {
+					$.each(v, function(j, p) {
+						plainFlows.push(p);	
+					});
+				});
+				
+				$("#flowdiv a").each(function() {
+					$(this).click(function() {
+						var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
+						var methods = Handlebars.compile($("#methods").html());
+						var methodsHTML = methods(flow);
+						$("#content").html(methodsHTML);
+						$("#content").show();
+						$("#testContent").hide();
+						
+						buildMethodsContent(flow.methods);
+					});
+				});
+				
+
+				// display sidebar
+				$('#maindiv').show();
+				$('#side-accordion').show();
 
 			},
 			error: function(msg) {
@@ -883,7 +976,6 @@ table td {
 			}
 		});
 	}
-	
 </script>
 
 </body>

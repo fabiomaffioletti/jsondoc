@@ -17,6 +17,13 @@ import org.jsondoc.core.pojo.ApiVerb;
 @Target(value=ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiMethod {
+	
+	/**
+	 * A custom identifier to be used inside JSONDoc. This string has to be unique inside the JSONDoc documentation.
+	 * It's responsibility of the documentation writer to guarantee this uniqueness
+	 * @return
+	 */
+	public String id() default "";
 
 	/**
 	 * The relative path for this method (ex. /country/get/{name})

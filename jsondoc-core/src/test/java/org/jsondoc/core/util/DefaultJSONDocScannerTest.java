@@ -35,6 +35,12 @@ public class DefaultJSONDocScannerTest {
         assertEquals(2, countApis);
 
         assertEquals(2, jsondoc.getObjects().size());
+        
+        int countFlows = 0;
+        for (String string : jsondoc.getFlows().keySet()) {
+        	countFlows += jsondoc.getFlows().get(string).size();
+        }
+        assertEquals(2, countFlows);
 
         int countObjects = 0;
         for (String string : jsondoc.getObjects().keySet()) {
