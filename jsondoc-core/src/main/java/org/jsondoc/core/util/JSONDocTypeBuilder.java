@@ -93,7 +93,11 @@ public class JSONDocTypeBuilder {
 	private static String getCustomClassName(Class<?> clazz) {
 		if(clazz.isAnnotationPresent(ApiObject.class)) {
 			ApiObject annotation = clazz.getAnnotation(ApiObject.class);
-			return annotation.name();
+			if(annotation.name().isEmpty()) {
+				return clazz.getSimpleName().toLowerCase();
+			} else {
+				return annotation.name();
+			}
 		} else {
 			return clazz.getSimpleName().toLowerCase();
 		}

@@ -332,10 +332,25 @@ table td {
 							<th colspan=2>Headers</th>
 						</tr>
 						{{#each headers}}
+							{{#if this.description}}
 							<tr>
 								<td><code>{{this.name}}</code></td>
 								<td>{{this.description}}</td>
 							</tr>
+							{{#if this.allowedvalues}}
+								<tr>
+									<td></td>
+									<td>Allowed values: {{this.allowedvalues}}</td>
+								</tr>
+							{{/if}}
+							{{else}}
+							<tr>
+								<td><code>{{this.name}}</code></td>
+								{{#if this.allowedvalues}}
+									<td>Allowed values: {{this.allowedvalues}}</td>
+								{{/if}}
+							</tr>
+							{{/if}}
 						{{/each}}
 					{{/if}}
 					{{#if pathparameters}}
@@ -509,8 +524,13 @@ table td {
 			<h4>Headers</h4>
 			{{#headers}}
 				<div class="form-group">
-					<label for="i_{{name}}">{{name}}</label>
-					<input type="text" class="form-control" name="{{name}}" placeholder="{{name}}">
+					<label for="i_{{name}}">{{name}}</label>					
+					{{#compare allowedvalues.length 1 operator="=="}}
+						<input type="text" class="form-control" name="{{name}}" placeholder="{{name}}" value="{{allowedvalues}}">
+					{{/compare}}
+					{{#compare allowedvalues.length 1 operator="!="}}
+						<input type="text" class="form-control" name="{{name}}" placeholder="{{name}}">
+					{{/compare}}
 				</div>
 			{{/headers}}
 		</div>
@@ -682,6 +702,36 @@ table td {
 
 <script>
 	var model;
+	
+	Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
+	    if (arguments.length < 3)
+	        throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
+
+	    operator = options.hash.operator || "==";
+
+	    var operators = {
+	        '==':       function(l,r) { return l == r; },
+	        '===':      function(l,r) { return l === r; },
+	        '!=':       function(l,r) { return l != r; },
+	        '<':        function(l,r) { return l < r; },
+	        '>':        function(l,r) { return l > r; },
+	        '<=':       function(l,r) { return l <= r; },
+	        '>=':       function(l,r) { return l >= r; },
+	        'typeof':   function(l,r) { return typeof l == r; }
+	    }
+
+	    if (!operators[operator])
+	        throw new Error("Handlerbars Helper 'compare' doesn't know the operator "+operator);
+
+	    var result = operators[operator](lvalue,rvalue);
+
+	    if( result ) {
+	        return options.fn(this);
+	    } else {
+	        return options.inverse(this);
+	    }
+
+	});
 
 	Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
 		if(lvalue!=rvalue) {

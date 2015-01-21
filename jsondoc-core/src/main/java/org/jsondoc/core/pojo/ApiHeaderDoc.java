@@ -12,11 +12,13 @@ public class ApiHeaderDoc {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
+	private String[] allowedvalues;
 
-	public ApiHeaderDoc(String name, String description) {
+	public ApiHeaderDoc(String name, String description, String[] allowedvalues) {
 		super();
 		this.name = name;
 		this.description = description;
+		this.allowedvalues = allowedvalues;
 	}
 
 	public static Set<ApiHeaderDoc> build(Method method) {
@@ -25,7 +27,7 @@ public class ApiHeaderDoc {
 		if (method.isAnnotationPresent(ApiHeaders.class)) {
 			ApiHeaders annotation = method.getAnnotation(ApiHeaders.class);
 			for (ApiHeader apiHeader : annotation.headers()) {
-				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description()));
+				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
 			}
 		}
 
@@ -38,6 +40,10 @@ public class ApiHeaderDoc {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String[] getAllowedvalues() {
+		return allowedvalues;
 	}
 
 	@Override

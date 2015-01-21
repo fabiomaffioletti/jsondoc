@@ -31,6 +31,22 @@ import org.junit.Test;
 public class ApiDocTest {
 	
 	private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+	
+	@Api(description = "An interface controller", name = "interface-controller")
+	private interface InterfaceController {
+		
+		@ApiMethod(path = "/interface", verb = ApiVerb.GET)
+		public String inter();
+	}
+	
+	private class InterfaceControllerImpl implements InterfaceController {
+
+		@Override
+		public String inter() {
+			return null;
+		}
+		
+	}
 
 	@Api(name = "test-controller", description = "a-test-controller")
 	@ApiVersion(since = "1.0", until = "2.12")
@@ -438,6 +454,15 @@ public class ApiDocTest {
 		Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
 		Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
 		Assert.assertEquals(1, apiMethodDoc.getJsondochints().size());
+		
+		
+		classes.clear();
+		classes.add(InterfaceController.class);
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("interface-controller", apiDoc.getName());
+		apiMethodDoc = apiDoc.getMethods().get(0);
+		Assert.assertNotNull(apiMethodDoc);
+		Assert.assertEquals("/interface", apiMethodDoc.getPath());
 	}
 
 }

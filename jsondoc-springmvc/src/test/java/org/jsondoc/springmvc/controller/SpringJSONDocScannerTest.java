@@ -11,6 +11,7 @@ import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.pojo.ApiDoc;
+import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiVerb;
@@ -36,7 +37,7 @@ public class SpringJSONDocScannerTest {
 	private class SpringController {
 		
 		@ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verb = ApiVerb.GET)
-		@RequestMapping(value = "/string/{name}",  method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value = "/string/{name}", headers = "header=test", params = "delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseStatus(value = HttpStatus.CREATED)
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
@@ -68,7 +69,13 @@ public class SpringJSONDocScannerTest {
 		Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
 		Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
 		
+		Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
+		ApiHeaderDoc header = headers.iterator().next();
+		Assert.assertEquals("header", header.getName());
+		Assert.assertEquals("test", header.getAllowedvalues()[0]);
+		
 		Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
+		Assert.assertEquals(3, queryparameters.size());
 		Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
 		ApiParamDoc apiParamDoc = qpIterator.next();
 		Assert.assertEquals("id", apiParamDoc.getName());
@@ -78,6 +85,11 @@ public class SpringJSONDocScannerTest {
 		Assert.assertEquals("myquery", apiParamDoc.getName());
 		Assert.assertEquals("true", apiParamDoc.getRequired());
 		Assert.assertEquals("test", apiParamDoc.getDefaultvalue());
+		apiParamDoc = qpIterator.next();
+		Assert.assertEquals("delete", apiParamDoc.getName());
+		Assert.assertEquals("true", apiParamDoc.getRequired());
+		Assert.assertEquals(null, apiParamDoc.getDefaultvalue());
+		Assert.assertEquals(0, apiParamDoc.getAllowedvalues().length);
 		
 		Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
 		Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();

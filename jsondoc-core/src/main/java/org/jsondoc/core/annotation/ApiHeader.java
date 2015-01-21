@@ -29,4 +29,10 @@ public @interface ApiHeader {
 	 */
 	public String description();
 	
+	/**
+	 * An array representing the allowed values this header can have. Default value is *
+	 * @return
+	 */
+	public String[] allowedvalues() default {};
+	
 }

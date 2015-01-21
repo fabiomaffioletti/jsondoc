@@ -32,7 +32,7 @@ public class DefaultJSONDocScannerTest {
         for (String string : jsondoc.getApis().keySet()) {
             countApis += jsondoc.getApis().get(string).size();
         }
-        assertEquals(2, countApis);
+        assertEquals(3, countApis);
 
         assertEquals(2, jsondoc.getObjects().size());
         

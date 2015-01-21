@@ -2,6 +2,7 @@ package org.jsondoc.springmvc.scanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.util.AbstractJSONDocScanner;
+import org.jsondoc.core.util.JSONDocType;
+import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +55,7 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		apiMethodDoc.setResponse(getApiResponseObject(method, apiMethodDoc.getResponse()));
 		apiMethodDoc.setResponsestatuscode(getResponseStatusCodeFromSpringAnnotation(method));
 		apiMethodDoc.setPath(getPathFromSpringAnnotation(apiMethodDoc, method, controller));
+		apiMethodDoc.getQueryparameters().addAll(getQueryParamsFromSpringAnnotation(method, controller));
 		return apiMethodDoc;
 	}
 	
@@ -104,6 +108,41 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		return apiParamDoc;
 	}
 	
+	private List<ApiParamDoc> getQueryParamsFromSpringAnnotation(Method method, Class<?> controller) {
+		List<ApiParamDoc> apiParamDocs = new ArrayList<ApiParamDoc>();
+		
+		if(controller.isAnnotationPresent(RequestMapping.class)) {
+			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
+			if(requestMapping.params().length > 0) {
+				for (String param : requestMapping.params()) {
+					String[] splitParam = param.split("=");
+					if(splitParam != null) {
+						apiParamDocs.add(new ApiParamDoc(splitParam[0], null, JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[]{splitParam[1]}, null, null));
+					} else {
+						apiParamDocs.add(new ApiParamDoc(param, null, JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[]{}, null, null));
+					}
+				}
+			}
+		}
+		
+		if(controller.isAnnotationPresent(RequestMapping.class)) {
+			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+			if(requestMapping.params().length > 0) {
+				apiParamDocs.clear();
+				for (String param : requestMapping.params()) {
+					String[] splitParam = param.split("=");
+					if(splitParam.length > 1) {
+						apiParamDocs.add(new ApiParamDoc(splitParam[0], "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[]{splitParam[1]}, null, null));
+					} else {
+						apiParamDocs.add(new ApiParamDoc(param, "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[]{}, null, null));
+					}
+				}
+			}
+		}
+		
+		return apiParamDocs;
+	}
+	
 	/**
 	 * Gets the ApiResponseObjectDoc built by JSONDoc and checks if the first type corresponds to a ResponseEntity class. In that case removes the "responseentity"
 	 * string from the final list because it's not important to the documentation user.
@@ -126,7 +165,12 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
 			List<String> headersStringList = Arrays.asList(requestMapping.headers());
 			for (String header : headersStringList) {
-				headers.add(new ApiHeaderDoc(header.split("=")[0], null));
+				String[] splitHeader = header.split("=");
+				if(splitHeader.length > 1) {
+					headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{splitHeader[1]}));
+				} else {
+					headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{}));
+				}
 			}
 		}
 		
@@ -136,7 +180,12 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 				headers.clear();
 				List<String> headersStringList = Arrays.asList(requestMapping.headers());
 				for (String header : headersStringList) {
-					headers.add(new ApiHeaderDoc(header.split("=")[0], null));
+					String[] splitHeader = header.split("=");
+					if(splitHeader.length > 1) {
+						headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{splitHeader[1]}));
+					} else {
+						headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{}));
+					}
 				}
 			}
 		}
