@@ -1,13 +1,15 @@
 package org.jsondoc.core.util;
 
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -20,7 +22,7 @@ public class DefaultJSONDocScannerTest {
     private String basePath = "http://localhost:8080/api";
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static Logger log = Logger.getLogger(DefaultJSONDocScannerTest.class);
+    private static Logger log = LoggerFactory.getLogger(DefaultJSONDocScannerTest.class);
 
     @Test
     public void getJSONDoc() throws IOException {
