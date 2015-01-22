@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthNone;
@@ -42,12 +41,14 @@ import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	
 	protected Reflections reflections = null;
 	
-	protected static Logger log = Logger.getLogger(JSONDocScanner.class);
+	protected static Logger log = LoggerFactory.getLogger(JSONDocScanner.class);
 	
 	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
 	
