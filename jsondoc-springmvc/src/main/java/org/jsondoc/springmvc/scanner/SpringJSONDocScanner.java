@@ -53,14 +53,15 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		apiMethodDoc.getConsumes().addAll(getConsumesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getHeaders().addAll(getHeadersFromSpringAnnotation(method, controller));
 		apiMethodDoc.setResponse(getApiResponseObject(method, apiMethodDoc.getResponse()));
-		apiMethodDoc.setResponsestatuscode(getResponseStatusCodeFromSpringAnnotation(method));
+		apiMethodDoc.setResponsestatuscode(getResponseStatusCodeFromSpringAnnotation(apiMethodDoc, method));
 		apiMethodDoc.setPath(getPathFromSpringAnnotation(apiMethodDoc, method, controller));
 		apiMethodDoc.getQueryparameters().addAll(getQueryParamsFromSpringAnnotation(method, controller));
 		return apiMethodDoc;
 	}
 	
-	private String getResponseStatusCodeFromSpringAnnotation(Method method) {
-		String responseStatusCode = null;
+	private String getResponseStatusCodeFromSpringAnnotation(ApiMethodDoc apiMethodDoc, Method method) {
+		String responseStatusCode = apiMethodDoc.getResponsestatuscode();
+		
 		if(method.isAnnotationPresent(ResponseStatus.class)) {
 			ResponseStatus responseStatus = method.getAnnotation(ResponseStatus.class);
 			responseStatusCode = responseStatus.value().toString() + " - " + responseStatus.value().getReasonPhrase();

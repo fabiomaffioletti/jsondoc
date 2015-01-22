@@ -59,7 +59,7 @@ public class ApiDocTest {
 			return null;
 		}
 
-		@ApiMethod(path = "/age", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiMethod(path = "/age", verb = ApiVerb.GET, description = "a-test-method", responsestatuscode = "204")
 		public @ApiResponseObject
 		Integer age(@ApiPathParam(name = "age") Integer age, @ApiBodyObject Integer body) {
 			return null;
@@ -265,6 +265,7 @@ public class ApiDocTest {
 
 			if (apiMethodDoc.getPath().equals("/age")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
+				Assert.assertEquals("204", apiMethodDoc.getResponsestatuscode());
 				Assert.assertEquals("integer", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("integer", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {

@@ -47,6 +47,19 @@ public class SpringJSONDocScannerTest {
 			return "ok";
 		}
 		
+		@ApiMethod(description = "ResponseStatusCodeFromSpringAnnoation", responsestatuscode = "204")
+		@RequestMapping(value = "/responsestatuscodefromspringannotation")
+		@ResponseStatus(value = HttpStatus.CONFLICT)
+		public @ApiResponseObject @ResponseBody String responsestatuscodefromspringannotation() {
+			return "ok";
+		}
+
+		@ApiMethod(description = "ResponseStatusCodeFromJSONDocAnnoation", responsestatuscode = "204")
+		@RequestMapping(value = "/responsestatuscodefromjsondocannotation")
+		public @ApiResponseObject @ResponseBody String responsestatuscodefromjsondocannotation() {
+			return "ok";
+		}
+		
 	}
 	
 	@Test
@@ -59,43 +72,54 @@ public class SpringJSONDocScannerTest {
 		Assert.assertEquals("A spring controller", apiDoc.getDescription());
 		Assert.assertEquals("Spring controller", apiDoc.getName());
 		
-		ApiMethodDoc apiMethodDoc = apiDoc.getMethods().get(0);
-		Assert.assertEquals("Gets a string", apiMethodDoc.getDescription());
-		Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
-		Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
-		Assert.assertEquals("/api/string/{name}?id={id}&myquery={myquery}", apiMethodDoc.getPath());
-		Assert.assertEquals("POST", apiMethodDoc.getVerb().name());
-		Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
-		Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
-		Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
+		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			if(apiMethodDoc.getDescription().equals("Gets a string")) {
+				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
+				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+				Assert.assertEquals("/api/string/{name}?id={id}&myquery={myquery}", apiMethodDoc.getPath());
+				Assert.assertEquals("POST", apiMethodDoc.getVerb().name());
+				Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
+				Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
+				Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
+				
+				Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
+				ApiHeaderDoc header = headers.iterator().next();
+				Assert.assertEquals("header", header.getName());
+				Assert.assertEquals("test", header.getAllowedvalues()[0]);
+				
+				Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
+				Assert.assertEquals(3, queryparameters.size());
+				Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
+				ApiParamDoc apiParamDoc = qpIterator.next();
+				Assert.assertEquals("id", apiParamDoc.getName());
+				Assert.assertEquals("true", apiParamDoc.getRequired());
+				Assert.assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
+				apiParamDoc = qpIterator.next();
+				Assert.assertEquals("myquery", apiParamDoc.getName());
+				Assert.assertEquals("true", apiParamDoc.getRequired());
+				Assert.assertEquals("test", apiParamDoc.getDefaultvalue());
+				apiParamDoc = qpIterator.next();
+				Assert.assertEquals("delete", apiParamDoc.getName());
+				Assert.assertEquals("true", apiParamDoc.getRequired());
+				Assert.assertEquals(null, apiParamDoc.getDefaultvalue());
+				Assert.assertEquals(0, apiParamDoc.getAllowedvalues().length);
+				
+				Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
+				Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
+				apiParamDoc = ppIterator.next();
+				apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
+				Assert.assertEquals("test", apiParamDoc.getName());
+			}
+			
+			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromApiMethodAnnoation")) {
+				Assert.assertEquals("409 - Conflict", apiMethodDoc.getResponsestatuscode());
+			}
+
+			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromJSONDocAnnoation")) {
+				Assert.assertEquals("204", apiMethodDoc.getResponsestatuscode());
+			}
+		}
 		
-		Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
-		ApiHeaderDoc header = headers.iterator().next();
-		Assert.assertEquals("header", header.getName());
-		Assert.assertEquals("test", header.getAllowedvalues()[0]);
-		
-		Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
-		Assert.assertEquals(3, queryparameters.size());
-		Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
-		ApiParamDoc apiParamDoc = qpIterator.next();
-		Assert.assertEquals("id", apiParamDoc.getName());
-		Assert.assertEquals("true", apiParamDoc.getRequired());
-		Assert.assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
-		apiParamDoc = qpIterator.next();
-		Assert.assertEquals("myquery", apiParamDoc.getName());
-		Assert.assertEquals("true", apiParamDoc.getRequired());
-		Assert.assertEquals("test", apiParamDoc.getDefaultvalue());
-		apiParamDoc = qpIterator.next();
-		Assert.assertEquals("delete", apiParamDoc.getName());
-		Assert.assertEquals("true", apiParamDoc.getRequired());
-		Assert.assertEquals(null, apiParamDoc.getDefaultvalue());
-		Assert.assertEquals(0, apiParamDoc.getAllowedvalues().length);
-		
-		Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
-		Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
-		apiParamDoc = ppIterator.next();
-		apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
-		Assert.assertEquals("test", apiParamDoc.getName());
 	}
 
 }
