@@ -19,6 +19,7 @@ title: How to - jsondoc-maven-plugin
 			<package>com.sample</package>
 		</packages>
 		<outputFile>/tmp/jsondoc.json</outputFile>
+		<scanner>org.jsondoc.core.scanner.DefaultJSONDocScanner</scanner>
 	</configuration>
 </plugin>
 {% endhighlight %}
@@ -27,6 +28,14 @@ title: How to - jsondoc-maven-plugin
 {% highlight bash %}
 mvn jsondoc:generate
 {% endhighlight %}
+
+<div class="alert alert-info">
+	<p>The <code>scanner</code> configuration property is useful if you want to use a different implementation of the <code>JSONDocScanner</code> interface. Currently there is offical support for two implementations:</p>
+	<ul>
+		<li>org.jsondoc.core.scanner.DefaultJSONDocScanner</li>
+		<li>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</li>
+	</ul>
+</div>
 
 <script type="text/javascript">
 	$('#howtomavenplugin').addClass('active');
