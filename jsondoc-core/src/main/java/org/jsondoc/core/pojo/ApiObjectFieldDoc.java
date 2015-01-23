@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.util.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 

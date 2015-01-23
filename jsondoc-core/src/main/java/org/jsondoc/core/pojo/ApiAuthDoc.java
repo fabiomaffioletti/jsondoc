@@ -9,7 +9,7 @@ import java.util.Map;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
-import org.jsondoc.core.util.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 
 public class ApiAuthDoc {
 	private String type;

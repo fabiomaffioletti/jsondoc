@@ -7,6 +7,8 @@ import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

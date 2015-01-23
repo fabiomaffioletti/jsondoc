@@ -10,8 +10,8 @@ import org.jsondoc.core.annotation.ApiFlowSet;
 import org.jsondoc.core.annotation.ApiFlowStep;
 import org.jsondoc.core.pojo.ApiFlowDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.util.DefaultJSONDocScanner;
-import org.jsondoc.core.util.JSONDocScanner;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
 import org.junit.Test;
 

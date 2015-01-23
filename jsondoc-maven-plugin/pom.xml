@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.jsondoc</groupId>
 		<artifactId>jsondoc-master</artifactId>
-		<version>1.1.4-SNAPSHOT</version>
+		<version>1.1.4</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -35,6 +35,10 @@
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-springmvc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

@@ -1,4 +1,4 @@
-package org.jsondoc.core.util;
+package org.jsondoc.core.scanner;
 
 import java.util.List;
 import java.util.Set;

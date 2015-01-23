@@ -1,4 +1,4 @@
-package org.jsondoc.core.util;
+package org.jsondoc.core.scanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -37,6 +37,8 @@ import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.ApiVersionDoc;
 import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.util.JSONDocType;
+import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;

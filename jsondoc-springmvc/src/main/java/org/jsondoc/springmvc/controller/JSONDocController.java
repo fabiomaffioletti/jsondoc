@@ -3,7 +3,7 @@ package org.jsondoc.springmvc.controller;
 import java.util.List;
 
 import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.util.JSONDocScanner;
+import org.jsondoc.core.scanner.JSONDocScanner;
 import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

@@ -10,8 +10,8 @@ import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
-import org.jsondoc.core.util.DefaultJSONDocScanner;
-import org.jsondoc.core.util.JSONDocScanner;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
 import org.junit.Test;
 

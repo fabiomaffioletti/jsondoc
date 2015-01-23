@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.util.DefaultJSONDocScanner;
+import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {

@@ -14,7 +14,7 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
-import org.jsondoc.core.util.AbstractJSONDocScanner;
+import org.jsondoc.core.scanner.AbstractJSONDocScanner;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.springframework.http.HttpStatus;
