@@ -28,7 +28,7 @@ public class ApiParamDoc extends AbstractDoc {
 	}
 
 	public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(), null);
+		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, "true", annotation.allowedvalues(), annotation.format(), null);
 	}
 
 	public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType, ApiParamType paramType) {

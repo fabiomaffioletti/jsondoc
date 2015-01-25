@@ -81,8 +81,8 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		
 		JSONDoc jsondocDoc = new JSONDoc(version, basePath);
 		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class, true)));
-		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class)));
-		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class), allApiMethodDocs));
+		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class, true)));
+		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
 		
 		return jsondocDoc;
 	}

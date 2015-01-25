@@ -32,12 +32,6 @@ public @interface ApiPathParam {
 	public String description() default "";
 	
 	/**
-	 * Whether this parameter is required or not. Default value is true
-	 * @return
-	 */
-	public boolean required() default true;
-	
-	/**
 	 * An array representing the allowed values this parameter can have. Default value is *
 	 * @return
 	 */
