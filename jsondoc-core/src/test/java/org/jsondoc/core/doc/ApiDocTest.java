@@ -454,7 +454,7 @@ public class ApiDocTest {
 		ApiMethodDoc apiMethodDoc = apiDoc.getMethods().get(0);
 		Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
 		Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
-		Assert.assertEquals(1, apiMethodDoc.getJsondochints().size());
+		Assert.assertEquals(2, apiMethodDoc.getJsondochints().size());
 		
 		
 		classes.clear();

@@ -190,6 +190,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		final String HINT_MISSING_PATH_PARAM_DESCRIPTION 	= "Add description to ApiPathParam";
 		final String HINT_MISSING_QUERY_PARAM_DESCRIPTION 	= "Add description to ApiQueryParam";
 		final String HINT_MISSING_METHOD_DESCRIPTION 		= "Add description to ApiMethod";
+		final String HINT_MISSING_METHOD_RESPONSE_OBJECT 	= "Add annotation ApiResponseObject to document the returned object";
 		
 		if(apiMethodDoc.getPath().trim().isEmpty()) {
 			apiMethodDoc.setPath(ERROR_MISSING_METHOD_PATH);
@@ -226,6 +227,10 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		
 		if(apiMethodDoc.getDescription().trim().isEmpty()) {
 			apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_DESCRIPTION);
+		}
+		
+		if(apiMethodDoc.getResponse() == null) {
+			apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_RESPONSE_OBJECT);
 		}
 		
 		return apiMethodDoc;

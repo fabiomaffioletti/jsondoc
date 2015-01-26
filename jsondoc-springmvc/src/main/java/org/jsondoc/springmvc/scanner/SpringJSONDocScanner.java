@@ -52,7 +52,7 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		apiMethodDoc.getProduces().addAll(getProducesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getConsumes().addAll(getConsumesFromSpringAnnotation(method, controller));
 		apiMethodDoc.getHeaders().addAll(getHeadersFromSpringAnnotation(method, controller));
-		apiMethodDoc.setResponse(getApiResponseObject(method, apiMethodDoc.getResponse()));
+		apiMethodDoc.setResponse(getApiResponseObject(apiMethodDoc, method));
 		apiMethodDoc.setResponsestatuscode(getResponseStatusCodeFromSpringAnnotation(apiMethodDoc, method));
 		apiMethodDoc.setPath(getPathFromSpringAnnotation(apiMethodDoc, method, controller));
 		apiMethodDoc.getQueryparameters().addAll(getQueryParamsFromSpringAnnotation(method, controller));
@@ -151,12 +151,14 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 	 * @param apiResponseObjectDoc
 	 * @return
 	 */
-	private ApiResponseObjectDoc getApiResponseObject(Method method, ApiResponseObjectDoc apiResponseObjectDoc) {
-		if(method.getReturnType().isAssignableFrom(ResponseEntity.class)) {
-			apiResponseObjectDoc.getJsondocType().getType().remove(0);
+	private ApiResponseObjectDoc getApiResponseObject(ApiMethodDoc apiMethodDoc, Method method) {
+		if(apiMethodDoc.getResponse() != null) {
+			if(method.getReturnType().isAssignableFrom(ResponseEntity.class)) {
+				apiMethodDoc.getResponse().getJsondocType().getType().remove(0);
+			}
 		}
 		
-		return apiResponseObjectDoc;
+		return apiMethodDoc.getResponse();
 	}
 	
 	private Set<ApiHeaderDoc> getHeadersFromSpringAnnotation(Method method, Class<?> controller) {
