@@ -126,7 +126,7 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 			}
 		}
 		
-		if(controller.isAnnotationPresent(RequestMapping.class)) {
+		if(method.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 			if(requestMapping.params().length > 0) {
 				apiParamDocs.clear();
