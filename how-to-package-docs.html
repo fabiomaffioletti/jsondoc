@@ -167,6 +167,102 @@ title: How to - jsondoc-maven-plugin
 
 <p>And then run the <code>mvn clean package -Pdistributable</code> command again. In the packaged zip you will now find the resulting documentation, browsable offline. Just open the <code>jsondoc-ui.html</code> page and the documentation will be displayed in your browser.</p>
 
+<h4 class="spaced">Example pom for offline bundle generation</h4>
+<p>Here is the resulting piece of the pom file to correctly bundle the documentation in an offline package:</p>
+{% highlight xml %}
+<plugin>
+	<groupId>org.jsondoc</groupId>
+	<artifactId>jsondoc-maven-plugin</artifactId>
+	<executions>
+		<execution>
+			<id>generate-jsondoc</id>
+			<phase>package</phase>
+			<goals>
+				<goal>generate</goal>
+			</goals>
+			<configuration>
+				<version>4.1</version>
+				<basePath>http://localhost:8080/api</basePath>
+				<packages>
+					<package>org.jsondoc.sample.controller</package>
+					<package>org.jsondoc.sample.pojo</package>
+					<package>com.sample</package>
+				</packages>
+				<outputFile>${project.build.directory}/jsondoc-ui/jsondoc.json</outputFile>
+				<scanner>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</scanner>
+			</configuration>
+		</execution>
+	</executions>
+</plugin>
+
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<version>2.9</version>
+	<executions>
+		<execution>
+			<id>unpack</id>
+			<phase>process-resources</phase>
+			<goals>
+				<goal>unpack</goal>
+			</goals>
+			<configuration>
+				<artifactItems>
+					<artifactItem>
+						<groupId>org.jsondoc</groupId>
+						<artifactId>jsondoc-ui</artifactId>
+						<type>jar</type>
+						<overWrite>true</overWrite>
+						<outputDirectory>${project.build.directory}/jsondoc-ui</outputDirectory>
+					</artifactItem>
+				</artifactItems>
+			</configuration>
+		</execution>
+	</executions>
+</plugin>
+
+<plugin>
+    <groupId>com.google.code.maven-replacer-plugin</groupId>
+    <artifactId>replacer</artifactId>
+    <version>1.5.3</version>
+    <executions>                
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>replace</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <includes>
+            <include>${project.build.directory}/jsondoc-ui/jsondoc-ui.html</include>
+        </includes>
+        <token>'_JSONDOC_OFFLINE_PLACEHOLDER_'</token> <!-- Do not change this value! -->
+        <valueFile>${project.build.directory}/jsondoc-ui/jsondoc.json</valueFile>
+    </configuration>
+</plugin>
+
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<executions>
+		<execution>
+			<id>create-distribution</id>
+			<phase>package</phase>
+			<goals>
+				<goal>single</goal>
+			</goals>
+			<configuration>
+				<finalName>jsondoc</finalName>
+				<descriptors>
+					<descriptor>assembly/jsondoc-assembly.xml</descriptor>
+				</descriptors>
+			</configuration>
+		</execution>
+	</executions>
+</plugin>
+{% endhighlight %}
+
 <script type="text/javascript">
 	$('#howtopackagedocs').addClass('active');
 </script>
