@@ -1,7 +1,7 @@
 package org.jsondoc.core.pojo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.Api;
@@ -10,7 +10,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
-	private List<ApiMethodDoc> methods;
+	private Set<ApiMethodDoc> methods;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 	private String group;
@@ -24,7 +24,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	}
 
 	public ApiDoc() {
-		this.methods = new ArrayList<ApiMethodDoc>();
+		this.methods = new TreeSet<ApiMethodDoc>();
 	}
 
 	public String getName() {
@@ -43,11 +43,11 @@ public class ApiDoc implements Comparable<ApiDoc> {
 		this.description = description;
 	}
 
-	public List<ApiMethodDoc> getMethods() {
+	public Set<ApiMethodDoc> getMethods() {
 		return methods;
 	}
 
-	public void setMethods(List<ApiMethodDoc> methods) {
+	public void setMethods(Set<ApiMethodDoc> methods) {
 		this.methods = methods;
 	}
 

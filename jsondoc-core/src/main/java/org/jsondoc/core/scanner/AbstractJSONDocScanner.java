@@ -117,9 +117,9 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiDoc;
 	}
 	
-	private List<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {
-		List<ApiMethodDoc> apiMethodDocs = new ArrayList<ApiMethodDoc>();
-		Method[] methods = controller.getMethods();
+	private Set<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {
+		Set<ApiMethodDoc> apiMethodDocs = new TreeSet<ApiMethodDoc>();
+		Method[] methods = controller.getDeclaredMethods();
 		for (Method method : methods) {
 			if(method.isAnnotationPresent(ApiMethod.class)) {
 				ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller);

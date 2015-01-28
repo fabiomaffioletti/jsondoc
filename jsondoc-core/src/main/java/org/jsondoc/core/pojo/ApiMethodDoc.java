@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
 
-public class ApiMethodDoc extends AbstractDoc {
+public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String id;
 	private String path;
@@ -167,6 +167,17 @@ public class ApiMethodDoc extends AbstractDoc {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public int compareTo(ApiMethodDoc o) {
+		int i = this.path.compareTo(o.getPath());
+		if(i != 0) return i;
+		
+		i = this.verb.compareTo(o.getVerb());
+		if(i != 0) return i;
+		
+		return i;
 	}
 
 }

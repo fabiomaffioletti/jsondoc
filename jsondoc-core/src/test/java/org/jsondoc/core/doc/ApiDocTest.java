@@ -237,6 +237,21 @@ public class ApiDocTest {
 		
 	}
 	
+	@Api(name = "test-declared-methods", description = "a-test-for-declared-methods")
+	private class TestDeclaredMethods {
+		
+		@ApiMethod(path = "/protectedMethod")
+		protected String protectedMethod() {
+			return null;
+		}
+		
+		@ApiMethod(path = "/privateMethod")
+		private String privateMethod() {
+			return null;
+		}
+		
+	}
+	
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -451,7 +466,7 @@ public class ApiDocTest {
 		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("test-errors-warnings-hints", apiDoc.getName());
 		
-		ApiMethodDoc apiMethodDoc = apiDoc.getMethods().get(0);
+		ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
 		Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
 		Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
 		Assert.assertEquals(2, apiMethodDoc.getJsondochints().size());
@@ -461,9 +476,15 @@ public class ApiDocTest {
 		classes.add(InterfaceController.class);
 		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
 		Assert.assertEquals("interface-controller", apiDoc.getName());
-		apiMethodDoc = apiDoc.getMethods().get(0);
+		apiMethodDoc = apiDoc.getMethods().iterator().next();
 		Assert.assertNotNull(apiMethodDoc);
 		Assert.assertEquals("/interface", apiMethodDoc.getPath());
+		
+		classes.clear();
+		classes.add(TestDeclaredMethods.class);
+		apiDoc = jsondocScanner.getApiDocs(classes).iterator().next();
+		Assert.assertEquals("test-declared-methods", apiDoc.getName());
+		Assert.assertEquals(2, apiDoc.getMethods().size());
 	}
 
 }
