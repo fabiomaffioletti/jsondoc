@@ -131,7 +131,7 @@ title: How to - jsondoc-maven-plugin
 </profiles>
 {% endhighlight %}
 
-<h4 class="spaced">Browsing the documentation</h4>
+<h4 class="spaced">Browsing the documentation using a webserver</h4>
 <p>The result of the <code>mvn clean package -Pdistributable</code> command will be a zip containing the UI and the documentation json. Note that you still need to run a server to browse the documentation, but this is very simple:</p>
 <ul>
 	<li>Unzip the package in a directory of your choiche</li>
@@ -139,6 +139,33 @@ title: How to - jsondoc-maven-plugin
 	<li>Open the browser and browse the documentation at <code>http://localhost:8000/jsondoc-ui.html</code></li>
 </ul>
 
+<h4 class="spaced">Browsing the documentation without using a webserver</h4>
+<p>If you want the documentation to be totally browsable offline and without a server hosting the ui page, then there is another step to be done, i.e. adding another maven plugin to the flow described previously.</p>
+
+{% highlight xml %}
+<plugin>
+    <groupId>com.google.code.maven-replacer-plugin</groupId>
+    <artifactId>replacer</artifactId>
+    <version>1.5.3</version>
+    <executions>                
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>replace</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <includes>
+            <include>${project.build.directory}/jsondoc-ui/jsondoc-ui.html</include>
+        </includes>
+        <token>'_JSONDOC_OFFLINE_PLACEHOLDER_'</token> <!-- Do not change this value! -->
+        <valueFile>${project.build.directory}/jsondoc-ui/jsondoc.json</valueFile>
+    </configuration>
+</plugin>
+{% endhighlight %}
+
+<p>And then run the <code>mvn clean package -Pdistributable</code> command again. In the packaged zip you will now find the resulting documentation, browsable offline. Just open the <code>jsondoc-ui.html</code> page and the documentation will be displayed in your browser.</p>
 
 <script type="text/javascript">
 	$('#howtopackagedocs').addClass('active');
