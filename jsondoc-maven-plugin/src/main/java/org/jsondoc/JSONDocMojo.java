@@ -12,9 +12,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.scanner.JSONDocScanner;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Echos an object string to the output screen.

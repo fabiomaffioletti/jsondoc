@@ -1,8 +1,11 @@
 package org.jsondoc.core.util;
 
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiVerb;
@@ -13,11 +16,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 
 public class DefaultJSONDocScannerTest {
     private String version = "1.0";
