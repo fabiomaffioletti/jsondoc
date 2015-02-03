@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>jsondoc-master</artifactId>
 		<groupId>org.jsondoc</groupId>
-		<version>1.1.9-SNAPSHOT</version>
+		<version>1.1.9</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -27,9 +27,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-springmvc</artifactId>
 		</dependency>
-		
+
 	</dependencies>
 </project>
