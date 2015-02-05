@@ -64,7 +64,7 @@ public class SpringJSONDocScannerTest {
 		
 		@ApiMethod(description = "RequestHeaderManagement")
 		@RequestMapping(value = "/requestheadermanagement")
-		public @ApiResponseObject @ResponseBody String requestheadermanagement(@RequestHeader(value = "header") @ApiHeader(description = "", name = "") String header) {
+		public @ApiResponseObject @ResponseBody String requestheadermanagement(@PathVariable("name") @ApiPathParam String name, @RequestHeader(value = "header") @ApiHeader(description = "", name = "") String header) {
 			return "ok";
 		}
 		
@@ -128,6 +128,7 @@ public class SpringJSONDocScannerTest {
 			}
 			
 			if(apiMethodDoc.getDescription().equals("RequestHeaderManagement")) {
+				Assert.assertEquals(1, apiMethodDoc.getPathparameters().size());
 				Assert.assertEquals(1, apiMethodDoc.getHeaders().size());
 			}
 		}
