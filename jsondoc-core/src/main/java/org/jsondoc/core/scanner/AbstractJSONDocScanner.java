@@ -185,6 +185,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		final String ERROR_MISSING_METHOD_PATH 				= "Missing documentation data: path";
 		final String ERROR_MISSING_PATH_PARAM_NAME 			= "Missing documentation data: path parameter name";
 		final String ERROR_MISSING_QUERY_PARAM_NAME 		= "Missing documentation data: query parameter name";
+		final String ERROR_MISSING_HEADER_NAME		 		= "Missing documentation data: header name";
 		final String WARN_MISSING_METHOD_PRODUCES 			= "Missing documentation data: produces";
 		final String WARN_MISSING_METHOD_CONSUMES 			= "Missing documentation data: consumes";
 		final String HINT_MISSING_PATH_PARAM_DESCRIPTION 	= "Add description to ApiPathParam";
@@ -214,6 +215,12 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			
 			if(apiParamDoc.getDescription().trim().isEmpty()) {
 				apiMethodDoc.addJsondochint(HINT_MISSING_QUERY_PARAM_DESCRIPTION);
+			}
+		}
+		
+		for (ApiHeaderDoc apiHeaderDoc : apiMethodDoc.getHeaders()) {
+			if(apiHeaderDoc.getName().trim().isEmpty()) {
+				apiMethodDoc.addJsondocerror(ERROR_MISSING_HEADER_NAME);
 			}
 		}
 		

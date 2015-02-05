@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiBodyObject;
+import org.jsondoc.core.annotation.ApiHeader;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,16 +49,22 @@ public class SpringJSONDocScannerTest {
 			return "ok";
 		}
 		
-		@ApiMethod(description = "ResponseStatusCodeFromSpringAnnoation", responsestatuscode = "204")
+		@ApiMethod(description = "ResponseStatusCodeFromSpringAnnotation", responsestatuscode = "204")
 		@RequestMapping(value = "/responsestatuscodefromspringannotation")
 		@ResponseStatus(value = HttpStatus.CONFLICT)
 		public @ApiResponseObject @ResponseBody String responsestatuscodefromspringannotation() {
 			return "ok";
 		}
 
-		@ApiMethod(description = "ResponseStatusCodeFromJSONDocAnnoation", responsestatuscode = "204")
+		@ApiMethod(description = "ResponseStatusCodeFromJSONDocAnnotation", responsestatuscode = "204")
 		@RequestMapping(value = "/responsestatuscodefromjsondocannotation")
 		public @ApiResponseObject @ResponseBody String responsestatuscodefromjsondocannotation() {
+			return "ok";
+		}
+		
+		@ApiMethod(description = "RequestHeaderManagement")
+		@RequestMapping(value = "/requestheadermanagement")
+		public @ApiResponseObject @ResponseBody String requestheadermanagement(@RequestHeader(value = "header") @ApiHeader(description = "", name = "") String header) {
 			return "ok";
 		}
 		
@@ -111,12 +119,16 @@ public class SpringJSONDocScannerTest {
 				Assert.assertEquals("test", apiParamDoc.getName());
 			}
 			
-			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromApiMethodAnnoation")) {
+			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromApiMethodAnnotation")) {
 				Assert.assertEquals("409 - Conflict", apiMethodDoc.getResponsestatuscode());
 			}
 
-			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromJSONDocAnnoation")) {
+			if(apiMethodDoc.getDescription().equals("ResponseStatusCodeFromJSONDocAnnotation")) {
 				Assert.assertEquals("204", apiMethodDoc.getResponsestatuscode());
+			}
+			
+			if(apiMethodDoc.getDescription().equals("RequestHeaderManagement")) {
+				Assert.assertEquals(1, apiMethodDoc.getHeaders().size());
 			}
 		}
 		

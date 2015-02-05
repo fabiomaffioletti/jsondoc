@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jsondoc.core.annotation.ApiHeader;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
@@ -20,6 +21,7 @@ import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -161,6 +163,14 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		return apiMethodDoc.getResponse();
 	}
 	
+	/**
+	 * 1. Looks for headers in the RequestMapping annotation on the controller
+	 * 2. Looks for headers in the RequestMapping annotation on the method, overriding the ones coming from the annotation on the controller
+	 * 3. Looks for RequestHeader annotation on method parameters, and if ApiHeader is also present on the same parameter, adds the header to the final Set
+	 * @param method
+	 * @param controller
+	 * @return
+	 */
 	private Set<ApiHeaderDoc> getHeadersFromSpringAnnotation(Method method, Class<?> controller) {
 		Set<ApiHeaderDoc> headers = new LinkedHashSet<ApiHeaderDoc>();
 		
@@ -191,6 +201,30 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 					}
 				}
 			}
+		}
+		
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		for (Annotation[] annotations : parameterAnnotations) {
+			RequestHeader requestHeader = null;
+			ApiHeader apiHeader = null;
+			
+			for (Annotation annotation : annotations) {
+				if(RequestHeader.class.isAssignableFrom(annotation.annotationType())) {
+					requestHeader = (RequestHeader) annotation;
+				}
+				if(ApiHeader.class.isAssignableFrom(annotation.annotationType())) {
+					apiHeader = (ApiHeader) annotation;
+				}
+			}
+			
+			if(requestHeader != null && apiHeader != null) {
+				if(!requestHeader.value().isEmpty()) {
+					headers.add(new ApiHeaderDoc(requestHeader.value(), apiHeader.description(), requestHeader.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? new String[]{} : new String[]{requestHeader.defaultValue()}));
+				} else {
+					headers.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), requestHeader.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? new String[]{} : new String[]{requestHeader.defaultValue()}));
+				}
+			}
+				
 		}
 		
 		return headers;
