@@ -199,6 +199,7 @@ table td {
 </script>
 
 <script id="apis" type="text/x-handlebars-template">
+{{#if apis}}
 {{#eachInMap apis}}
 	<ul class="list-unstyled">
 		{{#if key}}
@@ -208,10 +209,14 @@ table td {
 			<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
 		{{/each}}
 	</ul>
-{{/eachInMap}}	
+{{/eachInMap}}
+{{else}}
+<p>No api documented</p>
+{{/if}}
 </script>
 
 <script id="objects" type="text/x-handlebars-template">
+{{#if objects}}
 {{#eachInMap objects}}
 	<ul class="list-unstyled">
 		{{#if key}}
@@ -222,9 +227,13 @@ table td {
 		{{/each}}
 	</ul>
 {{/eachInMap}}
+{{else}}
+<p>No object documented</p>
+{{/if}}
 </script>
 
 <script id="flows" type="text/x-handlebars-template">
+{{#if flows}}
 {{#eachInMap flows}}
 	<ul class="list-unstyled">
 		{{#if key}}
@@ -235,6 +244,9 @@ table td {
 		{{/each}}
 	</ul>
 {{/eachInMap}}
+{{else}}
+<p>No flow documented</p>
+{{/if}}
 </script>
 
 <script id="methods" type="text/x-handlebars-template">
@@ -934,96 +946,90 @@ table td {
 		var mainHTML = main(data);
 		$("#maindiv").html(mainHTML);
 		
-		if(data.apis) {
-			var apis = Handlebars.compile($("#apis").html());
-			var apisHTML = apis(data);
-			$("#apidiv").html(apisHTML);
-			
-			// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
-			var plainApis = [];
-			$.each(data.apis, function(i, v) {
-				$.each(v, function(j, p) {
-					plainApis.push(p);	
-				});
+		var apis = Handlebars.compile($("#apis").html());
+		var apisHTML = apis(data);
+		$("#apidiv").html(apisHTML);
+		
+		// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
+		var plainApis = [];
+		$.each(data.apis, function(i, v) {
+			$.each(v, function(j, p) {
+				plainApis.push(p);	
 			});
-			
-			$("#apidiv a").each(function() {
-				$(this).click(function() {
-					var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
-					var methods = Handlebars.compile($("#methods").html());
-					var methodsHTML = methods(api);
-					$("#content").html(methodsHTML);
-					$("#content").show();
-					if(api.supportedversions) {
-						$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
-						if(api.supportedversions.until) {
-							$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
-						}
+		});
+		
+		$("#apidiv a").each(function() {
+			$(this).click(function() {
+				var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
+				var methods = Handlebars.compile($("#methods").html());
+				var methodsHTML = methods(api);
+				$("#content").html(methodsHTML);
+				$("#content").show();
+				if(api.supportedversions) {
+					$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
+					if(api.supportedversions.until) {
+						$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
 					}
-					$("#testContent").hide();
-					
-					buildMethodsContent(api.methods);
-				});
+				}
+				$("#testContent").hide();
+				
+				buildMethodsContent(api.methods);
 			});
-		}
+		});
 		
-		if(data.objects) {
-			var objects = Handlebars.compile($("#objects").html());
-			var objectsHTML = objects(data);
-			$("#objectdiv").html(objectsHTML);
-			
-			// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
-			var plainObjects = [];
-			$.each(data.objects, function(i, v) {
-				$.each(v, function(j, p) {
-					plainObjects.push(p);	
-				});
-			});
-			
-			$("#objectdiv a").each(function() {
-				$(this).click(function() {
-					var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
-					var object = Handlebars.compile($("#object").html());
-					var objectHTML = object(o);
-					$("#content").html(objectHTML);
-					$("#content").show();
-					$("#testContent").hide();
-					
-					var objecttemplate = Handlebars.compile($("#objecttemplate").html());
-					var objecttemplateHTML = objecttemplate(o);
-					$("#testContent").html(objecttemplateHTML);
-					$("#testContent").show();
-					prettyPrint();
-				});
-			});
-		}
+		var objects = Handlebars.compile($("#objects").html());
+		var objectsHTML = objects(data);
+		$("#objectdiv").html(objectsHTML);
 		
-		if(data.flows) {
-			var flows = Handlebars.compile($("#flows").html());
-			var flowsHTML = flows(data);
-			$("#flowdiv").html(flowsHTML);
-			
-			// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
-			var plainFlows = [];
-			$.each(data.flows, function(i, v) {
-				$.each(v, function(j, p) {
-					plainFlows.push(p);	
-				});
+		// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
+		var plainObjects = [];
+		$.each(data.objects, function(i, v) {
+			$.each(v, function(j, p) {
+				plainObjects.push(p);	
 			});
-			
-			$("#flowdiv a").each(function() {
-				$(this).click(function() {
-					var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
-					var methods = Handlebars.compile($("#methods").html());
-					var methodsHTML = methods(flow);
-					$("#content").html(methodsHTML);
-					$("#content").show();
-					$("#testContent").hide();
-					
-					buildMethodsContent(flow.methods);
-				});
-			});	
-		}
+		});
+		
+		$("#objectdiv a").each(function() {
+			$(this).click(function() {
+				var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
+				var object = Handlebars.compile($("#object").html());
+				var objectHTML = object(o);
+				$("#content").html(objectHTML);
+				$("#content").show();
+				$("#testContent").hide();
+				
+				var objecttemplate = Handlebars.compile($("#objecttemplate").html());
+				var objecttemplateHTML = objecttemplate(o);
+				$("#testContent").html(objecttemplateHTML);
+				$("#testContent").show();
+				prettyPrint();
+			});
+		});
+		
+		var flows = Handlebars.compile($("#flows").html());
+		var flowsHTML = flows(data);
+		$("#flowdiv").html(flowsHTML);
+		
+		// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
+		var plainFlows = [];
+		$.each(data.flows, function(i, v) {
+			$.each(v, function(j, p) {
+				plainFlows.push(p);	
+			});
+		});
+		
+		$("#flowdiv a").each(function() {
+			$(this).click(function() {
+				var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
+				var methods = Handlebars.compile($("#methods").html());
+				var methodsHTML = methods(flow);
+				$("#content").html(methodsHTML);
+				$("#content").show();
+				$("#testContent").hide();
+				
+				buildMethodsContent(flow.methods);
+			});
+		});
 
 		// display sidebar
 		$('#maindiv').show();
