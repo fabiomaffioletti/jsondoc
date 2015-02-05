@@ -704,7 +704,7 @@ table td {
 	var jsondoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
 	
 	$(document).ready(function() {
-		// This is to check if the '_JSONDOC_OFFLINE_PLACEHOLDER_' has been replaced with content coming from
+		// This is to check if the _JSONDOC_OFFLINE_PLACEHOLDER_ has been replaced with content coming from
 		// the result of the jsondoc-maven-plugin
 		if(jsondoc.split('_').length != 5) {
 			$("#jsondocfetch").hide();
@@ -934,91 +934,96 @@ table td {
 		var mainHTML = main(data);
 		$("#maindiv").html(mainHTML);
 		
-		var apis = Handlebars.compile($("#apis").html());
-		var apisHTML = apis(data);
-		$("#apidiv").html(apisHTML);
-		
-		// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
-		var plainApis = [];
-		$.each(data.apis, function(i, v) {
-			$.each(v, function(j, p) {
-				plainApis.push(p);	
+		if(data.apis) {
+			var apis = Handlebars.compile($("#apis").html());
+			var apisHTML = apis(data);
+			$("#apidiv").html(apisHTML);
+			
+			// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
+			var plainApis = [];
+			$.each(data.apis, function(i, v) {
+				$.each(v, function(j, p) {
+					plainApis.push(p);	
+				});
 			});
-		});
-		
-		$("#apidiv a").each(function() {
-			$(this).click(function() {
-				var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
-				var methods = Handlebars.compile($("#methods").html());
-				var methodsHTML = methods(api);
-				$("#content").html(methodsHTML);
-				$("#content").show();
-				if(api.supportedversions) {
-					$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
-					if(api.supportedversions.until) {
-						$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
+			
+			$("#apidiv a").each(function() {
+				$(this).click(function() {
+					var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
+					var methods = Handlebars.compile($("#methods").html());
+					var methodsHTML = methods(api);
+					$("#content").html(methodsHTML);
+					$("#content").show();
+					if(api.supportedversions) {
+						$("#apiSupportedVersions").text("Since version: " + api.supportedversions.since);
+						if(api.supportedversions.until) {
+							$("#apiSupportedVersions").text($("#apiSupportedVersions").text() + " - Until version: " + api.supportedversions.until);
+						}
 					}
-				}
-				$("#testContent").hide();
-				
-				buildMethodsContent(api.methods);
+					$("#testContent").hide();
+					
+					buildMethodsContent(api.methods);
+				});
 			});
-		});
+		}
 		
-		var objects = Handlebars.compile($("#objects").html());
-		var objectsHTML = objects(data);
-		$("#objectdiv").html(objectsHTML);
-		
-		// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
-		var plainObjects = [];
-		$.each(data.objects, function(i, v) {
-			$.each(v, function(j, p) {
-				plainObjects.push(p);	
+		if(data.objects) {
+			var objects = Handlebars.compile($("#objects").html());
+			var objectsHTML = objects(data);
+			$("#objectdiv").html(objectsHTML);
+			
+			// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
+			var plainObjects = [];
+			$.each(data.objects, function(i, v) {
+				$.each(v, function(j, p) {
+					plainObjects.push(p);	
+				});
 			});
-		});
-		
-		$("#objectdiv a").each(function() {
-			$(this).click(function() {
-				var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
-				var object = Handlebars.compile($("#object").html());
-				var objectHTML = object(o);
-				$("#content").html(objectHTML);
-				$("#content").show();
-				$("#testContent").hide();
-				
-				var objecttemplate = Handlebars.compile($("#objecttemplate").html());
-				var objecttemplateHTML = objecttemplate(o);
-				$("#testContent").html(objecttemplateHTML);
-				$("#testContent").show();
-				prettyPrint();
+			
+			$("#objectdiv a").each(function() {
+				$(this).click(function() {
+					var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
+					var object = Handlebars.compile($("#object").html());
+					var objectHTML = object(o);
+					$("#content").html(objectHTML);
+					$("#content").show();
+					$("#testContent").hide();
+					
+					var objecttemplate = Handlebars.compile($("#objecttemplate").html());
+					var objecttemplateHTML = objecttemplate(o);
+					$("#testContent").html(objecttemplateHTML);
+					$("#testContent").show();
+					prettyPrint();
+				});
 			});
-		});
+		}
 		
-		var flows = Handlebars.compile($("#flows").html());
-		var flowsHTML = flows(data);
-		$("#flowdiv").html(flowsHTML);
-		
-		// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
-		var plainFlows = [];
-		$.each(data.flows, function(i, v) {
-			$.each(v, function(j, p) {
-				plainFlows.push(p);	
+		if(data.flows) {
+			var flows = Handlebars.compile($("#flows").html());
+			var flowsHTML = flows(data);
+			$("#flowdiv").html(flowsHTML);
+			
+			// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
+			var plainFlows = [];
+			$.each(data.flows, function(i, v) {
+				$.each(v, function(j, p) {
+					plainFlows.push(p);	
+				});
 			});
-		});
-		
-		$("#flowdiv a").each(function() {
-			$(this).click(function() {
-				var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
-				var methods = Handlebars.compile($("#methods").html());
-				var methodsHTML = methods(flow);
-				$("#content").html(methodsHTML);
-				$("#content").show();
-				$("#testContent").hide();
-				
-				buildMethodsContent(flow.methods);
-			});
-		});
-		
+			
+			$("#flowdiv a").each(function() {
+				$(this).click(function() {
+					var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
+					var methods = Handlebars.compile($("#methods").html());
+					var methodsHTML = methods(flow);
+					$("#content").html(methodsHTML);
+					$("#content").show();
+					$("#testContent").hide();
+					
+					buildMethodsContent(flow.methods);
+				});
+			});	
+		}
 
 		// display sidebar
 		$('#maindiv').show();
