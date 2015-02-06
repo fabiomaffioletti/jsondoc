@@ -1,7 +1,8 @@
 # JSONDoc
 Official website: http://jsondoc.org
 
-[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc) <a href="https://flattr.com/submit/auto?user_id=fabiomaffioletti&url=http%3A%2F%2Fjsondoc.org&title=JSONDoc&category=software" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
+[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc) <a href="https://flattr.com/submit/auto?user_id=fabiomaffioletti&url=http%3A%2F%2Fjsondoc.org&title=JSONDoc&category=software" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fabio%2emaffioletti%40gmail%2ecom&lc=US&item_name=JSONDoc&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" target="_blank">
+<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="PayPal - The safer, easier way to pay online!"></a>
 
 ## Want to contribute? Please follow these few guidelines:
 
