@@ -1,7 +1,7 @@
 # JSONDoc
 Official website: http://jsondoc.org
 
-[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc) <a href="https://flattr.com/submit/auto?user_id=fabiomaffioletti&url=https%3A%2F%2Fgithub.com%2Ffabiomaffioletti%2Fjsondoc%2F" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
+[![Build Status](https://travis-ci.org/fabiomaffioletti/jsondoc.svg?branch=master)](https://travis-ci.org/fabiomaffioletti/jsondoc) <a href="https://flattr.com/submit/auto?user_id=fabiomaffioletti&url=http%3A%2F%2Fjsondoc.org&title=JSONDoc&category=software" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
 
 ## Want to contribute? Please follow these few guidelines:
 
