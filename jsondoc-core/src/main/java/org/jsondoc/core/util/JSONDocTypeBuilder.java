@@ -55,7 +55,7 @@ public class JSONDocTypeBuilder {
 				jsondocType.addItemToType(getCustomClassName(clazz));
 				
 				if (parametrizedType instanceof Class) {
-					jsondocType.addItemToType(((Class<?>) parametrizedType).getSimpleName().toLowerCase());
+					jsondocType.addItemToType(getCustomClassName((Class<?>) parametrizedType));
 				} else if (parametrizedType instanceof WildcardType) {
 					jsondocType.addItemToType(WILDCARD);
 				} else {
@@ -78,7 +78,7 @@ public class JSONDocTypeBuilder {
 				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
 				
 				if (parametrizedType instanceof Class) {
-					jsondocType.addItemToType(((Class<?>) parametrizedType).getSimpleName().toLowerCase());
+					jsondocType.addItemToType(getCustomClassName((Class<?>) parametrizedType));
 				} else if (parametrizedType instanceof WildcardType) {
 					jsondocType.addItemToType(WILDCARD);
 				} else {

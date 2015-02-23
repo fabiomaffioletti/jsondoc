@@ -1,5 +1,6 @@
 package org.jsondoc.core.util.pojo;
 
+
 public class TemplateSubObject {
 	private Integer id;
 

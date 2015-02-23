@@ -22,14 +22,14 @@ public class JSONDocTemplateBuilderTest {
 		TemplateObject templateObject = new TemplateObject();
 		Map<String, Object> template = JSONDocTemplateBuilder.build(new HashMap<String, Object>(), templateObject.getClass());
 
-		Assert.assertEquals(0, template.get("id"));
+		Assert.assertEquals(0, template.get("my_id"));
 		Assert.assertEquals(0, template.get("idint"));
 		Assert.assertEquals(0, template.get("idlong"));
 		Assert.assertEquals("", template.get("name"));
 		Assert.assertEquals("", template.get("gender"));
 		Assert.assertEquals(true, template.get("bool"));
 		Assert.assertEquals(new ArrayList(), template.get("intarrarr"));
-		Assert.assertEquals(new HashMap(), template.get("subObj"));
+		Assert.assertEquals(new HashMap(), template.get("sub_obj"));
 		Assert.assertEquals(new ArrayList(), template.get("untypedlist"));
 		Assert.assertEquals(new ArrayList(), template.get("subsubobjarr"));
 		Assert.assertEquals(new ArrayList(), template.get("stringlist"));

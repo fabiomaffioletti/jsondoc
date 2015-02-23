@@ -320,16 +320,6 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 			}
 		}
 		
-		if(!apiMethodDoc.getQueryparameters().isEmpty()) {
-			pathStringBuffer.append("?");
-			
-			for (ApiParamDoc apiParamDoc : apiMethodDoc.getQueryparameters()) {
-				pathStringBuffer.append(apiParamDoc.getName()).append("={").append(apiParamDoc.getName()).append("}").append("&");
-			}
-			
-			return pathStringBuffer.substring(0, pathStringBuffer.length() - 1).toString();
-		}
-		
 		return pathStringBuffer.toString();
 	}
 

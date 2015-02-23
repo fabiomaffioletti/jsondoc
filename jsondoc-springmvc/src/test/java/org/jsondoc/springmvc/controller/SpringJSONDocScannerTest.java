@@ -84,7 +84,7 @@ public class SpringJSONDocScannerTest {
 			if(apiMethodDoc.getDescription().equals("Gets a string")) {
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
-				Assert.assertEquals("/api/string/{name}?id={id}&myquery={myquery}", apiMethodDoc.getPath());
+				Assert.assertEquals("/api/string/{name}", apiMethodDoc.getPath());
 				Assert.assertEquals("POST", apiMethodDoc.getVerb().name());
 				Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
 				Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());

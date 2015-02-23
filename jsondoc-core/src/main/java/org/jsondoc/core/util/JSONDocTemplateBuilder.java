@@ -30,8 +30,15 @@ public class JSONDocTemplateBuilder {
 			List<Field> fields = getAllDeclaredFields(clazz);
 			
 			for (Field field : fields) {
-				Object value = getValue(field.getType(), field.getGenericType(), field.getName());
-				jsondocTemplate.put(field.getName(), value);
+				String fieldName = field.getName();
+				if(field.isAnnotationPresent(ApiObjectField.class)) {
+					ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
+					if(!apiObjectField.name().isEmpty()) {
+						fieldName = apiObjectField.name();
+					}
+				}
+				Object value = getValue(field.getType(), field.getGenericType(), fieldName);
+				jsondocTemplate.put(fieldName, value);
 			}
 			return jsondocTemplate;
 			

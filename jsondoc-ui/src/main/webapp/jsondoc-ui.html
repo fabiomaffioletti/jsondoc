@@ -572,14 +572,17 @@ table td {
 	{{/if}}
 	{{/if}}
 
+	<div class="col-md-12">
+		<div id="validationerrors" class="alert alert-danger" style="display:none">
+			<strong>Validation errors:</strong>
+			<ul class="list-unstyled"></ul>
+		</div>
+	</div>
+
 	{{#if pathparameters}}
 	<div class="col-md-12">
 		<div id="pathparameters" class="playground-spacer">
 			<h4>Path parameters</h4>
-			<div id="pathparametererrors" class="alert alert-danger" style="display:none">
-				<strong>Validation errors:</strong>
-				<ul class="list-unstyled"></ul>
-			</div>
 			{{#pathparameters}}
 				<div class="form-group">
 					<label class="control-label" for="i_{{name}}">{{name}}</label>
@@ -597,7 +600,22 @@ table td {
 			{{#queryparameters}}
 				<div class="form-group">
 					<label for="i_{{name}}">{{name}}</label>
-					<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}">
+					{{#compare required "true" operator="=="}}
+						{{#compare allowedvalues.length 1 operator="=="}}
+							<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}" value="{{allowedvalues}}" required>
+						{{/compare}}
+						{{#compare allowedvalues.length 1 operator="!="}}
+							<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}" required>
+						{{/compare}}						
+					{{/compare}}
+					{{#compare required "false" operator="=="}}
+						{{#compare allowedvalues.length 1 operator="=="}}
+							<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}" value="{{allowedvalues}}">
+						{{/compare}}
+						{{#compare allowedvalues.length 1 operator="!="}}
+							<input type="text" class="form-control" id="i_{{name}}" name="{{name}}" placeholder="{{name}}">
+						{{/compare}}
+					{{/compare}}
 				</div>
 			{{/queryparameters}}
 		</div>
@@ -888,8 +906,8 @@ table td {
 					var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
 					
 					var validationErrors = [];
-					$('#pathparametererrors').hide();
-					$('#pathparametererrors ul').empty();
+					$('#validationererrors').hide();
+					$('#validationerrors ul').empty();
 					
 					$("#pathparameters input").each(function() {
 						$('#' + this.id).parent().removeClass('has-error');
@@ -902,22 +920,36 @@ table td {
 							$('#' + this.id).parent().addClass('has-error');
 						}
 					});
+
+					var queryParametersMap = {};
+					$("#queryparameters input").each(function() {
+						$('#' + this.id).parent().removeClass('has-error');
+
+						if($(this).val()) {
+							queryParametersMap[this.name] = $(this).val();
+						} else {
+							if($(this).attr("required")) {
+								validationErrors.push(this.name + ' must not be empty');
+								$('#' + this.id).parent().addClass('has-error');
+							}
+						}
+					});
+					
+					var encodedQueryParameters = $.param(queryParametersMap);
+					if(encodedQueryParameters) {
+						replacedPath = replacedPath + "?" + encodedQueryParameters;	
+					}
 					
 					if(validationErrors.length > 0) {
 						for (var k=0; k<validationErrors.length; k++) {
-							$('#pathparametererrors ul').append($('<li/>').text(validationErrors[k]));
+							$('#validationerrors ul').append($('<li/>').text(validationErrors[k]));
 							
 						}
-						$('#pathparametererrors').show();
+						$('#validationerrors').show();
 						validationErrors = [];
 						return;
 					}
 
-					$("#queryparameters input").each(function() {
-						tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-						replacedPath = tempReplacedPath;
-					});
-					
 					$('#testButton').button('loading');
 					
 					var res = $.ajax({

@@ -9,7 +9,7 @@ import org.jsondoc.core.util.pojo.Gender;
 
 public class TemplateObject {
 	
-	@ApiObjectField
+	@ApiObjectField(name = "my_id")
 	private Integer id;
 
 	@ApiObjectField
@@ -48,7 +48,7 @@ public class TemplateObject {
 	@ApiObjectField
 	private List<String> stringlist;
 
-	@ApiObjectField
+	@ApiObjectField(name = "sub_obj")
 	private TemplateSubObject subObj = new TemplateSubObject();
 	
 	@ApiObjectField

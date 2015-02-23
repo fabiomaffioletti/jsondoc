@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsondoc.core.annotation.ApiObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 
 public class JSONDocTypeBuilderTest {
 	
@@ -139,6 +139,15 @@ public class JSONDocTypeBuilderTest {
 	
 	public ResponseEntity<List<String>> getResponseEntityListOfString() {
 		return null;
+	}
+	
+	public List<ParentPojo> getParentPojoList() {
+		return null;
+	}
+	
+	@ApiObject(name = "my_parent")
+	class ParentPojo {
+		
 	}
 	
 	@Test
@@ -383,6 +392,14 @@ public class JSONDocTypeBuilderTest {
 		System.out.println(mapper.writeValueAsString(jsonDocType));
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("responseentity of list of string", jsonDocType.getOneLineText());
+		System.out.println("---------------------------");
+		
+		jsonDocType = new JSONDocType();
+		method = JSONDocTypeBuilderTest.class.getMethod("getParentPojoList");
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		System.out.println(mapper.writeValueAsString(jsonDocType));
+		System.out.println(jsonDocType.getOneLineText());
+		Assert.assertEquals("list of my_parent", jsonDocType.getOneLineText());
 		System.out.println("---------------------------");
 	}
 
