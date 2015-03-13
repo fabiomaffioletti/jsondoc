@@ -215,7 +215,7 @@
 					{{#if description}}
 					<tr>
 						<th>Description</th>
-						<td>{{description}}</td>
+						<td>{{{description}}}</td>
 					</tr>
 					{{/if}}
 
@@ -254,7 +254,7 @@
 							{{#if this.description}}
 							<tr>
 								<td><code>{{this.name}}</code></td>
-								<td>{{this.description}}</td>
+								<td>{{{this.description}}}</td>
 							</tr>
 							{{#if this.allowedvalues}}
 								<tr>
@@ -284,7 +284,7 @@
 							{{#if this.description}}
 							<tr>
 								<td></td>
-								<td>Description: {{this.description}}</td>
+								<td>Description: {{{this.description}}}</td>
 							</tr>
 							{{/if}}
 							<tr>
@@ -317,7 +317,7 @@
 							{{#if this.description}}
 							<tr>
 								<td></td>
-								<td>Description: {{this.description}}</td>
+								<td>Description: {{{this.description}}}</td>
 							</tr>
 							{{/if}}
 							<tr>
@@ -375,7 +375,7 @@
 						{{#each apierrors}}
 							<tr>
 								<td><code>{{this.code}}</code></td>
-								<td>{{this.description}}</td>
+								<td>{{{this.description}}}</td>
 							</tr>
 						{{/each}}
 					{{/if}}
@@ -581,7 +581,7 @@
 <table class="table table-condensed table-striped table-bordered" style="table-layout: fixed;">
 	<tr><th style="width:18%;">Name</th><td><code>{{name}}</code></td></tr>
 	{{#if description}}
-		<tr><th>Description</th><td>{{description}}</td></tr>
+		<tr><th>Description</th><td>{{{description}}}</td></tr>
 	{{/if}}
 	{{#if supportedversions}}
 		<tr>
@@ -601,7 +601,7 @@
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
 		{{#each fields}}
-			<tr><td><code>{{name}}</code></td><td>{{description}}</td></tr>
+			<tr><td><code>{{name}}</code></td><td>{{{description}}}</td></tr>
 			<tr><td></td><td>Required: {{required}}</td></tr>
 			<tr><td></td><td>Type: <code>{{jsondocType.oneLineText}}</code></td></tr>
 			{{#if format}}
