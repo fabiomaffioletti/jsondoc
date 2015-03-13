@@ -19,7 +19,9 @@ public class JSONDocConfig {
 
 	@Bean
 	public JSONDocController jController() {
-		return new JSONDocController(this.properties.getVersion(), this.properties.getBasePath(), this.properties.getPackages());
+		JSONDocController jsondocController = new JSONDocController(this.properties.getVersion(), this.properties.getBasePath(), this.properties.getPackages());
+		jsondocController.setPlaygroundEnabled(this.properties.isPlaygroundEnabled());
+		return jsondocController;
 	}
 
 }

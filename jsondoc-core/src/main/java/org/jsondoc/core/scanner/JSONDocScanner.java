@@ -11,7 +11,7 @@ import org.jsondoc.core.pojo.JSONDoc;
 
 public interface JSONDocScanner {
 	
-	JSONDoc getJSONDoc(String version, String basePath, List<String> packages);
+	JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled);
 
 	Set<ApiDoc> getApiDocs(Set<Class<?>> classes);
 	

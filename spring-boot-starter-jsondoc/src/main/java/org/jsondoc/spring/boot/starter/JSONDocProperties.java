@@ -19,9 +19,12 @@ public class JSONDocProperties {
 	private String basePath;
 
 	/**
-	 * The list of packages that JSONDoc will scan to look for annotated classes to be documented.
+	 * The list of packages that JSONDoc will scan to look for annotated classes
+	 * to be documented.
 	 */
 	private List<String> packages = new ArrayList<String>();
+
+	private boolean playgroundEnabled = true;
 
 	public String getVersion() {
 		return version;
@@ -45,6 +48,14 @@ public class JSONDocProperties {
 
 	public void setPackages(List<String> packages) {
 		this.packages = packages;
+	}
+
+	public boolean isPlaygroundEnabled() {
+		return playgroundEnabled;
+	}
+
+	public void setPlaygroundEnabled(boolean playgroundEnabled) {
+		this.playgroundEnabled = playgroundEnabled;
 	}
 
 }

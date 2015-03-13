@@ -51,6 +51,12 @@ public class JSONDocMojo extends AbstractMojo {
 	 * @required
 	 */
 	private List<String> packages;
+	
+	/**
+	 * @parameter expression="${jsondoc.playgroundEnabled}"
+	 * 
+	 */
+	private boolean playgroundEnabled = true;
 
 	/**
 	 * @parameter expression="${jsondoc.outputFile}"
@@ -85,7 +91,7 @@ public class JSONDocMojo extends AbstractMojo {
 			Thread.currentThread().setContextClassLoader(urlClassLoader);
 			
 			JSONDocScanner jsondocScanner = (JSONDocScanner) Class.forName(scanner).newInstance();
-			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages);
+			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
 			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
 			

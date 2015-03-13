@@ -779,105 +779,110 @@
 	    return formatted;
 	}
 	
-	function buildMethodsContent(items) {
-		$('#content a[rel="method"]').each(function() {
-			$(this).click(function() {
-				var method = jlinq.from(items).equals("jsondocId", this.id).first();
-				var test = Handlebars.compile($("#test").html());
-				var testHTML = test(method);
-				$("#testContent").html(testHTML);
-				$("#testContent").show();
+	function buildMethodsContent(items, playgroundEnabled) {
+		if(playgroundEnabled) {
+			$('#content a[rel="method"]').each(function() {
+				$(this).click(function() {
+					var method = jlinq.from(items).equals("jsondocId", this.id).first();
+					var test = Handlebars.compile($("#test").html());
+					var testHTML = test(method);
+					$("#testContent").html(testHTML);
+					$("#testContent").show();
 
-				// if bodyobject is not empty then put jsondocTemplate into textarea
-				if(method.bodyobject) {
-					$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
-				}
-				
-				$("#produces input:first").attr("checked", "checked");
-				$("#consumes input:first").attr("checked", "checked");
-				
-				$("#testButton").click(function() {
-					var headers = new Object();
-					$("#headers input").each(function() {
-						headers[this.name] = $(this).val();
-					});
-					
-					headers["Accept"] = $("#produces input:checked").val();
-
-					if(method.auth) {
-						if(method.auth.type == "BASIC_AUTH") {
-							headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
-						}
+					// if bodyobject is not empty then put jsondocTemplate into textarea
+					if(method.bodyobject) {
+						$("#inputJson").text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));	
 					}
 					
-					var replacedPath = method.path;
-					var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
+					$("#produces input:first").attr("checked", "checked");
+					$("#consumes input:first").attr("checked", "checked");
 					
-					var validationErrors = [];
-					$('#validationererrors').hide();
-					$('#validationerrors ul').empty();
-					
-					$("#pathparameters input").each(function() {
-						$('#' + this.id).parent().removeClass('has-error');
+					$("#testButton").click(function() {
+						var headers = new Object();
+						$("#headers input").each(function() {
+							headers[this.name] = $(this).val();
+						});
 						
-						if($(this).val()) {
-							tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
-							replacedPath = tempReplacedPath;	
-						} else {
-							validationErrors.push(this.name + ' must not be empty');
-							$('#' + this.id).parent().addClass('has-error');
+						headers["Accept"] = $("#produces input:checked").val();
+
+						if(method.auth) {
+							if(method.auth.type == "BASIC_AUTH") {
+								headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
+							}
 						}
-					});
-
-					var queryParametersMap = {};
-					$("#queryparameters input").each(function() {
-						$('#' + this.id).parent().removeClass('has-error');
-
-						if($(this).val()) {
-							queryParametersMap[this.name] = $(this).val();
-						} else {
-							if($(this).attr("required")) {
+						
+						var replacedPath = method.path;
+						var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
+						
+						var validationErrors = [];
+						$('#validationererrors').hide();
+						$('#validationerrors ul').empty();
+						
+						$("#pathparameters input").each(function() {
+							$('#' + this.id).parent().removeClass('has-error');
+							
+							if($(this).val()) {
+								tempReplacedPath = replacedPath.replace("{"+this.name+"}", $(this).val());
+								replacedPath = tempReplacedPath;	
+							} else {
 								validationErrors.push(this.name + ' must not be empty');
 								$('#' + this.id).parent().addClass('has-error');
 							}
-						}
-					});
-					
-					var encodedQueryParameters = $.param(queryParametersMap);
-					if(encodedQueryParameters) {
-						replacedPath = replacedPath + "?" + encodedQueryParameters;	
-					}
-					
-					if(validationErrors.length > 0) {
-						for (var k=0; k<validationErrors.length; k++) {
-							$('#validationerrors ul').append($('<li/>').text(validationErrors[k]));
-							
-						}
-						$('#validationerrors').show();
-						validationErrors = [];
-						return;
-					}
+						});
 
-					$('#testButton').button('loading');
-					
-					var res = $.ajax({
-						url : model.basePath + replacedPath,
-						type: method.verb,
-						data: $("#inputJson").val(),
-						headers: headers,
-						contentType: $("#consumes input:checked").val(),
-						success : function(data) {
-							printResponse(data, res, this.url);
-						},
-						error: function(data) {
-							printResponse(data, res, this.url);
+						var queryParametersMap = {};
+						$("#queryparameters input").each(function() {
+							$('#' + this.id).parent().removeClass('has-error');
+
+							if($(this).val()) {
+								queryParametersMap[this.name] = $(this).val();
+							} else {
+								if($(this).attr("required")) {
+									validationErrors.push(this.name + ' must not be empty');
+									$('#' + this.id).parent().addClass('has-error');
+								}
+							}
+						});
+						
+						var encodedQueryParameters = $.param(queryParametersMap);
+						if(encodedQueryParameters) {
+							replacedPath = replacedPath + "?" + encodedQueryParameters;	
 						}
+						
+						if(validationErrors.length > 0) {
+							for (var k=0; k<validationErrors.length; k++) {
+								$('#validationerrors ul').append($('<li/>').text(validationErrors[k]));
+								
+							}
+							$('#validationerrors').show();
+							validationErrors = [];
+							return;
+						}
+
+						$('#testButton').button('loading');
+						
+						var res = $.ajax({
+							url : model.basePath + replacedPath,
+							type: method.verb,
+							data: $("#inputJson").val(),
+							headers: headers,
+							contentType: $("#consumes input:checked").val(),
+							success : function(data) {
+								printResponse(data, res, this.url);
+							},
+							error: function(data) {
+								printResponse(data, res, this.url);
+							}
+						});
+						
 					});
 					
 				});
-				
 			});
-		});
+		} else {
+			$("#content").parent().removeClass();
+			$("#content").parent().addClass("col-md-9");
+		}
 	}
 	
 	function buildFromJSONDoc(data) {
@@ -914,7 +919,7 @@
 					}
 					$("#testContent").hide();
 					
-					buildMethodsContent(api.methods);
+					buildMethodsContent(api.methods, data.playgroundEnabled);
 				});
 			});
 		}
@@ -972,7 +977,7 @@
 					$("#content").show();
 					$("#testContent").hide();
 					
-					buildMethodsContent(flow.methods);
+					buildMethodsContent(flow.methods, data.playgroundEnabled);
 				});
 			});
 		}

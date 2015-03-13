@@ -9,7 +9,7 @@ import org.jsondoc.core.pojo.ApiParamDoc;
 public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 	public static final String UNDEFINED = "undefined";
 	public static final String ANONYMOUS = "anonymous";
-	
+
 	@Override
 	public ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc) {
 		return apiDoc;
@@ -29,5 +29,5 @@ public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 	public ApiParamDoc mergeApiQueryParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc) {
 		return apiParamDoc;
 	}
-	
+
 }

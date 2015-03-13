@@ -66,7 +66,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
 	 * @return An <code>ApiDoc</code> object
 	 */
-	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages) {
+	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled) {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
@@ -83,7 +83,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class, true)));
 		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class, true)));
 		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
-		
+		jsondocDoc.setPlaygroundEnabled(playgroundEnabled);
 		return jsondocDoc;
 	}
 	

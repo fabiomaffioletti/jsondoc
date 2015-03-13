@@ -29,7 +29,7 @@ public class DefaultJSONDocScannerTest {
     @Test
     public void getJSONDoc() throws IOException {
     	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"));
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"), true);
         assertEquals(1, jsondoc.getApis().size());
 
         int countApis = 0;

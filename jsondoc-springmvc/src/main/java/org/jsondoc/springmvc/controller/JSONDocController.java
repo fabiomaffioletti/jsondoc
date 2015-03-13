@@ -17,6 +17,7 @@ public class JSONDocController {
 	private String basePath;
 	private List<String> packages;
 	private JSONDocScanner jsondocScanner;
+	private boolean playgroundEnabled = true;
 
 	public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
 
@@ -27,9 +28,17 @@ public class JSONDocController {
 		this.jsondocScanner = new SpringJSONDocScanner();
 	}
 
+	public boolean isPlaygroundEnabled() {
+		return playgroundEnabled;
+	}
+
+	public void setPlaygroundEnabled(boolean playgroundEnabled) {
+		this.playgroundEnabled = playgroundEnabled;
+	}
+
 	@RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody JSONDoc getApi() {
-		return jsondocScanner.getJSONDoc(version, basePath, packages);
+		return jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled);
 	}
 
 }
