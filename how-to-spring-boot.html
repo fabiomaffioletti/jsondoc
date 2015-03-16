@@ -16,12 +16,20 @@ title: How to - Spring boot
 {% endhighlight %}
 
 <h4>Configure JSONDoc in application.properties file</h4>
-{% highlight xml %}
+{% highlight properties %}
+# mandatory configuration
 jsondoc.version=1.0
 jsondoc.basePath=http://localhost:8080
 jsondoc.packages[0]=com.example.controller
 jsondoc.packages[1]=com.example.model
+# optional configuration
+jsondoc.playgroundEnabled=true
+jsondoc.displayMethodAs=URI
 {% endhighlight %}
+
+<div class="alert alert-info">
+        <p>See <a href="configuration.html">Configuration</a> for more information about JSONDoc configuration properties.</p>
+</div>
 
 <h4>Enable JSONDoc on you configuration class</h4>
 {% highlight java %}

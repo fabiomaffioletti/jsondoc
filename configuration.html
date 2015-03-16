@@ -1,0 +1,43 @@
+---
+layout: default
+title: Changelog
+---
+
+<h3>Configuration</h3>
+<p>JSONDoc has some mandatory configuration properties, needed to get it to work properly, and some optional ones, used to customize it.</p>
+
+<h4 class="spaced">Mandatory configuration properties</h4>
+<table class="table table-bordered">
+	<tbody>
+		<tr>
+			<th><code>version</code></th>
+			<td>The version of your API</td>
+		</tr>
+		<tr>
+			<th><code>basePath</code></th>
+			<td>The base path of your API, for example http://localhost:8080</td>
+		</tr>
+		<tr>
+			<th><code>packages</code></th>
+			<td>The list of packages that JSONDoc will scan to look for annotated classes to be documented</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4 class="spaced">Optional configuration properties</h4>
+<table class="table table-bordered">
+	<tbody>
+		<tr>
+			<th><code>playgroundEnabled</code></th>
+			<td>Whether the playground should be enabled in the UI or not. Defaults to <code>true</code>. Allowed values: <code>true</code>, <code>false</code></td>
+		</tr>
+		<tr>
+			<th><code>displayMethodAs</code></th>
+			<td>Whether to display methods as URIs or with a short description (summary attribute in the @ApiMethod annotation). Allowed values are <code>URI</code> and <code>SUMMARY</code>. Defaults to <code>URI</code>. For example, if <code>displayMethodAs</code> is set to <code>URI</code>, on the UI there will be something like <code>/books/{id}</code>. If it is set to <code>SUMMARY</code>, on the UI there will be something like <i>Gets a book with the given ID</i></td>
+		</tr>
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$('#configuration').addClass('active');
+</script>

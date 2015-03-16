@@ -39,7 +39,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the API does</td>
+			<td>A description of what the API does. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -59,12 +59,17 @@ title: Documentation
 		<tr>
 			<td>Property</td>
 			<td><code>path</code></td>
-			<td>The relative path for this method (ex. /country/get/{name})</td>
+			<td>The relative path for this method (ex. /country/get/{name}). The value of this attribute is used in the UI when the <code>displayMethodAs</code> configuration property is set to <code>URI</code></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>summary</code></td>
+			<td>A short description of what the method does. The value of this attribute is used in the UI when the <code>displayMethodAs</code> configuration property is set to <code>SUMMARY</code></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the method does</td>
+			<td>A description of what the method does. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -144,7 +149,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the parameter is needed for</td>
+			<td>A description of what the parameter is needed for. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -189,7 +194,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the parameter is needed for</td>
+			<td>A description of what the parameter is needed for. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -224,7 +229,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the parameter is needed for</td>
+			<td>A description of what the parameter is needed for. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -314,7 +319,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the error code means</td>
+			<td>A description of what the error code means. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 	</tbody>
 </table>
@@ -384,7 +389,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A description of what the object contains or represents</td>
+			<td>A description of what the object contains or represents. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -414,7 +419,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A drescription of what the field is</td>
+			<td>A drescription of what the field is. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -430,6 +435,11 @@ title: Documentation
 			<td></td>
 			<td><code>required</code></td>
 			<td>If the field is required</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>processtemplate</code></td>
+			<td>Whether to process the template for this field or not. It's similar to what can be obtained using the JsonIdentityInfo/JsonManagedReference/JsonBackReference. Set this to true to avoid StackOverflow when your object has a circular or self dependency.</td>
 		</tr>
 	</tbody>
 </table>
@@ -459,7 +469,7 @@ title: Documentation
 		<tr>
 			<td></td>
 			<td><code>description</code></td>
-			<td>A drescription of what the flow does</td>
+			<td>A description of what the flow does. This can contain html tags, that will be properly rendered in the UI</td>
 		</tr>
 		<tr>
 			<td></td>

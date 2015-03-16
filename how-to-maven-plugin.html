@@ -20,6 +20,8 @@ title: How to - jsondoc-maven-plugin
 		</packages>
 		<outputFile>/tmp/jsondoc.json</outputFile>
 		<scanner>org.jsondoc.core.scanner.DefaultJSONDocScanner</scanner>
+		<playgroundEnabled>true</playgroundEnabled> <!-- optional -->
+		<displayMethodAs>URI</displayMethodAs> <!-- optional -->
 	</configuration>
 </plugin>
 {% endhighlight %}
@@ -35,6 +37,10 @@ mvn jsondoc:generate
 		<li>org.jsondoc.core.scanner.DefaultJSONDocScanner</li>
 		<li>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</li>
 	</ul>
+</div>
+
+<div class="alert alert-info">
+	<p>See <a href="configuration.html">Configuration</a> for more information about how to configure the plugin.</p>
 </div>
 
 <script type="text/javascript">

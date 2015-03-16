@@ -10,12 +10,6 @@ title: How to - Spring MVC
 {% highlight xml %}
 <dependency>
         <groupId>org.jsondoc</groupId>
-        <artifactId>jsondoc-core</artifactId>
-        <version>{{ site.version }}</version>
-</dependency>
-
-<dependency>
-        <groupId>org.jsondoc</groupId>
         <artifactId>jsondoc-springmvc</artifactId>
         <version>{{ site.version }}</version>
 </dependency>
@@ -35,6 +29,8 @@ title: How to - Spring MVC
 		<value>com.sample.external.pojo</value> <!-- they can also belong to external jars -->
 	  </list>
 	</constructor-arg>
+	<property name="playgroundEnabled" value="true" /> <!-- optional -->
+	<property name="displayMethodAs" value="URI" /> <!-- optional -->
 </bean>
 
 {% endhighlight %}
@@ -47,6 +43,10 @@ Change the <strong>base path</strong> of your web application, or better put a p
 
 <div class="alert alert-warning">
 In the <strong>packages</strong> list property you should put packages that contain spring controllers and objects needed for the documentation generation, as far as they are on the classpath. The scan is <strong>recursive</strong>.
+</div>
+
+<div class="alert alert-info">
+	<p>See <a href="configuration.html">Configuration</a> for more information about how to configure the JSONDoc controller.</p>
 </div>
 
 <h4 class="spaced">Display the generated docs</h4>

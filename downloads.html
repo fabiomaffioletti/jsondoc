@@ -6,41 +6,56 @@ title: Downloads
 <h3>Current version {{ site.version }}</h3>
 <div class="alert alert-info">
 <ul class="list-unstyled">
-        <li>Possibility to create documentation for API Flows</li>
-        <li>Offline docs generation for Spring MVC based projects</li>
-        <li>Management of RequestHeader Spring MVC annotation</li>
+        <li>Possibility enable or disable the playground</li>
+        <li>Possibility to display API methods title as URI or as a short summary</li>
+        <li>Possibility to insert html tags in descriptions</li>
 </ul>
 </div>
 
-<h4>Previous versions</h4>
-<table class="table">
-		<thead>
-        	<tr><th style="width: 130px;">Version</th><th>Download bundle <code>*</code></th></tr>
-        </thead>
-        <tbody>
-                <tr><td>1.1.11</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.10</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.9</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.8</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.7</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.6</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.5</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.4</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.3</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.2</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.1</td><td>Available on Maven central</td></tr>
-                <tr><td>1.1.0</td><td>Available on Maven central</td></tr>
-                <tr><td>1.0.9</td><td>Available on Maven central</td></tr>
-                <tr><td>1.0.6</td><td>Available on Maven central</td></tr>
-                <tr><td>1.0.5</td><td>Available on Maven central</td></tr>
-                <tr><td>1.0.4</td><td>Available on Maven central</td></tr>
-        	<tr><td>1.0.3</td><td>Available on Maven central</td></tr>
-        	<tr><td>1.0.2</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.2.tar.gz">jsondoc-bundle-1.0.2</a></td></tr>
-	        <tr><td>1.0.1</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.1.tar.gz">jsondoc-bundle-1.0.1</a></td></tr>
-	        <tr><td>1.0.0</td><td><a href="{{ site.baseurl }}/distro/jsondoc-bundle-1.0.0.tar.gz">jsondoc-bundle-1.0.0</a></td></tr>
-        </tbody>
-</table>
-<p><code>*</code> The bundle contains jsondoc-core, jsondoc-springmvc and jsondoc-ui</p>
+<h4>jsondoc-core</h4>
+{% highlight xml %}
+<dependency>
+    <groupId>org.jsondoc</groupId>
+    <artifactId>jsondoc-core</artifactId>
+    <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4>jsondoc-springmvc</h4>
+{% highlight xml %}
+<dependency>
+    <groupId>org.jsondoc</groupId>
+    <artifactId>jsondoc-springmvc</artifactId>
+    <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4>jsondoc-ui</h4>
+{% highlight xml %}
+<dependency>
+    <groupId>org.jsondoc</groupId>
+    <artifactId>jsondoc-ui</artifactId>
+    <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4>jsondoc-ui-webjar</h4>
+{% highlight xml %}
+<dependency>
+    <groupId>org.jsondoc</groupId>
+    <artifactId>jsondoc-ui-webjar</artifactId>
+    <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
+
+<h4>spring-boot-starter-jsondoc</h4>
+{% highlight xml %}
+<dependency>
+    <groupId>org.jsondoc</groupId>
+    <artifactId>spring-boot-starter-jsondoc</artifactId>
+    <version>{{ site.version }}</version>
+</dependency>
+{% endhighlight %}
 
 <script type="text/javascript">
 	$('#downloads').addClass('active');
