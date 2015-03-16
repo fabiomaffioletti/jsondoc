@@ -31,13 +31,19 @@ public class JSONDocTemplateBuilder {
 			
 			for (Field field : fields) {
 				String fieldName = field.getName();
-				if(field.isAnnotationPresent(ApiObjectField.class)) {
-					ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
-					if(!apiObjectField.name().isEmpty()) {
-						fieldName = apiObjectField.name();
-					}
+				ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
+				if(!apiObjectField.name().isEmpty()) {
+					fieldName = apiObjectField.name();
 				}
-				Object value = getValue(field.getType(), field.getGenericType(), fieldName);
+				
+				Object value = null;
+				// This condition is to avoid StackOverflow in case class "A" contains a field of type "A"
+				if(field.getType().equals(clazz) || !apiObjectField.processtemplate()) {
+					value = getValue(Object.class, field.getGenericType(), fieldName);	
+				} else {
+					value = getValue(field.getType(), field.getGenericType(), fieldName);
+				}
+				
 				jsondocTemplate.put(fieldName, value);
 			}
 			return jsondocTemplate;

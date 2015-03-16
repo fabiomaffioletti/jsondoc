@@ -46,5 +46,13 @@ public @interface ApiObjectField {
 	 * @return
 	 */
 	public String name() default "";
+	
+	/**
+	 * Whether to process the template for this object or not. It's similar to what can be 
+	 * obtained using the JsonIdentityInfo/JsonManagedReference/JsonBackReference. Set this to true
+	 * to avoid StackOverflow when your object has a circular or self dependency.
+	 * @return
+	 */
+	public boolean processtemplate() default true; 
 
 }
