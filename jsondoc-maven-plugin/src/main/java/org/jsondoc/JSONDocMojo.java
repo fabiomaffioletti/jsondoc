@@ -13,6 +13,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.JSONDocScanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +58,12 @@ public class JSONDocMojo extends AbstractMojo {
 	 * 
 	 */
 	private boolean playgroundEnabled = true;
+	
+	/**
+	 * @parameter expression="${jsondoc.displayMethodAs}"
+	 * 
+	 */
+	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
 	/**
 	 * @parameter expression="${jsondoc.outputFile}"
@@ -91,7 +98,7 @@ public class JSONDocMojo extends AbstractMojo {
 			Thread.currentThread().setContextClassLoader(urlClassLoader);
 			
 			JSONDocScanner jsondocScanner = (JSONDocScanner) Class.forName(scanner).newInstance();
-			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled);
+			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
 			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
 			

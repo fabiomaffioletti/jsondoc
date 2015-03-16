@@ -10,6 +10,7 @@ import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class DefaultJSONDocScannerTest {
     @Test
     public void getJSONDoc() throws IOException {
     	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"), true);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"), true, MethodDisplay.URI);
         assertEquals(1, jsondoc.getApis().size());
 
         int countApis = 0;

@@ -21,6 +21,7 @@ public class JSONDocConfig {
 	public JSONDocController jController() {
 		JSONDocController jsondocController = new JSONDocController(this.properties.getVersion(), this.properties.getBasePath(), this.properties.getPackages());
 		jsondocController.setPlaygroundEnabled(this.properties.isPlaygroundEnabled());
+		jsondocController.setDisplayMethodAs(this.properties.getDisplayMethodAs());
 		return jsondocController;
 	}
 

@@ -37,6 +37,7 @@ import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.ApiVersionDoc;
 import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.reflections.Reflections;
@@ -66,7 +67,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
 	 * @return An <code>ApiDoc</code> object
 	 */
-	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled) {
+	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
@@ -80,20 +81,21 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter).setUrls(urls));
 		
 		JSONDoc jsondocDoc = new JSONDoc(version, basePath);
-		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class, true)));
+		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class, true), displayMethodAs));
 		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class, true)));
 		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
 		jsondocDoc.setPlaygroundEnabled(playgroundEnabled);
+		jsondocDoc.setDisplayMethodAs(displayMethodAs);
 		return jsondocDoc;
 	}
 	
 	/**
 	 * Gets the API documentation for the set of classes passed as argument
 	 */
-	public Set<ApiDoc> getApiDocs(Set<Class<?>> classes) {
+	public Set<ApiDoc> getApiDocs(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
 		Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
 		for (Class<?> controller : classes) {
-			ApiDoc apiDoc = getApiDoc(controller);
+			ApiDoc apiDoc = getApiDoc(controller, displayMethodAs);
 			apiDocs.add(apiDoc);
 		}
 		return apiDocs;
@@ -104,25 +106,25 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * @param controller
 	 * @return
 	 */
-	private ApiDoc getApiDoc(Class<?> controller) {
+	private ApiDoc getApiDoc(Class<?> controller, MethodDisplay displayMethodAs) {
 		log.debug("Getting JSONDoc for class: " + controller.getName());
 		ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
 		apiDoc.setSupportedversions(ApiVersionDoc.build(controller));
 		
 		apiDoc.setAuth(getApiAuthDocForController(controller));
-		apiDoc.setMethods(getApiMethodDocs(controller));
+		apiDoc.setMethods(getApiMethodDocs(controller, displayMethodAs));
 		
 		apiDoc = mergeApiDoc(controller, apiDoc);
 		
 		return apiDoc;
 	}
 	
-	private Set<ApiMethodDoc> getApiMethodDocs(Class<?> controller) {
+	private Set<ApiMethodDoc> getApiMethodDocs(Class<?> controller, MethodDisplay displayMethodAs) {
 		Set<ApiMethodDoc> apiMethodDocs = new TreeSet<ApiMethodDoc>();
 		Method[] methods = controller.getDeclaredMethods();
 		for (Method method : methods) {
 			if(method.isAnnotationPresent(ApiMethod.class)) {
-				ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller);
+				ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
 				apiMethodDocs.add(apiMethodDoc);
 			}
 			
@@ -131,8 +133,9 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiMethodDocs;
 	}
 
-	private ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller) {
+	private ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller, MethodDisplay displayMethodAs) {
 		ApiMethodDoc apiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class));
+		apiMethodDoc.setDisplayMethodAs(displayMethodAs);
 		
 		apiMethodDoc.setHeaders(ApiHeaderDoc.build(method));
 		apiMethodDoc.setPathparameters(getApiPathParamDocs(method));
@@ -145,7 +148,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 
 		apiMethodDoc = mergeApiMethodDoc(method, controller, apiMethodDoc);
 		
-		apiMethodDoc = validateApiMethodDoc(apiMethodDoc);
+		apiMethodDoc = validateApiMethodDoc(apiMethodDoc, displayMethodAs);
 		
 		return apiMethodDoc;
 	}
@@ -181,7 +184,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * @param apiMethodDoc
 	 * @return
 	 */
-	private ApiMethodDoc validateApiMethodDoc(ApiMethodDoc apiMethodDoc) {
+	private ApiMethodDoc validateApiMethodDoc(ApiMethodDoc apiMethodDoc, MethodDisplay displayMethodAs) {
 		final String ERROR_MISSING_METHOD_PATH 				= "Missing documentation data: path";
 		final String ERROR_MISSING_PATH_PARAM_NAME 			= "Missing documentation data: path parameter name";
 		final String ERROR_MISSING_QUERY_PARAM_NAME 		= "Missing documentation data: query parameter name";
@@ -192,10 +195,17 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		final String HINT_MISSING_QUERY_PARAM_DESCRIPTION 	= "Add description to ApiQueryParam";
 		final String HINT_MISSING_METHOD_DESCRIPTION 		= "Add description to ApiMethod";
 		final String HINT_MISSING_METHOD_RESPONSE_OBJECT 	= "Add annotation ApiResponseObject to document the returned object";
+		final String HINT_MISSING_METHOD_SUMMARY 			= "Method display set to SUMMARY, but summary info has not been specified";
 		
 		if(apiMethodDoc.getPath().trim().isEmpty()) {
 			apiMethodDoc.setPath(ERROR_MISSING_METHOD_PATH);
 			apiMethodDoc.addJsondocerror(ERROR_MISSING_METHOD_PATH);
+		}
+		
+		if(apiMethodDoc.getSummary().trim().isEmpty() && displayMethodAs.equals(MethodDisplay.SUMMARY)) {
+			// Fallback to path if summary is missing
+			apiMethodDoc.setSummary(apiMethodDoc.getPath());
+			apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_SUMMARY);
 		}
 		
 		for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
@@ -325,9 +335,9 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiObjectDoc;
 	}
 	
-	public Map<String, Set<ApiDoc>> getApiDocsMap(Set<Class<?>> classes) {
+	public Map<String, Set<ApiDoc>> getApiDocsMap(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
 		Map<String, Set<ApiDoc>> apiDocsMap = new TreeMap<String, Set<ApiDoc>>();
-		Set<ApiDoc> apiDocSet = getApiDocs(classes);
+		Set<ApiDoc> apiDocSet = getApiDocs(classes, displayMethodAs);
 		for (ApiDoc apiDoc : apiDocSet) {
 			if(apiDocsMap.containsKey(apiDoc.getGroup())) {
 				apiDocsMap.get(apiDoc.getGroup()).add(apiDoc);

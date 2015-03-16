@@ -32,6 +32,12 @@ public @interface ApiMethod {
 	public String path() default "";
 
 	/**
+	 * A summary of what the method does. It's like a short description.
+	 * @return
+	 */
+	public String summary() default "";
+
+	/**
 	 * A description of what the method does
 	 * @return
 	 */

@@ -8,11 +8,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
 	public String jsondocId = UUID.randomUUID().toString();
 	private String id;
 	private String path;
+	private String summary;
 	private String description;
 	private ApiVerb verb;
 	private Set<String> produces;
@@ -26,11 +28,13 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 	private String responsestatuscode;
+	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setId(annotation.id());
 		apiMethodDoc.setPath(annotation.path());
+		apiMethodDoc.setSummary(annotation.summary());
 		apiMethodDoc.setDescription(annotation.description());
 		apiMethodDoc.setVerb(annotation.verb());
 		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
@@ -169,14 +173,40 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.id = id;
 	}
 
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public MethodDisplay getDisplayMethodAs() {
+		return displayMethodAs;
+	}
+
+	public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
+		this.displayMethodAs = displayMethodAs;
+	}
+
+	public String getDisplayedMethodString() {
+		if(displayMethodAs.equals(MethodDisplay.URI)) {
+			return path;
+		} else {
+			return summary;
+		}
+	}
+
 	@Override
 	public int compareTo(ApiMethodDoc o) {
 		int i = this.path.compareTo(o.getPath());
-		if(i != 0) return i;
-		
+		if (i != 0)
+			return i;
+
 		i = this.verb.compareTo(o.getVerb());
-		if(i != 0) return i;
-		
+		if (i != 0)
+			return i;
+
 		return i;
 	}
 

@@ -16,6 +16,7 @@ import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,7 +75,7 @@ public class SpringJSONDocScannerTest {
 	public void testMergeApiDoc() {
 		Set<Class<?>> controllers = new LinkedHashSet<Class<?>>();
 		controllers.add(SpringController.class);
-		Set<ApiDoc> apiDocs = jsondocScanner.getApiDocs(controllers);
+		Set<ApiDoc> apiDocs = jsondocScanner.getApiDocs(controllers, MethodDisplay.URI);
 		
 		ApiDoc apiDoc = apiDocs.iterator().next();
 		Assert.assertEquals("A spring controller", apiDoc.getDescription());

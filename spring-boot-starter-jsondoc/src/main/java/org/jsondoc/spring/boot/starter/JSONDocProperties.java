@@ -3,6 +3,7 @@ package org.jsondoc.spring.boot.starter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = JSONDocConfig.JSONDOC_PROPERTIES_PREFIX)
@@ -24,7 +25,17 @@ public class JSONDocProperties {
 	 */
 	private List<String> packages = new ArrayList<String>();
 
+	/**
+	 * Whether the playground should be enabled in the UI or not. Defaults to
+	 * true.
+	 */
 	private boolean playgroundEnabled = true;
+
+	/**
+	 * Whether to display methods as URIs or with a short description (summary attribute in the @ApiMethod annotation).
+	 * Allowed values are URI and SUMMARY.
+	 */
+	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
 	public String getVersion() {
 		return version;
@@ -56,6 +67,14 @@ public class JSONDocProperties {
 
 	public void setPlaygroundEnabled(boolean playgroundEnabled) {
 		this.playgroundEnabled = playgroundEnabled;
+	}
+
+	public MethodDisplay getDisplayMethodAs() {
+		return displayMethodAs;
+	}
+
+	public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
+		this.displayMethodAs = displayMethodAs;
 	}
 
 }

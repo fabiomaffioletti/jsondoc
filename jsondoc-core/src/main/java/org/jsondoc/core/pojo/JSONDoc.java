@@ -13,6 +13,11 @@ public class JSONDoc {
 	// The key is the group these flows belongs to. It can be empty.
 	private Map<String, Set<ApiFlowDoc>> flows;
 	private boolean playgroundEnabled;
+	private MethodDisplay displayMethodAs;
+
+	public enum MethodDisplay {
+		URI, SUMMARY;
+	}
 
 	public JSONDoc(String version, String basePath) {
 		super();
@@ -68,9 +73,17 @@ public class JSONDoc {
 		this.playgroundEnabled = playgroundEnabled;
 	}
 
+	public MethodDisplay getDisplayMethodAs() {
+		return displayMethodAs;
+	}
+
+	public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
+		this.displayMethodAs = displayMethodAs;
+	}
+
 	@Override
 	public String toString() {
-		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", playgroundEnabled=" + playgroundEnabled + "]";
+		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
 	}
 
 }
