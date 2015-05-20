@@ -12,7 +12,7 @@ import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
 public class ApiBodyObjectDoc {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private Map<String, Object> jsondocTemplate;
 

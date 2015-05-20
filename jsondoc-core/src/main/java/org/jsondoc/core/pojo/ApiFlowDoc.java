@@ -8,7 +8,7 @@ import org.jsondoc.core.annotation.ApiFlow;
 import org.jsondoc.core.annotation.ApiFlowStep;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private List<String> preconditions;

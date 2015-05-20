@@ -13,7 +13,7 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private List<ApiObjectFieldDoc> fields;

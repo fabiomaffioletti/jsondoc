@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.jsondoc.core.annotation.ApiFlowStep;
 
 public class ApiFlowStepDoc {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String apimethodid;
 	private ApiMethodDoc apimethoddoc;
 

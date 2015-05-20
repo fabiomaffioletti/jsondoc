@@ -2,6 +2,7 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,7 @@ import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String id;
 	private String path;
 	private String summary;
@@ -206,7 +207,18 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		i = this.verb.compareTo(o.getVerb());
 		if (i != 0)
 			return i;
-
+		
+		if(this.queryparameters.size() == o.getQueryparameters().size()) {
+			Set<ApiParamDoc> bothQueryParameters = new HashSet<ApiParamDoc>();
+			bothQueryParameters.addAll(this.queryparameters);
+			bothQueryParameters.addAll(o.getQueryparameters());
+			if(bothQueryParameters.size() > this.queryparameters.size()) {
+				i = 1;
+			}
+		} else {
+			i = 1;
+		}
+		
 		return i;
 	}
 

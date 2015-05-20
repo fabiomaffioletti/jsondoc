@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.util.pojo.Gender;
 
 public class TemplateObject {
 	

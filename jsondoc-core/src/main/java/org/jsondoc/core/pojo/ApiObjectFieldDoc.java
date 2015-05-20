@@ -9,7 +9,7 @@ import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
 public class ApiObjectFieldDoc extends AbstractDoc {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
 	private String description;

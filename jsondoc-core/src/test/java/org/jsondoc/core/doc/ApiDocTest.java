@@ -28,6 +28,9 @@ import org.jsondoc.core.util.pojo.Child;
 import org.jsondoc.core.util.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class ApiDocTest {
 	
@@ -40,6 +43,7 @@ public class ApiDocTest {
 		public String inter();
 	}
 	
+	@SuppressWarnings("unused")
 	private class InterfaceControllerImpl implements InterfaceController {
 
 		@Override
@@ -263,6 +267,26 @@ public class ApiDocTest {
 		
 	}
 	
+	@Api(name = "ISSUE-110", description = "ISSUE-110")
+	private class TestMultipleParamsWithSameMethod {
+		
+	    @ApiMethod(path = "/search", description = "search one by title")
+	    public @ApiResponseObject List findByTitle(@ApiQueryParam(name = "title") String title) {
+	        return null;
+	    }
+
+	    @ApiMethod(path = "/search", description = "search one by content")
+	    public @ApiResponseObject List findByContent(@ApiQueryParam(name = "content") String content) {
+	        return null;
+	    }
+	    
+	    @ApiMethod(path = "/search", description = "search one by content and field")
+	    public @ApiResponseObject List findByContent(@ApiQueryParam(name = "content") String content, @ApiQueryParam(name = "field") String field) {
+	        return null;
+	    }
+		
+	}
+	
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -276,7 +300,7 @@ public class ApiDocTest {
 		Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-
+			
 			if (apiMethodDoc.getPath().equals("/name")) {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
@@ -502,6 +526,13 @@ public class ApiDocTest {
 		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
 		Assert.assertEquals("test-declared-methods", apiDoc.getName());
 		Assert.assertEquals(2, apiDoc.getMethods().size());
+		
+		
+		classes.clear();
+		classes.add(TestMultipleParamsWithSameMethod.class);
+		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+		Assert.assertEquals(3, apiDoc.getMethods().size());
+		
 	}
 
 }
