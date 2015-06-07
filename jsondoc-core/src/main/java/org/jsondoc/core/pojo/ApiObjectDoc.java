@@ -1,11 +1,7 @@
 package org.jsondoc.core.pojo;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
@@ -13,6 +9,16 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
+	private static final Comparator<ApiObjectFieldDoc> fieldDocComparator = new Comparator<ApiObjectFieldDoc>() {
+		@Override
+		public int compare(ApiObjectFieldDoc o1, ApiObjectFieldDoc o2) {
+			if (o1.getOrder() == -1)
+				return 1;
+			if (o2.getOrder() == -1)
+				return -1;
+			return o1.getOrder() - o2.getOrder();
+		}
+	};
 	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
@@ -20,7 +26,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
 	private String group;
-	private Map<String, Object> jsondocTemplate;
+	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
 		super();
@@ -30,7 +36,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
-		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(new HashMap<String, Object>(), clazz));
+		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
 
 		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
@@ -61,6 +67,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		}
 
 		apiObjectDoc.setDescription(annotation.description());
+		Collections.sort(fieldDocs, fieldDocComparator);
 		apiObjectDoc.setFields(fieldDocs);
 		apiObjectDoc.setGroup(annotation.group());
 
@@ -115,11 +122,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		this.group = group;
 	}
 
-	public Map<String, Object> getJsondocTemplate() {
+	public JSONDocTemplate getJsondocTemplate() {
 		return jsondocTemplate;
 	}
 
-	public void setJsondocTemplate(Map<String, Object> jsondocTemplate) {
+	public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
 		this.jsondocTemplate = jsondocTemplate;
 	}
 

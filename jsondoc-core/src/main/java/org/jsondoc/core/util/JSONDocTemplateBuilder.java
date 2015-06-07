@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JSONDocTemplateBuilder {
-	
-	private static Map<Class<?>, Class<?>> primitives = new HashMap<Class<?>, Class<?>>();
-	
-	public static Map<String, Object> build(Map<String, Object> jsondocTemplate, Class<?> clazz) {
+
+	private static final Logger log = LoggerFactory.getLogger(JSONDocTemplateBuilder.class);
+	private static final Map<Class<?>, Class<?>> primitives = new HashMap<Class<?>, Class<?>>();
+
+	static {
 		primitives.put(boolean.class, Boolean.class);
 		primitives.put(byte.class, Byte.class);
 		primitives.put(char.class, String.class);
@@ -25,7 +29,10 @@ public class JSONDocTemplateBuilder {
 		primitives.put(long.class, Long.class);
 		primitives.put(short.class, Short.class);
 		primitives.put(void.class, Void.class);
-		
+	}
+
+	public static JSONDocTemplate build(Class<?> clazz) {
+		final JSONDocTemplate jsonDocTemplate = new JSONDocTemplate();
 		try {
 			List<Field> fields = getAllDeclaredFields(clazz);
 			
@@ -36,21 +43,21 @@ public class JSONDocTemplateBuilder {
 					fieldName = apiObjectField.name();
 				}
 				
-				Object value = null;
+				Object value;
 				// This condition is to avoid StackOverflow in case class "A" contains a field of type "A"
 				if(field.getType().equals(clazz) || !apiObjectField.processtemplate()) {
 					value = getValue(Object.class, field.getGenericType(), fieldName);	
 				} else {
 					value = getValue(field.getType(), field.getGenericType(), fieldName);
 				}
-				
-				jsondocTemplate.put(fieldName, value);
+
+				jsonDocTemplate.put(fieldName, value);
 			}
-			return jsondocTemplate;
-			
+
 		} catch (Exception e) {
-			return new HashMap<String, Object>();
+			log.error("Error in JSONDocTemplate creation", e);
 		}
+		return jsonDocTemplate;
 	}
 	
 	private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName) {
@@ -74,8 +81,7 @@ public class JSONDocTemplateBuilder {
 			return new ArrayList<Object>();
 
 		} else {
-			Map<String, Object> template = new HashMap<String, Object>();
-			return build(template, fieldClass);
+			return build(fieldClass);
 		}
 		
 	}

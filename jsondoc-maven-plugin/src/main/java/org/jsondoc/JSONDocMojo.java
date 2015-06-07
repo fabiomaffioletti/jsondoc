@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -84,6 +85,7 @@ public class JSONDocMojo extends AbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 		logger = getLog();
 		
 		try {

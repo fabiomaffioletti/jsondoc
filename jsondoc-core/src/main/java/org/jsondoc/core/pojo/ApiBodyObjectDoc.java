@@ -2,8 +2,6 @@ package org.jsondoc.core.pojo;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiBodyObject;
@@ -14,19 +12,19 @@ import org.jsondoc.core.util.JSONDocTypeBuilder;
 public class ApiBodyObjectDoc {
 	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
-	private Map<String, Object> jsondocTemplate;
+	private JSONDocTemplate jsondocTemplate;
 
 	public static ApiBodyObjectDoc build(Method method) {
 		if (method.isAnnotationPresent(ApiBodyObject.class)) {
 			ApiBodyObjectDoc apiBodyObjectDoc = new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getAnnotation(ApiBodyObject.class).clazz(), method.getAnnotation(ApiBodyObject.class).clazz()));
-			apiBodyObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(new HashMap<String, Object>(), method.getAnnotation(ApiBodyObject.class).clazz()));
+			apiBodyObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(method.getAnnotation(ApiBodyObject.class).clazz()));
 			return apiBodyObjectDoc;
 		}
 
 		Integer index = getApiBodyObjectIndex(method);
 		if (index != -1) {
 			ApiBodyObjectDoc apiBodyObjectDoc = new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[index], method.getGenericParameterTypes()[index]));
-			apiBodyObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(new HashMap<String, Object>(), method.getParameterTypes()[index]));
+			apiBodyObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(method.getParameterTypes()[index]));
 			return apiBodyObjectDoc;
 		}
 		return null;
@@ -53,11 +51,11 @@ public class ApiBodyObjectDoc {
 		return jsondocType;
 	}
 
-	public Map<String, Object> getJsondocTemplate() {
+	public JSONDocTemplate getJsondocTemplate() {
 		return jsondocTemplate;
 	}
 
-	public void setJsondocTemplate(Map<String, Object> jsondocTemplate) {
+	public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
 		this.jsondocTemplate = jsondocTemplate;
 	}
 

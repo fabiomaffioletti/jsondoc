@@ -5,22 +5,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.jsondoc.core.util.pojo.Pizza;
 import org.jsondoc.core.util.pojo.TemplateObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSONDocTemplateBuilderTest {
 
-	private ObjectMapper mapper = new ObjectMapper();
-	
 	@Test
-	public void testTemplate() throws JsonGenerationException, JsonMappingException, IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
-		TemplateObject templateObject = new TemplateObject();
-		Map<String, Object> template = JSONDocTemplateBuilder.build(new HashMap<String, Object>(), templateObject.getClass());
+	public void testTemplate() throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> template = JSONDocTemplateBuilder.build(TemplateObject.class).getMap();
 
 		Assert.assertEquals(0, template.get("my_id"));
 		Assert.assertEquals(0, template.get("idint"));
@@ -29,7 +30,7 @@ public class JSONDocTemplateBuilderTest {
 		Assert.assertEquals("", template.get("gender"));
 		Assert.assertEquals(true, template.get("bool"));
 		Assert.assertEquals(new ArrayList(), template.get("intarrarr"));
-		Assert.assertEquals(new HashMap(), template.get("sub_obj"));
+		Assert.assertEquals(new JSONDocTemplate(), template.get("sub_obj"));
 		Assert.assertEquals(new ArrayList(), template.get("untypedlist"));
 		Assert.assertEquals(new ArrayList(), template.get("subsubobjarr"));
 		Assert.assertEquals(new ArrayList(), template.get("stringlist"));
@@ -47,6 +48,14 @@ public class JSONDocTemplateBuilderTest {
 		Assert.assertEquals(new HashMap(), template.get("mapintegersubobj"));
 		Assert.assertEquals(new HashMap(), template.get("mapintegerlistsubsubobj"));
 		
+		System.out.println(mapper.writeValueAsString(template));
+	}
+
+	@Test
+	public void thatTemplateIsMappedToStringCorrectly() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+		Map<String, Object> template = JSONDocTemplateBuilder.build(Pizza.class).getMap();
 		System.out.println(mapper.writeValueAsString(template));
 	}
 
