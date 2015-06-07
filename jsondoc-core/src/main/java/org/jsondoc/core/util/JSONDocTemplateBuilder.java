@@ -51,7 +51,7 @@ public class JSONDocTemplateBuilder {
 					value = getValue(field.getType(), field.getGenericType(), fieldName);
 				}
 
-				jsonDocTemplate.put(fieldName, value);
+				jsonDocTemplate.put(fieldName, apiObjectField.order(), value);
 			}
 
 		} catch (Exception e) {

@@ -51,12 +51,4 @@ public class JSONDocTemplateBuilderTest {
 		System.out.println(mapper.writeValueAsString(template));
 	}
 
-	@Test
-	public void thatTemplateIsMappedToStringCorrectly() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-		Map<String, Object> template = JSONDocTemplateBuilder.build(Pizza.class).getMap();
-		System.out.println(mapper.writeValueAsString(template));
-	}
-
 }
