@@ -1,6 +1,7 @@
 package org.jsondoc.core.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -24,14 +25,16 @@ public class DefaultJSONDocScannerTest {
     private String version = "1.0";
     private String basePath = "http://localhost:8080/api";
     private ObjectMapper objectMapper = new ObjectMapper();
+    private boolean corsEnabled = true;
 
     private static Logger log = LoggerFactory.getLogger(DefaultJSONDocScannerTest.class);
 
     @Test
     public void getJSONDoc() throws IOException {
     	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"), true, MethodDisplay.URI);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.core.util"), true, MethodDisplay.URI, corsEnabled);
         assertEquals(1, jsondoc.getApis().size());
+        assertTrue(corsEnabled == jsondoc.isCorsEnabled());
 
         int countApis = 0;
         for (String string : jsondoc.getApis().keySet()) {

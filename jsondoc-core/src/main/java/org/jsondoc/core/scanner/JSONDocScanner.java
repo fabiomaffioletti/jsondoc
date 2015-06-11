@@ -12,7 +12,7 @@ import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public interface JSONDocScanner {
 	
-	JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay methodDisplay);
+	JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay methodDisplay, boolean corsEnabled);
 
 	Set<ApiDoc> getApiDocs(Set<Class<?>> classes, MethodDisplay displayMethodAs);
 	

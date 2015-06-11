@@ -37,6 +37,12 @@ public class JSONDocProperties {
 	 */
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
+    /**
+     * Whether to enable CORS (Cross Origin Resource Sharing) or not.
+     * For more information visit: http://en.wikipedia.org/wiki/Cross-origin_resource_sharing;
+     */
+    private boolean corsEnabled = true;
+
 	public String getVersion() {
 		return version;
 	}
@@ -77,4 +83,11 @@ public class JSONDocProperties {
 		this.displayMethodAs = displayMethodAs;
 	}
 
+    public boolean isCorsEnabled() {
+        return corsEnabled;
+    }
+
+    public void setCorsEnabled(boolean corsEnabled) {
+        this.corsEnabled = corsEnabled;
+    }
 }

@@ -20,6 +20,7 @@ public class JSONDocController {
 	private JSONDocScanner jsondocScanner;
 	private boolean playgroundEnabled = true;
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
+    private boolean corsEnabled = true;
 
 	public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
 
@@ -46,9 +47,17 @@ public class JSONDocController {
 		this.displayMethodAs = displayMethodAs;
 	}
 
-	@RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean isCorsEnabled() {
+        return corsEnabled;
+    }
+
+    public void setCorsEnabled(boolean corsEnabled) {
+        this.corsEnabled = corsEnabled;
+    }
+
+    @RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody JSONDoc getApi() {
-		return jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
+		return jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs, corsEnabled);
 	}
 
 }

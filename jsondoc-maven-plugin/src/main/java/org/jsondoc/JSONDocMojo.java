@@ -76,6 +76,12 @@ public class JSONDocMojo extends AbstractMojo {
 	 * @required
 	 */
 	private String scanner;
+
+    /**
+     * @parameter expression="${jsondoc.corsEnabled}"
+     *
+     */
+    private boolean corsEnabled;
 	
 	private ObjectMapper mapper;
 	
@@ -98,7 +104,7 @@ public class JSONDocMojo extends AbstractMojo {
 			Thread.currentThread().setContextClassLoader(urlClassLoader);
 			
 			JSONDocScanner jsondocScanner = (JSONDocScanner) Class.forName(scanner).newInstance();
-			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
+			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs, corsEnabled);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
 			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
 			

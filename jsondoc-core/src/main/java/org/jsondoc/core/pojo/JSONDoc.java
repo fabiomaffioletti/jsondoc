@@ -14,6 +14,7 @@ public class JSONDoc {
 	private Map<String, Set<ApiFlowDoc>> flows;
 	private boolean playgroundEnabled;
 	private MethodDisplay displayMethodAs;
+    private boolean corsEnabled;
 
 	public enum MethodDisplay {
 		URI, SUMMARY;
@@ -81,9 +82,17 @@ public class JSONDoc {
 		this.displayMethodAs = displayMethodAs;
 	}
 
-	@Override
+    public boolean isCorsEnabled() {
+        return corsEnabled;
+    }
+
+    public void setCorsEnabled(boolean corsEnabled) {
+        this.corsEnabled = corsEnabled;
+    }
+
+    @Override
 	public String toString() {
-		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
+		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + ", corsEnabled=" + corsEnabled + "]";
 	}
 
 }
