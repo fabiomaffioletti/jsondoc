@@ -1,13 +1,14 @@
 package org.jsondoc.core.pojo;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.util.JSONDocType;
 
-public class ApiParamDoc extends AbstractDoc {
-	public String jsondocId = UUID.randomUUID().toString();
+public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
+	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
 	private String description;
@@ -110,6 +111,11 @@ public class ApiParamDoc extends AbstractDoc {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(ApiParamDoc o) {
+		return this.name.compareTo(o.getName());
 	}
 
 }

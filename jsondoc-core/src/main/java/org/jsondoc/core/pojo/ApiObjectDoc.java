@@ -1,11 +1,7 @@
 package org.jsondoc.core.pojo;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiObjectField;
@@ -13,14 +9,14 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
-	private List<ApiObjectFieldDoc> fields;
+	private Set<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
 	private String group;
-	private Map<String, Object> jsondocTemplate;
+	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
 		super();
@@ -30,9 +26,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
-		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(new HashMap<String, Object>(), clazz));
-
-		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
+		Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
 				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
@@ -64,6 +58,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		apiObjectDoc.setFields(fieldDocs);
 		apiObjectDoc.setGroup(annotation.group());
 
+		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
 		return apiObjectDoc;
 	}
 
@@ -83,11 +78,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		this.description = description;
 	}
 
-	public List<ApiObjectFieldDoc> getFields() {
+	public Set<ApiObjectFieldDoc> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<ApiObjectFieldDoc> fields) {
+	public void setFields(Set<ApiObjectFieldDoc> fields) {
 		this.fields = fields;
 	}
 
@@ -115,11 +110,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		this.group = group;
 	}
 
-	public Map<String, Object> getJsondocTemplate() {
+	public JSONDocTemplate getJsondocTemplate() {
 		return jsondocTemplate;
 	}
 
-	public void setJsondocTemplate(Map<String, Object> jsondocTemplate) {
+	public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
 		this.jsondocTemplate = jsondocTemplate;
 	}
 

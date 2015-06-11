@@ -9,7 +9,7 @@ import org.jsondoc.core.annotation.ApiHeader;
 import org.jsondoc.core.annotation.ApiHeaders;
 
 public class ApiHeaderDoc {
-	public String jsondocId = UUID.randomUUID().toString();
+	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
 	private String[] allowedvalues;

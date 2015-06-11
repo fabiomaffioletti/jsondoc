@@ -871,6 +871,25 @@ table td {
 	    return formatted;
 	}
 	
+	function buildObjectContent(item, playgroundEnabled) {
+		var object = Handlebars.compile($("#object").html());
+		var objectHTML = object(item);
+		$("#content").html(objectHTML);
+		$("#content").show();
+		$("#testContent").hide();
+		
+		if(playgroundEnabled) {
+			var objecttemplate = Handlebars.compile($("#objecttemplate").html());
+			var objecttemplateHTML = objecttemplate(item);
+			$("#testContent").html(objecttemplateHTML);
+			$("#testContent").show();
+			prettyPrint();	
+		} else {
+			$("#content").parent().removeClass();
+			$("#content").parent().addClass("col-md-9");
+		}
+	}
+	
 	function buildMethodsContent(items, playgroundEnabled) {
 		if(playgroundEnabled) {
 			$('#content a[rel="method"]').each(function() {
@@ -1032,17 +1051,7 @@ table td {
 			$("#objectdiv a").each(function() {
 				$(this).click(function() {
 					var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
-					var object = Handlebars.compile($("#object").html());
-					var objectHTML = object(o);
-					$("#content").html(objectHTML);
-					$("#content").show();
-					$("#testContent").hide();
-					
-					var objecttemplate = Handlebars.compile($("#objecttemplate").html());
-					var objecttemplateHTML = objecttemplate(o);
-					$("#testContent").html(objecttemplateHTML);
-					$("#testContent").show();
-					prettyPrint();
+					buildObjectContent(o, data.playgroundEnabled);
 				});
 			});
 		}

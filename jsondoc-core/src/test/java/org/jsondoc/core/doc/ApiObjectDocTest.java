@@ -1,6 +1,7 @@
 package org.jsondoc.core.doc;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +61,9 @@ public class ApiObjectDocTest {
 		
 		@ApiObjectField(name = "test-enum", description = "a test enum")
 		private TestEnum testEnum;
+
+		@ApiObjectField(name = "orderedProperty", order = 1)
+		private String orderedProperty;
 	}
 	
 	@ApiObject(name = "test-enum")
@@ -88,8 +92,9 @@ public class ApiObjectDocTest {
 		classes.add(TemplateApiObject.class);
 		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
 		Assert.assertEquals("templateapiobject", apiObjectDoc.getName());
-		Assert.assertEquals("id", apiObjectDoc.getFields().get(0).getName());
-		Assert.assertEquals("name", apiObjectDoc.getFields().get(1).getName());
+		Iterator<ApiObjectFieldDoc> iterator = apiObjectDoc.getFields().iterator();
+		Assert.assertEquals("id", iterator.next().getName());
+		Assert.assertEquals("name", iterator.next().getName());
 		Assert.assertNotNull(apiObjectDoc.getJsondocTemplate());
 	}
 	
@@ -99,7 +104,7 @@ public class ApiObjectDocTest {
 		classes.add(NoNameApiObject.class);
 		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
 		Assert.assertEquals("nonameapiobject", apiObjectDoc.getName());
-		Assert.assertEquals("id", apiObjectDoc.getFields().get(0).getName());
+		Assert.assertEquals("id", apiObjectDoc.getFields().iterator().next().getName());
 		Assert.assertEquals(1, apiObjectDoc.getJsondochints().size());
 	}
 	
@@ -121,7 +126,7 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(12, childDoc.getFields().size());
+		Assert.assertEquals(13, childDoc.getFields().size());
 		Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", childDoc.getSupportedversions().getUntil());
 		
@@ -192,7 +197,14 @@ public class ApiObjectDocTest {
 				Assert.assertEquals(TestEnum.TESTENUM2.name(), fieldDoc.getAllowedvalues()[1]);
 				Assert.assertEquals(TestEnum.TESTENUM3.name(), fieldDoc.getAllowedvalues()[2]);
 			}
-			
+
+			if(fieldDoc.getName().equals("orderedProperty")) {
+				Assert.assertEquals("orderedProperty", fieldDoc.getName());
+				Assert.assertEquals(1, fieldDoc.getOrder().intValue());
+			} else {
+				Assert.assertEquals(Integer.MAX_VALUE, fieldDoc.getOrder().intValue());
+			}
+
 		}
 	}
 

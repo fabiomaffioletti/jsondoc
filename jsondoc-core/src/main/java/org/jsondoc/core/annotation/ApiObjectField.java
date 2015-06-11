@@ -46,7 +46,13 @@ public @interface ApiObjectField {
 	 * @return
 	 */
 	public String name() default "";
-	
+
+	/**
+	 * Order of field in generated example.
+	 * @return
+	 */
+	public int order() default Integer.MAX_VALUE;
+
 	/**
 	 * Whether to process the template for this object or not. It's similar to what can be 
 	 * obtained using the JsonIdentityInfo/JsonManagedReference/JsonBackReference. Set this to true

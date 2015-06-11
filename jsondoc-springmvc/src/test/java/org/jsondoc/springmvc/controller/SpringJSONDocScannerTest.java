@@ -44,7 +44,7 @@ public class SpringJSONDocScannerTest {
 		@ResponseStatus(value = HttpStatus.CREATED)
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
-				@ApiQueryParam(name = "id") @RequestParam Integer id,
+				@ApiQueryParam @RequestParam("id") Integer id,
 				@ApiQueryParam(name = "query", defaultvalue = "test") @RequestParam(value = "myquery") Long query,
 				@RequestBody @ApiBodyObject String requestBody) {
 			return "ok";
@@ -66,6 +66,16 @@ public class SpringJSONDocScannerTest {
 		@ApiMethod(description = "RequestHeaderManagement")
 		@RequestMapping(value = "/requestheadermanagement")
 		public @ApiResponseObject @ResponseBody String requestheadermanagement(@PathVariable("name") @ApiPathParam String name, @RequestHeader(value = "header") @ApiHeader(description = "", name = "") String header) {
+			return "ok";
+		}
+		
+		@ApiMethod(description = "ISSUE-106")
+		@RequestMapping(value = "/string/{name}/{surname}", params = "delete")
+		public @ApiResponseObject @ResponseBody String string(
+				@ApiPathParam(name = "name") @PathVariable String name,
+				@ApiPathParam @PathVariable("surname") String surname, 
+				@ApiQueryParam @RequestParam("id") Integer id,
+				@ApiQueryParam(name = "age") @RequestParam Integer age) {
 			return "ok";
 		}
 		
@@ -132,6 +142,21 @@ public class SpringJSONDocScannerTest {
 				Assert.assertEquals(1, apiMethodDoc.getPathparameters().size());
 				Assert.assertEquals(1, apiMethodDoc.getHeaders().size());
 			}
+			
+			if(apiMethodDoc.getDescription().equals("ISSUE-106")) {
+				Assert.assertEquals("/api/string/{name}/{surname}", apiMethodDoc.getPath());
+				
+				Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
+				Assert.assertEquals(2, pathparameters.size());
+				
+				Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
+				Assert.assertEquals(3, queryparameters.size());
+
+				Assert.assertEquals(0, apiMethodDoc.getJsondocerrors().size());
+				Assert.assertEquals(0, apiMethodDoc.getJsondocwarnings().size());
+				Assert.assertEquals(5, apiMethodDoc.getJsondochints().size());
+			}
+			
 		}
 		
 	}

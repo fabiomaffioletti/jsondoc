@@ -24,7 +24,7 @@ public @interface ApiQueryParam {
 	 * The name of the url parameter, as expected by the server
 	 * @return
 	 */
-	public String name();
+	public String name() default "";
 
 	/**
 	 * A description of what the parameter is needed for
