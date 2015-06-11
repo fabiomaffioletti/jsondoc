@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.pojo.JSONDocTemplate;
@@ -34,34 +35,37 @@ public class JSONDocTemplateBuilder {
 	public static JSONDocTemplate build(Class<?> clazz) {
 		final JSONDocTemplate jsonDocTemplate = new JSONDocTemplate();
 		try {
-			List<Field> fields = getAllDeclaredFields(clazz);
-			
-			for (Field field : fields) {
+			Set<JSONDocFieldWrapper> fields = getAllDeclaredFields(clazz);
+
+			for (JSONDocFieldWrapper jsondocFieldWrapper : fields) {
+				Field field = jsondocFieldWrapper.getField();
 				String fieldName = field.getName();
 				ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
-				if(!apiObjectField.name().isEmpty()) {
+				if (!apiObjectField.name().isEmpty()) {
 					fieldName = apiObjectField.name();
 				}
-				
+
 				Object value;
-				// This condition is to avoid StackOverflow in case class "A" contains a field of type "A"
-				if(field.getType().equals(clazz) || !apiObjectField.processtemplate()) {
-					value = getValue(Object.class, field.getGenericType(), fieldName);	
+				// This condition is to avoid StackOverflow in case class "A"
+				// contains a field of type "A"
+				if (field.getType().equals(clazz) || !apiObjectField.processtemplate()) {
+					value = getValue(Object.class, field.getGenericType(), fieldName);
 				} else {
 					value = getValue(field.getType(), field.getGenericType(), fieldName);
 				}
 
-				jsonDocTemplate.put(fieldName, apiObjectField.order(), value);
+				jsonDocTemplate.put(fieldName, value);
 			}
 
 		} catch (Exception e) {
-			log.error("Error in JSONDocTemplate creation", e);
+			log.error("Error in JSONDocTemplate creation for class [" + clazz.getCanonicalName() + "]", e);
 		}
+		
 		return jsonDocTemplate;
 	}
-	
+
 	private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName) {
-		
+
 		if (fieldClass.isPrimitive()) {
 			return getValue(wrap(fieldClass), null, fieldName);
 
@@ -83,24 +87,25 @@ public class JSONDocTemplateBuilder {
 		} else {
 			return build(fieldClass);
 		}
-		
+
 	}
-	
-	private static List<Field> getAllDeclaredFields(Class<?> clazz) {
-		List<Field> fields = new ArrayList<Field>();
+
+	private static Set<JSONDocFieldWrapper> getAllDeclaredFields(Class<?> clazz) {
+		Set<JSONDocFieldWrapper> fields = new TreeSet<JSONDocFieldWrapper>();
 		for (Field field : Arrays.asList(clazz.getDeclaredFields())) {
-			if(field.isAnnotationPresent(ApiObjectField.class)) {
-				fields.add(field);
+			if (field.isAnnotationPresent(ApiObjectField.class)) {
+				ApiObjectField annotation = field.getAnnotation(ApiObjectField.class);
+				fields.add(new JSONDocFieldWrapper(field, annotation.order()));
 			}
 		}
-		
-		if(clazz.getSuperclass() != null) {
+
+		if (clazz.getSuperclass() != null) {
 			fields.addAll(getAllDeclaredFields(clazz.getSuperclass()));
 		}
-		
+
 		return fields;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static <T> Class<T> wrap(Class<T> clazz) {
 		return clazz.isPrimitive() ? (Class<T>) primitives.get(clazz) : clazz;

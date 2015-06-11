@@ -9,20 +9,10 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
-	private static final Comparator<ApiObjectFieldDoc> fieldDocComparator = new Comparator<ApiObjectFieldDoc>() {
-		@Override
-		public int compare(ApiObjectFieldDoc o1, ApiObjectFieldDoc o2) {
-			if (o1.getOrder() == -1)
-				return 1;
-			if (o2.getOrder() == -1)
-				return -1;
-			return o1.getOrder() - o2.getOrder();
-		}
-	};
 	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
-	private List<ApiObjectFieldDoc> fields;
+	private Set<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
 	private String group;
@@ -36,9 +26,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
 		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
-		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
-
-		List<ApiObjectFieldDoc> fieldDocs = new ArrayList<ApiObjectFieldDoc>();
+		Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
 				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
@@ -67,10 +55,10 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		}
 
 		apiObjectDoc.setDescription(annotation.description());
-		Collections.sort(fieldDocs, fieldDocComparator);
 		apiObjectDoc.setFields(fieldDocs);
 		apiObjectDoc.setGroup(annotation.group());
 
+		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
 		return apiObjectDoc;
 	}
 
@@ -90,11 +78,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		this.description = description;
 	}
 
-	public List<ApiObjectFieldDoc> getFields() {
+	public Set<ApiObjectFieldDoc> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<ApiObjectFieldDoc> fields) {
+	public void setFields(Set<ApiObjectFieldDoc> fields) {
 		this.fields = fields;
 	}
 

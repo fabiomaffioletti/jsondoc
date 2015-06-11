@@ -19,15 +19,15 @@ public class StackOverflowTemplateBuilderTest {
 	@Test
 	public void testTemplate() throws JsonGenerationException, JsonMappingException, IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 		StackOverflowTemplateSelf objectSelf = new StackOverflowTemplateSelf();
-		Map<String, Object> template = JSONDocTemplateBuilder.build(objectSelf.getClass()).getMap();
+		Map<String, Object> template = JSONDocTemplateBuilder.build(objectSelf.getClass());
 		System.out.println(mapper.writeValueAsString(template));
 		
 		StackOverflowTemplateObjectOne objectOne = new StackOverflowTemplateObjectOne();
-		template = JSONDocTemplateBuilder.build(objectOne.getClass()).getMap();
+		template = JSONDocTemplateBuilder.build(objectOne.getClass());
 		System.out.println(mapper.writeValueAsString(template));
 		
 		StackOverflowTemplateObjectTwo objectTwo = new StackOverflowTemplateObjectTwo();
-		template = JSONDocTemplateBuilder.build(objectTwo.getClass()).getMap();
+		template = JSONDocTemplateBuilder.build(objectTwo.getClass());
 		System.out.println(mapper.writeValueAsString(template));
 	}
 

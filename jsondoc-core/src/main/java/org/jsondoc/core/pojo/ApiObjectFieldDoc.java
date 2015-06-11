@@ -8,7 +8,7 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
-public class ApiObjectFieldDoc extends AbstractDoc {
+public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObjectFieldDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
@@ -99,12 +99,49 @@ public class ApiObjectFieldDoc extends AbstractDoc {
 		this.order = order;
 	}
 
-	public int getOrder() {
+	public Integer getOrder() {
 		return order;
 	}
 
 	public ApiObjectFieldDoc() {
 		super();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ApiObjectFieldDoc other = (ApiObjectFieldDoc) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	/**
+	 * This comparison is the same as the one in ApiObjectFieldDoc class 
+	 */
+	@Override
+	public int compareTo(ApiObjectFieldDoc o) {
+		if(this.getOrder().equals(o.getOrder())) {
+			return this.getName().compareTo(o.getName());
+		} else {
+			return this.getOrder() - o.getOrder();
+		}
 	}
 
 }

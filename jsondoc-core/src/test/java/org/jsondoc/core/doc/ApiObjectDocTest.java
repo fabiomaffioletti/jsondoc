@@ -1,6 +1,7 @@
 package org.jsondoc.core.doc;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -91,8 +92,9 @@ public class ApiObjectDocTest {
 		classes.add(TemplateApiObject.class);
 		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
 		Assert.assertEquals("templateapiobject", apiObjectDoc.getName());
-		Assert.assertEquals("id", apiObjectDoc.getFields().get(0).getName());
-		Assert.assertEquals("name", apiObjectDoc.getFields().get(1).getName());
+		Iterator<ApiObjectFieldDoc> iterator = apiObjectDoc.getFields().iterator();
+		Assert.assertEquals("id", iterator.next().getName());
+		Assert.assertEquals("name", iterator.next().getName());
 		Assert.assertNotNull(apiObjectDoc.getJsondocTemplate());
 	}
 	
@@ -102,7 +104,7 @@ public class ApiObjectDocTest {
 		classes.add(NoNameApiObject.class);
 		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
 		Assert.assertEquals("nonameapiobject", apiObjectDoc.getName());
-		Assert.assertEquals("id", apiObjectDoc.getFields().get(0).getName());
+		Assert.assertEquals("id", apiObjectDoc.getFields().iterator().next().getName());
 		Assert.assertEquals(1, apiObjectDoc.getJsondochints().size());
 	}
 	
@@ -198,9 +200,9 @@ public class ApiObjectDocTest {
 
 			if(fieldDoc.getName().equals("orderedProperty")) {
 				Assert.assertEquals("orderedProperty", fieldDoc.getName());
-				Assert.assertEquals(1, fieldDoc.getOrder());
+				Assert.assertEquals(1, fieldDoc.getOrder().intValue());
 			} else {
-				Assert.assertEquals(Integer.MAX_VALUE, fieldDoc.getOrder());
+				Assert.assertEquals(Integer.MAX_VALUE, fieldDoc.getOrder().intValue());
 			}
 
 		}
