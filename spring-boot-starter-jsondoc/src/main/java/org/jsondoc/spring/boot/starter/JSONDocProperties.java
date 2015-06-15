@@ -38,7 +38,7 @@ public class JSONDocProperties {
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
     /**
-     * Whether to enable CORS (Cross Origin Resource Sharing) or not.
+     * Whether to enable CORS (Cross Object Resource Sharing) or not.
      * For more information visit: http://en.wikipedia.org/wiki/Cross-origin_resource_sharing;
      */
     private boolean corsEnabled;
