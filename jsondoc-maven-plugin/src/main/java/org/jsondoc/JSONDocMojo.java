@@ -1,11 +1,6 @@
 package org.jsondoc;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -16,7 +11,11 @@ import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.JSONDocScanner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
 
 /**
  * Echos an object string to the output screen.
@@ -104,7 +103,7 @@ public class JSONDocMojo extends AbstractMojo {
 			Thread.currentThread().setContextClassLoader(urlClassLoader);
 			
 			JSONDocScanner jsondocScanner = (JSONDocScanner) Class.forName(scanner).newInstance();
-			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs, corsEnabled);
+			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
 			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
 			

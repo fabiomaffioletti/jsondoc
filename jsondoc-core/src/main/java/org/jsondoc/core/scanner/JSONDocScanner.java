@@ -1,18 +1,14 @@
 package org.jsondoc.core.scanner;
 
+import org.jsondoc.core.pojo.*;
+import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
+
 import java.util.List;
 import java.util.Set;
 
-import org.jsondoc.core.pojo.ApiDoc;
-import org.jsondoc.core.pojo.ApiFlowDoc;
-import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.ApiObjectDoc;
-import org.jsondoc.core.pojo.JSONDoc;
-import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
-
 public interface JSONDocScanner {
 	
-	JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay methodDisplay, boolean corsEnabled);
+	JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay methodDisplay);
 
 	Set<ApiDoc> getApiDocs(Set<Class<?>> classes, MethodDisplay displayMethodAs);
 	

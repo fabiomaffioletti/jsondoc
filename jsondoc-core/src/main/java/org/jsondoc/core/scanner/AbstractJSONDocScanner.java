@@ -1,42 +1,7 @@
 package org.jsondoc.core.scanner;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiAuthBasic;
-import org.jsondoc.core.annotation.ApiAuthNone;
-import org.jsondoc.core.annotation.ApiFlow;
-import org.jsondoc.core.annotation.ApiFlowSet;
-import org.jsondoc.core.annotation.ApiMethod;
-import org.jsondoc.core.annotation.ApiObject;
-import org.jsondoc.core.annotation.ApiParams;
-import org.jsondoc.core.annotation.ApiPathParam;
-import org.jsondoc.core.annotation.ApiQueryParam;
-import org.jsondoc.core.pojo.ApiAuthDoc;
-import org.jsondoc.core.pojo.ApiBodyObjectDoc;
-import org.jsondoc.core.pojo.ApiDoc;
-import org.jsondoc.core.pojo.ApiErrorDoc;
-import org.jsondoc.core.pojo.ApiFlowDoc;
-import org.jsondoc.core.pojo.ApiHeaderDoc;
-import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.ApiObjectDoc;
-import org.jsondoc.core.pojo.ApiObjectFieldDoc;
-import org.jsondoc.core.pojo.ApiParamDoc;
-import org.jsondoc.core.pojo.ApiParamType;
-import org.jsondoc.core.pojo.ApiResponseObjectDoc;
-import org.jsondoc.core.pojo.ApiVerb;
-import org.jsondoc.core.pojo.ApiVersionDoc;
-import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.annotation.*;
+import org.jsondoc.core.pojo.*;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
@@ -46,6 +11,11 @@ import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.*;
 
 public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	
@@ -67,7 +37,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
 	 * @return An <code>ApiDoc</code> object
 	 */
-	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay displayMethodAs, boolean corsEnabled) {
+	public JSONDoc getJSONDoc(String version, String basePath, List<String> packages, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
 		Set<URL> urls = new HashSet<URL>();
 		FilterBuilder filter = new FilterBuilder();
 		
@@ -86,7 +56,6 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
 		jsondocDoc.setPlaygroundEnabled(playgroundEnabled);
 		jsondocDoc.setDisplayMethodAs(displayMethodAs);
-        jsondocDoc.setCorsEnabled(corsEnabled);
 		return jsondocDoc;
 	}
 	
