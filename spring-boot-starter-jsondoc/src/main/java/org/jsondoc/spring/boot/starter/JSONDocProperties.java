@@ -1,10 +1,10 @@
 package org.jsondoc.spring.boot.starter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ConfigurationProperties(prefix = JSONDocConfig.JSONDOC_PROPERTIES_PREFIX)
 public class JSONDocProperties {
@@ -36,6 +36,12 @@ public class JSONDocProperties {
 	 * Allowed values are URI and SUMMARY.
 	 */
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
+
+    /**
+     * Whether to enable CORS (Cross Origin Resource Sharing) or not.
+     * For more information visit: http://en.wikipedia.org/wiki/Cross-origin_resource_sharing;
+     */
+    private boolean corsEnabled;
 
 	public String getVersion() {
 		return version;
@@ -77,4 +83,11 @@ public class JSONDocProperties {
 		this.displayMethodAs = displayMethodAs;
 	}
 
+    public boolean isCorsEnabled() {
+        return corsEnabled;
+    }
+
+    public void setCorsEnabled(boolean corsEnabled) {
+        this.corsEnabled = corsEnabled;
+    }
 }
