@@ -27,7 +27,7 @@ public class CorsFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         String corsValue = filterConfig.getInitParameter("corsEnabled");
 
-        if (!corsValue.isEmpty()) {
+        if (null != corsValue && !corsValue.isEmpty()) {
             setCorsEnabled(corsValue.equals("true") ? true : false);
         }
     }
