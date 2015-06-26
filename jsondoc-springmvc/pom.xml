@@ -1,57 +1,59 @@
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<artifactId>jsondoc-master</artifactId>
-		<groupId>org.jsondoc</groupId>
-		<version>1.1.16-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    <parent>
+        <artifactId>jsondoc-master</artifactId>
+        <groupId>org.jsondoc</groupId>
+        <version>1.1.16-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-	<artifactId>jsondoc-springmvc</artifactId>
-	<packaging>jar</packaging>
-	
-	<name>jsondoc-springmvc</name>
-	<description>The Spring MVC helper of the jsondoc project</description>
-	<url>http://www.jsondoc.org</url>
+    <artifactId>jsondoc-springmvc</artifactId>
+    <packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jsondoc</groupId>
-			<artifactId>jsondoc-core</artifactId>
-		</dependency>
+    <name>jsondoc-springmvc</name>
+    <description>The Spring MVC helper of the jsondoc project</description>
+    <url>http://www.jsondoc.org</url>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>2.5</version>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.jsondoc</groupId>
+            <artifactId>jsondoc-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>3.2.0.RELEASE</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <artifactId>spring-web</artifactId>
+            <version>3.2.0.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
-	<build>
-		<finalName>jsondoc-springmvc</finalName>
-	</build>
-	
+    <build>
+        <finalName>jsondoc-springmvc</finalName>
+    </build>
+
 </project>
