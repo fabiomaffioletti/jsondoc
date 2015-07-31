@@ -303,8 +303,9 @@ public class ApiDocTest {
 		Assert.assertEquals(1, methods.size());
 		Assert.assertEquals(3, apiErrors.size());
 		Assert.assertEquals("1000", apiErrors.get(0).getCode());
+		Assert.assertEquals("method-level annotation should be applied",
+				"A test error #1", apiErrors.get(0).getDescription());
 		Assert.assertEquals("2000", apiErrors.get(1).getCode());
-		Assert.assertEquals("A test error #2", apiErrors.get(1).getDescription());
 		Assert.assertEquals("400", apiErrors.get(2).getCode());
 
 	}
