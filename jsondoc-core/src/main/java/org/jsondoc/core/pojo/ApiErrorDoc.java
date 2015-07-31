@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
 
@@ -14,16 +16,34 @@ public class ApiErrorDoc {
 	private String description;
 
 	public static List<ApiErrorDoc> build(Method method) {
-		if(method.isAnnotationPresent(ApiErrors.class)) {
-			ApiErrors annotation = method.getAnnotation(ApiErrors.class);
-			List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
-			for (ApiError apiError : annotation.apierrors()) {
+
+		List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
+
+		ApiErrors methodAnnotation = method.getAnnotation(ApiErrors.class);
+		ApiErrors typeAnnotation = method.getDeclaringClass().getAnnotation(ApiErrors.class);
+
+		if(methodAnnotation != null) {
+			for (ApiError apiError : methodAnnotation.apierrors()) {
 				apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
 			}
-			return apiMethodDocs;
 		}
-		
-		return new ArrayList<ApiErrorDoc>();
+
+		if(typeAnnotation != null) {
+			for (final ApiError apiError : typeAnnotation.apierrors()) {
+
+				boolean isAlreadyDefined = FluentIterable.from(apiMethodDocs).anyMatch(new Predicate<ApiErrorDoc>() {
+					@Override
+					public boolean apply(ApiErrorDoc apiErrorDoc) {
+						return apiError.code().equals(apiErrorDoc.getCode());
+					};
+				});
+
+				if (!isAlreadyDefined) {
+					apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
+				}
+			}
+		}
+		return apiMethodDocs;
 	}
 
 	public ApiErrorDoc(String code, String description) {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthBasicUser;
@@ -18,12 +19,14 @@ import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiAuthType;
 import org.jsondoc.core.pojo.ApiDoc;
+import org.jsondoc.core.pojo.ApiErrorDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
+import org.jsondoc.core.util.controller.Test3Controller;
 import org.jsondoc.core.util.pojo.Child;
 import org.jsondoc.core.util.pojo.Pizza;
 import org.junit.Assert;
@@ -286,7 +289,26 @@ public class ApiDocTest {
 	    }
 		
 	}
-	
+
+	@Test
+	public void testApiErrorsDoc() throws Exception {
+
+		final ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(Test3Controller.class),
+				MethodDisplay.URI).iterator().next();
+
+		final Set<ApiMethodDoc> methods = apiDoc.getMethods();
+		final ApiMethodDoc apiMethodDoc = methods.iterator().next();
+		final List<ApiErrorDoc> apiErrors = apiMethodDoc.getApierrors();
+
+		Assert.assertEquals(1, methods.size());
+		Assert.assertEquals(3, apiErrors.size());
+		Assert.assertEquals("1000", apiErrors.get(0).getCode());
+		Assert.assertEquals("2000", apiErrors.get(1).getCode());
+		Assert.assertEquals("A test error #2", apiErrors.get(1).getDescription());
+		Assert.assertEquals("400", apiErrors.get(2).getCode());
+
+	}
+
 	@Test
 	public void testApiDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
