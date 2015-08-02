@@ -133,7 +133,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiMethodDocs;
 	}
 
-	private ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller, MethodDisplay displayMethodAs) {
+	protected ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller, MethodDisplay displayMethodAs) {
 		ApiMethodDoc apiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class));
 		apiMethodDoc.setDisplayMethodAs(displayMethodAs);
 		
@@ -184,7 +184,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 * @param apiMethodDoc
 	 * @return
 	 */
-	private ApiMethodDoc validateApiMethodDoc(ApiMethodDoc apiMethodDoc, MethodDisplay displayMethodAs) {
+	protected ApiMethodDoc validateApiMethodDoc(ApiMethodDoc apiMethodDoc, MethodDisplay displayMethodAs) {
 		final String ERROR_MISSING_METHOD_PATH 				= "Missing documentation data: path";
 		final String ERROR_MISSING_PATH_PARAM_NAME 			= "Missing documentation data: path parameter name";
 		final String ERROR_MISSING_QUERY_PARAM_NAME 		= "Missing documentation data: query parameter name";
@@ -212,7 +212,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			if(apiParamDoc.getName().trim().isEmpty()) {
 				apiMethodDoc.addJsondocerror(ERROR_MISSING_PATH_PARAM_NAME);
 			}
-			
+
 			if(apiParamDoc.getDescription().trim().isEmpty()) {
 				apiMethodDoc.addJsondochint(HINT_MISSING_PATH_PARAM_DESCRIPTION);
 			}

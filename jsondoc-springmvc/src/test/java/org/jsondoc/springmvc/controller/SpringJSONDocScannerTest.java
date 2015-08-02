@@ -17,8 +17,10 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
+import org.jsondoc.core.scanner.JSONDocScanner;
 import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,11 +35,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class SpringJSONDocScannerTest {
 	
-	private SpringJSONDocScanner jsondocScanner = new SpringJSONDocScanner();
+	protected JSONDocScanner jsondocScanner;
 	
 	@Api(description = "A spring controller", name = "Spring controller")
 	@RequestMapping(value = "/api", produces = { MediaType.APPLICATION_JSON_VALUE })
-	private class SpringController {
+	protected class SpringController {
 		
 		@ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verb = ApiVerb.GET)
 		@RequestMapping(value = "/string/{name}", headers = "header=test", params = "delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,6 +81,11 @@ public class SpringJSONDocScannerTest {
 			return "ok";
 		}
 		
+	}
+
+	@Before
+	public void initScanner() {
+		jsondocScanner = new SpringJSONDocScanner();
 	}
 	
 	@Test
@@ -122,10 +129,7 @@ public class SpringJSONDocScannerTest {
 				Assert.assertEquals("true", apiParamDoc.getRequired());
 				Assert.assertEquals(null, apiParamDoc.getDefaultvalue());
 				Assert.assertEquals(0, apiParamDoc.getAllowedvalues().length);
-				
-				Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
-				Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
-				apiParamDoc = ppIterator.next();
+
 				apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
 				Assert.assertEquals("test", apiParamDoc.getName());
 			}
