@@ -251,9 +251,10 @@ table td {
 
 <script id="methods" type="text/x-handlebars-template">
 <blockquote>
-  <p style="text-transform: uppercase;"><span id="apiName">{{name}}</span></p>
-  <small><span id="apiDescription">{{description}}</span></small>
-  <small><span id="apiSupportedVersions"></span></small>
+	<p style="text-transform: uppercase;"><span id="apiName">{{name}}</span></p>
+	<small><span id="apiDescription">{{description}}</span></small>
+	<small><span id="apiSupportedVersions"></span></small>
+	<small><span id="apiStatus">Status: {{status.oneLineText}}</span></small>
 </blockquote>
 
 {{#if preconditions}}
@@ -308,6 +309,13 @@ table td {
 					<tr>
 						<th>Description</th>
 						<td>{{{description}}}</td>
+					</tr>
+					{{/if}}
+
+					{{#if status}}
+					<tr>
+						<th>Status</th>
+						<td>{{status.oneLineText}}</td>
 					</tr>
 					{{/if}}
 

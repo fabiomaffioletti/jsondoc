@@ -14,6 +14,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 	private String group;
+	private ApiStatusDoc status;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
@@ -84,4 +85,11 @@ public class ApiDoc implements Comparable<ApiDoc> {
 		this.group = group;
 	}
 
+	public ApiStatusDoc getStatus() {
+		return status;
+	}
+
+	public void setStatus(ApiStatusDoc status) {
+		this.status = status;
+	}
 }

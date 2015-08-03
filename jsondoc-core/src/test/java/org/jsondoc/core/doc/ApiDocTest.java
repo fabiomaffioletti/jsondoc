@@ -5,17 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiAuthBasic;
-import org.jsondoc.core.annotation.ApiAuthBasicUser;
-import org.jsondoc.core.annotation.ApiAuthNone;
-import org.jsondoc.core.annotation.ApiBodyObject;
-import org.jsondoc.core.annotation.ApiMethod;
-import org.jsondoc.core.annotation.ApiParams;
-import org.jsondoc.core.annotation.ApiPathParam;
-import org.jsondoc.core.annotation.ApiQueryParam;
-import org.jsondoc.core.annotation.ApiResponseObject;
-import org.jsondoc.core.annotation.ApiVersion;
+import org.jsondoc.core.annotation.*;
 import org.jsondoc.core.pojo.ApiAuthType;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
@@ -56,15 +46,18 @@ public class ApiDocTest {
 	@Api(name = "test-controller", description = "a-test-controller")
 	@ApiVersion(since = "1.0", until = "2.12")
 	@ApiAuthNone
+	@ApiStatus(isPublic = true)
 	private class TestController {
 
 		@ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
+		@ApiStatus(isBeta = true)
 		public @ApiResponseObject
 		String name(@ApiPathParam(name = "name") String name, @ApiBodyObject String body) {
 			return null;
 		}
 
 		@ApiMethod(path = "/age", verb = ApiVerb.GET, description = "a-test-method", responsestatuscode = "204")
+		@ApiStatus(isDeprecated = true)
 		public @ApiResponseObject
 		Integer age(@ApiPathParam(name = "age") Integer age, @ApiBodyObject Integer body) {
 			return null;
@@ -298,6 +291,9 @@ public class ApiDocTest {
 		Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
 		Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
 		Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
+		Assert.assertTrue(apiDoc.getStatus().isPublic());
+		Assert.assertFalse(apiDoc.getStatus().isBeta());
+		Assert.assertFalse(apiDoc.getStatus().isDeprecated());
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			
@@ -311,6 +307,9 @@ public class ApiDocTest {
 						Assert.assertEquals("string", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
+				Assert.assertTrue(apiMethodDoc.getStatus().isBeta());
+				Assert.assertFalse(apiMethodDoc.getStatus().isPublic());
+				Assert.assertFalse(apiMethodDoc.getStatus().isDeprecated());
 			}
 
 			if (apiMethodDoc.getPath().equals("/age")) {
@@ -323,6 +322,9 @@ public class ApiDocTest {
 						Assert.assertEquals("integer", apiParamDoc.getJsondocType().getOneLineText());
 					}
 				}
+				Assert.assertTrue(apiMethodDoc.getStatus().isDeprecated());
+				Assert.assertFalse(apiMethodDoc.getStatus().isPublic());
+				Assert.assertFalse(apiMethodDoc.getStatus().isBeta());
 			}
 
 			if (apiMethodDoc.getPath().equals("/avg")) {

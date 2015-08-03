@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiStatus;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
@@ -30,6 +31,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private ApiAuthDoc auth;
 	private String responsestatuscode;
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
+	private ApiStatusDoc status;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
@@ -196,6 +198,14 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		} else {
 			return summary;
 		}
+	}
+
+	public ApiStatusDoc getStatus() {
+		return status;
+	}
+
+	public void setStatus(ApiStatusDoc status) {
+		this.status = status;
 	}
 
 	@Override
