@@ -7,13 +7,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your method and represents the possible errors returned by the method
+ *
+ * This annotation is to be used on your controller class or method and represents the possible errors
+ * returned by the API endpoints.
+ *
+ * <p>
+ *     When the @ApiErrors is present at the class level, defined errors will be applied to all member methods.
+ *     Member methods can override the errors declared at the class level and provide more specific ones.
+ *
+ *
  * @see ApiError
  * @author Fabio Maffioletti
  *
  */
 @Documented
-@Target(value=ElementType.METHOD)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiErrors {
 
