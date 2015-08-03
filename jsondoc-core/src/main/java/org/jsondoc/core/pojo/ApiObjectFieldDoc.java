@@ -29,7 +29,8 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
 		apiPojoFieldDoc.setDescription(annotation.description());
 		apiPojoFieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
 		apiPojoFieldDoc.setFormat(annotation.format());
-		if (field.getType().isEnum()) {
+		// if allowedvalues property is populated on an enum field, then the enum values are overridden with the allowedvalues ones
+		if (field.getType().isEnum() && annotation.allowedvalues().length == 0) {
 			apiPojoFieldDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(field.getType().getEnumConstants()));
 		} else {
 			apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());

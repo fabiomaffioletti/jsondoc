@@ -61,6 +61,9 @@ public class ApiObjectDocTest {
 		
 		@ApiObjectField(name = "test-enum", description = "a test enum")
 		private TestEnum testEnum;
+		
+		@ApiObjectField(name = "test-enum-with-allowed-values", description = "a test enum with allowed values", allowedvalues = { "A", "B", "C" })
+		private TestEnum testEnumWithAllowedValues;
 
 		@ApiObjectField(name = "orderedProperty", order = 1)
 		private String orderedProperty;
@@ -126,7 +129,7 @@ public class ApiObjectDocTest {
 		classes.add(TestObject.class);
 		ApiObjectDoc childDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next(); 
 		Assert.assertEquals("test-object", childDoc.getName());
-		Assert.assertEquals(13, childDoc.getFields().size());
+		Assert.assertEquals(14, childDoc.getFields().size());
 		Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", childDoc.getSupportedversions().getUntil());
 		
@@ -196,6 +199,12 @@ public class ApiObjectDocTest {
 				Assert.assertEquals(TestEnum.TESTENUM1.name(), fieldDoc.getAllowedvalues()[0]);
 				Assert.assertEquals(TestEnum.TESTENUM2.name(), fieldDoc.getAllowedvalues()[1]);
 				Assert.assertEquals(TestEnum.TESTENUM3.name(), fieldDoc.getAllowedvalues()[2]);
+			}
+			
+			if(fieldDoc.getName().equals("test-enum-with-allowed-values")) {
+				Assert.assertEquals("A", fieldDoc.getAllowedvalues()[0]);
+				Assert.assertEquals("B", fieldDoc.getAllowedvalues()[1]);
+				Assert.assertEquals("C", fieldDoc.getAllowedvalues()[2]);
 			}
 
 			if(fieldDoc.getName().equals("orderedProperty")) {
