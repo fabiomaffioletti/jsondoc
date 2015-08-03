@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class DefaultJSONDocScannerTest {
     private String version = "1.0";
@@ -67,7 +68,7 @@ public class DefaultJSONDocScannerTest {
             if (apiDocs != null) {
                 for (ApiDoc doc : apiDocs) {
                     for (ApiMethodDoc apiMethodDoc : doc.getMethods()) {
-                        apiVerbs.add(apiMethodDoc.getVerb());
+                        apiVerbs.addAll(Sets.newHashSet(apiMethodDoc.getVerb()));
                     }
                 }
             }

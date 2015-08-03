@@ -180,7 +180,9 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" id="{{jsondocId}}">
 			<h4 class="panel-title">
-				<span class="label pull-right {{verb}}">{{verb}}</span>
+				{{#each verb}}
+					<span class="label pull-right verb {{this}}">{{this}}</span>
+				{{/each}}
 				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">{{displayedMethodString}}</a>
 			</h4>
 		</div>
@@ -412,6 +414,19 @@
 </blockquote>
 
 <div class="row">
+	{{#if verb}}
+		<div class="col-md-12">
+			<h4>Request method</h4>
+			<div class="form-group">
+				<select class="form-control" id="requestMethod">
+					{{#each verb}}
+						<option value="{{this}}">{{this}}</option>
+					{{/each}}
+				</select>
+			</div>
+		</div>
+	{{/if}}
+
 	{{#if auth}}
 		{{#equal auth.type "BASIC_AUTH"}}
 			<div class="col-md-12">
@@ -817,6 +832,8 @@
 					$("#consumes input:first").attr("checked", "checked");
 					
 					$("#testButton").click(function() {
+						var requestMethod = $("#requestMethod").val();
+
 						var headers = new Object();
 						$("#headers input").each(function() {
 							headers[this.name] = $(this).val();
@@ -882,7 +899,7 @@
 						
 						var res = $.ajax({
 							url : model.basePath + replacedPath,
-							type: method.verb,
+							type: requestMethod,
 							data: $("#inputJson").val(),
 							headers: headers,
 							contentType: $("#consumes input:checked").val(),

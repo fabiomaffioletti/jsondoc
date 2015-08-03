@@ -17,7 +17,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private String path;
 	private String summary;
 	private String description;
-	private ApiVerb verb;
+	private ApiVerb[] verb;
 	private Set<String> produces;
 	private Set<String> consumes;
 	private Set<ApiHeaderDoc> headers;
@@ -78,11 +78,11 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.consumes = consumes;
 	}
 
-	public ApiVerb getVerb() {
+	public ApiVerb[] getVerb() {
 		return verb;
 	}
 
-	public void setVerb(ApiVerb verb) {
+	public void setVerb(ApiVerb[] verb) {
 		this.verb = verb;
 	}
 
@@ -204,7 +204,13 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		if (i != 0)
 			return i;
 
-		i = this.verb.compareTo(o.getVerb());
+		Arrays.sort(this.verb);
+		Arrays.sort(o.getVerb());
+		if(Arrays.equals(this.verb, o.getVerb())) {
+			i = 0;
+		} else {
+			i = 1;
+		}
 		if (i != 0)
 			return i;
 		

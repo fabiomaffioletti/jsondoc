@@ -3,36 +3,33 @@ body {
 	padding-bottom: 40px;
 }
 
-.GET {
+.verb {
+	margin-left: 3px;
 	padding-top : 5px;
+}
+
+.GET {
 	background-color: #468847;
 }
 .PATCH {
-    padding-top : 5px;
     background-color: #5bc0de;
 }
 .POST {
-	padding-top : 5px;
 	background-color: #3A87AD;
 }
 .PUT {
-	padding-top : 5px;
 	background-color: #F89406;
 }
 .DELETE {
-	padding-top : 5px;
 	background-color: #B94A48;
 }
 .OPTIONS {
-	padding-top : 5px;
 	background-color: #6B5463;
 }
 .TRACE {
-	padding-top : 5px;
 	background-color: #8E6C6E;
 }
 .HEAD {
-	padding-top : 5px;
 	background-color: #AA9A66;
 }
 

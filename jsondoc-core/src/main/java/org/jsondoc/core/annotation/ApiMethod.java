@@ -48,7 +48,7 @@ public @interface ApiMethod {
 	 * @see ApiVerb
 	 * @return
 	 */
-	public ApiVerb verb() default ApiVerb.GET;
+	public ApiVerb[] verb() default ApiVerb.GET;
 	
 	/**
 	 * An array of strings representing media types produced by the method, like application/json, application/xml, ...

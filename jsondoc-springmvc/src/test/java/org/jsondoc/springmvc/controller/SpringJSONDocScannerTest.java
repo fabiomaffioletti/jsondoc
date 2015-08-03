@@ -79,6 +79,12 @@ public class SpringJSONDocScannerTest {
 			return "ok";
 		}
 		
+		@ApiMethod(description = "multiple-request-methods")
+		@RequestMapping(value = "/multiple-request-methods", method = { RequestMethod.POST, RequestMethod.PUT })
+		public @ApiResponseObject @ResponseBody String multipleRequestMethods() {
+			return "ok";
+		}
+		
 	}
 	
 	@Test
@@ -96,7 +102,7 @@ public class SpringJSONDocScannerTest {
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("/api/string/{name}", apiMethodDoc.getPath());
-				Assert.assertEquals("POST", apiMethodDoc.getVerb().name());
+				Assert.assertEquals("POST", apiMethodDoc.getVerb()[0].name());
 				Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
 				Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
 				Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
@@ -155,6 +161,10 @@ public class SpringJSONDocScannerTest {
 				Assert.assertEquals(0, apiMethodDoc.getJsondocerrors().size());
 				Assert.assertEquals(0, apiMethodDoc.getJsondocwarnings().size());
 				Assert.assertEquals(5, apiMethodDoc.getJsondochints().size());
+			}
+			
+			if(apiMethodDoc.getDescription().equals("multiple-request-methods")) {
+				Assert.assertEquals(2, apiMethodDoc.getVerb().length);
 			}
 			
 		}

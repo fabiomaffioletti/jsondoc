@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.ValueConstants;
@@ -279,28 +280,33 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		return consumes;
 	}
 	
-	private ApiVerb getApiVerbFromSpringAnnotation(Method method, Class<?> controller) {
-		ApiVerb apiVerb = null;
+	private ApiVerb[] getApiVerbFromSpringAnnotation(Method method, Class<?> controller) {
+		Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
 		
 		if(controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
 			if(requestMapping.method().length > 0) {
-				apiVerb = ApiVerb.valueOf(requestMapping.method()[0].name());
+				for (RequestMethod requestMethod : requestMapping.method()) {
+					apiVerbs.add(ApiVerb.valueOf(requestMethod.name()));
+				}
 			}
 		}
 		
 		if(method.isAnnotationPresent(RequestMapping.class)) {
+			apiVerbs = new LinkedHashSet<ApiVerb>();
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 			if(requestMapping.method().length > 0) {
-				apiVerb = ApiVerb.valueOf(requestMapping.method()[0].name());
+				for (RequestMethod requestMethod : requestMapping.method()) {
+					apiVerbs.add(ApiVerb.valueOf(requestMethod.name()));
+				}
 			}
 		}
 		
-		if(apiVerb == null) {
-			apiVerb = ApiVerb.GET;
+		if(apiVerbs.isEmpty()) {
+			apiVerbs.add(ApiVerb.GET);
 		}
 		
-		return apiVerb;
+		return apiVerbs.toArray(new ApiVerb[apiVerbs.size()]);
 	}
 	
 	private String getPathFromSpringAnnotation(ApiMethodDoc apiMethodDoc, Method method, Class<?> controller) {
