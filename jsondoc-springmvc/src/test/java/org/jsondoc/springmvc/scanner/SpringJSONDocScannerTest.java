@@ -1,4 +1,4 @@
-package org.jsondoc.springmvc.controller;
+package org.jsondoc.springmvc.scanner;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;

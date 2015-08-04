@@ -186,7 +186,7 @@ public class SpringAutoJSONDocScanner extends SpringJSONDocScanner {
         }
     }
 
-    public Map<String, Set<ApiObjectDoc>> getNoAnnotationObjectDocSet() {
+    protected Map<String, Set<ApiObjectDoc>> getNoAnnotationObjectDocSet() {
         return noAnnotationObjectDocSet;
     }
 }

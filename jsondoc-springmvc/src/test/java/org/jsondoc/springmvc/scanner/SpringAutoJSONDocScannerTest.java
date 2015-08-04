@@ -1,7 +1,9 @@
-package org.jsondoc.springmvc.controller;
+package org.jsondoc.springmvc.scanner;
 
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.*;
-import org.jsondoc.springmvc.scanner.SpringAutoJSONDocScanner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 public class SpringAutoJSONDocScannerTest extends SpringJSONDocScannerTest {
+
+    @ApiObject(name="appform", group="application")
+    @ApiVersion(since = "2.0")
+    private class AppForm {
+
+        @ApiObjectField(name="apps", description = "Application IDs", required = true)
+        private List<String> apps = new ArrayList<String>(); //ids
+
+    }
 
     private class ResponseBodyPojo {
         private String value1;
@@ -78,9 +89,9 @@ public class SpringAutoJSONDocScannerTest extends SpringJSONDocScannerTest {
         jsondocScanner.getApiDocs(controllers, JSONDoc.MethodDisplay.URI);
         SpringAutoJSONDocScanner autoJSONDocScanner = (SpringAutoJSONDocScanner) jsondocScanner;
         Map<String, Set<ApiObjectDoc>> objectDocs = autoJSONDocScanner.getNoAnnotationObjectDocSet();
-        ApiObjectDoc objectDoc = (ApiObjectDoc) ((TreeSet) objectDocs.get("controller")).first();
+        ApiObjectDoc objectDoc = (ApiObjectDoc) ((TreeSet) objectDocs.get("scanner")).first();
         Assert.assertEquals("responsebodypojo", objectDoc.getName());
-        Assert.assertEquals("controller", objectDoc.getGroup());
+        Assert.assertEquals("scanner", objectDoc.getGroup());
 
         boolean hasValue1 = false;
         boolean hasValue2 = false;
@@ -96,6 +107,30 @@ public class SpringAutoJSONDocScannerTest extends SpringJSONDocScannerTest {
         }
         Assert.assertTrue(hasValue1);
         Assert.assertTrue(hasValue2);
+    }
+
+    @Test
+    public void testAnnotatedApiObjectDocs() {
+        Set<Class<?>> controllers = new LinkedHashSet<Class<?>>();
+        controllers.add(AppForm.class);
+        jsondocScanner.getApiDocs(controllers, JSONDoc.MethodDisplay.URI);
+        SpringAutoJSONDocScanner autoJSONDocScanner = (SpringAutoJSONDocScanner) jsondocScanner;
+        Map<String, Set<ApiObjectDoc>> objectDocs = autoJSONDocScanner.getApiObjectsMap(controllers);
+        ApiObjectDoc objectDoc = (ApiObjectDoc) ((TreeSet) objectDocs.get("application")).first();
+        Assert.assertEquals("appform", objectDoc.getName());
+        Assert.assertEquals("application", objectDoc.getGroup());
+        Assert.assertEquals("2.0", objectDoc.getSupportedversions().getSince());
+
+        boolean hasValue1 = false;
+        for (Iterator iterator = objectDoc.getFields().iterator(); iterator.hasNext(); ) {
+            ApiObjectFieldDoc doc = (ApiObjectFieldDoc) iterator.next();
+            if (doc.getName().equals("apps")) {
+                hasValue1 = true;
+                Assert.assertEquals(doc.getJsondocType().getOneLineText(), "list of string");
+                Assert.assertEquals(doc.getDescription(), "Application IDs");
+            }
+        }
+        Assert.assertTrue(hasValue1);
     }
 
     @Test
