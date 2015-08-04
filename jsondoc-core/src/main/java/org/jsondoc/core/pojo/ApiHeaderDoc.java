@@ -23,14 +23,22 @@ public class ApiHeaderDoc {
 
 	public static Set<ApiHeaderDoc> build(Method method) {
 		Set<ApiHeaderDoc> docs = new LinkedHashSet<ApiHeaderDoc>();
-
-		if (method.isAnnotationPresent(ApiHeaders.class)) {
-			ApiHeaders annotation = method.getAnnotation(ApiHeaders.class);
-			for (ApiHeader apiHeader : annotation.headers()) {
+		
+		ApiHeaders methodAnnotation = method.getAnnotation(ApiHeaders.class);
+		ApiHeaders typeAnnotation = method.getDeclaringClass().getAnnotation(ApiHeaders.class);
+		
+		if(typeAnnotation != null) {
+			for (ApiHeader apiHeader : typeAnnotation.headers()) {
 				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
 			}
 		}
 
+		if (methodAnnotation != null) {
+			for (ApiHeader apiHeader : methodAnnotation.headers()) {
+				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
+			}
+		}
+		
 		return docs;
 	}
 

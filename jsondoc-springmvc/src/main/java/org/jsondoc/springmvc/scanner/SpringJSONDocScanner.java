@@ -165,9 +165,9 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 	}
 	
 	/**
-	 * 1. Looks for headers in the RequestMapping annotation on the controller
-	 * 2. Looks for headers in the RequestMapping annotation on the method, overriding the ones coming from the annotation on the controller
-	 * 3. Looks for RequestHeader annotation on method parameters, and if ApiHeader is also present on the same parameter, adds the header to the final Set
+	 * From Spring's documentation: Supported at the type level as well as at the method level!
+	 * When used at the type level, all method-level mappings inherit this header restriction.
+	 * Finally it looks for @ApiHeader annotations on parameters and adds the result to the final Set 
 	 * @param method
 	 * @param controller
 	 * @return
@@ -175,33 +175,17 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 	private Set<ApiHeaderDoc> getHeadersFromSpringAnnotation(Method method, Class<?> controller) {
 		Set<ApiHeaderDoc> headers = new LinkedHashSet<ApiHeaderDoc>();
 		
-		if(controller.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-			List<String> headersStringList = Arrays.asList(requestMapping.headers());
-			for (String header : headersStringList) {
-				String[] splitHeader = header.split("=");
-				if(splitHeader.length > 1) {
-					headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{splitHeader[1]}));
-				} else {
-					headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{}));
-				}
-			}
+		RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
+		RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
+		
+		if(typeAnnotation != null) {
+			List<String> headersStringList = Arrays.asList(typeAnnotation.headers());
+			addToHeaders(headers, headersStringList);
 		}
 		
-		if(method.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if(requestMapping.headers().length > 0) {
-				headers.clear();
-				List<String> headersStringList = Arrays.asList(requestMapping.headers());
-				for (String header : headersStringList) {
-					String[] splitHeader = header.split("=");
-					if(splitHeader.length > 1) {
-						headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{splitHeader[1]}));
-					} else {
-						headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{}));
-					}
-				}
-			}
+		if(methodAnnotation != null) {
+			List<String> headersStringList = Arrays.asList(methodAnnotation.headers());
+			addToHeaders(headers, headersStringList);
 		}
 		
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
@@ -229,6 +213,17 @@ public class SpringJSONDocScanner extends AbstractJSONDocScanner {
 		}
 		
 		return headers;
+	}
+
+	private void addToHeaders(Set<ApiHeaderDoc> headers, List<String> headersStringList) {
+		for (String header : headersStringList) {
+			String[] splitHeader = header.split("=");
+			if(splitHeader.length > 1) {
+				headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{splitHeader[1]}));
+			} else {
+				headers.add(new ApiHeaderDoc(splitHeader[0], null, new String[]{}));
+			}
+		}
 	}
 	
 	/**
