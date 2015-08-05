@@ -13,10 +13,8 @@ import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
-	private String id;
+	
 	private String path;
-	private String summary;
-	private String description;
 	private ApiVerb[] verb;
 	private Set<String> produces;
 	private Set<String> consumes;
@@ -25,10 +23,15 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private Set<ApiParamDoc> queryparameters;
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
+	private String responsestatuscode;
+
+	private String id;
+	private String description;
+	private String summary;
+	
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
-	private String responsestatuscode;
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
@@ -46,6 +49,9 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
 	public ApiMethodDoc() {
 		super();
+		this.id = null;
+		this.summary = "";
+		this.description = "";
 		this.headers = new LinkedHashSet<ApiHeaderDoc>();
 		this.pathparameters = new LinkedHashSet<ApiParamDoc>();
 		this.queryparameters = new LinkedHashSet<ApiParamDoc>();

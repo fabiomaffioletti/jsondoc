@@ -16,7 +16,6 @@ public class ApiErrorDoc {
 	private String description;
 
 	public static List<ApiErrorDoc> build(Method method) {
-
 		List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
 
 		ApiErrors methodAnnotation = method.getAnnotation(ApiErrors.class);

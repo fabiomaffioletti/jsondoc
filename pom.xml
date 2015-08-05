@@ -75,20 +75,20 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>3.1.2.RELEASE</version>
+				<version>4.2.0.RELEASE</version>
 			</dependency>
 
 			<!-- Spring boot -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
-				<version>1.2.0.RELEASE</version>
+				<version>1.2.5.RELEASE</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-configuration-processor</artifactId>
-				<version>1.2.0.RELEASE</version>
+				<version>1.2.5.RELEASE</version>
 			</dependency>
 
 			<!-- Reflection -->

@@ -24,6 +24,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	}
 
 	public ApiDoc() {
+		this.group = "";
 		this.methods = new TreeSet<ApiMethodDoc>();
 	}
 

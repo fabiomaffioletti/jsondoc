@@ -1,6 +1,5 @@
 package org.jsondoc.core.pojo;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiPathParam;

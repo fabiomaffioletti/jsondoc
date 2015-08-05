@@ -10,24 +10,39 @@ public class ApiVersionDoc {
 	private String until;
 
 	public static ApiVersionDoc build(Class<?> clazz) {
+		ApiVersionDoc apiVersionDoc = null;
 		if(clazz.isAnnotationPresent(ApiVersion.class)) {
-			return buildFromAnnotation(clazz.getAnnotation(ApiVersion.class));
+			apiVersionDoc = buildFromAnnotation(clazz.getAnnotation(ApiVersion.class));
 		}
-		return null;
+		return apiVersionDoc;
 	}
 	
+	/**
+	 * In case this annotation is present at type and method level, then the method annotation will override
+	 * the type one.
+	 */
 	public static ApiVersionDoc build(Method method) {
-		if(method.isAnnotationPresent(ApiVersion.class)) {
-			return buildFromAnnotation(method.getAnnotation(ApiVersion.class));
+		ApiVersionDoc apiVersionDoc = null;
+		ApiVersion methodAnnotation = method.getAnnotation(ApiVersion.class);
+		ApiVersion typeAnnotation = method.getDeclaringClass().getAnnotation(ApiVersion.class);
+		
+		if(typeAnnotation != null) {
+			apiVersionDoc = ApiVersionDoc.buildFromAnnotation(typeAnnotation);
 		}
-		return null;
+		
+		if(methodAnnotation != null) {
+			apiVersionDoc = buildFromAnnotation(method.getAnnotation(ApiVersion.class));
+		}
+		
+		return apiVersionDoc;
 	}
 	
 	public static ApiVersionDoc build(Field field) {
+		ApiVersionDoc apiVersionDoc = null;
 		if(field.isAnnotationPresent(ApiVersion.class)) {
-			return buildFromAnnotation(field.getAnnotation(ApiVersion.class));
+			apiVersionDoc = buildFromAnnotation(field.getAnnotation(ApiVersion.class));
 		}
-		return null;
+		return apiVersionDoc;
 	}
 	
 	private static ApiVersionDoc buildFromAnnotation(ApiVersion annotation) {

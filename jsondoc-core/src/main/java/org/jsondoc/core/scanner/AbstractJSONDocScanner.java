@@ -1,29 +1,21 @@
 package org.jsondoc.core.scanner;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiFlow;
 import org.jsondoc.core.annotation.ApiFlowSet;
-import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
-import org.jsondoc.core.annotation.ApiParams;
-import org.jsondoc.core.annotation.ApiPathParam;
-import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.pojo.ApiAuthDoc;
-import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiErrorDoc;
 import org.jsondoc.core.pojo.ApiFlowDoc;
@@ -32,14 +24,10 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
-import org.jsondoc.core.pojo.ApiParamType;
-import org.jsondoc.core.pojo.ApiResponseObjectDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.ApiVersionDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
-import org.jsondoc.core.util.JSONDocType;
-import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -52,14 +40,15 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	protected Reflections reflections = null;
 	
 	protected static Logger log = LoggerFactory.getLogger(JSONDocScanner.class);
-	
-	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
-	
-	public abstract ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc);
-	
-	public abstract ApiParamDoc mergeApiPathParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc);
 
-	public abstract ApiParamDoc mergeApiQueryParamDoc(Method method, int paramIndex, ApiParamDoc apiParamDoc);
+	public abstract Set<Class<?>> jsondocControllers();
+	public abstract Set<Method> jsondocMethods(Class<?> controller);
+
+	public abstract ApiDoc initApiDoc(Class<?> controller);
+	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
+
+	public abstract ApiMethodDoc initApiMethodDoc(Method method, Class<?> controller);
+	public abstract ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc);
 	
 	protected List<ApiMethodDoc> allApiMethodDocs = new ArrayList<ApiMethodDoc>();
 	
@@ -81,7 +70,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter).setUrls(urls));
 		
 		JSONDoc jsondocDoc = new JSONDoc(version, basePath);
-		jsondocDoc.setApis(getApiDocsMap(reflections.getTypesAnnotatedWith(Api.class, true), displayMethodAs));
+		jsondocDoc.setApis(getApiDocsMap(jsondocControllers(), displayMethodAs));
 		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class, true)));
 		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
 		jsondocDoc.setPlaygroundEnabled(playgroundEnabled);
@@ -108,9 +97,9 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	 */
 	private ApiDoc getApiDoc(Class<?> controller, MethodDisplay displayMethodAs) {
 		log.debug("Getting JSONDoc for class: " + controller.getName());
-		ApiDoc apiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
+		ApiDoc apiDoc = initApiDoc(controller);
+
 		apiDoc.setSupportedversions(ApiVersionDoc.build(controller));
-		
 		apiDoc.setAuth(getApiAuthDocForController(controller));
 		apiDoc.setMethods(getApiMethodDocs(controller, displayMethodAs));
 		
@@ -121,33 +110,24 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	
 	private Set<ApiMethodDoc> getApiMethodDocs(Class<?> controller, MethodDisplay displayMethodAs) {
 		Set<ApiMethodDoc> apiMethodDocs = new TreeSet<ApiMethodDoc>();
-		Method[] methods = controller.getDeclaredMethods();
+		Set<Method> methods = jsondocMethods(controller);
 		for (Method method : methods) {
-			if(method.isAnnotationPresent(ApiMethod.class)) {
-				ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
-				apiMethodDocs.add(apiMethodDoc);
-			}
-			
+			ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
+			apiMethodDocs.add(apiMethodDoc);
 		}
 		allApiMethodDocs.addAll(apiMethodDocs);
 		return apiMethodDocs;
 	}
-
+	
 	private ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller, MethodDisplay displayMethodAs) {
-		ApiMethodDoc apiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class));
-		apiMethodDoc.setDisplayMethodAs(displayMethodAs);
+		ApiMethodDoc apiMethodDoc = initApiMethodDoc(method, controller);
 		
-		apiMethodDoc.setHeaders(ApiHeaderDoc.build(method));
-		apiMethodDoc.setPathparameters(getApiPathParamDocs(method));
-		apiMethodDoc.setQueryparameters(getApiQueryParamDocs(method));
-		apiMethodDoc.setBodyobject(ApiBodyObjectDoc.build(method));
-		apiMethodDoc.setResponse(ApiResponseObjectDoc.build(method));
+		apiMethodDoc.setDisplayMethodAs(displayMethodAs);
 		apiMethodDoc.setApierrors(ApiErrorDoc.build(method));
 		apiMethodDoc.setSupportedversions(ApiVersionDoc.build(method));
 		apiMethodDoc.setAuth(getApiAuthDocForMethod(method, method.getDeclaringClass()));
 
 		apiMethodDoc = mergeApiMethodDoc(method, controller, apiMethodDoc);
-		
 		apiMethodDoc = validateApiMethodDoc(apiMethodDoc, displayMethodAs);
 		
 		return apiMethodDoc;
@@ -253,60 +233,6 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiMethodDoc;
 	}
 
-	public Set<ApiParamDoc> getApiPathParamDocs(Method method) {
-		Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
-
-		if (method.isAnnotationPresent(ApiParams.class)) {
-			for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
-				ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam, JSONDocTypeBuilder.build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()), ApiParamType.PATH);
-				docs.add(apiParamDoc);
-			}
-		}
-
-		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-		for (int i = 0; i < parametersAnnotations.length; i++) {
-			for (int j = 0; j < parametersAnnotations[i].length; j++) {
-				if (parametersAnnotations[i][j] instanceof ApiPathParam) {
-					ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
-					ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation, JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), ApiParamType.PATH);
-
-					apiParamDoc = mergeApiPathParamDoc(method, i, apiParamDoc);
-
-					docs.add(apiParamDoc);
-				}
-			}
-		}
-
-		return docs;
-	}
-	
-	public Set<ApiParamDoc> getApiQueryParamDocs(Method method) {
-		Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
-
-		if (method.isAnnotationPresent(ApiParams.class)) {
-			for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryparams()) {
-				ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam, JSONDocTypeBuilder.build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()), ApiParamType.QUERY);
-				docs.add(apiParamDoc);
-			}
-		}
-
-		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-		for (int i = 0; i < parametersAnnotations.length; i++) {
-			for (int j = 0; j < parametersAnnotations[i].length; j++) {
-				if (parametersAnnotations[i][j] instanceof ApiQueryParam) {
-					ApiQueryParam annotation = (ApiQueryParam) parametersAnnotations[i][j];
-					ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation, JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), ApiParamType.QUERY);
-
-					apiParamDoc = mergeApiQueryParamDoc(method, i, apiParamDoc);
-
-					docs.add(apiParamDoc);
-				}
-			}
-		}
-
-		return docs;
-	}
-	
 	public Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
 		Set<ApiObjectDoc> apiObjectDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> clazz : classes) {
@@ -380,7 +306,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return apiFlowDocsMap;
 	}
 
-	protected ApiAuthDoc getApiAuthDocForController(Class<?> clazz) {
+	private ApiAuthDoc getApiAuthDocForController(Class<?> clazz) {
 		if(clazz.isAnnotationPresent(ApiAuthNone.class)) {
 			return ApiAuthDoc.buildFromApiAuthNoneAnnotation(clazz.getAnnotation(ApiAuthNone.class));
 		}
@@ -392,7 +318,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		return null;
 	}
 	
-	protected ApiAuthDoc getApiAuthDocForMethod(Method method, Class<?> clazz) {
+	private ApiAuthDoc getApiAuthDocForMethod(Method method, Class<?> clazz) {
 		if(method.isAnnotationPresent(ApiAuthNone.class)) {
 			return ApiAuthDoc.buildFromApiAuthNoneAnnotation(method.getAnnotation(ApiAuthNone.class));
 		}

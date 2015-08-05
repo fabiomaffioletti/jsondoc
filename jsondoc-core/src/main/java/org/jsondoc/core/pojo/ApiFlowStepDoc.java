@@ -17,7 +17,7 @@ public class ApiFlowStepDoc {
 		ApiFlowStepDoc apiFlowStepDoc = new ApiFlowStepDoc();
 		apiFlowStepDoc.setApimethodid(annotation.apimethodid());
 		for (ApiMethodDoc apiMethodDoc : apiMethodDocs) {
-			if(apiMethodDoc.getId().equals(annotation.apimethodid())) {
+			if(apiMethodDoc.getId() != null && apiMethodDoc.getId().equals(annotation.apimethodid())) {
 				apiFlowStepDoc.setApimethoddoc(apiMethodDoc);
 			}
 		}
