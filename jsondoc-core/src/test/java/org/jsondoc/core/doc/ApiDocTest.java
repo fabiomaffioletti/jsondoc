@@ -332,7 +332,7 @@ public class ApiDocTest {
 				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb()[0]);
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
-				Assert.assertEquals("200", apiMethodDoc.getResponsestatuscode());
+				Assert.assertEquals("200 - OK", apiMethodDoc.getResponsestatuscode());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("name")) {
 						Assert.assertEquals("string", apiParamDoc.getJsondocType().getOneLineText());

@@ -65,6 +65,6 @@ public @interface ApiMethod {
 	/**
 	 * Response status code that this method will return to the caller. Defaults to 200
 	 */
-	public String responsestatuscode() default "200";
+	public String responsestatuscode() default "200 - OK";
 	
 }
