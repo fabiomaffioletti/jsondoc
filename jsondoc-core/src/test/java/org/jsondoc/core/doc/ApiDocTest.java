@@ -1,9 +1,6 @@
 package org.jsondoc.core.doc;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthBasic;
@@ -16,12 +13,7 @@ import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.ApiVersion;
-import org.jsondoc.core.pojo.ApiAuthType;
-import org.jsondoc.core.pojo.ApiDoc;
-import org.jsondoc.core.pojo.ApiErrorDoc;
-import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.ApiParamDoc;
-import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.core.pojo.*;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
@@ -294,6 +286,22 @@ public class ApiDocTest {
 		
 	}
 
+	@Api(name = "test-type-level-visibility-and-stage", description = "Test type level visibility and stage attributes",
+			visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
+	private class TestTypeLevelVisibilityAndStageAnnotationAttributes {
+		@ApiMethod(path = "/inherit")
+		public void inheritVisibilityAndStageFromType() {}
+
+		@ApiMethod(path = "override", visibility = ApiVisibility.PRIVATE, stage = ApiStage.GA)
+		public void overrideFromType() {}
+	}
+
+	@Api(name = "test-method-level-visibility-and-stage", description = "Test method level visibility and stage attributes")
+	private class TestMethodLevelVisibilityAndStageAnnotationAttributes {
+		@ApiMethod(visibility = ApiVisibility.PRIVATE, stage = ApiStage.DEPRECATED)
+		public void testVisibilityAndStage() {}
+	}
+
 	@Test
 	public void testApiErrorsDoc() throws Exception {
 
@@ -325,6 +333,8 @@ public class ApiDocTest {
 		Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
 		Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
 		Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
+		Assert.assertEquals(ApiVisibility.UNDEFINED.getLabel(), apiDoc.getVisibility());
+		Assert.assertEquals(ApiStage.UNDEFINED.getLabel(), apiDoc.getStage());
 
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			
@@ -333,6 +343,8 @@ public class ApiDocTest {
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				Assert.assertEquals("200", apiMethodDoc.getResponsestatuscode());
+				Assert.assertEquals(ApiVisibility.UNDEFINED.getLabel(), apiMethodDoc.getVisibility());
+				Assert.assertEquals(ApiStage.UNDEFINED.getLabel(), apiMethodDoc.getStage());
 				for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
 					if(apiParamDoc.getName().equals("name")) {
 						Assert.assertEquals("string", apiParamDoc.getJsondocType().getOneLineText());
@@ -559,13 +571,31 @@ public class ApiDocTest {
 		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
 		Assert.assertEquals("test-declared-methods", apiDoc.getName());
 		Assert.assertEquals(2, apiDoc.getMethods().size());
-		
-		
+
 		classes.clear();
 		classes.add(TestMultipleParamsWithSameMethod.class);
 		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
 		Assert.assertEquals(3, apiDoc.getMethods().size());
-		
+
+		classes.clear();
+		classes.add(TestTypeLevelVisibilityAndStageAnnotationAttributes.class);
+		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+		Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), apiDoc.getVisibility());
+		Assert.assertEquals(ApiStage.BETA.getLabel(), apiDoc.getStage());
+		Iterator<ApiMethodDoc> iterator = apiDoc.getMethods().iterator();
+		apiMethodDoc = iterator.next();
+		Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), apiMethodDoc.getVisibility());
+		Assert.assertEquals(ApiStage.BETA.getLabel(), apiMethodDoc.getStage());
+		apiMethodDoc = iterator.next();
+		Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), apiMethodDoc.getVisibility());
+		Assert.assertEquals(ApiStage.BETA.getLabel(), apiMethodDoc.getStage());
+
+		classes.clear();
+		classes.add(TestMethodLevelVisibilityAndStageAnnotationAttributes.class);
+		apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+		apiMethodDoc = apiDoc.getMethods().iterator().next();
+		Assert.assertEquals(ApiVisibility.PRIVATE.getLabel(), apiMethodDoc.getVisibility());
+		Assert.assertEquals(ApiStage.DEPRECATED.getLabel(), apiMethodDoc.getStage());
 	}
 
 }

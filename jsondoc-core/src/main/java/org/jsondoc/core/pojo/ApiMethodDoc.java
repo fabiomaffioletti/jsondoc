@@ -30,6 +30,8 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private ApiAuthDoc auth;
 	private String responsestatuscode;
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
+	private String visibility;
+	private String stage;
 
 	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
@@ -41,6 +43,8 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
 		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(annotation.produces())));
 		apiMethodDoc.setResponsestatuscode(annotation.responsestatuscode());
+		apiMethodDoc.setVisibility(annotation.visibility().getLabel());
+		apiMethodDoc.setStage(annotation.stage().getLabel());
 		return apiMethodDoc;
 	}
 
@@ -196,6 +200,22 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		} else {
 			return summary;
 		}
+	}
+
+	public String getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getStage() {
+		return stage;
+	}
+
+	public void setStage(String stage) {
+		this.stage = stage;
 	}
 
 	@Override

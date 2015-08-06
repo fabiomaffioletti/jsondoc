@@ -6,7 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jsondoc.core.pojo.ApiStage;
 import org.jsondoc.core.pojo.ApiVerb;
+import org.jsondoc.core.pojo.ApiVisibility;
 
 /**
  * This annotation is to be used on your exposed methods.
@@ -66,5 +68,17 @@ public @interface ApiMethod {
 	 * Response status code that this method will return to the caller. Defaults to 200
 	 */
 	public String responsestatuscode() default "200";
+
+	/**
+	 * Indicates the visibility of the API (i.e. PRIVATE or PUBLIC)
+	 * @return
+	 */
+	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
+
+	/**
+	 * Indicates the stage of development or release
+	 * @return
+	 */
+	public ApiStage stage() default ApiStage.UNDEFINED;
 	
 }

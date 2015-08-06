@@ -14,12 +14,16 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 	private String group;
+	private String visibility;
+	private String stage;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
 		apiDoc.setDescription(api.description());
 		apiDoc.setName(api.name());
 		apiDoc.setGroup(api.group());
+		apiDoc.setVisibility(api.visibility().getLabel());
+		apiDoc.setStage(api.stage().getLabel());
 		return apiDoc;
 	}
 
@@ -84,4 +88,19 @@ public class ApiDoc implements Comparable<ApiDoc> {
 		this.group = group;
 	}
 
+	public String getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getStage() {
+		return stage;
+	}
+
+	public void setStage(String stage) {
+		this.stage = stage;
+	}
 }
