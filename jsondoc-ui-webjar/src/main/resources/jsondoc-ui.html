@@ -213,7 +213,21 @@
 							</tr>
 						{{/if}}	
 					{{/if}}
-					
+
+					{{#if visibility}}
+					<tr>
+						<th>Visibility</th>
+						<td>{{visibility}}</td>
+					</tr>
+					{{/if}}
+
+					{{#if stage}}
+					<tr>
+						<th>Stage</th>
+						<td>{{stage}}</td>
+					</tr>
+					{{/if}}
+
 					{{#if description}}
 					<tr>
 						<th>Description</th>

@@ -22,21 +22,7 @@ import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
-import org.jsondoc.core.pojo.ApiAuthDoc;
-import org.jsondoc.core.pojo.ApiBodyObjectDoc;
-import org.jsondoc.core.pojo.ApiDoc;
-import org.jsondoc.core.pojo.ApiErrorDoc;
-import org.jsondoc.core.pojo.ApiFlowDoc;
-import org.jsondoc.core.pojo.ApiHeaderDoc;
-import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.ApiObjectDoc;
-import org.jsondoc.core.pojo.ApiObjectFieldDoc;
-import org.jsondoc.core.pojo.ApiParamDoc;
-import org.jsondoc.core.pojo.ApiParamType;
-import org.jsondoc.core.pojo.ApiResponseObjectDoc;
-import org.jsondoc.core.pojo.ApiVerb;
-import org.jsondoc.core.pojo.ApiVersionDoc;
-import org.jsondoc.core.pojo.JSONDoc;
+import org.jsondoc.core.pojo.*;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
@@ -145,6 +131,12 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		apiMethodDoc.setApierrors(ApiErrorDoc.build(method));
 		apiMethodDoc.setSupportedversions(ApiVersionDoc.build(method));
 		apiMethodDoc.setAuth(getApiAuthDocForMethod(method, method.getDeclaringClass()));
+
+		Api apiAnnotation = controller.getAnnotation(Api.class);
+		if(!apiAnnotation.visibility().name().equals(ApiVisibility.UNDEFINED.name()))
+			apiMethodDoc.setVisibility(apiAnnotation.visibility().getLabel());
+		if(!apiAnnotation.stage().name().equals(ApiStage.UNDEFINED.name()))
+			apiMethodDoc.setStage(apiAnnotation.stage().getLabel());
 
 		apiMethodDoc = mergeApiMethodDoc(method, controller, apiMethodDoc);
 		
