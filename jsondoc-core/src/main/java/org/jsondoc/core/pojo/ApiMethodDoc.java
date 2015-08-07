@@ -15,7 +15,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	public final String jsondocId = UUID.randomUUID().toString();
 	
 	private String path;
-	private ApiVerb[] verb;
+	private Set<ApiVerb> verb;
 	private Set<String> produces;
 	private Set<String> consumes;
 	private Set<ApiHeaderDoc> headers;
@@ -40,7 +40,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		apiMethodDoc.setPath(annotation.path());
 		apiMethodDoc.setSummary(annotation.summary());
 		apiMethodDoc.setDescription(annotation.description());
-		apiMethodDoc.setVerb(annotation.verb());
+		apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(annotation.verb())));
 		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
 		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(annotation.produces())));
 		apiMethodDoc.setResponsestatuscode(annotation.responsestatuscode());
@@ -84,11 +84,11 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.consumes = consumes;
 	}
 
-	public ApiVerb[] getVerb() {
+	public Set<ApiVerb> getVerb() {
 		return verb;
 	}
 
-	public void setVerb(ApiVerb[] verb) {
+	public void setVerb(Set<ApiVerb> verb) {
 		this.verb = verb;
 	}
 
@@ -209,14 +209,13 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		int i = this.path.compareTo(o.getPath());
 		if (i != 0)
 			return i;
-
-		Arrays.sort(this.verb);
-		Arrays.sort(o.getVerb());
-		if(Arrays.equals(this.verb, o.getVerb())) {
+		
+		if(this.verb.containsAll(o.getVerb()) && this.verb.size() == o.getVerb().size()) {
 			i = 0;
 		} else {
 			i = 1;
 		}
+
 		if (i != 0)
 			return i;
 		

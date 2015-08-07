@@ -51,11 +51,11 @@ public class SpringApiVerbDocTest {
 		Assert.assertEquals(2, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if (apiMethodDoc.getPath().equals("/api-verb/spring-api-verb-controller-method-one")) {
-				Assert.assertEquals(1, apiMethodDoc.getVerb().length);
-				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb()[0]);
+				Assert.assertEquals(1, apiMethodDoc.getVerb().size());
+				Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
 			}
 			if (apiMethodDoc.getPath().equals("/api-verb/spring-api-verb-controller-method-two")) {
-				Assert.assertEquals(2, apiMethodDoc.getVerb().length);
+				Assert.assertEquals(2, apiMethodDoc.getVerb().size());
 			}
 		}
 		
@@ -64,7 +64,7 @@ public class SpringApiVerbDocTest {
 		Assert.assertEquals(1, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if (apiMethodDoc.getPath().equals("/api-verb-2/spring-api-verb-controller-method-one")) {
-				Assert.assertEquals(2, apiMethodDoc.getVerb().length);
+				Assert.assertEquals(2, apiMethodDoc.getVerb().size());
 			}
 		}
 		

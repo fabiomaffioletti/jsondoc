@@ -218,7 +218,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			apiMethodDoc.addJsondocwarning(WARN_MISSING_METHOD_PRODUCES);
 		}
 		
-		if((apiMethodDoc.getVerb().equals(ApiVerb.POST) || apiMethodDoc.getVerb().equals(ApiVerb.PUT)) && apiMethodDoc.getConsumes().isEmpty()) {
+		if((apiMethodDoc.getVerb().contains(ApiVerb.POST) || apiMethodDoc.getVerb().contains(ApiVerb.PUT)) && apiMethodDoc.getConsumes().isEmpty()) {
 			apiMethodDoc.addJsondocwarning(WARN_MISSING_METHOD_CONSUMES);
 		}
 		

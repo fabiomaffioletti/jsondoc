@@ -79,7 +79,7 @@ public class JSONDocSpringJSONDocScannerTest {
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 				Assert.assertEquals("/api/string/{name}", apiMethodDoc.getPath());
-				Assert.assertEquals("POST", apiMethodDoc.getVerb()[0].name());
+				Assert.assertEquals("POST", apiMethodDoc.getVerb().iterator().next().name());
 				Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
 				Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
 				Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());

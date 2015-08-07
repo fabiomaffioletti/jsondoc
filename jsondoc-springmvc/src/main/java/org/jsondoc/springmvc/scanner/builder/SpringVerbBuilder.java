@@ -16,7 +16,7 @@ public class SpringVerbBuilder {
 	 * @param controller
 	 * @return
 	 */
-	public static ApiVerb[] buildVerb(Method method, Class<?> controller) {
+	public static Set<ApiVerb> buildVerb(Method method, Class<?> controller) {
 		Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
 		
 		if(controller.isAnnotationPresent(RequestMapping.class)) {
@@ -33,7 +33,7 @@ public class SpringVerbBuilder {
 			apiVerbs.add(ApiVerb.GET);
 		}
 		
-		return apiVerbs.toArray(new ApiVerb[apiVerbs.size()]);
+		return apiVerbs;
 	}
 
 	private static void getApiVerbFromRequestMapping(Set<ApiVerb> apiVerbs, RequestMapping requestMapping) {
