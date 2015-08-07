@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.annotation.ApiParams;
 import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
@@ -14,6 +15,7 @@ import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
+import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiParamType;
 import org.jsondoc.core.pojo.ApiResponseObjectDoc;
@@ -38,6 +40,11 @@ public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 			}
 		}
 		return annotatedMethods;
+	}
+	
+	@Override
+	public Set<Class<?>> jsondocObjects() {
+		return reflections.getTypesAnnotatedWith(ApiObject.class, true);
 	}
 
 	@Override
@@ -112,6 +119,22 @@ public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 		}
 
 		return docs;
+	}
+
+	@Override
+	public ApiObjectDoc initApiObjectDoc(Class<?> clazz) {
+		ApiObject annotation = clazz.getAnnotation(ApiObject.class);
+		return ApiObjectDoc.buildFromAnnotation(annotation, clazz);
+	}
+
+	@Override
+	public ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc) {
+		ApiObject annotation = clazz.getAnnotation(ApiObject.class);
+		if(annotation.show()) {
+			return apiObjectDoc;
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -11,6 +11,7 @@ import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -89,6 +90,21 @@ public class SpringQueryParamBuilderTest {
 		
 		@RequestMapping(value = "/two")
 		public void paramOne(@RequestParam @ApiQueryParam(name = "name") String name, @RequestParam @ApiQueryParam(name = "test") String test) {
+			
+		}
+		
+	}
+	
+	@Controller
+	@RequestMapping
+	public class SpringController5 {
+		
+		@RequestMapping(value = "/")
+		public void paramOne(@ModelAttribute(value = "modelAttributePojo") ModelAttributePojo modelAttributePojo) {
+			
+		}
+		
+		public class ModelAttributePojo {
 			
 		}
 		
@@ -178,6 +194,18 @@ public class SpringQueryParamBuilderTest {
 			}
 			if (apiMethodDoc.getPath().equals("/two")) {
 				Assert.assertEquals(2, apiMethodDoc.getQueryparameters().size());
+			}
+		}
+		
+		apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(SpringController5.class), MethodDisplay.URI).iterator().next();
+		Assert.assertEquals("SpringController5", apiDoc.getName());
+		Assert.assertEquals(1, apiDoc.getMethods().size());
+		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+			if (apiMethodDoc.getPath().equals("/")) {
+				Assert.assertEquals(1, apiMethodDoc.getQueryparameters().size());
+				ApiParamDoc param = apiMethodDoc.getQueryparameters().iterator().next();
+				Assert.assertEquals("modelAttributePojo", param.getName());
+				Assert.assertEquals("modelattributepojo", param.getJsondocType().getOneLineText());
 			}
 		}
 		

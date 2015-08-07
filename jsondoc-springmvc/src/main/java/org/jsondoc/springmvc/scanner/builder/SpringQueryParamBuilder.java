@@ -9,6 +9,7 @@ import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
@@ -55,31 +56,40 @@ public class SpringQueryParamBuilder {
 			}
 		}
 
-		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-		for (Annotation[] annotations : parameterAnnotations) {
+		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
+		for (int i = 0; i < parametersAnnotations.length; i++) {
 			RequestParam requestParam = null;
+			ModelAttribute modelAttribute = null;
 			ApiQueryParam apiQueryParam = null;
 			ApiParamDoc apiParamDoc = null;
-
-			for (Annotation annotation : annotations) {
+			
+			for (Annotation annotation : parametersAnnotations[i]) {
 				if (annotation instanceof RequestParam) {
 					requestParam = (RequestParam) annotation;
+				}
+				if(annotation instanceof ModelAttribute) {
+					modelAttribute = (ModelAttribute) annotation;
 				}
 				if (annotation instanceof ApiQueryParam) {
 					apiQueryParam = (ApiQueryParam) annotation;
 				}
-
+				
 				if (requestParam != null) {
-					apiParamDoc = new ApiParamDoc(requestParam.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
+					apiParamDoc = new ApiParamDoc(requestParam.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
 					mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
 				}
+				if(modelAttribute != null) {
+					apiParamDoc = new ApiParamDoc(modelAttribute.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), "false", new String[] {}, null, null);
+					mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
+				}
+				
 			}
 			
 			if(apiParamDoc != null) {
 				apiParamDocs.add(apiParamDoc);
 			}
 		}
-
+		
 		return apiParamDocs;
 	}
 

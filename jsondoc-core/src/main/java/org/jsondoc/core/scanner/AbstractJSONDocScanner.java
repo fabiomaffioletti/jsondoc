@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +15,6 @@ import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiFlow;
 import org.jsondoc.core.annotation.ApiFlowSet;
-import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.pojo.ApiAuthDoc;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiErrorDoc;
@@ -43,6 +43,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 
 	public abstract Set<Class<?>> jsondocControllers();
 	public abstract Set<Method> jsondocMethods(Class<?> controller);
+	public abstract Set<Class<?>> jsondocObjects();
 
 	public abstract ApiDoc initApiDoc(Class<?> controller);
 	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
@@ -50,7 +51,14 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	public abstract ApiMethodDoc initApiMethodDoc(Method method, Class<?> controller);
 	public abstract ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc);
 	
+	public abstract ApiObjectDoc initApiObjectDoc(Class<?> clazz);
+	public abstract ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc);
+	
 	protected List<ApiMethodDoc> allApiMethodDocs = new ArrayList<ApiMethodDoc>();
+	
+	protected Set<Class<?>> jsondocControllers = new LinkedHashSet<Class<?>>();
+	protected Set<Method> jsondocMethods = new LinkedHashSet<Method>();
+	protected Set<Class<?>> jsondocObjects = new LinkedHashSet<Class<?>>();
 	
 	/**
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
@@ -70,8 +78,12 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter).setUrls(urls));
 		
 		JSONDoc jsondocDoc = new JSONDoc(version, basePath);
-		jsondocDoc.setApis(getApiDocsMap(jsondocControllers(), displayMethodAs));
-		jsondocDoc.setObjects(getApiObjectsMap(reflections.getTypesAnnotatedWith(ApiObject.class, true)));
+		
+		jsondocControllers = jsondocControllers();
+		jsondocDoc.setApis(getApiDocsMap(jsondocControllers, displayMethodAs));
+		
+		jsondocObjects = jsondocObjects();
+		jsondocDoc.setObjects(getApiObjectsMap(jsondocObjects));
 		jsondocDoc.setFlows(getApiFlowDocsMap(reflections.getTypesAnnotatedWith(ApiFlowSet.class, true), allApiMethodDocs));
 		jsondocDoc.setPlaygroundEnabled(playgroundEnabled);
 		jsondocDoc.setDisplayMethodAs(displayMethodAs);
@@ -115,6 +127,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 			ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
 			apiMethodDocs.add(apiMethodDoc);
 		}
+		jsondocMethods.addAll(methods);
 		allApiMethodDocs.addAll(apiMethodDocs);
 		return apiMethodDocs;
 	}
@@ -237,13 +250,14 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		Set<ApiObjectDoc> apiObjectDocs = new TreeSet<ApiObjectDoc>();
 		for (Class<?> clazz : classes) {
 			log.debug("Getting JSONDoc for class: " + clazz.getName());
-			ApiObject annotation = clazz.getAnnotation(ApiObject.class);
-			ApiObjectDoc apiObjectDoc = ApiObjectDoc.buildFromAnnotation(annotation, clazz);
+			ApiObjectDoc apiObjectDoc = initApiObjectDoc(clazz);
+			
 			apiObjectDoc.setSupportedversions(ApiVersionDoc.build(clazz));
 			
-			apiObjectDoc = validateApiObjectDoc(apiObjectDoc);
+			apiObjectDoc = mergeApiObjectDoc(clazz, apiObjectDoc);
 			
-			if(annotation.show()) {
+			if(apiObjectDoc != null) {
+				apiObjectDoc = validateApiObjectDoc(apiObjectDoc);
 				apiObjectDocs.add(apiObjectDoc);
 			}
 		}

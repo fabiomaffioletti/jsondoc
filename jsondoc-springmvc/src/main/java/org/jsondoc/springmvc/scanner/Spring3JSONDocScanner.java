@@ -8,7 +8,8 @@ public class Spring3JSONDocScanner extends AbstractSpringJSONDocScanner {
 	
 	@Override
 	public Set<Class<?>> jsondocControllers() {
-		return reflections.getTypesAnnotatedWith(Controller.class, true);
+		Set<Class<?>> jsondocControllers = reflections.getTypesAnnotatedWith(Controller.class, true); 
+		return jsondocControllers;
 	}
 	
 }

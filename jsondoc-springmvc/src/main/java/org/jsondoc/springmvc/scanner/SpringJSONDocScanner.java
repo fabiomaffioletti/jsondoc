@@ -9,10 +9,9 @@ public class SpringJSONDocScanner extends AbstractSpringJSONDocScanner {
 	
 	@Override
 	public Set<Class<?>> jsondocControllers() {
-		Set<Class<?>> controllers = reflections.getTypesAnnotatedWith(Controller.class, true);
-		Set<Class<?>> restControllers = reflections.getTypesAnnotatedWith(RestController.class, true);
-		controllers.addAll(restControllers);
-		return controllers;
+		Set<Class<?>> jsondocControllers = reflections.getTypesAnnotatedWith(Controller.class, true);
+		jsondocControllers.addAll(reflections.getTypesAnnotatedWith(RestController.class, true));
+		return jsondocControllers;
 	}
 	
 }

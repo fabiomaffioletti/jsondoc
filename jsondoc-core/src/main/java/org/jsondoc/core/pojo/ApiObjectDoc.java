@@ -19,7 +19,8 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
-		super();
+		this.group = "";
+		this.fields = new TreeSet<ApiObjectFieldDoc>();
 	}
 
 	@SuppressWarnings("rawtypes")
