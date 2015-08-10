@@ -32,6 +32,10 @@ public class SpringPathBuilder {
 				pathStringBuffer.append(requestMapping.value()[0]);
 			}
 		}
+		
+		if(pathStringBuffer.length() == 0) {
+			pathStringBuffer.append("/");
+		}
 
 		return pathStringBuffer.toString();
 	}
