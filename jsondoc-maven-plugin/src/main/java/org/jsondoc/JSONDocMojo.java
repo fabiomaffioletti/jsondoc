@@ -1,12 +1,11 @@
 package org.jsondoc;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -100,7 +99,7 @@ public class JSONDocMojo extends AbstractMojo {
 			JSONDocScanner jsondocScanner = (JSONDocScanner) Class.forName(scanner).newInstance();
 			JSONDoc apiDoc = jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
 			String jsonApiDoc = mapper.writeValueAsString(apiDoc);
-			IOUtils.write(jsonApiDoc, new FileOutputStream(new File(outputFile)));
+			FileUtils.writeStringToFile(new File(outputFile), jsonApiDoc);
 			
 		} catch (Exception e) {
 			logger.error(e);
