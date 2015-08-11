@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public class SpringPathVariableBuilder {
 
-	public static Set<ApiParamDoc> buildPathVariable(Method method, Class<?> controller) {
+	public static Set<ApiParamDoc> buildPathVariable(Method method) {
 		Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<ApiParamDoc>();
 
 		Annotation[][] parametersAnnotations = method.getParameterAnnotations();

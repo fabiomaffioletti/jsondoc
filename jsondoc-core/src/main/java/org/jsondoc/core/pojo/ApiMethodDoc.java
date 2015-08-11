@@ -1,15 +1,12 @@
 package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
@@ -35,48 +32,29 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
-	private MethodDisplay displayMethodAs = MethodDisplay.URI;
-
-	public static ApiMethodDoc buildFromAnnotation(ApiMethod methodAnnotation, Api controllerAnnotation) {
-		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-		apiMethodDoc.setId(methodAnnotation.id());
-		apiMethodDoc.setPath(methodAnnotation.path());
-		apiMethodDoc.setSummary(methodAnnotation.summary());
-		apiMethodDoc.setDescription(methodAnnotation.description());
-		apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(methodAnnotation.verb())));
-		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.consumes())));
-		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.produces())));
-		apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
-		
-		if(methodAnnotation.visibility().equals(ApiVisibility.UNDEFINED)) {
-			apiMethodDoc.setVisibility(controllerAnnotation.visibility());
-		} else {
-			apiMethodDoc.setVisibility(methodAnnotation.visibility());
-		}
-		
-		if(methodAnnotation.stage().equals(ApiStage.UNDEFINED)) {
-			apiMethodDoc.setStage(controllerAnnotation.stage());
-		} else {
-			apiMethodDoc.setStage(methodAnnotation.stage());
-		}
-
-		return apiMethodDoc;
-	}
+	private MethodDisplay displayMethodAs;
 
 	public ApiMethodDoc() {
 		super();
 		this.id = null;
-		this.summary = "";
 		this.description = "";
+		this.summary = "";
+		this.path = "";
+		this.verb = new LinkedHashSet<ApiVerb>();
+		this.produces = new LinkedHashSet<String>();
+		this.consumes = new LinkedHashSet<String>();
 		this.headers = new LinkedHashSet<ApiHeaderDoc>();
 		this.pathparameters = new LinkedHashSet<ApiParamDoc>();
 		this.queryparameters = new LinkedHashSet<ApiParamDoc>();
-		this.apierrors = new ArrayList<ApiErrorDoc>();
-		this.produces = new LinkedHashSet<String>();
-		this.consumes = new LinkedHashSet<String>();
-		this.verb = new LinkedHashSet<ApiVerb>();
+		this.bodyobject = null;
+		this.response = null;
+		this.responsestatuscode = "";
 		this.visibility = ApiVisibility.UNDEFINED;
 		this.stage = ApiStage.UNDEFINED;
+		this.apierrors = new ArrayList<ApiErrorDoc>();
+		this.supportedversions = null;
+		this.auth = null;
+		this.displayMethodAs = MethodDisplay.URI; 
 	}
 
 	public Set<ApiHeaderDoc> getHeaders() {

@@ -16,8 +16,9 @@ public class SpringVerbBuilder {
 	 * @param controller
 	 * @return
 	 */
-	public static Set<ApiVerb> buildVerb(Method method, Class<?> controller) {
+	public static Set<ApiVerb> buildVerb(Method method) {
 		Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
+		Class<?> controller = method.getDeclaringClass();
 		
 		if(controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);

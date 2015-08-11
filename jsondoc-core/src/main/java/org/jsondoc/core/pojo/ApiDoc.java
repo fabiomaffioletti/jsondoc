@@ -4,33 +4,30 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import org.jsondoc.core.annotation.Api;
-
 public class ApiDoc implements Comparable<ApiDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
+
+	// properties that can be overridden by the values specified in the JSONDoc @Api annotation 
 	private String name;
 	private String description;
 	private ApiVisibility visibility;
 	private ApiStage stage;
 	private String group;
 	
+	// properties that cannot be overridden in the mergeApiDoc method
 	private Set<ApiMethodDoc> methods;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 
-	public static ApiDoc buildFromAnnotation(Api api) {
-		ApiDoc apiDoc = new ApiDoc();
-		apiDoc.setDescription(api.description());
-		apiDoc.setName(api.name());
-		apiDoc.setGroup(api.group());
-		apiDoc.setVisibility(api.visibility());
-		apiDoc.setStage(api.stage());
-		return apiDoc;
-	}
-
 	public ApiDoc() {
+		this.name = "";
+		this.description = "";
+		this.visibility = ApiVisibility.UNDEFINED;
+		this.stage = ApiStage.UNDEFINED;
 		this.group = "";
 		this.methods = new TreeSet<ApiMethodDoc>();
+		this.supportedversions = null;
+		this.auth = null;
 	}
 
 	public String getName() {
@@ -59,11 +56,6 @@ public class ApiDoc implements Comparable<ApiDoc> {
 
 	public void addMethod(ApiMethodDoc apiMethod) {
 		this.methods.add(apiMethod);
-	}
-
-	@Override
-	public int compareTo(ApiDoc o) {
-		return name.compareTo(o.getName());
 	}
 
 	public ApiVersionDoc getSupportedversions() {
@@ -104,6 +96,11 @@ public class ApiDoc implements Comparable<ApiDoc> {
 
 	public void setStage(ApiStage stage) {
 		this.stage = stage;
+	}
+	
+	@Override
+	public int compareTo(ApiDoc o) {
+		return name.compareTo(o.getName());
 	}
 
 }

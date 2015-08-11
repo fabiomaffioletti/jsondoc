@@ -1,12 +1,6 @@
 package org.jsondoc.core.pojo;
 
-import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
-
-import org.jsondoc.core.annotation.ApiHeader;
-import org.jsondoc.core.annotation.ApiHeaders;
 
 public class ApiHeaderDoc {
 	public final String jsondocId = UUID.randomUUID().toString();
@@ -15,31 +9,9 @@ public class ApiHeaderDoc {
 	private String[] allowedvalues;
 
 	public ApiHeaderDoc(String name, String description, String[] allowedvalues) {
-		super();
 		this.name = name;
 		this.description = description;
 		this.allowedvalues = allowedvalues;
-	}
-
-	public static Set<ApiHeaderDoc> build(Method method) {
-		Set<ApiHeaderDoc> docs = new LinkedHashSet<ApiHeaderDoc>();
-		
-		ApiHeaders methodAnnotation = method.getAnnotation(ApiHeaders.class);
-		ApiHeaders typeAnnotation = method.getDeclaringClass().getAnnotation(ApiHeaders.class);
-		
-		if(typeAnnotation != null) {
-			for (ApiHeader apiHeader : typeAnnotation.headers()) {
-				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
-			}
-		}
-
-		if (methodAnnotation != null) {
-			for (ApiHeader apiHeader : methodAnnotation.headers()) {
-				docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
-			}
-		}
-		
-		return docs;
 	}
 
 	public String getName() {

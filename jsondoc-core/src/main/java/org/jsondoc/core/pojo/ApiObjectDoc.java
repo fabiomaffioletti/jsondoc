@@ -1,15 +1,12 @@
 package org.jsondoc.core.pojo;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import org.jsondoc.core.annotation.ApiObject;
-import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.scanner.DefaultJSONDocScanner;
-import org.jsondoc.core.util.JSONDocTemplateBuilder;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
+	
 	private String name;
 	private String description;
 	private Set<ApiObjectFieldDoc> fields;
@@ -19,48 +16,13 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
-		this.group = "";
+		this.name = "";
+		this.description = "";
+		this.supportedversions = null;
+		this.allowedvalues = new String[]{};
 		this.fields = new TreeSet<ApiObjectFieldDoc>();
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static ApiObjectDoc buildFromAnnotation(ApiObject annotation, Class clazz) {
-		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
-
-		Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
-		for (Field field : clazz.getDeclaredFields()) {
-			if (field.getAnnotation(ApiObjectField.class) != null) {
-				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
-				fieldDoc.setSupportedversions(ApiVersionDoc.build(field));
-
-				fieldDocs.add(fieldDoc);
-			}
-		}
-
-		Class<?> c = clazz.getSuperclass();
-		if (c != null) {
-			if (c.isAnnotationPresent(ApiObject.class)) {
-				ApiObjectDoc objDoc = ApiObjectDoc.buildFromAnnotation(c.getAnnotation(ApiObject.class), c);
-				fieldDocs.addAll(objDoc.getFields());
-			}
-		}
-
-		if (clazz.isEnum()) {
-			apiObjectDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(clazz.getEnumConstants()));
-		}
-
-		if (annotation.name().trim().isEmpty()) {
-			apiObjectDoc.setName(clazz.getSimpleName().toLowerCase());
-		} else {
-			apiObjectDoc.setName(annotation.name());
-		}
-
-		apiObjectDoc.setDescription(annotation.description());
-		apiObjectDoc.setFields(fieldDocs);
-		apiObjectDoc.setGroup(annotation.group());
-
-		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
-		return apiObjectDoc;
+		this.group = "";
+		this.jsondocTemplate = null;
 	}
 
 	public String getName() {

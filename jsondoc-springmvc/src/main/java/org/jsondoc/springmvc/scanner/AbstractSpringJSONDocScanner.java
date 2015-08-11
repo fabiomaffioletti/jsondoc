@@ -5,12 +5,16 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiFlowSet;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.scanner.AbstractJSONDocScanner;
+import org.jsondoc.core.scanner.builder.JSONDocApiDocBuilder;
+import org.jsondoc.core.scanner.builder.JSONDocApiMethodDocBuilder;
+import org.jsondoc.core.scanner.builder.JSONDocApiObjectDocBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringConsumesBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringHeaderBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringPathBuilder;
@@ -41,6 +45,11 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public Set<Class<?>> jsondocObjects() {
 		return reflections.getTypesAnnotatedWith(ApiObject.class, true);
 	}
+	
+	@Override
+	public Set<Class<?>> jsondocFlows() {
+		return reflections.getTypesAnnotatedWith(ApiFlowSet.class, true);
+	}
 
 	/**
 	 * ApiDoc is initialized with the Controller's simple class name.
@@ -60,33 +69,31 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	 */
 	@Override
 	public ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc) {
-		if (controller.isAnnotationPresent(Api.class)) {
-			ApiDoc jsondocApiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
-			BeanUtils.copyProperties(jsondocApiDoc, apiDoc, new String[] { "methods", "supportedversions", "auth" });
-		}
+		ApiDoc jsondocApiDoc = JSONDocApiDocBuilder.build(controller);
+		BeanUtils.copyProperties(jsondocApiDoc, apiDoc, new String[] { "methods", "supportedversions", "auth" });
 		return apiDoc;
 	}
 
 	@Override
-	public ApiMethodDoc initApiMethodDoc(Method method, Class<?> controller) {
+	public ApiMethodDoc initApiMethodDoc(Method method) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-		apiMethodDoc.setVerb(SpringVerbBuilder.buildVerb(method, controller));
-		apiMethodDoc.setProduces(SpringProducesBuilder.buildProduces(method, controller));
-		apiMethodDoc.setConsumes(SpringConsumesBuilder.buildConsumes(method, controller));
-		apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
-		apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
-		apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(apiMethodDoc, method));
-		apiMethodDoc.setPath(SpringPathBuilder.buildPath(apiMethodDoc, method, controller));
-		apiMethodDoc.setQueryparameters(SpringQueryParamBuilder.buildQueryParams(method, controller));
-		apiMethodDoc.setPathparameters(SpringPathVariableBuilder.buildPathVariable(method, controller));
+		apiMethodDoc.setPath(SpringPathBuilder.buildPath(method));
+		apiMethodDoc.setVerb(SpringVerbBuilder.buildVerb(method));
+		apiMethodDoc.setProduces(SpringProducesBuilder.buildProduces(method));
+		apiMethodDoc.setConsumes(SpringConsumesBuilder.buildConsumes(method));
+		apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method));
+		apiMethodDoc.setPathparameters(SpringPathVariableBuilder.buildPathVariable(method));
+		apiMethodDoc.setQueryparameters(SpringQueryParamBuilder.buildQueryParams(method));
 		apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method));
+		apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
+		apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
 		return apiMethodDoc;
 	}
 
 	@Override
-	public ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc) {
-		if (method.isAnnotationPresent(ApiMethod.class) && controller.isAnnotationPresent(Api.class)) {
-			ApiMethodDoc jsondocApiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class), controller.getAnnotation(Api.class));
+	public ApiMethodDoc mergeApiMethodDoc(Method method, ApiMethodDoc apiMethodDoc) {
+		if (method.isAnnotationPresent(ApiMethod.class) && method.getDeclaringClass().isAnnotationPresent(Api.class)) {
+			ApiMethodDoc jsondocApiMethodDoc = JSONDocApiMethodDocBuilder.build(method);
 			BeanUtils.copyProperties(jsondocApiMethodDoc, apiMethodDoc, new String[] { "path", "verb", "produces", "consumes", "headers", "pathparameters", "queryparameters", "bodyobject", "response", "responsestatuscode", "apierrors", "supportedversions", "auth", "displayMethodAs" });
 		}
 		return apiMethodDoc;
@@ -94,8 +101,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 	@Override
 	public ApiObjectDoc initApiObjectDoc(Class<?> clazz) {
-		ApiObject annotation = clazz.getAnnotation(ApiObject.class);
-		return ApiObjectDoc.buildFromAnnotation(annotation, clazz);
+		return JSONDocApiObjectDocBuilder.build(clazz);
 	}
 
 	@Override

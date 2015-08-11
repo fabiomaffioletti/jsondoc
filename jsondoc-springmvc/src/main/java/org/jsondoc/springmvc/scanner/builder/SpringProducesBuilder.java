@@ -17,8 +17,9 @@ public class SpringProducesBuilder {
 	 * @param controller
 	 * @return
 	 */
-	public static Set<String> buildProduces(Method method, Class<?> controller) {
+	public static Set<String> buildProduces(Method method) {
 		Set<String> produces = new LinkedHashSet<String>();
+		Class<?> controller = method.getDeclaringClass();
 		
 		if(controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);

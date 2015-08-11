@@ -16,8 +16,9 @@ public class SpringConsumesBuilder {
 	 * @param controller
 	 * @return
 	 */
-	public static Set<String> buildConsumes(Method method, Class<?> controller) {
+	public static Set<String> buildConsumes(Method method) {
 		Set<String> consumes = new LinkedHashSet<String>();
+		Class<?> controller = method.getDeclaringClass();
 
 		if (controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);

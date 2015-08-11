@@ -2,7 +2,6 @@ package org.jsondoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Method;
 
-import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringPathBuilder {
@@ -16,8 +15,9 @@ public class SpringPathBuilder {
 	 * @param controller
 	 * @return
 	 */
-	public static String buildPath(ApiMethodDoc apiMethodDoc, Method method, Class<?> controller) {
+	public static String buildPath(Method method) {
 		StringBuffer pathStringBuffer = new StringBuffer();
+		Class<?> controller = method.getDeclaringClass();
 
 		if (controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
