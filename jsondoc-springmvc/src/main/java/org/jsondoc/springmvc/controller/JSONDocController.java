@@ -6,7 +6,7 @@ import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.jsondoc.springmvc.scanner.Spring3JSONDocScanner;
-import org.jsondoc.springmvc.scanner.SpringJSONDocScanner;
+import org.jsondoc.springmvc.scanner.Spring4JSONDocScanner;
 import org.springframework.core.SpringVersion;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class JSONDocController {
 		if(!springVersion.isEmpty()) {
 			Integer majorSpringVersion = Integer.parseInt(springVersion.split("\\.")[0]);
 			if(majorSpringVersion > SPRING_VERSION_3_X) {
-				this.jsondocScanner = new SpringJSONDocScanner();
+				this.jsondocScanner = new Spring4JSONDocScanner();
 			} else {
 				this.jsondocScanner = new Spring3JSONDocScanner();
 			}

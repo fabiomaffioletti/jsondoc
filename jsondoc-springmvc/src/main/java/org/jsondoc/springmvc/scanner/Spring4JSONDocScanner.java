@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
-public class SpringJSONDocScanner extends AbstractSpringJSONDocScanner {
+public class Spring4JSONDocScanner extends AbstractSpringJSONDocScanner {
 	
 	@Override
 	public Set<Class<?>> jsondocControllers() {
