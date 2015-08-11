@@ -62,7 +62,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc) {
 		if (controller.isAnnotationPresent(Api.class)) {
 			ApiDoc jsondocApiDoc = ApiDoc.buildFromAnnotation(controller.getAnnotation(Api.class));
-			BeanUtils.copyProperties(jsondocApiDoc, apiDoc, new String[] { "methods" });
+			BeanUtils.copyProperties(jsondocApiDoc, apiDoc, new String[] { "methods", "supportedversions", "auth" });
 		}
 		return apiDoc;
 	}
@@ -85,8 +85,8 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 	@Override
 	public ApiMethodDoc mergeApiMethodDoc(Method method, Class<?> controller, ApiMethodDoc apiMethodDoc) {
-		if (method.isAnnotationPresent(ApiMethod.class)) {
-			ApiMethodDoc jsondocApiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class));
+		if (method.isAnnotationPresent(ApiMethod.class) && controller.isAnnotationPresent(Api.class)) {
+			ApiMethodDoc jsondocApiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class), controller.getAnnotation(Api.class));
 			BeanUtils.copyProperties(jsondocApiMethodDoc, apiMethodDoc, new String[] { "path", "verb", "produces", "consumes", "headers", "pathparameters", "queryparameters", "bodyobject", "response", "responsestatuscode", "apierrors", "supportedversions", "auth", "displayMethodAs" });
 		}
 		return apiMethodDoc;
@@ -94,9 +94,8 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 	@Override
 	public ApiObjectDoc initApiObjectDoc(Class<?> clazz) {
-		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
-		apiObjectDoc.setName(clazz.getSimpleName());
-		return apiObjectDoc;
+		ApiObject annotation = clazz.getAnnotation(ApiObject.class);
+		return ApiObjectDoc.buildFromAnnotation(annotation, clazz);
 	}
 
 	@Override

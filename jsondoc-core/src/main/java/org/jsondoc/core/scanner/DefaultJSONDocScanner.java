@@ -54,7 +54,7 @@ public class DefaultJSONDocScanner extends AbstractJSONDocScanner {
 	
 	@Override
 	public ApiMethodDoc initApiMethodDoc(Method method, Class<?> controller) {
-		ApiMethodDoc apiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class)); 
+		ApiMethodDoc apiMethodDoc = ApiMethodDoc.buildFromAnnotation(method.getAnnotation(ApiMethod.class), controller.getAnnotation(Api.class)); 
 		apiMethodDoc.setHeaders(ApiHeaderDoc.build(method));
 		apiMethodDoc.setPathparameters(getApiPathParamDocs(method));
 		apiMethodDoc.setQueryparameters(getApiQueryParamDocs(method));

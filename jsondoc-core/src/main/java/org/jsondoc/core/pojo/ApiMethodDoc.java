@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
-	
+
 	private String path;
 	private Set<ApiVerb> verb;
 	private Set<String> produces;
@@ -24,26 +25,41 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private String responsestatuscode;
+	private ApiVisibility visibility;
+	private ApiStage stage;
 
 	private String id;
 	private String description;
 	private String summary;
-	
+
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
 	private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
-	public static ApiMethodDoc buildFromAnnotation(ApiMethod annotation) {
+	public static ApiMethodDoc buildFromAnnotation(ApiMethod methodAnnotation, Api controllerAnnotation) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-		apiMethodDoc.setId(annotation.id());
-		apiMethodDoc.setPath(annotation.path());
-		apiMethodDoc.setSummary(annotation.summary());
-		apiMethodDoc.setDescription(annotation.description());
-		apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(annotation.verb())));
-		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(annotation.consumes())));
-		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(annotation.produces())));
-		apiMethodDoc.setResponsestatuscode(annotation.responsestatuscode());
+		apiMethodDoc.setId(methodAnnotation.id());
+		apiMethodDoc.setPath(methodAnnotation.path());
+		apiMethodDoc.setSummary(methodAnnotation.summary());
+		apiMethodDoc.setDescription(methodAnnotation.description());
+		apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(methodAnnotation.verb())));
+		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.consumes())));
+		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.produces())));
+		apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
+		
+		if(methodAnnotation.visibility().equals(ApiVisibility.UNDEFINED)) {
+			apiMethodDoc.setVisibility(controllerAnnotation.visibility());
+		} else {
+			apiMethodDoc.setVisibility(methodAnnotation.visibility());
+		}
+		
+		if(methodAnnotation.stage().equals(ApiStage.UNDEFINED)) {
+			apiMethodDoc.setStage(controllerAnnotation.stage());
+		} else {
+			apiMethodDoc.setStage(methodAnnotation.stage());
+		}
+
 		return apiMethodDoc;
 	}
 
@@ -58,6 +74,9 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 		this.produces = new LinkedHashSet<String>();
 		this.consumes = new LinkedHashSet<String>();
+		this.verb = new LinkedHashSet<ApiVerb>();
+		this.visibility = ApiVisibility.UNDEFINED;
+		this.stage = ApiStage.UNDEFINED;
 	}
 
 	public Set<ApiHeaderDoc> getHeaders() {
@@ -197,11 +216,27 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	}
 
 	public String getDisplayedMethodString() {
-		if(displayMethodAs.equals(MethodDisplay.URI)) {
+		if (displayMethodAs.equals(MethodDisplay.URI)) {
 			return path;
 		} else {
 			return summary;
 		}
+	}
+
+	public ApiVisibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(ApiVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public ApiStage getStage() {
+		return stage;
+	}
+
+	public void setStage(ApiStage stage) {
+		this.stage = stage;
 	}
 
 	@Override
@@ -209,8 +244,8 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		int i = this.path.compareTo(o.getPath());
 		if (i != 0)
 			return i;
-		
-		if(this.verb.containsAll(o.getVerb()) && this.verb.size() == o.getVerb().size()) {
+
+		if (this.verb.containsAll(o.getVerb()) && this.verb.size() == o.getVerb().size()) {
 			i = 0;
 		} else {
 			i = 1;
@@ -218,18 +253,18 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
 		if (i != 0)
 			return i;
-		
-		if(this.queryparameters.size() == o.getQueryparameters().size()) {
+
+		if (this.queryparameters.size() == o.getQueryparameters().size()) {
 			Set<ApiParamDoc> bothQueryParameters = new HashSet<ApiParamDoc>();
 			bothQueryParameters.addAll(this.queryparameters);
 			bothQueryParameters.addAll(o.getQueryparameters());
-			if(bothQueryParameters.size() > this.queryparameters.size()) {
+			if (bothQueryParameters.size() > this.queryparameters.size()) {
 				i = 1;
 			}
 		} else {
 			i = 1;
 		}
-		
+
 		return i;
 	}
 

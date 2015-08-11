@@ -10,16 +10,21 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
 	private String name;
 	private String description;
+	private ApiVisibility visibility;
+	private ApiStage stage;
+	private String group;
+	
 	private Set<ApiMethodDoc> methods;
 	private ApiVersionDoc supportedversions;
 	private ApiAuthDoc auth;
-	private String group;
 
 	public static ApiDoc buildFromAnnotation(Api api) {
 		ApiDoc apiDoc = new ApiDoc();
 		apiDoc.setDescription(api.description());
 		apiDoc.setName(api.name());
 		apiDoc.setGroup(api.group());
+		apiDoc.setVisibility(api.visibility());
+		apiDoc.setStage(api.stage());
 		return apiDoc;
 	}
 
@@ -83,6 +88,22 @@ public class ApiDoc implements Comparable<ApiDoc> {
 
 	public void setGroup(String group) {
 		this.group = group;
+	}
+
+	public ApiVisibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(ApiVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public ApiStage getStage() {
+		return stage;
+	}
+
+	public void setStage(ApiStage stage) {
+		this.stage = stage;
 	}
 
 }

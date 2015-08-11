@@ -6,6 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility;
+
 /**
  * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
  * @author Fabio Maffioletti
@@ -34,4 +37,16 @@ public @interface Api {
 	 * @return
 	 */
 	public String group() default "";
+	
+	/**
+	 * Indicates the visibility of the API (i.e. PRIVATE or PUBLIC)
+	 * @return
+	 */
+	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
+
+	/**
+	 * Indicates the stage of development or release
+	 * @return
+	 */
+	public ApiStage stage() default ApiStage.UNDEFINED;
 }
