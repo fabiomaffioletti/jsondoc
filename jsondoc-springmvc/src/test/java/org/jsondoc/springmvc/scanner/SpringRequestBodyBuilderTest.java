@@ -48,11 +48,11 @@ public class SpringRequestBodyBuilderTest {
 		Assert.assertEquals("SpringController", apiDoc.getName());
 		Assert.assertEquals(2, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/body-one")) {
+			if (apiMethodDoc.getPath().contains("/body-one")) {
 				Assert.assertNotNull(apiMethodDoc.getBodyobject());
 				Assert.assertEquals("string", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 			}
-			if (apiMethodDoc.getPath().equals("/body-two")) {
+			if (apiMethodDoc.getPath().contains("/body-two")) {
 				Assert.assertNotNull(apiMethodDoc.getBodyobject());
 				Assert.assertEquals("body", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
 			}

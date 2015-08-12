@@ -66,17 +66,17 @@ public class SpringConsumesBuilderTest {
 		Assert.assertEquals("SpringController", apiDoc.getName());
 		Assert.assertEquals(3, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/consumes-one")) {
+			if (apiMethodDoc.getPath().contains("/consumes-one")) {
 				Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
 				Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getConsumes().iterator().next());
 			}
-			if (apiMethodDoc.getPath().equals("/consumes-two")) {
+			if (apiMethodDoc.getPath().contains("/consumes-two")) {
 				Assert.assertEquals(2, apiMethodDoc.getConsumes().size());
 				Iterator<String> iterator = apiMethodDoc.getConsumes().iterator();
 				Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
 				Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
 			}
-			if (apiMethodDoc.getPath().equals("/consumes-three")) {
+			if (apiMethodDoc.getPath().contains("/consumes-three")) {
 				Assert.assertEquals(0, apiMethodDoc.getConsumes().size());
 			}
 		}
@@ -85,17 +85,17 @@ public class SpringConsumesBuilderTest {
 		Assert.assertEquals("SpringController2", apiDoc.getName());
 		Assert.assertEquals(3, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/consumes-one")) {
+			if (apiMethodDoc.getPath().contains("/consumes-one")) {
 				Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
 				Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getConsumes().iterator().next());
 			}
-			if (apiMethodDoc.getPath().equals("/consumes-two")) {
+			if (apiMethodDoc.getPath().contains("/consumes-two")) {
 				Assert.assertEquals(2, apiMethodDoc.getConsumes().size());
 				Iterator<String> iterator = apiMethodDoc.getConsumes().iterator();
 				Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
 				Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
 			}
-			if (apiMethodDoc.getPath().equals("/consumes-three")) {
+			if (apiMethodDoc.getPath().contains("/consumes-three")) {
 				Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
 				Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, apiMethodDoc.getConsumes().iterator().next());
 			}

@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.jsondoc.core.annotation.ApiFlowStep;
 
+import com.google.common.collect.Sets;
+
 public class ApiFlowStepDoc {
 	public final String jsondocId = UUID.randomUUID().toString();
 	private String apimethodid;
@@ -24,7 +26,7 @@ public class ApiFlowStepDoc {
 		
 		if(apiFlowStepDoc.getApimethoddoc() == null) {
 			ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-			apiMethodDoc.setPath(String.format(ERROR_MISSING_METHOD_ID, annotation.apimethodid()));
+			apiMethodDoc.setPath(Sets.newHashSet(String.format(ERROR_MISSING_METHOD_ID, annotation.apimethodid())));
 			apiMethodDoc.addJsondocerror(String.format(ERROR_MISSING_METHOD_ID, annotation.apimethodid()));
 			apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_ID);
 			apiFlowStepDoc.setApimethoddoc(apiMethodDoc);

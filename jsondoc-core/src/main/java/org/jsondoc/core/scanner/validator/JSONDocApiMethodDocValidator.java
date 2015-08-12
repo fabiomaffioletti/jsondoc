@@ -6,6 +6,8 @@ import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.pojo.ApiVerb;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
+import com.google.common.collect.Sets;
+
 public class JSONDocApiMethodDocValidator {
 	
 	/**
@@ -28,15 +30,15 @@ public class JSONDocApiMethodDocValidator {
 		final String HINT_MISSING_METHOD_DESCRIPTION 		= "Add description to ApiMethod";
 		final String HINT_MISSING_METHOD_RESPONSE_OBJECT 	= "Add annotation ApiResponseObject to document the returned object";
 		final String HINT_MISSING_METHOD_SUMMARY 			= "Method display set to SUMMARY, but summary info has not been specified";
+		final String MESSAGE_MISSING_METHOD_SUMMARY			= "Missing documentation data: summary";
 		
-		if(apiMethodDoc.getPath().trim().isEmpty()) {
-			apiMethodDoc.setPath(ERROR_MISSING_METHOD_PATH);
+		if(apiMethodDoc.getPath().isEmpty()) {
+			apiMethodDoc.setPath(Sets.newHashSet(ERROR_MISSING_METHOD_PATH));
 			apiMethodDoc.addJsondocerror(ERROR_MISSING_METHOD_PATH);
 		}
 		
 		if(apiMethodDoc.getSummary().trim().isEmpty() && displayMethodAs.equals(MethodDisplay.SUMMARY)) {
-			// Fallback to path if summary is missing
-			apiMethodDoc.setSummary(apiMethodDoc.getPath());
+			apiMethodDoc.setSummary(MESSAGE_MISSING_METHOD_SUMMARY);
 			apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_SUMMARY);
 		}
 		

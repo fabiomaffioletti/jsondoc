@@ -31,7 +31,7 @@ public @interface ApiMethod {
 	 * The relative path for this method (ex. /country/get/{name})
 	 * @return
 	 */
-	public String path() default "";
+	public String[] path() default {};
 
 	/**
 	 * A summary of what the method does. It's like a short description.

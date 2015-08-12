@@ -1,4 +1,4 @@
-package org.jsondoc.core.doc.visibility;
+package org.jsondoc.core.scanner.builder;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 
-public class ApiVisibilityTest {
+public class JSONDocApiVisibilityBuilderTest {
 	
 	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
 	
@@ -49,11 +49,11 @@ public class ApiVisibilityTest {
 		Assert.assertEquals(ApiStage.BETA, apiDoc.getStage());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if(apiMethodDoc.getPath().equals("/inherit")) {
+			if(apiMethodDoc.getPath().contains("/inherit")) {
 				Assert.assertEquals(ApiVisibility.PUBLIC, apiMethodDoc.getVisibility());
 				Assert.assertEquals(ApiStage.BETA, apiMethodDoc.getStage());
 			}
-			if(apiMethodDoc.getPath().equals("/override")) {
+			if(apiMethodDoc.getPath().contains("/override")) {
 				Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
 				Assert.assertEquals(ApiStage.GA, apiMethodDoc.getStage());
 			}
@@ -64,7 +64,7 @@ public class ApiVisibilityTest {
 		Assert.assertEquals(ApiStage.UNDEFINED, apiDoc.getStage());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if(apiMethodDoc.getPath().equals("/only-method")) {
+			if(apiMethodDoc.getPath().contains("/only-method")) {
 				Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
 				Assert.assertEquals(ApiStage.DEPRECATED, apiMethodDoc.getStage());
 			}

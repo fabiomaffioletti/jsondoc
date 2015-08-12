@@ -183,7 +183,9 @@
 				{{#each verb}}
 					<span class="label pull-right verb {{this}}">{{this}}</span>
 				{{/each}}
-				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">{{displayedMethodString}}</a>
+				{{#each path}}
+					<a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{this}}</a><br/>	
+				{{/each}}
 			</h4>
 		</div>
 		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
@@ -199,7 +201,11 @@
 				<table class="table table-condensed table-bordered" style="table-layout: fixed;">
 					<tr>
 						<th style="width:18%;">Path</th>
-						<td><code>{{path}}</code></td>
+						<td>
+						{{#each path}}
+						<code>{{this}}</code><br/>
+						{{/each}}
+						</td>
 					</tr>
 					{{#if supportedversions}}
 						<tr>
@@ -430,12 +436,25 @@
 <script id="test" type="text/x-handlebars-template">
 <blockquote>
   <p style="text-transform: uppercase;">Playground</span></p>
-  <small>{{path}}</small>
+  <small>{{#each path}}{{this}}<br/>{{/each}}</small>
 </blockquote>
 
 <div class="row">
+	{{#if path}}
+		<div class="col-md-12" {{#compare path.length 1 operator="=="}} style="display:none;" {{/compare}}>
+			<h4>Request path</h4>
+			<div class="form-group">
+				<select class="form-control" id="requestPath">
+					{{#each path}}
+						<option value="{{this}}">{{this}}</option>
+					{{/each}}
+				</select>
+			</div>
+		</div>
+	{{/if}}
+
 	{{#if verb}}
-		<div class="col-md-12">
+		<div class="col-md-12" {{#compare verb.length 1 operator="=="}} style="display:none;" {{/compare}}>
 			<h4>Request method</h4>
 			<div class="form-group">
 				<select class="form-control" id="requestMethod">
@@ -853,6 +872,7 @@
 					
 					$("#testButton").click(function() {
 						var requestMethod = $("#requestMethod").val();
+						var requestPath = $("#requestPath").val();
 
 						var headers = new Object();
 						$("#headers input").each(function() {
@@ -867,7 +887,7 @@
 							}
 						}
 						
-						var replacedPath = method.path;
+						var replacedPath = requestPath;
 						var tempReplacedPath = replacedPath; // this is to handle more than one parameter on the url
 						
 						var validationErrors = [];

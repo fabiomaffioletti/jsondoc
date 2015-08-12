@@ -40,10 +40,10 @@ public class SpringResponseStatusBuilderTest {
 		Assert.assertEquals("SpringController", apiDoc.getName());
 		Assert.assertEquals(2, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/status-one")) {
+			if (apiMethodDoc.getPath().contains("/status-one")) {
 				Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
 			}
-			if (apiMethodDoc.getPath().equals("/status-two")) {
+			if (apiMethodDoc.getPath().contains("/status-two")) {
 				Assert.assertEquals("200 - OK", apiMethodDoc.getResponsestatuscode());
 			}
 		}

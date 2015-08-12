@@ -9,10 +9,12 @@ import java.util.UUID;
 
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 
+import com.google.common.collect.Sets;
+
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
 
-	private String path;
+	private Set<String> path;
 	private Set<ApiVerb> verb;
 	private Set<String> produces;
 	private Set<String> consumes;
@@ -39,7 +41,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.id = null;
 		this.description = "";
 		this.summary = "";
-		this.path = "";
+		this.path = new LinkedHashSet<String>();
 		this.verb = new LinkedHashSet<ApiVerb>();
 		this.produces = new LinkedHashSet<String>();
 		this.consumes = new LinkedHashSet<String>();
@@ -54,7 +56,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 		this.supportedversions = null;
 		this.auth = null;
-		this.displayMethodAs = MethodDisplay.URI; 
+		this.displayMethodAs = MethodDisplay.URI;
 	}
 
 	public Set<ApiHeaderDoc> getHeaders() {
@@ -89,11 +91,11 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.verb = verb;
 	}
 
-	public String getPath() {
+	public Set<String> getPath() {
 		return path;
 	}
 
-	public void setPath(String path) {
+	public void setPath(Set<String> path) {
 		this.path = path;
 	}
 
@@ -193,11 +195,11 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.displayMethodAs = displayMethodAs;
 	}
 
-	public String getDisplayedMethodString() {
+	public Set<String> getDisplayedMethodString() {
 		if (displayMethodAs.equals(MethodDisplay.URI)) {
 			return path;
 		} else {
-			return summary;
+			return Sets.newHashSet(summary);
 		}
 	}
 
@@ -219,7 +221,14 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
 	@Override
 	public int compareTo(ApiMethodDoc o) {
-		int i = this.path.compareTo(o.getPath());
+		int i;
+		
+		if (this.path.containsAll(o.getPath()) && this.path.size() == o.getPath().size()) {
+			i = 0;
+		} else {
+			i = 1;
+		}
+		
 		if (i != 0)
 			return i;
 

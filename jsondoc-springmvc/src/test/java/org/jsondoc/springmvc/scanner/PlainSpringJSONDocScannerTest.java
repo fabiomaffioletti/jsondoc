@@ -60,7 +60,7 @@ public class PlainSpringJSONDocScannerTest {
 			Assert.assertEquals("", apiMethodDoc.getSummary());
 			Assert.assertEquals("", apiMethodDoc.getDescription());
 			
-			if (apiMethodDoc.getPath().equals("/api/string/{name}")) {
+			if (apiMethodDoc.getPath().contains("/api/string/{name}")) {
 				Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
 				Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
 				Iterator<ApiHeaderDoc> headersIterator = headers.iterator();

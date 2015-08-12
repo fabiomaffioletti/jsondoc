@@ -43,7 +43,7 @@ public class SpringPathVariableBuilderTest {
 		Assert.assertEquals("SpringController", apiDoc.getName());
 		Assert.assertEquals(2, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/param-one/{id}/{string}")) {
+			if (apiMethodDoc.getPath().contains("/param-one/{id}/{string}")) {
 				Assert.assertEquals(2, apiMethodDoc.getPathparameters().size());
 				Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
 				ApiParamDoc id = iterator.next();
@@ -54,7 +54,7 @@ public class SpringPathVariableBuilderTest {
 				Assert.assertEquals("string", name.getJsondocType().getOneLineText());
 			}
 			
-			if (apiMethodDoc.getPath().equals("/param-one/{id}/{string}/{test}")) {
+			if (apiMethodDoc.getPath().contains("/param-one/{id}/{string}/{test}")) {
 				Assert.assertEquals(3, apiMethodDoc.getPathparameters().size());
 				Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
 				ApiParamDoc id = iterator.next();

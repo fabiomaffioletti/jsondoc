@@ -15,10 +15,10 @@ public class ApiMethodDocTest {
 	@Test
 	public void testNotEqual() {
 		first = new ApiMethodDoc();
-		first.setPath("/first");
+		first.setPath(Sets.newHashSet("/first"));
 		first.setVerb(Sets.newHashSet(ApiVerb.GET));
 		second = new ApiMethodDoc();
-		second.setPath("/second");
+		second.setPath(Sets.newHashSet("/second"));
 		second.setVerb(Sets.newHashSet(ApiVerb.GET));
 		Assert.assertNotEquals(0, first.compareTo(second));
 	}
@@ -26,10 +26,10 @@ public class ApiMethodDocTest {
 	@Test
 	public void testEqual() {
 		first = new ApiMethodDoc();
-		first.setPath("/test");
+		first.setPath(Sets.newHashSet("/test"));
 		first.setVerb(Sets.newHashSet(ApiVerb.GET));
 		second = new ApiMethodDoc();
-		second.setPath("/test");
+		second.setPath(Sets.newHashSet("/test"));
 		second.setVerb(Sets.newHashSet(ApiVerb.GET));
 		Assert.assertEquals(0, first.compareTo(second));
 	}
@@ -37,14 +37,14 @@ public class ApiMethodDocTest {
 	@Test
 	public void testNotEqualMultipleVerbs() {
 		first = new ApiMethodDoc();
-		first.setPath("/first");
+		first.setPath(Sets.newHashSet("/first"));
 		first.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
 		second = new ApiMethodDoc();
-		second.setPath("/second");
+		second.setPath(Sets.newHashSet("/second"));
 		second.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
 		Assert.assertNotEquals(0, first.compareTo(second));
 		
-		second.setPath("/first");
+		second.setPath(Sets.newHashSet("/first"));
 		second.setVerb(Sets.newHashSet(ApiVerb.PUT, ApiVerb.POST));
 		Assert.assertNotEquals(0, first.compareTo(second));
 	}
@@ -52,10 +52,10 @@ public class ApiMethodDocTest {
 	@Test
 	public void testEqualMultipleVerbs() {
 		first = new ApiMethodDoc();
-		first.setPath("/test");
+		first.setPath(Sets.newHashSet("/test"));
 		first.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
 		second = new ApiMethodDoc();
-		second.setPath("/test");
+		second.setPath(Sets.newHashSet("/test"));
 		second.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
 		Assert.assertEquals(0, first.compareTo(second));
 		

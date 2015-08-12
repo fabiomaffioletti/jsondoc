@@ -45,13 +45,13 @@ public class SpringResponseBuilderTest {
 		Assert.assertEquals("SpringController", apiDoc.getName());
 		Assert.assertEquals(3, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-			if (apiMethodDoc.getPath().equals("/response-one")) {
+			if (apiMethodDoc.getPath().contains("/response-one")) {
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
-			if (apiMethodDoc.getPath().equals("/response-two")) {
+			if (apiMethodDoc.getPath().contains("/response-two")) {
 				Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
-			if (apiMethodDoc.getPath().equals("/response-three")) {
+			if (apiMethodDoc.getPath().contains("/response-three")) {
 				Assert.assertEquals("map[string, integer]", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
 			}
 		}
