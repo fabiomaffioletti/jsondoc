@@ -12,6 +12,7 @@
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/handlebars.min.js"></script>
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/prettify.js"></script>
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jlinq.js"></script>
+<script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jsondoc.js"></script>
 
 <link rel="stylesheet" href="webjars/jsondoc-ui-webjar/css/bootstrap.min.css" >
 <link rel="stylesheet" href="webjars/jsondoc-ui-webjar/css/jsondoc.css" >
@@ -702,6 +703,11 @@
 			$("#jsondocfetch").hide();
 			$("#getDocButton").hide();
 			buildFromJSONDoc($.parseJSON(jsondoc));
+		}
+		
+		if($.urlParam('url') != null) {
+			$("#jsondocfetch").val($.urlParam('url'));
+			checkURLExistence();
 		}
 	});
 	

@@ -12,6 +12,7 @@
 <script type="text/javascript" src="js/handlebars-1.0.0.beta.6.js"></script>
 <script type="text/javascript" src="js/jlinq.js"></script>
 <script type="text/javascript" src="js/prettify.js"></script>
+<script type="text/javascript" src="js/jsondoc.js"></script>
 
 <link rel="stylesheet" href="css/bootstrap.min.css" >
 <link rel="stylesheet" href="css/jsondoc.css" >
@@ -703,6 +704,11 @@
 			$("#jsondocfetch").hide();
 			$("#getDocButton").hide();
 			buildFromJSONDoc($.parseJSON(jsondoc));
+		}
+		
+		if($.urlParam('url') != null) {
+			$("#jsondocfetch").val($.urlParam('url'));
+			checkURLExistence();
 		}
 	});
 	
