@@ -11,8 +11,8 @@ public class JSONDocApiDocBuilder {
 		apiDoc.setDescription(api.description());
 		apiDoc.setName(api.name());
 		apiDoc.setGroup(api.group());
-		apiDoc.setVisibility(api.visibility());
-		apiDoc.setStage(api.stage());
+		apiDoc.setVisibility(api.visibility().getLabel());
+		apiDoc.setStage(api.stage().getLabel());
 		return apiDoc;
 	}
 

@@ -28,15 +28,15 @@ public class JSONDocApiMethodDocBuilder {
 		apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
 		
 		if(methodAnnotation.visibility().equals(ApiVisibility.UNDEFINED)) {
-			apiMethodDoc.setVisibility(controllerAnnotation.visibility());
+			apiMethodDoc.setVisibility(controllerAnnotation.visibility().getLabel());
 		} else {
-			apiMethodDoc.setVisibility(methodAnnotation.visibility());
+			apiMethodDoc.setVisibility(methodAnnotation.visibility().getLabel());
 		}
 		
 		if(methodAnnotation.stage().equals(ApiStage.UNDEFINED)) {
-			apiMethodDoc.setStage(controllerAnnotation.stage());
+			apiMethodDoc.setStage(controllerAnnotation.stage().getLabel());
 		} else {
-			apiMethodDoc.setStage(methodAnnotation.stage());
+			apiMethodDoc.setStage(methodAnnotation.stage().getLabel());
 		}
 		
 		apiMethodDoc.setHeaders(JSONDocApiHeaderDocBuilder.build(method));

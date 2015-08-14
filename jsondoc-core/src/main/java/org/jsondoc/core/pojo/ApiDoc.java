@@ -10,8 +10,8 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	// properties that can be overridden by the values specified in the JSONDoc @Api annotation 
 	private String name;
 	private String description;
-	private ApiVisibility visibility;
-	private ApiStage stage;
+	private String visibility;
+	private String stage;
 	private String group;
 	
 	// properties that cannot be overridden in the mergeApiDoc method
@@ -22,8 +22,8 @@ public class ApiDoc implements Comparable<ApiDoc> {
 	public ApiDoc() {
 		this.name = "";
 		this.description = "";
-		this.visibility = ApiVisibility.UNDEFINED;
-		this.stage = ApiStage.UNDEFINED;
+		this.visibility = ApiVisibility.UNDEFINED.getLabel();
+		this.stage = ApiStage.UNDEFINED.getLabel();
 		this.group = "";
 		this.methods = new TreeSet<ApiMethodDoc>();
 		this.supportedversions = null;
@@ -82,22 +82,22 @@ public class ApiDoc implements Comparable<ApiDoc> {
 		this.group = group;
 	}
 
-	public ApiVisibility getVisibility() {
+	public String getVisibility() {
 		return visibility;
 	}
 
-	public void setVisibility(ApiVisibility visibility) {
+	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
 
-	public ApiStage getStage() {
+	public String getStage() {
 		return stage;
 	}
 
-	public void setStage(ApiStage stage) {
+	public void setStage(String stage) {
 		this.stage = stage;
 	}
-	
+
 	@Override
 	public int compareTo(ApiDoc o) {
 		return name.compareTo(o.getName());

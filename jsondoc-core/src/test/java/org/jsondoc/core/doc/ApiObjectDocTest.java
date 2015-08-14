@@ -11,6 +11,8 @@ import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
@@ -20,7 +22,7 @@ public class ApiObjectDocTest {
 	
 	private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
 	
-	@ApiObject(name="test-object")
+	@ApiObject(name="test-object", visibility = ApiVisibility.PUBLIC, stage = ApiStage.PRE_ALPHA)
 	@ApiVersion(since = "1.0", until = "2.12")
 	private class TestObject {
 		
@@ -88,7 +90,21 @@ public class ApiObjectDocTest {
 		@ApiObjectField
 		private String name;
 	}
-	
+
+	@ApiObject
+	private class UndefinedVisibilityAndStage {
+	}
+
+	@Test
+	public void testUndefinedVisibilityAndStageDoc() {
+		Set<Class<?>> classes = new HashSet<Class<?>>();
+		classes.add(UndefinedVisibilityAndStage.class);
+		ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+		Assert.assertEquals("undefinedvisibilityandstage", apiObjectDoc.getName());
+		Assert.assertEquals(ApiVisibility.UNDEFINED.getLabel(), apiObjectDoc.getVisibility());
+		Assert.assertEquals(ApiStage.UNDEFINED.getLabel(), apiObjectDoc.getStage());
+	}
+
 	@Test
 	public void testTemplateApiObjectDoc() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -132,6 +148,8 @@ public class ApiObjectDocTest {
 		Assert.assertEquals(14, childDoc.getFields().size());
 		Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());
 		Assert.assertEquals("2.12", childDoc.getSupportedversions().getUntil());
+		Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), childDoc.getVisibility());
+		Assert.assertEquals(ApiStage.PRE_ALPHA.getLabel(), childDoc.getStage());
 		
 		for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
 			if(fieldDoc.getName().equals("wildcardParametrized")) {
