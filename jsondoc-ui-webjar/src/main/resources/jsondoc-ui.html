@@ -650,6 +650,24 @@
 			</tr>
 		{{/if}}	
 	{{/if}}
+	{{#if visibility}}
+		{{#equal visibility "UNDEFINED"}}
+		{{else}}
+		<tr>
+			<th>Visibility</th>
+			<td>{{visibility}}</td>
+		</tr>
+		{{/equal}}
+	{{/if}}
+	{{#if stage}}
+		{{#equal stage "UNDEFINED"}}
+		{{else}}
+		<tr>
+			<th>Stage</th>
+			<td>{{stage}}</td>
+		</tr>
+		{{/equal}}
+	{{/if}}
 	{{#if allowedvalues}}
 		<tr><td></td><td>Allowed values: {{allowedvalues}}</td></tr>
 	{{/if}}

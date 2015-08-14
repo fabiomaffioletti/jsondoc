@@ -1,5 +1,8 @@
 package org.jsondoc.core.annotation;
 
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -42,5 +45,16 @@ public @interface ApiObject {
 	 * @return
 	 */
 	public String group() default "";
-	
+
+	/**
+	 * Indicates the visibility of the API (i.e. PRIVATE or PUBLIC)
+	 * @return
+	 */
+	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
+
+	/**
+	 * Indicates the stage of development or release
+	 * @return
+	 */
+	public ApiStage stage() default ApiStage.UNDEFINED;
 }

@@ -12,12 +12,16 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	private Set<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
+	private String visibility;
+	private String stage;
 	private String group;
 	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
 		this.name = "";
 		this.description = "";
+		this.visibility = ApiVisibility.UNDEFINED.getLabel();
+		this.stage = ApiStage.UNDEFINED.getLabel();
 		this.supportedversions = null;
 		this.allowedvalues = new String[]{};
 		this.fields = new TreeSet<ApiObjectFieldDoc>();
@@ -39,6 +43,22 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getStage() {
+		return stage;
+	}
+
+	public void setStage(String stage) {
+		this.stage = stage;
 	}
 
 	public Set<ApiObjectFieldDoc> getFields() {

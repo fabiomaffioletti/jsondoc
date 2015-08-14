@@ -45,28 +45,28 @@ public class JSONDocApiVisibilityBuilderTest {
 	@Test
 	public void testApiVisibility() {
 		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(Controller.class), MethodDisplay.URI).iterator().next();
-		Assert.assertEquals(ApiVisibility.PUBLIC, apiDoc.getVisibility());
-		Assert.assertEquals(ApiStage.BETA, apiDoc.getStage());
+		Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), apiDoc.getVisibility());
+		Assert.assertEquals(ApiStage.BETA.getLabel(), apiDoc.getStage());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if(apiMethodDoc.getPath().contains("/inherit")) {
-				Assert.assertEquals(ApiVisibility.PUBLIC, apiMethodDoc.getVisibility());
-				Assert.assertEquals(ApiStage.BETA, apiMethodDoc.getStage());
+				Assert.assertEquals(ApiVisibility.PUBLIC.getLabel(), apiMethodDoc.getVisibility());
+				Assert.assertEquals(ApiStage.BETA.getLabel(), apiMethodDoc.getStage());
 			}
 			if(apiMethodDoc.getPath().contains("/override")) {
-				Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
-				Assert.assertEquals(ApiStage.GA, apiMethodDoc.getStage());
+				Assert.assertEquals(ApiVisibility.PRIVATE.getLabel(), apiMethodDoc.getVisibility());
+				Assert.assertEquals(ApiStage.GA.getLabel(), apiMethodDoc.getStage());
 			}
 		}
 		
 		apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(Controller2.class), MethodDisplay.URI).iterator().next();
-		Assert.assertEquals(ApiVisibility.UNDEFINED, apiDoc.getVisibility());
-		Assert.assertEquals(ApiStage.UNDEFINED, apiDoc.getStage());
+		Assert.assertEquals(ApiVisibility.UNDEFINED.getLabel(), apiDoc.getVisibility());
+		Assert.assertEquals(ApiStage.UNDEFINED.getLabel(), apiDoc.getStage());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if(apiMethodDoc.getPath().contains("/only-method")) {
-				Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
-				Assert.assertEquals(ApiStage.DEPRECATED, apiMethodDoc.getStage());
+				Assert.assertEquals(ApiVisibility.PRIVATE.getLabel(), apiMethodDoc.getVisibility());
+				Assert.assertEquals(ApiStage.DEPRECATED.getLabel(), apiMethodDoc.getStage());
 			}
 		}
 		

@@ -24,8 +24,8 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private ApiBodyObjectDoc bodyobject;
 	private ApiResponseObjectDoc response;
 	private String responsestatuscode;
-	private ApiVisibility visibility;
-	private ApiStage stage;
+	private String visibility;
+	private String stage;
 
 	private String id;
 	private String description;
@@ -51,8 +51,8 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.bodyobject = null;
 		this.response = null;
 		this.responsestatuscode = "";
-		this.visibility = ApiVisibility.UNDEFINED;
-		this.stage = ApiStage.UNDEFINED;
+		this.visibility = ApiVisibility.UNDEFINED.getLabel();
+		this.stage = ApiStage.UNDEFINED.getLabel();
 		this.apierrors = new ArrayList<ApiErrorDoc>();
 		this.supportedversions = null;
 		this.auth = null;
@@ -203,19 +203,19 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		}
 	}
 
-	public ApiVisibility getVisibility() {
+	public String getVisibility() {
 		return visibility;
 	}
 
-	public void setVisibility(ApiVisibility visibility) {
+	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
 
-	public ApiStage getStage() {
+	public String getStage() {
 		return stage;
 	}
 
-	public void setStage(ApiStage stage) {
+	public void setStage(String stage) {
 		this.stage = stage;
 	}
 

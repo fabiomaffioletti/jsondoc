@@ -47,6 +47,8 @@ public class JSONDocApiObjectDocBuilder {
 		}
 
 		apiObjectDoc.setDescription(apiObject.description());
+		apiObjectDoc.setStage(apiObject.stage().getLabel());
+		apiObjectDoc.setVisibility(apiObject.visibility().getLabel());
 		apiObjectDoc.setFields(fieldDocs);
 		apiObjectDoc.setGroup(apiObject.group());
 
