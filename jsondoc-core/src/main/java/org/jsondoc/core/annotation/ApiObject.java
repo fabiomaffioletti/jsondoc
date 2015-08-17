@@ -6,6 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility;
+
 /**
  * This annotation is to be used on your object classes and represents an object used for communication between clients and server
  * @author Fabio Maffioletti
@@ -42,5 +45,17 @@ public @interface ApiObject {
 	 * @return
 	 */
 	public String group() default "";
+	
+	/**
+	 * Indicates the visibility of the object
+	 * @return
+	 */
+	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
+
+	/**
+	 * Indicates the stage of development or release
+	 * @return
+	 */
+	public ApiStage stage() default ApiStage.UNDEFINED;
 	
 }

@@ -39,7 +39,7 @@ public @interface Api {
 	public String group() default "";
 	
 	/**
-	 * Indicates the visibility of the API (i.e. PRIVATE or PUBLIC)
+	 * Indicates the visibility of the api
 	 * @return
 	 */
 	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;

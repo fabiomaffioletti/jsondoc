@@ -6,22 +6,26 @@ import java.util.UUID;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
-	
+
 	private String name;
 	private String description;
 	private Set<ApiObjectFieldDoc> fields;
 	private ApiVersionDoc supportedversions;
 	private String[] allowedvalues;
 	private String group;
+	private ApiVisibility visibility;
+	private ApiStage stage;
 	private JSONDocTemplate jsondocTemplate;
 
 	public ApiObjectDoc() {
 		this.name = "";
 		this.description = "";
 		this.supportedversions = null;
-		this.allowedvalues = new String[]{};
+		this.allowedvalues = new String[] {};
 		this.fields = new TreeSet<ApiObjectFieldDoc>();
 		this.group = "";
+		this.visibility = ApiVisibility.UNDEFINED;
+		this.stage = ApiStage.UNDEFINED;
 		this.jsondocTemplate = null;
 	}
 
@@ -79,6 +83,22 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
 	public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
 		this.jsondocTemplate = jsondocTemplate;
+	}
+
+	public ApiVisibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(ApiVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public ApiStage getStage() {
+		return stage;
+	}
+
+	public void setStage(ApiStage stage) {
+		this.stage = stage;
 	}
 
 	@Override

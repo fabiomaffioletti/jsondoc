@@ -70,7 +70,7 @@ public @interface ApiMethod {
 	public String responsestatuscode() default "200 - OK";
 	
 	/**
-	 * Indicates the visibility of the API (i.e. PRIVATE or PUBLIC)
+	 * Indicates the visibility of the method
 	 * @return
 	 */
 	public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
