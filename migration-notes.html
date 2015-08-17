@@ -7,7 +7,11 @@ title: Migration notes
 <h4>Changes in the jsondoc maven plugin</h4>
 <p>If you were using this scanner <code>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</code>, you now need to change it to one of the following <code>org.jsondoc.springmvc.scanner.Spring3JSONDocScanner</code> or <code>org.jsondoc.springmvc.scanner.Spring4JSONDocScanner</code> depending on the Spring version you have on the classpath.</p>
 <h4>Optional code changes</h4>
-<p>if using Spring MVC, you can now get most of the documentation from the Spring's annotations, so you could optionally remove some of the JSONDoc annotations to keep your code clean.</p>
+<p>
+	<ul>
+		<li>if using Spring MVC, you can now get most of the documentation from the Spring's annotations, so you could optionally remove some of the JSONDoc annotations to keep your code clean.</li>
+		<li>you can now distribute the link of the docs using the <code>url</code> query parameter containing the jsondoc path, for example in this way: <code>http://localhost:8080/jsondoc-ui.html?url=http://localhost:8080/jsondoc</code>. In this way JSONDoc will be automatically loaded without typing anything in the UI input box.</li>
+	</ul></p>
 
 <h3 class="spaced">How to migrate from 1.1.6 to 1.1.7+</h3>
 <h4>Changes in the jsondoc-ui module</h4>
