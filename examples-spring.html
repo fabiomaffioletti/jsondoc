@@ -3,73 +3,52 @@ layout: default
 title: Examples - Spring framework
 ---
 
+<h3>With plain Spring MVC annotations</h3>
+<p>JSONDoc will extract as much as possible from Spring's annotations like <code>@Controller</code>, <code>@RestController</code>, <code>@RequestMapping</code>, <code>@PathVariable</code> and so on. No additional JSONDoc annotation is needed to document your rest services. It is still needed to annotate objects' classes with JSONDoc's <code>@ApiObject</code> annotation to document them. If you want to produce a richer documentation, you can annotate your controllers and methods with JSONDoc's annotations, that will integrate Spring's ones. Example: </p>
 
-<h3>Annotation on a Spring MVC controller</h3>
+{% highlight java %}
+package org.jsondoc.sample.controller;
+
+@Controller // or @RestController
+@RequestMapping(value = "/cities")
+public class CityApi {
+
+	@RequestMapping(value = "/{name}")
+	public @ResponseBody City getCityByName(@PathVariable(value = "name") String name) {
+        // ...
+	}
+
+}
+{% endhighlight %}
+
+<h3 class="spaced">Integrated with JSONDoc annotations</h3>
 <p>Here is an example on how to use JSONDoc annotations on your <i> Spring MVC controller</i> classes:</p>
 
 {% highlight java %}
 package org.jsondoc.sample.controller;
 
 import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility
 
-@Api(name = "city services", description = "Methods for managing cities")
-@Controller // or @RestController
-public class CityApi {
-        // ...
-}
-{% endhighlight %}
-
-<p>This is the minimum required to let JSONDoc know that there is an API to be documented. You can enrich the documentation by using other annotations:</p>
-
-{% highlight java %}
-package org.jsondoc.sample.controller;
-
-import org.jsondoc.core.annotation.Api;
-
-@Api(name = "city services", description = "Methods for managing cities", group = "Geography")
+@Api(name = "city services", description = "Methods for managing cities", group = "Geography", visibility = ApiVisibility.PUBLIC, stage = ApiStage.RC)
 @ApiVersion(since = "1.0", until = "2.12")
 @ApiAuthNone
 @Controller // or @RestController
+@RequestMapping(value = "/cities", 
 public class CityApi {
-        // ...
+
+	@ApiMethod
+	@RequestMapping(value = "/{name}", 
+			method = RequestMethod.GET, 
+			produces = { MediaType.APPLICATION_JSON_VALUE }, 
+			consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public @ApiResponseObject @ResponseBody City getCityByName(@ApiPathParam(description = "The name of the city") @PathVariable(value = "name") String name) {
+	        // ...
+	}
+
 }
 {% endhighlight %}
-
-
-<h3 class="spaced">Annotations for exposed methods of a Spring MVC controller class</h3>
-<p>Here is an example on how to use JSONDoc annotations on your Spring MVC api methods:</p>
-
-{% highlight java %}
-package org.jsondoc.sample.controller;
-
-import org.jsondoc.core.annotation.ApiError;
-import org.jsondoc.core.annotation.ApiErrors;
-import org.jsondoc.core.annotation.ApiMethod;
-import org.jsondoc.core.annotation.ApiParam;
-import org.jsondoc.core.annotation.ApiResponseObject;
-import org.jsondoc.core.pojo.ApiVerb;
-
-// ...
-
-@ApiMethod
-@RequestMapping(value = "/city/get/{name}", 
-		method = RequestMethod.GET, 
-		produces = { MediaType.APPLICATION_JSON_VALUE }, 
-		consumes = { MediaType.APPLICATION_JSON_VALUE })
-public @ApiResponseObject @ResponseBody City getCityByName(@ApiPathParam @PathVariable(value = "name") String name) {
-        // ...
-}
-{% endhighlight %}
-
-<p>Notes:</p>
-<ul>
-	<li>JSONDoc will try to understand all the possible information from Spring's annotations and merge them with the JSONDoc ones</li>
-	<li>The result is that you write much less text in the JSONDoc annotations, and the result is a cleaner code</li>
-	<li>If the same information is found on both a JSONDoc and a Spring annotation, then the Spring's one wins and overrides the JSONDoc one</li>
-	<li>If some needed information is missing, then an error/warning/hint is shown in JSONDoc UI</lI>
-</ul>
-
-<p>Also in this case you can enrich the documentation by using annotation properties and other annotations: refer to the annotations' page and standalone examples for more info.</p>
 
 <script type="text/javascript">
 	$('#examples-spring').addClass('active');

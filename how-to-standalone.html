@@ -50,7 +50,7 @@ public class JSONDocController {
 		this.version = version;
 		this.basePath = basePath;
 		this.packages = packages;
-		this.jsondocScanner = new SpringJSONDocScanner();
+		this.jsondocScanner = new Spring3JSONDocScanner();
 	}
 
 	@RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

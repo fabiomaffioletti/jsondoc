@@ -1,9 +1,15 @@
 ---
 layout: default
-title: Migrate from 1.0.9
+title: Migration notes
 ---
 
-<h3>How to migrate from 1.1.6 to 1.1.7+</h3>
+<h3>How to migrate from 1.1.16 to 1.2.0</h3>
+<h4>Changes in the jsondoc maven plugin</h4>
+<p>If you were using this scanner <code>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</code>, you now need to change it to one of the following <code>org.jsondoc.springmvc.scanner.Spring3JSONDocScanner</code> or <code>org.jsondoc.springmvc.scanner.Spring4JSONDocScanner</code> depending on the Spring version you have on the classpath.</p>
+<h4>Optional code changes</h4>
+<p>if using Spring MVC, you can now get most of the documentation from the Spring's annotations, so you could optionally remove some of the JSONDoc annotations to keep your code clean.</p>
+
+<h3 class="spaced">How to migrate from 1.1.6 to 1.1.7+</h3>
 <h4>Changes in the jsondoc-ui module</h4>
 <p>The page <code>jsondoc.jsp</code> has been changed to <code>jsondoc-ui.html</code>. </p>
 

@@ -32,10 +32,11 @@ mvn jsondoc:generate
 {% endhighlight %}
 
 <div class="alert alert-info">
-	<p>The <code>scanner</code> configuration property is useful if you want to use a different implementation of the <code>JSONDocScanner</code> interface. Currently there is offical support for two implementations:</p>
+	<p>The <code>scanner</code> configuration property is useful if you want to use a different implementation of the <code>JSONDocScanner</code> interface. Currently there is offical support for three implementations:</p>
 	<ul>
-		<li>org.jsondoc.core.scanner.DefaultJSONDocScanner</li>
-		<li>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</li>
+		<li>org.jsondoc.core.scanner.DefaultJSONDocScanner</li> <!-- For JSONDoc standalone projects -->
+		<li>org.jsondoc.springmvc.scanner.Spring3JSONDocScanner</li> <!-- For projects using Spring MVC version 3.x -->
+		<li>org.jsondoc.springmvc.scanner.Spring4JSONDocScanner</li> <!-- For projects using Spring MVC version 4.x -->
 	</ul>
 </div>
 
