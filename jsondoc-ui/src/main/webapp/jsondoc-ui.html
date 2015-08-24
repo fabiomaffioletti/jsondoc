@@ -714,11 +714,12 @@
 <script>
 	var model;
 	var jsondoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
+	console.debug(jsondoc);
 	
 	$(document).ready(function() {
 		// This is to check if the _JSONDOC_OFFLINE_PLACEHOLDER_ has been replaced with content coming from
 		// the result of the jsondoc-maven-plugin
-		if(jsondoc.split('_').length != 5) {
+		if(jsondoc != "\"_JSONDOC_OFFLINE_PLACEHOLDER_\"") {
 			$("#jsondocfetch").hide();
 			$("#getDocButton").hide();
 			buildFromJSONDoc($.parseJSON(jsondoc));
