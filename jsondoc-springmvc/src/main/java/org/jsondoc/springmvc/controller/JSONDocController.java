@@ -39,7 +39,13 @@ public class JSONDocController {
 				this.jsondocScanner = new Spring3JSONDocScanner();
 			}
 		} else {
-			this.jsondocScanner = new Spring3JSONDocScanner();
+			try {
+				Class.forName("org.springframework.web.bind.annotation.RestController");
+				this.jsondocScanner = new Spring4JSONDocScanner();
+				
+			} catch (ClassNotFoundException e) {
+				this.jsondocScanner = new Spring3JSONDocScanner();
+			}
 		}
 	}
 
