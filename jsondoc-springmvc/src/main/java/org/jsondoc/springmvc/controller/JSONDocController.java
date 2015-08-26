@@ -31,7 +31,7 @@ public class JSONDocController {
 		this.basePath = basePath;
 		this.packages = packages;
 		String springVersion = SpringVersion.getVersion();
-		if(!springVersion.isEmpty()) {
+		if(springVersion != null && !springVersion.isEmpty()) {
 			Integer majorSpringVersion = Integer.parseInt(springVersion.split("\\.")[0]);
 			if(majorSpringVersion > SPRING_VERSION_3_X) {
 				this.jsondocScanner = new Spring4JSONDocScanner();
