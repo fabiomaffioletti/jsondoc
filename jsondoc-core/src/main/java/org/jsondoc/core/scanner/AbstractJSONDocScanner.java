@@ -20,8 +20,10 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
+import org.jsondoc.core.pojo.global.ApiGlobalDoc;
 import org.jsondoc.core.scanner.builder.JSONDocApiAuthDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiErrorDocBuilder;
+import org.jsondoc.core.scanner.builder.JSONDocApiGlobalDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiVersionDocBuilder;
 import org.jsondoc.core.scanner.validator.JSONDocApiMethodDocValidator;
 import org.jsondoc.core.scanner.validator.JSONDocApiObjectDocValidator;
@@ -42,6 +44,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	public abstract Set<Method> jsondocMethods(Class<?> controller);
 	public abstract Set<Class<?>> jsondocObjects();
 	public abstract Set<Class<?>> jsondocFlows();
+	public abstract Set<Class<?>> jsondocGlobal();
 
 	public abstract ApiDoc initApiDoc(Class<?> controller);
 	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
@@ -58,6 +61,7 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	protected Set<Method>   jsondocMethods = new LinkedHashSet<Method>();
 	protected Set<Class<?>> jsondocObjects = new LinkedHashSet<Class<?>>();
 	protected Set<Class<?>> jsondocFlows = new LinkedHashSet<Class<?>>();
+	protected Set<Class<?>> jsondocGlobal = new LinkedHashSet<Class<?>>();
 	
 	/**
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
@@ -89,7 +93,14 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		jsondocFlows = jsondocFlows();
 		jsondocDoc.setFlows(getApiFlowDocsMap(jsondocFlows, allApiMethodDocs));
 		
+		jsondocGlobal = jsondocGlobal();
+		jsondocDoc.setGlobal(getApiGlobalDoc(jsondocGlobal));
+		
 		return jsondocDoc;
+	}
+	
+	public ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> classes) {
+		return JSONDocApiGlobalDocBuilder.build(classes);
 	}
 	
 	/**

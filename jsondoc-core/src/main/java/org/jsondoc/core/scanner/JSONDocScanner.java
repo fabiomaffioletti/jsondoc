@@ -9,6 +9,7 @@ import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
+import org.jsondoc.core.pojo.global.ApiGlobalDoc;
 
 public interface JSONDocScanner {
 	
@@ -19,5 +20,7 @@ public interface JSONDocScanner {
 	Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes);
 
 	Set<ApiFlowDoc> getApiFlowDocs(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs);
+
+	ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> classes);
 	
 }

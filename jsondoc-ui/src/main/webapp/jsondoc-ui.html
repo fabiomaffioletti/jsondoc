@@ -46,46 +46,10 @@
 				<div id="maindiv" style="display:none;"></div>
 				
 				<div class="panel-group" id="side-accordion" aria-multiselectable="true" style="display: none;">
-					
-					<div class="panel panel-default">
-						<div class="panel-heading" id="panel-apis">
-							<h4 class="panel-title">
-								<a id="panel-apis" href="#_panel-apis" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-apis" aria-expanded="true">API</a>
-							</h4>
-						</div>
-						<div id="_panel-apis" class="panel-collapse collapse in" aria-labelledby="panel-apis">
-							<div class="panel-body">
-								<div id="apidiv"></div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="panel panel-default">
-						<div class="panel-heading" id="panel-objects">
-							<h4 class="panel-title">
-								<a id="panel-objects" href="#_panel-objects" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-objects" aria-expanded="true">Objects</a>
-							</h4>
-						</div>
-						<div id="_panel-objects" class="panel-collapse collapse" aria-labelledby="panel-objects">
-							<div class="panel-body">
-								<div id="objectdiv"></div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="panel panel-default">
-						<div class="panel-heading" id="panel-flows">
-							<h4 class="panel-title">
-								<a id="panel-flows" href="#_panel-flows" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-flows" aria-expanded="true">Flows</a>
-							</h4>
-						</div>
-						<div id="_panel-flows" class="panel-collapse collapse" aria-labelledby="panel-flows">
-							<div class="panel-body">
-								<div id="flowdiv"></div>
-							</div>
-						</div>
-					</div>
-					
+					<div id="globaldiv"></div>
+					<div id="apidiv"></div>
+					<div id="objectdiv"></div>
+					<div id="flowdiv"></div>
 				</div>
 				
 			</div>
@@ -108,55 +72,187 @@
 </blockquote>
 </script>
 
+<script id="global" type="text/x-handlebars-template">
+{{#if global}}
+<div class="panel-heading" id="panel-global">
+	<h4 class="panel-title">
+		<a id="panel-global" href="#_panel-global" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-global" aria-expanded="true">Overview</a>
+	</h4>
+</div>
+<div id="_panel-global" class="panel-collapse collapse in" aria-labelledby="panel-global">
+	<div class="panel-body">
+		<ul class="list-unstyled">
+			<li><a href="#" id="_overview">Global documentation</a></li>
+			{{#if global.changelogs}}
+				<li><a href="#" id="_changelogs">Changelog</a></li>
+			{{/if}}
+			{{#if global.migrations}}
+				<li><a href="#" id="_migrations">Migration notes</a></li>
+			{{/if}}
+		</ul>
+	</div>
+</div>
+{{/if}}
+</script>
+
 <script id="apis" type="text/x-handlebars-template">
 {{#if apis}}
-{{#eachInMap apis}}
-	<ul class="list-unstyled">
-		{{#if key}}
-		<li style="text-transform: uppercase;">{{key}}</li>
-		{{/if}}
-		{{#each value}}
-			<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
-		{{/each}}
-	</ul>
-{{/eachInMap}}
-{{else}}
-<p>No api documented</p>
+<div class="panel-heading" id="panel-apis">
+	<h4 class="panel-title">
+		<a id="panel-apis" href="#_panel-apis" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-apis" aria-expanded="true">API</a>
+	</h4>
+</div>
+<div id="_panel-apis" class="panel-collapse collapse in" aria-labelledby="panel-apis">
+	<div class="panel-body">
+		{{#eachInMap apis}}
+			<ul class="list-unstyled">
+				{{#if key}}
+				<li style="text-transform: uppercase;">{{key}}</li>
+				{{/if}}
+				{{#each value}}
+					<li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
+				{{/each}}
+			</ul>
+		{{/eachInMap}}
+	</div>
+</div>
 {{/if}}
 </script>
 
 <script id="objects" type="text/x-handlebars-template">
 {{#if objects}}
-{{#eachInMap objects}}
-	<ul class="list-unstyled">
-		{{#if key}}
-		<li style="text-transform: uppercase;">{{key}}</li>
-		{{/if}}
-		{{#each value}}
-			<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
-		{{/each}}
-	</ul>
-{{/eachInMap}}
-{{else}}
-<p>No object documented</p>
+<div class="panel-heading" id="panel-objects">
+	<h4 class="panel-title">
+		<a id="panel-objects" href="#_panel-objects" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-objects" aria-expanded="true">Objects</a>
+	</h4>
+</div>
+<div id="_panel-objects" class="panel-collapse collapse" aria-labelledby="panel-objects">
+	<div class="panel-body">
+		{{#eachInMap objects}}
+			<ul class="list-unstyled">
+				{{#if key}}
+				<li style="text-transform: uppercase;">{{key}}</li>
+				{{/if}}
+				{{#each value}}
+					<li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
+				{{/each}}
+			</ul>
+		{{/eachInMap}}
+	</div>
+</div>
 {{/if}}
 </script>
 
 <script id="flows" type="text/x-handlebars-template">
 {{#if flows}}
-{{#eachInMap flows}}
-	<ul class="list-unstyled">
-		{{#if key}}
-		<li style="text-transform: uppercase;">{{key}}</li>
-		{{/if}}
-		{{#each value}}
-			<li><a href="#" id="{{jsondocId}}" rel="flow">{{name}}</a></li>
-		{{/each}}
-	</ul>
-{{/eachInMap}}
-{{else}}
-<p>No flow documented</p>
+<div class="panel-heading" id="panel-flows">
+	<h4 class="panel-title">
+		<a id="panel-flows" href="#_panel-flows" data-toggle="collapse" data-parent="#side-accordion" aria-controls="_panel-flows" aria-expanded="true">Flows</a>
+	</h4>
+</div>
+<div id="_panel-flows" class="panel-collapse collapse" aria-labelledby="panel-flows">
+	<div class="panel-body">
+		{{#eachInMap flows}}
+			<ul class="list-unstyled">
+				{{#if key}}
+				<li style="text-transform: uppercase;">{{key}}</li>
+				{{/if}}
+				{{#each value}}
+					<li><a href="#" id="{{jsondocId}}" rel="flow">{{name}}</a></li>
+				{{/each}}
+			</ul>
+		{{/eachInMap}}
+	</div>
+</div>
 {{/if}}
+</script>
+
+<script id="overviewdiv" type="text/x-handlebars-template">
+<blockquote>
+  <p style="text-transform: uppercase;"><span id="apiName">Global documentation</span></p>
+  <small><span id="apiDescription">Documentation valid for the whole application</span></small>
+</blockquote>
+
+{{#if globalVerbs}}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	<div class="panel panel-default">
+		<div class="panel-heading" id="{{jsondocId}}">
+			<h4 class="panel-title">
+				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">HTTP Verbs</a><br/>	
+			</h4>
+		</div>
+		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+			<div class="panel-body">
+				<table class="table table-condensed table-bordered" style="table-layout: fixed;">
+					{{#each globalVerbs}}
+					<tr>
+						<td style="width:18%;"><code>{{this.verb}}</code></td>
+						<td>{{this.description}}</td>
+					</tr>
+					{{/each}}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{{/if}}
+
+</script>
+
+<script id="changelogsdiv" type="text/x-handlebars-template">
+<blockquote>
+  <p style="text-transform: uppercase;"><span id="apiName">Changelog</span></p>
+  <small><span id="apiDescription">Global list of changes</span></small>
+</blockquote>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	{{#changelogs}}
+	<div class="panel panel-default">
+		<div class="panel-heading" id="{{jsondocId}}">
+			<h4 class="panel-title">
+				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">Version {{version}}</a><br/>	
+			</h4>
+		</div>
+		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+			<div class="panel-body">
+				<ul style="padding-left: 20px;">
+					{{#each changes}}
+					<li>{{{this}}}</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+	{{/changelogs}}
+</div>
+</script>
+
+<script id="migrationsdiv" type="text/x-handlebars-template">
+<blockquote>
+  <p style="text-transform: uppercase;"><span id="apiName">Migration notes</span></p>
+  <small><span id="apiDescription">List of steps to migrate from one version to another</span></small>
+</blockquote>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	{{#migrations}}
+	<div class="panel panel-default">
+		<div class="panel-heading" id="{{jsondocId}}">
+			<h4 class="panel-title">
+				<a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">From version {{fromVersion}} to version {{toVersion}}</a><br/>	
+			</h4>
+		</div>
+		<div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+			<div class="panel-body">
+				<ul style="padding-left: 20px;">
+					{{#each steps}}
+					<li>{{{this}}}</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+	{{/migrations}}
+</div>
 </script>
 
 <script id="methods" type="text/x-handlebars-template">
@@ -714,7 +810,6 @@
 <script>
 	var model;
 	var jsondoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
-	console.debug(jsondoc);
 	
 	$(document).ready(function() {
 		// This is to check if the _JSONDOC_OFFLINE_PLACEHOLDER_ has been replaced with content coming from
@@ -993,11 +1088,51 @@
 		var mainHTML = main(data);
 		$("#maindiv").html(mainHTML);
 		
-		var apis = Handlebars.compile($("#apis").html());
-		var apisHTML = apis(data);
-		$("#apidiv").html(apisHTML);
+		if(data.global) {
+			var global = Handlebars.compile($("#global").html());
+			var globalHTML = global(data);
+			$("#globaldiv").html(globalHTML);
+			$("#globaldiv").addClass("panel panel-default");
+
+			$("#_overview").click(function() {
+				var overview = Handlebars.compile($("#overviewdiv").html());
+				var overviewHTML = overview(data.global);
+				$("#content").html(overviewHTML);
+				$("#content").show();
+				$("#testContent").hide();
+			});
+
+			if(data.global.changelogs.length > 0) {
+				$("#_changelogs").click(function() {
+					var changelogs = Handlebars.compile($("#changelogsdiv").html());
+					var changelogsHTML = changelogs(data.global);
+					$("#content").html(changelogsHTML);
+					$("#content").show();
+					$("#testContent").hide();
+				});
+			}
+			if(data.global.migrations.length > 0) {
+				$("#_migrations").click(function() {
+					var migrations = Handlebars.compile($("#migrationsdiv").html());
+					var migrationsHTML = migrations(data.global);
+					$("#content").html(migrationsHTML);
+					$("#content").show();
+					$("#testContent").hide();
+				});
+			}
+		}
 		
 		if(data.apis) {
+			var apis = Handlebars.compile($("#apis").html());
+			var apisHTML = apis(data);
+			$("#apidiv").html(apisHTML);
+			$("#apidiv").addClass("panel panel-default");
+
+			if(data.global) {
+				// if global documentation is found, then it needs to be expanded by default, this is why the "in" class is removed from the api panel.
+				$("#_panel-apis").removeClass("in");
+			}
+
 			// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
 			var plainApis = [];
 			$.each(data.apis, function(i, v) {
@@ -1026,11 +1161,12 @@
 			});
 		}
 		
-		var objects = Handlebars.compile($("#objects").html());
-		var objectsHTML = objects(data);
-		$("#objectdiv").html(objectsHTML);
-		
 		if(data.objects) {
+			var objects = Handlebars.compile($("#objects").html());
+			var objectsHTML = objects(data);
+			$("#objectdiv").html(objectsHTML);
+			$("#objectdiv").addClass("panel panel-default");
+
 			// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
 			var plainObjects = [];
 			$.each(data.objects, function(i, v) {
@@ -1047,11 +1183,12 @@
 			});
 		}
 		
-		var flows = Handlebars.compile($("#flows").html());
-		var flowsHTML = flows(data);
-		$("#flowdiv").html(flowsHTML);
-		
 		if(data.flows) {
+			var flows = Handlebars.compile($("#flows").html());
+			var flowsHTML = flows(data);
+			$("#flowdiv").html(flowsHTML);
+			$("#flowdiv").addClass("panel panel-default");
+
 			// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
 			var plainFlows = [];
 			$.each(data.flows, function(i, v) {

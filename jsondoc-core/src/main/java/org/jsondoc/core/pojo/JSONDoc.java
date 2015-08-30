@@ -3,6 +3,8 @@ package org.jsondoc.core.pojo;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsondoc.core.pojo.global.ApiGlobalDoc;
+
 public class JSONDoc {
 	private String version;
 	private String basePath;
@@ -12,6 +14,7 @@ public class JSONDoc {
 	private Map<String, Set<ApiObjectDoc>> objects;
 	// The key is the group these flows belongs to. It can be empty.
 	private Map<String, Set<ApiFlowDoc>> flows;
+	private ApiGlobalDoc global;
 	private boolean playgroundEnabled;
 	private MethodDisplay displayMethodAs;
 
@@ -81,9 +84,17 @@ public class JSONDoc {
 		this.displayMethodAs = displayMethodAs;
 	}
 
+	public ApiGlobalDoc getGlobal() {
+		return global;
+	}
+
+	public void setGlobal(ApiGlobalDoc global) {
+		this.global = global;
+	}
+
 	@Override
 	public String toString() {
-		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
+		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
 	}
 
 }
