@@ -4,11 +4,13 @@ import java.util.Set;
 
 import org.jsondoc.core.annotation.global.ApiChangelog;
 import org.jsondoc.core.annotation.global.ApiGlobal;
+import org.jsondoc.core.annotation.global.ApiGlobalHeader;
 import org.jsondoc.core.annotation.global.ApiGlobalResponseStatusCode;
 import org.jsondoc.core.annotation.global.ApiGlobalVerb;
 import org.jsondoc.core.annotation.global.ApiMigration;
 import org.jsondoc.core.pojo.global.ApiChangelogDoc;
 import org.jsondoc.core.pojo.global.ApiGlobalDoc;
+import org.jsondoc.core.pojo.global.ApiGlobalHeaderDoc;
 import org.jsondoc.core.pojo.global.ApiGlobalResponseStatusCodeDoc;
 import org.jsondoc.core.pojo.global.ApiGlobalVerbDoc;
 import org.jsondoc.core.pojo.global.ApiMigrationDoc;
@@ -28,6 +30,14 @@ public class JSONDocApiGlobalDocBuilder {
 				apiGlobalVerbDoc.setVerb(apiGlobalVerb.verb());
 				apiGlobalVerbDoc.setDescription(apiGlobalVerb.description());
 				apiGlobalDoc.addGlobalverb(apiGlobalVerbDoc);
+			}
+			
+			for (ApiGlobalHeader apiGlobalHeader : apiGlobal.globalheaders()) {
+				ApiGlobalHeaderDoc apiGlobalHeaderDoc = new ApiGlobalHeaderDoc();
+				apiGlobalHeaderDoc.setHeadername(apiGlobalHeader.headername());
+				apiGlobalHeaderDoc.setHeadervalue(apiGlobalHeader.headervalue());
+				apiGlobalHeaderDoc.setDescription(apiGlobalHeader.description());
+				apiGlobalDoc.addGlobalheader(apiGlobalHeaderDoc);
 			}
 			
 			for (ApiGlobalResponseStatusCode apiGlobalResponseStatusCode : apiGlobal.globalresponsestatuscodes()) {

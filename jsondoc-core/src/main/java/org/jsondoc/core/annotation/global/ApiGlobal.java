@@ -19,6 +19,8 @@ public @interface ApiGlobal {
 	
 	public ApiGlobalVerb[] globalverbs() default {};
 	
+	public ApiGlobalHeader[] globalheaders() default {};
+	
 	public ApiGlobalResponseStatusCode[] globalresponsestatuscodes() default {};
 	
 	public ApiChangelog[] changelogs() default {};

@@ -7,6 +7,8 @@ public class ApiGlobalDoc {
 
 	private Set<ApiGlobalVerbDoc> globalverbs;
 
+	private Set<ApiGlobalHeaderDoc> globalheaders;
+
 	private Set<ApiGlobalResponseStatusCodeDoc> globalresponsestatuscodes;
 
 	private Set<ApiChangelogDoc> changelogs;
@@ -15,6 +17,7 @@ public class ApiGlobalDoc {
 
 	public ApiGlobalDoc() {
 		globalverbs = new LinkedHashSet<ApiGlobalVerbDoc>();
+		globalheaders = new LinkedHashSet<ApiGlobalHeaderDoc>();
 		globalresponsestatuscodes = new LinkedHashSet<ApiGlobalResponseStatusCodeDoc>();
 		changelogs = new LinkedHashSet<ApiChangelogDoc>();
 		migrations = new LinkedHashSet<ApiMigrationDoc>();
@@ -52,6 +55,14 @@ public class ApiGlobalDoc {
 		this.globalresponsestatuscodes = globalresponsestatuscodes;
 	}
 
+	public Set<ApiGlobalHeaderDoc> getGlobalheaders() {
+		return globalheaders;
+	}
+
+	public void setGlobalheaders(Set<ApiGlobalHeaderDoc> globalheaders) {
+		this.globalheaders = globalheaders;
+	}
+
 	public void addChangelog(ApiChangelogDoc apiChangelogDoc) {
 		this.changelogs.add(apiChangelogDoc);
 	}
@@ -68,4 +79,8 @@ public class ApiGlobalDoc {
 		this.globalresponsestatuscodes.add(apiGlobalResponseStatusCodeDoc);
 	}
 	
+	public void addGlobalheader(ApiGlobalHeaderDoc apiGlobalHeaderDoc) {
+		this.globalheaders.add(apiGlobalHeaderDoc);
+	}
+
 }
