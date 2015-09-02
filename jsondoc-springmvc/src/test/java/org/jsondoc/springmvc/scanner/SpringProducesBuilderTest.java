@@ -77,7 +77,9 @@ public class SpringProducesBuilderTest {
 				Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
 			}
 			if (apiMethodDoc.getPath().contains("/produces-three")) {
-				Assert.assertEquals(0, apiMethodDoc.getProduces().size());
+				Assert.assertEquals(1, apiMethodDoc.getProduces().size());
+				String produces = apiMethodDoc.getProduces().iterator().next();
+				Assert.assertEquals("application/json", produces);
 			}
 		}
 		

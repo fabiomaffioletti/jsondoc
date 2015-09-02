@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -34,6 +35,10 @@ public class SpringProducesBuilder {
 				produces.clear();
 				produces.addAll(Arrays.asList(requestMapping.produces()));
 			}
+		}
+		
+		if(produces.isEmpty()) {
+			produces.add(MediaType.APPLICATION_JSON_VALUE);
 		}
 		
 		return produces;
