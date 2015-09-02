@@ -45,6 +45,8 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	public abstract Set<Class<?>> jsondocObjects();
 	public abstract Set<Class<?>> jsondocFlows();
 	public abstract Set<Class<?>> jsondocGlobal();
+	public abstract Set<Class<?>> jsondocChangelogs();
+	public abstract Set<Class<?>> jsondocMigrations();
 
 	public abstract ApiDoc initApiDoc(Class<?> controller);
 	public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
@@ -62,6 +64,8 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 	protected Set<Class<?>> jsondocObjects = new LinkedHashSet<Class<?>>();
 	protected Set<Class<?>> jsondocFlows = new LinkedHashSet<Class<?>>();
 	protected Set<Class<?>> jsondocGlobal = new LinkedHashSet<Class<?>>();
+	protected Set<Class<?>> jsondocChangelogs = new LinkedHashSet<Class<?>>();
+	protected Set<Class<?>> jsondocMigrations = new LinkedHashSet<Class<?>>();
 	
 	/**
 	 * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
@@ -94,13 +98,15 @@ public abstract class AbstractJSONDocScanner implements JSONDocScanner {
 		jsondocDoc.setFlows(getApiFlowDocsMap(jsondocFlows, allApiMethodDocs));
 		
 		jsondocGlobal = jsondocGlobal();
-		jsondocDoc.setGlobal(getApiGlobalDoc(jsondocGlobal));
+		jsondocChangelogs = jsondocChangelogs();
+		jsondocMigrations = jsondocMigrations();
+		jsondocDoc.setGlobal(getApiGlobalDoc(jsondocGlobal, jsondocChangelogs, jsondocMigrations));
 		
 		return jsondocDoc;
 	}
 	
-	public ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> classes) {
-		return JSONDocApiGlobalDocBuilder.build(classes);
+	public ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> global, Set<Class<?>> changelogs, Set<Class<?>> migrations) {
+		return JSONDocApiGlobalDocBuilder.build(global, changelogs, migrations);
 	}
 	
 	/**

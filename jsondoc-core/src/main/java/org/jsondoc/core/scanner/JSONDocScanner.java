@@ -21,6 +21,6 @@ public interface JSONDocScanner {
 
 	Set<ApiFlowDoc> getApiFlowDocs(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs);
 
-	ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> classes);
+	ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> global, Set<Class<?>> changelogs, Set<Class<?>> migrations);
 	
 }

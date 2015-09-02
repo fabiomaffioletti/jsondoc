@@ -8,7 +8,9 @@ import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiFlowSet;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.global.ApiChangelogSet;
 import org.jsondoc.core.annotation.global.ApiGlobal;
+import org.jsondoc.core.annotation.global.ApiMigrationSet;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
@@ -113,6 +115,16 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	@Override
 	public Set<Class<?>> jsondocGlobal() {
 		return reflections.getTypesAnnotatedWith(ApiGlobal.class, true);
+	}
+	
+	@Override
+	public Set<Class<?>> jsondocChangelogs() {
+		return reflections.getTypesAnnotatedWith(ApiChangelogSet.class, true);
+	}
+
+	@Override
+	public Set<Class<?>> jsondocMigrations() {
+		return reflections.getTypesAnnotatedWith(ApiMigrationSet.class, true);
 	}
 
 }

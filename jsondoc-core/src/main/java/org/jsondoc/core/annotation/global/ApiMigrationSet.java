@@ -7,27 +7,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used inside an annotation of type ApiGlobal
+ * This annotation has to be used on a class dedicated to migrations documentation
  * 
- * @see ApiGlobal
  * @author Fabio Maffioletti
  * 
  */
 @Documented
 @Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGlobalResponseStatusCode {
+public @interface ApiMigrationSet {
 
 	/**
-	 * The response status code (200 - OK, 201 - CREATED, ...)
+	 * Array of @ApiMigration annotations
 	 * @return
 	 */
-	public String code();
-	
-	/**
-	 * When and for what reason this code is returned by your api 
-	 * @return
-	 */
-	public String description();
-	
+
+	public ApiMigration[] migrations();
+
 }

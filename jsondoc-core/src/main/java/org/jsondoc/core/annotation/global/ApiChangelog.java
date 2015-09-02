@@ -7,14 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used inside an annotation of type ApiGlobal
+ * This annotation is to be used inside an annotation of type ApiChangelogSet
  * 
- * @see ApiGlobal
+ * @see ApiChangelogSet
  * @author Fabio Maffioletti
  * 
  */
 @Documented
-@Target(value = ElementType.TYPE)
+@Target(value = ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiChangelog {
 

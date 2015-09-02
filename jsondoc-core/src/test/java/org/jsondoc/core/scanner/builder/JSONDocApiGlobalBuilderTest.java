@@ -1,13 +1,13 @@
 package org.jsondoc.core.scanner.builder;
 
-import java.util.Iterator;
-
 import org.jsondoc.core.annotation.global.ApiChangelog;
+import org.jsondoc.core.annotation.global.ApiChangelogSet;
 import org.jsondoc.core.annotation.global.ApiGlobal;
+import org.jsondoc.core.annotation.global.ApiGlobalSection;
 import org.jsondoc.core.annotation.global.ApiMigration;
-import org.jsondoc.core.pojo.global.ApiChangelogDoc;
+import org.jsondoc.core.annotation.global.ApiMigrationSet;
 import org.jsondoc.core.pojo.global.ApiGlobalDoc;
-import org.jsondoc.core.pojo.global.ApiMigrationDoc;
+import org.jsondoc.core.pojo.global.ApiGlobalSectionDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
@@ -19,49 +19,63 @@ public class JSONDocApiGlobalBuilderTest {
 	
 	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
 	
-	@ApiGlobal
-	private class GlobalEmpty {
+	@ApiGlobal(
+		sections = { 
+			@ApiGlobalSection(title = "title", paragraphs = {
+				"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt" }
+			) 
+		}
+	)
+	private class Global {
+		
+	}
+	
+	
+	@ApiChangelogSet(changlogs = { @ApiChangelog(changes = { "Change #1" }, version = "1.0") })
+	private class Changelog {
+		
+	}
+	
+	@ApiMigrationSet(migrations = { @ApiMigration(fromversion = "1.0", steps = { "Step #1" }, toversion = "1.1") })
+	private class Migration {
 		
 	}
 	
 	@ApiGlobal(
-		changelogs = {
-			@ApiChangelog(changes = { "First changelog", "Second changelog" }, version = "1.0"),
-			@ApiChangelog(changes = { "Third changelog" }, version = "1.1")
-		},
-		migrations = {
-			@ApiMigration(fromversion = "1.0", steps = { "Add this to that", "Change these to those" }, toversion = "1.1")
+		sections = { 
+			@ApiGlobalSection(title = "title", paragraphs = {
+				"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt" }
+			) 
 		}
 	)
-	private class GlobalWithData {
+	@ApiChangelogSet(changlogs = { @ApiChangelog(changes = { "Change #1" }, version = "1.0") })
+	@ApiMigrationSet(migrations = { @ApiMigration(fromversion = "1.0", steps = { "Step #1" }, toversion = "1.1") })
+	private class AllTogether {
 		
 	}
 	
 	@Test
-	public void testApiVisibility() {
-		ApiGlobalDoc apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(GlobalEmpty.class));
+	public void testApiGlobalDoc() {
+		ApiGlobalDoc apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(Global.class), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet());
 		Assert.assertNotNull(apiGlobalDoc);
-		Assert.assertTrue(apiGlobalDoc.getChangelogs().isEmpty());
-		Assert.assertTrue(apiGlobalDoc.getMigrations().isEmpty());
+		Assert.assertEquals(1, apiGlobalDoc.getSections().size());
+		ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().iterator().next();
+		Assert.assertEquals("title", sectionDoc.getTitle());
+		Assert.assertEquals(3, sectionDoc.getParagraphs().size());
 		
-		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(GlobalWithData.class));
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Changelog.class), Sets.<Class<?>>newHashSet());
 		Assert.assertNotNull(apiGlobalDoc);
-		Assert.assertEquals(2, apiGlobalDoc.getChangelogs().size());
-		Assert.assertEquals(1, apiGlobalDoc.getMigrations().size());
+		Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
 		
-		Iterator<ApiChangelogDoc> changelogs = apiGlobalDoc.getChangelogs().iterator();
-		ApiChangelogDoc apiChangelogDoc = changelogs.next();
-		Assert.assertEquals("1.0", apiChangelogDoc.getVersion());
-		Assert.assertEquals(2, apiChangelogDoc.getChanges().length);
-		apiChangelogDoc = changelogs.next();
-		Assert.assertEquals("1.1", apiChangelogDoc.getVersion());
-		Assert.assertEquals(1, apiChangelogDoc.getChanges().length);
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Migration.class));
+		Assert.assertNotNull(apiGlobalDoc);
+		Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
 		
-		Iterator<ApiMigrationDoc> migrations = apiGlobalDoc.getMigrations().iterator();
-		ApiMigrationDoc apiMigrationDoc = migrations.next();
-		Assert.assertEquals("1.0", apiMigrationDoc.getFromVersion());
-		Assert.assertEquals("1.1", apiMigrationDoc.getToVersion());
-		Assert.assertEquals(2, apiMigrationDoc.getSteps().length);
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(AllTogether.class), Sets.<Class<?>>newHashSet(AllTogether.class), Sets.<Class<?>>newHashSet(AllTogether.class));
+		Assert.assertNotNull(apiGlobalDoc);
+		Assert.assertEquals(1, apiGlobalDoc.getSections().size());
+		Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
+		Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
 	}
 
 }

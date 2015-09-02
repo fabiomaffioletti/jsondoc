@@ -17,14 +17,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobal {
 	
-	public ApiGlobalVerb[] globalverbs() default {};
-	
-	public ApiGlobalHeader[] globalheaders() default {};
-	
-	public ApiGlobalResponseStatusCode[] globalresponsestatuscodes() default {};
-	
-	public ApiChangelog[] changelogs() default {};
-
-	public ApiMigration[] migrations() default {};
+	/**
+	 * An array of ApiGlobalSection annotations
+	 * @return
+	 */
+	public ApiGlobalSection[] sections();
 	
 }

@@ -6,30 +6,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jsondoc.core.pojo.ApiVerb;
-
 /**
- * This annotation is to be used inside an annotation of type ApiGlobal
+ * This annotation has to be used on a class dedicated to changelog documentation
  * 
- * @see ApiGlobal
  * @author Fabio Maffioletti
  * 
  */
 @Documented
 @Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGlobalVerb {
+public @interface ApiChangelogSet {
 
 	/**
-	 * The verb (GET, POST, ...) that is documented
+	 * Array of @ApiChangelog annotations
 	 * @return
 	 */
-	public ApiVerb verb();
-	
-	/**
-	 * When and for what reason this verb is used in your api 
-	 * @return
-	 */
-	public String description();
-	
+	public ApiChangelog[] changlogs();
+
 }

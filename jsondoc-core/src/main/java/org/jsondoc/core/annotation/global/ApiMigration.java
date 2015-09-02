@@ -7,8 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used inside an annotation of type ApiGlobal
- * @see ApiGlobal
+ * This annotation is to be used inside an annotation of type ApiMigrationSet
+ * 
+ * @see ApiMigrationSet
  * @author Fabio Maffioletti
  *
  */

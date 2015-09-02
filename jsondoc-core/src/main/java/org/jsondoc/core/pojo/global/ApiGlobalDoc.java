@@ -2,85 +2,47 @@ package org.jsondoc.core.pojo.global;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class ApiGlobalDoc {
+	public final String jsondocId = UUID.randomUUID().toString();
 
-	private Set<ApiGlobalVerbDoc> globalverbs;
+	private Set<ApiGlobalSectionDoc> sections;
 
-	private Set<ApiGlobalHeaderDoc> globalheaders;
+	private ApiChangelogsDoc changelogset;
 
-	private Set<ApiGlobalResponseStatusCodeDoc> globalresponsestatuscodes;
-
-	private Set<ApiChangelogDoc> changelogs;
-
-	private Set<ApiMigrationDoc> migrations;
+	private ApiMigrationsDoc migrationset;
 
 	public ApiGlobalDoc() {
-		globalverbs = new LinkedHashSet<ApiGlobalVerbDoc>();
-		globalheaders = new LinkedHashSet<ApiGlobalHeaderDoc>();
-		globalresponsestatuscodes = new LinkedHashSet<ApiGlobalResponseStatusCodeDoc>();
-		changelogs = new LinkedHashSet<ApiChangelogDoc>();
-		migrations = new LinkedHashSet<ApiMigrationDoc>();
+		sections = new LinkedHashSet<ApiGlobalSectionDoc>();
 	}
 
-	public Set<ApiChangelogDoc> getChangelogs() {
-		return changelogs;
+	public Set<ApiGlobalSectionDoc> getSections() {
+		return sections;
 	}
 
-	public void setChangelogs(Set<ApiChangelogDoc> changelogs) {
-		this.changelogs = changelogs;
+	public void setSections(Set<ApiGlobalSectionDoc> sections) {
+		this.sections = sections;
 	}
 
-	public Set<ApiMigrationDoc> getMigrations() {
-		return migrations;
+	public ApiChangelogsDoc getChangelogset() {
+		return changelogset;
 	}
 
-	public void setMigrations(Set<ApiMigrationDoc> migrations) {
-		this.migrations = migrations;
+	public void setChangelogset(ApiChangelogsDoc changelogset) {
+		this.changelogset = changelogset;
 	}
 
-	public Set<ApiGlobalVerbDoc> getGlobalverbs() {
-		return globalverbs;
+	public ApiMigrationsDoc getMigrationset() {
+		return migrationset;
 	}
 
-	public void setGlobalverbs(Set<ApiGlobalVerbDoc> globalverbs) {
-		this.globalverbs = globalverbs;
+	public void setMigrationset(ApiMigrationsDoc migrationset) {
+		this.migrationset = migrationset;
 	}
 
-	public Set<ApiGlobalResponseStatusCodeDoc> getGlobalresponsestatuscodes() {
-		return globalresponsestatuscodes;
-	}
-
-	public void setGlobalresponsestatuscodes(Set<ApiGlobalResponseStatusCodeDoc> globalresponsestatuscodes) {
-		this.globalresponsestatuscodes = globalresponsestatuscodes;
-	}
-
-	public Set<ApiGlobalHeaderDoc> getGlobalheaders() {
-		return globalheaders;
-	}
-
-	public void setGlobalheaders(Set<ApiGlobalHeaderDoc> globalheaders) {
-		this.globalheaders = globalheaders;
-	}
-
-	public void addChangelog(ApiChangelogDoc apiChangelogDoc) {
-		this.changelogs.add(apiChangelogDoc);
-	}
-
-	public void addMigration(ApiMigrationDoc apiMigrationDoc) {
-		this.migrations.add(apiMigrationDoc);
-	}
-
-	public void addGlobalverb(ApiGlobalVerbDoc apiGlobalVerbDoc) {
-		this.globalverbs.add(apiGlobalVerbDoc);
-	}
-
-	public void addGlobalresponsestatuscode(ApiGlobalResponseStatusCodeDoc apiGlobalResponseStatusCodeDoc) {
-		this.globalresponsestatuscodes.add(apiGlobalResponseStatusCodeDoc);
-	}
-	
-	public void addGlobalheader(ApiGlobalHeaderDoc apiGlobalHeaderDoc) {
-		this.globalheaders.add(apiGlobalHeaderDoc);
+	public void addApiGlobalSectionDoc(ApiGlobalSectionDoc apiGlobalSectionDoc) {
+		this.sections.add(apiGlobalSectionDoc);
 	}
 
 }
