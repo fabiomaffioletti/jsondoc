@@ -1,0 +1,89 @@
+---
+layout: default
+title: Examples - Global
+---
+
+
+<h3>Annotation to document global data</h3>
+<p>If your api has the same behavior across the whole application, you can inform your api users using the <code>ApiGlobal</code> annotation. Let's see how with an example:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.global;
+
+import org.jsondoc.core.annotation.global.ApiGlobal;
+import org.jsondoc.core.annotation.global.ApiGlobalSection;
+
+@ApiGlobal(
+	sections = { 
+		@ApiGlobalSection(
+			title = "HTTP Verbs", 
+			paragraphs = { 
+				"This is to demonstrate the use of paragraphs",
+			 	"/jsondocfile:/jsondoc/global-verbs.html"
+			 }
+		),
+		@ApiGlobalSection(
+			title = "Authentication",
+			paragraphs = { "/jsondocfile:/jsondoc/global-authentication.html" }
+		),
+		@ApiGlobalSection(
+			title = "Headers",
+			paragraphs = { "/jsondocfile:/jsondoc/global-headers.html" }
+		),
+		@ApiGlobalSection(
+			title = "Status codes",
+			paragraphs = { "/jsondocfile:/jsondoc/global-responsestatuscodes.html" }
+		)
+	}
+)
+public class GlobalDocumentation {
+
+}
+{% endhighlight %}
+
+<p>To correctly let JSONDoc find the static files, they need to be on the classpath. For example, put them in the <code>src/main/resources</code> directory, and specify the relative path to that directory, like <code>/jsondoc/filename.html</code></p>
+
+<h3 class="spaced">Annotation to document changelogs</h3>
+<p>It's useful to document changes occurred in the new version of your api. This can be done easily with this annotation:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.global;
+
+import org.jsondoc.core.annotation.global.ApiChangelog;
+import org.jsondoc.core.annotation.global.ApiChangelogSet;
+
+@ApiChangelogSet(
+	changlogs = {
+		@ApiChangelog(changes = { "Changelog #5", "Changelog #6" }, version = "2.0"),
+		@ApiChangelog(changes = { "Changelog #2", "Changelog #3", "Changelog #4" }, version = "1.1"),
+		@ApiChangelog(changes = { "Changelog #1" }, version = "1.0")
+	}
+)		
+public class ChangelogDocumentation {
+
+}
+{% endhighlight %}
+
+<h3 class="spaced">Annotation to document migrations</h3>
+<p>It's useful to document steps that must be made by api users to migrate from one version to another one. This can be done easily with this annotation:</p>
+
+{% highlight java %}
+package org.jsondoc.sample.global;
+
+import org.jsondoc.core.annotation.global.ApiMigration;
+import org.jsondoc.core.annotation.global.ApiMigrationSet;
+
+@ApiMigrationSet(
+	migrations = { 
+		@ApiMigration(fromversion = "1.1", steps = { "Step #3" }, toversion = "2.0"),
+		@ApiMigration(fromversion = "1.0", steps = { "Step #1", "Step #2" }, toversion = "1.1")
+	}
+)
+public class MigrationDocumentation {
+
+}
+{% endhighlight %}
+
+<script type="text/javascript">
+	$('#examples-global').addClass('active');
+</script>

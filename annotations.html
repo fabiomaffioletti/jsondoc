@@ -5,24 +5,136 @@ title: Documentation
 
 <table class="table">
 	<tr>
+		<th>Global</th>
 		<th>Services</th>
 		<th>Authentication</th>
 		<th>Objects</th>
 		<th>Flows</th>
 	</tr>
-	<tr><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td><td><a href="#apiflowset">@ApiFlowSet</a></td></tr>
-	<tr><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td><td><a href="#apiflow">@ApiFlow</a></td></tr>
-	<tr><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td><td><a href="#apiflowstep">@ApiFlowStep</a></td></tr>
-	<tr><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apiqueryparam">@ApiQueryParam</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apibodyobject">@ApiBodyObject</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apiresponseobject">@ApiResponseObject</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apierrors">@ApiErrors</a></td><td></td><td></td><td></td></tr>
-	<tr><td><a href="#apierror">@ApiError</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apiglobal">@ApiGlobal</a></td><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td><td><a href="#apiflowset">@ApiFlowSet</a></td></tr>
+	<tr><td><a href="#apiglobalsection">@ApiGlobalSection</a></td><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td><td><a href="#apiflow">@ApiFlow</a></td></tr>
+	<tr><td><a href="#apichangelogset">@ApiChangelogSet</a></td><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td><td><a href="#apiflowstep">@ApiFlowStep</a></td></tr>
+	<tr><td><a href="#apichangelog">@ApiChangelog</a></td><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apimigrationset">@ApiMigrationSet</a></td><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apimigration">@ApiMigration</a></td><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apiqueryparam">@ApiQueryParam</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apibodyobject">@ApiBodyObject</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apiresponseobject">@ApiResponseObject</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apierrors">@ApiErrors</a></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td><a href="#apierror">@ApiError</a></td><td></td><td></td><td></td></tr>
 </table>
+
+<table class="table" id="apiglobal">
+	<thead><tr><th><h4>@ApiGlobal</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used on a class dedicated to global api documentation</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>sections</code></td>
+			<td>An array of <code>@ApiGlobalSection</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiglobalsection">
+	<thead><tr><th><h4>@ApiGlobalSection</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used in a <code>ApiGlobal</code> annotation. It represents a block of information of the same context like http verbs, authentication, common headers, etc</td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>title</code></td>
+			<td>The title of the section, for example "Authentication"</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>paragraphs</code></td>
+			<td>An array that can be made of two things: a text (may contain html tags) or a path to a file in the classpath, containing  a text. In this case the array item should have the <code>/jsondocfile:</code> prefix, for example: <code>/jsondocfile:/jsondoc/global-verbs.html</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apichangelogset">
+	<thead><tr><th><h4>@ApiChangelogSet</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used on a class dedicated to changelog documentation</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>changelogs</code></td>
+			<td>An array of <code>@ApiChangelog</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apichangelog">
+	<thead><tr><th><h4>@ApiChangelog</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used inside an annotation of type <code>ApiChangelogSet</code></td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>version</code></td>
+			<td>Api version this changelog refers to</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>changes</code></td>
+			<td>List of changes introduced in this api version</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apimigrationset">
+	<thead><tr><th><h4>@ApiMigrationSet</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation has to be used on a class dedicated to migrations documentation</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>changelogs</code></td>
+			<td>An array of <code>@ApiChangelog</code> annotations</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apimigration">
+	<thead><tr><th><h4>@ApiMigration</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used inside an annotation of type <code>ApiMigrationSet</code></td>
+		</tr>
+		<tr><td>Level</td><td><code>Annotation</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>fromversion</code></td>
+			<td>Source api version</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>toversion</code></td>
+			<td>Target api version</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>steps</code></td>
+			<td>Steps needed to migrate from source api version to target api version</td>
+		</tr>
+	</tbody>
+</table>
+
 
 <table class="table" id="api">
 	<thead><tr><th><h4>@Api</h4></th></tr></thead>
