@@ -28,6 +28,18 @@
 					<goalPrefix>jsondoc</goalPrefix>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+	            <groupId>org.codehaus.plexus</groupId>
+	            <artifactId>plexus-maven-plugin</artifactId>
+	            <executions>
+	                <execution>
+	                    <goals>
+	                        <goal>descriptor</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>
 		</plugins>
 	</build>
 

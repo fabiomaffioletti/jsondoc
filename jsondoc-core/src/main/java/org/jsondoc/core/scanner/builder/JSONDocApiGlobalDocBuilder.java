@@ -1,8 +1,9 @@
 package org.jsondoc.core.scanner.builder;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.global.ApiChangelog;
@@ -17,8 +18,6 @@ import org.jsondoc.core.pojo.global.ApiGlobalDoc;
 import org.jsondoc.core.pojo.global.ApiGlobalSectionDoc;
 import org.jsondoc.core.pojo.global.ApiMigrationDoc;
 import org.jsondoc.core.pojo.global.ApiMigrationsDoc;
-
-import com.google.common.io.Files;
 
 public class JSONDocApiGlobalDocBuilder {
 	
@@ -39,13 +38,23 @@ public class JSONDocApiGlobalDocBuilder {
 				ApiGlobalSectionDoc sectionDoc = new ApiGlobalSectionDoc();
 				sectionDoc.setTitle(section.title());
 				for (String paragraph : section.paragraphs()) {
-					if(paragraph.startsWith("/jsondocfile")) {
+					if(paragraph.startsWith("/jsondocfile:")) {
+						String path = paragraph.replace("/jsondocfile:", "");
 						try {
-							String jsondocfileContent = Files.toString(new File(paragraph.replace("/jsondocfile", "")), Charset.forName("UTF-8")); 
-							sectionDoc.addParagraph(jsondocfileContent);
+							
+							InputStream resourceAsStream = JSONDocApiGlobalDocBuilder.class.getResourceAsStream(path);
+							if(resourceAsStream != null) {
+								String content = getStringFromInputStream(resourceAsStream);
+								sectionDoc.addParagraph(content);
+								
+							} else {
+								sectionDoc.addParagraph("Unable to find file in path: " + path);
+							}
+							
 						} catch (IOException e) {
-							sectionDoc.addParagraph("Unable to find file in path: " + paragraph);
+							sectionDoc.addParagraph("Unable to find file in path: " + path);
 						}
+						
 					} else {
 						sectionDoc.addParagraph(paragraph);
 					}
@@ -87,6 +96,30 @@ public class JSONDocApiGlobalDocBuilder {
 			apiGlobalDoc.setMigrationset(apiMigrationsDoc);
 		}
 		return apiGlobalDoc;
+	}
+	
+	private static String getStringFromInputStream(InputStream is) throws IOException {
+		BufferedReader br = null;
+		StringBuffer sb = new StringBuffer();
+
+		String line;
+		try {
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					throw e;
+				}
+			}
+		}
+		return sb.toString();
 	}
 	
 }
