@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.jsondoc.core.pojo.JSONDocTemplate;
 import org.jsondoc.core.util.pojo.TemplateObject;
@@ -11,14 +12,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
 
 public class JSONDocTemplateBuilderTest {
 
 	@Test
 	public void testTemplate() throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
-
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> template = JSONDocTemplateBuilder.build(TemplateObject.class);
+		Set<Class<?>> classes = Sets.<Class<?>>newHashSet(TemplateObject.class);
+		
+		Map<String, Object> template = JSONDocTemplateBuilder.build(TemplateObject.class, classes);
 
 		Assert.assertEquals(0, template.get("my_id"));
 		Assert.assertEquals(0, template.get("idint"));

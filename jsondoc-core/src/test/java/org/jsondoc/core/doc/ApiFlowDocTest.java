@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jsondoc.core.annotation.ApiFlow;
-import org.jsondoc.core.annotation.ApiFlowSet;
-import org.jsondoc.core.annotation.ApiFlowStep;
-import org.jsondoc.core.pojo.ApiFlowDoc;
+import org.jsondoc.core.annotation.flow.ApiFlow;
+import org.jsondoc.core.annotation.flow.ApiFlowSet;
+import org.jsondoc.core.annotation.flow.ApiFlowStep;
 import org.jsondoc.core.pojo.ApiMethodDoc;
+import org.jsondoc.core.pojo.flow.ApiFlowDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;

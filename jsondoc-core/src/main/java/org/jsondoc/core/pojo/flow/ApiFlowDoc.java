@@ -1,11 +1,12 @@
-package org.jsondoc.core.pojo;
+package org.jsondoc.core.pojo.flow;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.jsondoc.core.annotation.ApiFlow;
-import org.jsondoc.core.annotation.ApiFlowStep;
+import org.jsondoc.core.annotation.flow.ApiFlow;
+import org.jsondoc.core.annotation.flow.ApiFlowStep;
+import org.jsondoc.core.pojo.ApiMethodDoc;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();

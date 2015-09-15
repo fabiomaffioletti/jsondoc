@@ -16,6 +16,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 	private ApiVisibility visibility;
 	private ApiStage stage;
 	private JSONDocTemplate jsondocTemplate;
+	private boolean show;
 
 	public ApiObjectDoc() {
 		this.name = "";
@@ -27,6 +28,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 		this.visibility = ApiVisibility.UNDEFINED;
 		this.stage = ApiStage.UNDEFINED;
 		this.jsondocTemplate = null;
+		this.show = true;
 	}
 
 	public String getName() {
@@ -99,6 +101,14 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
 	public void setStage(ApiStage stage) {
 		this.stage = stage;
+	}
+
+	public boolean isShow() {
+		return show;
+	}
+
+	public void setShow(boolean show) {
+		this.show = show;
 	}
 
 	@Override

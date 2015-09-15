@@ -114,7 +114,6 @@ public class ApiObjectDocTest {
 		Iterator<ApiObjectFieldDoc> iterator = apiObjectDoc.getFields().iterator();
 		Assert.assertEquals("id", iterator.next().getName());
 		Assert.assertEquals("name", iterator.next().getName());
-		Assert.assertNotNull(apiObjectDoc.getJsondocTemplate());
 	}
 	
 	@Test

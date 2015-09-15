@@ -1,9 +1,10 @@
-package org.jsondoc.core.pojo;
+package org.jsondoc.core.pojo.flow;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.jsondoc.core.annotation.ApiFlowStep;
+import org.jsondoc.core.annotation.flow.ApiFlowStep;
+import org.jsondoc.core.pojo.ApiMethodDoc;
 
 import com.google.common.collect.Sets;
 

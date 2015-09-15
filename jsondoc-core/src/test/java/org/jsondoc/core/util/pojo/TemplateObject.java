@@ -47,7 +47,7 @@ public class TemplateObject {
 	@ApiObjectField
 	private List<String> stringlist;
 
-	@ApiObjectField(name = "sub_obj")
+	@ApiObjectField(name = "sub_obj", processtemplate = false)
 	private TemplateSubObject subObj = new TemplateSubObject();
 	
 	@ApiObjectField

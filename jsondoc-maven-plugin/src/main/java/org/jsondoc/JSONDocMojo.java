@@ -88,33 +88,9 @@ public class JSONDocMojo extends AbstractMojo {
 		
 		try {
 			List<String> runtimeClasspathElements = project.getRuntimeClasspathElements();
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			for (String string : runtimeClasspathElements) {
-				System.out.println(string);
-			}
-			
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			for (String string : project.getCompileClasspathElements()) {
-				System.out.println(string);
-			}
-			
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
-			System.out.println("#############################");
 			URL[] runtimeClasspathElementsUrls = new URL[runtimeClasspathElements.size()];
 			for (int i = 0; i < runtimeClasspathElementsUrls.length; i++) {
 				runtimeClasspathElementsUrls[i] = new File(runtimeClasspathElements.get(i)).toURI().toURL();
-				System.out.println(runtimeClasspathElementsUrls[i]);
 			}
 			
 			URLClassLoader urlClassLoader = new URLClassLoader(runtimeClasspathElementsUrls, Thread.currentThread().getContextClassLoader());

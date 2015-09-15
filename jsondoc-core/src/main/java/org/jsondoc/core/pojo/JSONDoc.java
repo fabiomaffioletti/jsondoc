@@ -3,6 +3,7 @@ package org.jsondoc.core.pojo;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsondoc.core.pojo.flow.ApiFlowDoc;
 import org.jsondoc.core.pojo.global.ApiGlobalDoc;
 
 public class JSONDoc {

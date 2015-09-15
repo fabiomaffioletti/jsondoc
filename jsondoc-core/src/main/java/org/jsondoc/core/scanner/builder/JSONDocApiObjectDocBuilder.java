@@ -9,19 +9,17 @@ import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
-import org.jsondoc.core.util.JSONDocTemplateBuilder;
 
 public class JSONDocApiObjectDocBuilder {
 	
 	public static ApiObjectDoc build(Class<?> clazz) {
 		ApiObject apiObject = clazz.getAnnotation(ApiObject.class);
-		
 		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
 		Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
-				ApiObjectFieldDoc fieldDoc = ApiObjectFieldDoc.buildFromAnnotation(field.getAnnotation(ApiObjectField.class), field);
+				ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(field.getAnnotation(ApiObjectField.class), field);
 				fieldDoc.setSupportedversions(JSONDocApiVersionDocBuilder.build(field));
 
 				fieldDocs.add(fieldDoc);
@@ -51,8 +49,8 @@ public class JSONDocApiObjectDocBuilder {
 		apiObjectDoc.setGroup(apiObject.group());
 		apiObjectDoc.setVisibility(apiObject.visibility());
 		apiObjectDoc.setStage(apiObject.stage());
+		apiObjectDoc.setShow(apiObject.show());
 
-		apiObjectDoc.setJsondocTemplate(JSONDocTemplateBuilder.build(clazz));
 		return apiObjectDoc;
 	}
 

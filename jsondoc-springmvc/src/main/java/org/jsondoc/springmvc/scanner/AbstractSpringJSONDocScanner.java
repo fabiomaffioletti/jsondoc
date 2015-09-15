@@ -1,25 +1,36 @@
 package org.jsondoc.springmvc.scanner;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
+import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiFlowSet;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.flow.ApiFlowSet;
 import org.jsondoc.core.annotation.global.ApiChangelogSet;
 import org.jsondoc.core.annotation.global.ApiGlobal;
 import org.jsondoc.core.annotation.global.ApiMigrationSet;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
+import org.jsondoc.core.pojo.JSONDocTemplate;
 import org.jsondoc.core.scanner.AbstractJSONDocScanner;
 import org.jsondoc.core.scanner.builder.JSONDocApiDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiMethodDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiObjectDocBuilder;
+import org.jsondoc.core.util.JSONDocUtils;
 import org.jsondoc.springmvc.scanner.builder.SpringConsumesBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringHeaderBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringObjectBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringPathBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringPathVariableBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringProducesBuilder;
@@ -29,7 +40,10 @@ import org.jsondoc.springmvc.scanner.builder.SpringResponseBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.google.common.collect.Sets;
 
 public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanner {
 
@@ -43,10 +57,116 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		}
 		return annotatedMethods;
 	}
+	
+	/**
+	 * Returns a set of classes that are either return types or body objects
+	 * @param candidates
+	 * @param clazz
+	 * @param type
+	 * @return
+	 */
+	public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type) {
 
+		if (Map.class.isAssignableFrom(clazz)) {
+
+			if (type instanceof ParameterizedType) {
+				Type mapKeyType = ((ParameterizedType) type).getActualTypeArguments()[0];
+				Type mapValueType = ((ParameterizedType) type).getActualTypeArguments()[1];
+
+				if (mapKeyType instanceof Class) {
+					candidates.add((Class<?>) mapKeyType);
+				} else if (mapKeyType instanceof WildcardType) {
+					candidates.add(Void.class);
+				} else {
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
+				}
+
+				if (mapValueType instanceof Class) {
+					candidates.add((Class<?>) mapValueType);
+				} else if (mapValueType instanceof WildcardType) {
+					candidates.add(Void.class);
+				} else {
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
+				}
+
+			}
+
+		} else if (Collection.class.isAssignableFrom(clazz)) {
+			if (type instanceof ParameterizedType) {
+				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
+				candidates.add(clazz);
+				
+				if (parametrizedType instanceof Class) {
+					candidates.add((Class<?>) parametrizedType);
+				} else if (parametrizedType instanceof WildcardType) {
+					candidates.add(Void.class);
+				} else {
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType));
+				}
+			} else if (type instanceof GenericArrayType) {
+				candidates.addAll(buildJSONDocObjectsCandidates(candidates, clazz, ((GenericArrayType) type).getGenericComponentType()));
+			} else {
+				candidates.add(clazz);
+			}
+
+		} else if (clazz.isArray()) {
+			Class<?> componentType = clazz.getComponentType();
+			candidates.addAll(buildJSONDocObjectsCandidates(candidates, componentType, type));
+
+		} else {
+			if (type instanceof ParameterizedType) {
+				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
+				
+				if (parametrizedType instanceof Class) {
+					candidates.add((Class<?>) parametrizedType);
+				} else if (parametrizedType instanceof WildcardType) {
+					candidates.add(Void.class);
+				} else {
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType));
+				}
+			} else {
+				candidates.add(clazz);
+			}
+		}
+
+		return candidates;
+	}
+	
 	@Override
-	public Set<Class<?>> jsondocObjects() {
-		return reflections.getTypesAnnotatedWith(ApiObject.class, true);
+	public Set<Class<?>> jsondocObjects(List<String> packages) {
+		Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
+		Set<Class<?>> candidates = Sets.newHashSet();
+		Set<Class<?>> subCandidates = Sets.newHashSet();
+		Set<Class<?>> elected = Sets.newHashSet();
+		
+		for (Method method : methodsAnnotatedWith) {
+			buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType());
+			Integer requestBodyParameterIndex = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
+			if(requestBodyParameterIndex != -1) {
+				candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex]));
+			}
+		}
+		
+		// This is to get objects' fields that are not returned nor part of the body request of a method, but that are a field
+		// of an object returned or a body  of a request of a method
+		for (Class<?> clazz : candidates) {
+			for (Field field : clazz.getDeclaredFields()) {
+				subCandidates.addAll(buildJSONDocObjectsCandidates(subCandidates, field.getType(), field.getGenericType()));
+			}
+		}
+		candidates.addAll(subCandidates);
+		
+		for (Class<?> clazz : candidates) {
+			if(clazz.getPackage() != null) {
+				for (String pkg : packages) {
+					if(clazz.getPackage().getName().contains(pkg)) {
+						elected.add(clazz);
+					}
+				}
+			}
+		}
+		
+		return elected;
 	}
 	
 	@Override
@@ -78,7 +198,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	}
 
 	@Override
-	public ApiMethodDoc initApiMethodDoc(Method method) {
+	public ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, JSONDocTemplate> jsondocTemplates) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
 		apiMethodDoc.setPath(SpringPathBuilder.buildPath(method));
 		apiMethodDoc.setVerb(SpringVerbBuilder.buildVerb(method));
@@ -90,6 +210,12 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method));
 		apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
 		apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
+		
+		Integer index = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
+		if (index != -1) {
+			apiMethodDoc.getBodyobject().setJsondocTemplate(jsondocTemplates.get(method.getParameterTypes()[index]));
+		}
+
 		return apiMethodDoc;
 	}
 
@@ -104,11 +230,15 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 	@Override
 	public ApiObjectDoc initApiObjectDoc(Class<?> clazz) {
-		return JSONDocApiObjectDocBuilder.build(clazz);
+		return SpringObjectBuilder.buildObject(clazz);
 	}
 
 	@Override
 	public ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc) {
+		if(clazz.isAnnotationPresent(ApiObject.class)) {
+			ApiObjectDoc jsondocApiObjectDoc = JSONDocApiObjectDocBuilder.build(clazz);
+			BeanUtils.copyProperties(jsondocApiObjectDoc, apiObjectDoc);
+		}
 		return apiObjectDoc;
 	}
 

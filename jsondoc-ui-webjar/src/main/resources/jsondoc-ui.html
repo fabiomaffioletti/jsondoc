@@ -770,9 +770,16 @@
 	{{#if fields}}
 	<tr><th colspan=2>Fields</th></tr>
 		{{#each fields}}
-			<tr><td><code>{{name}}</code></td><td>{{{description}}}</td></tr>
-			<tr><td></td><td>Required: {{required}}</td></tr>
-			<tr><td></td><td>Type: <code>{{jsondocType.oneLineText}}</code></td></tr>
+			{{#if description}}
+				<tr><td><code>{{name}}</code></td><td>{{{description}}}</td></tr>
+				<tr><td></td><td>Type: <code>{{jsondocType.oneLineText}}</code></td></tr>
+			{{else}}
+				<tr><td><code>{{name}}</code></td><td>Type: <code>{{jsondocType.oneLineText}}</code></td></tr>
+			{{/if}}
+			{{#equal required "UNDEFINED"}}
+			{{else}}
+				<tr><td></td><td>Required: {{required}}</td></tr>				
+			{{/equal}}
 			{{#if format}}
 				<tr><td></td><td>Format: {{format}}</td></tr>
 			{{/if}}
@@ -1091,7 +1098,7 @@
 		var mainHTML = main(data);
 		$("#maindiv").html(mainHTML);
 		
-		if(data.global) {
+		if(data.global.sections.length > 0 || data.global.changelogset || data.global.migrationset) {
 			var global = Handlebars.compile($("#global").html());
 			var globalHTML = global(data);
 			$("#globaldiv").html(globalHTML);

@@ -24,7 +24,7 @@ public class Spring3JSONDocObjectScannerTest {
     @Test
     public void getJSONDoc() throws IOException {
     	JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.springmvc.controller.object"), true, MethodDisplay.URI);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.jsondoc.springmvc.controller"), true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {

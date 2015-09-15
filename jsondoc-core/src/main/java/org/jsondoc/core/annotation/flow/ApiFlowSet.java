@@ -1,4 +1,4 @@
-package org.jsondoc.core.annotation;
+package org.jsondoc.core.annotation.flow;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
