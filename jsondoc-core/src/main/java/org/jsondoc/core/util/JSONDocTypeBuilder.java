@@ -3,6 +3,7 @@ package org.jsondoc.core.util;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
 import java.util.Map;
@@ -35,6 +36,8 @@ public class JSONDocTypeBuilder {
 					jsondocType.setMapKey(new JSONDocType(((Class<?>) mapKeyType).getSimpleName().toLowerCase()));
 				} else if (mapKeyType instanceof WildcardType) {
 					jsondocType.setMapKey(new JSONDocType(WILDCARD));
+				}  else if(mapKeyType instanceof TypeVariable<?>){
+					jsondocType.addItemToType(((TypeVariable<?>) mapValueType).getName());
 				} else {
 					jsondocType.setMapKey(build(jsondocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
 				}
@@ -43,6 +46,8 @@ public class JSONDocTypeBuilder {
 					jsondocType.setMapValue(new JSONDocType(((Class<?>) mapValueType).getSimpleName().toLowerCase()));
 				} else if (mapValueType instanceof WildcardType) {
 					jsondocType.setMapValue(new JSONDocType(WILDCARD));
+				} else if(mapValueType instanceof TypeVariable<?>){
+					jsondocType.addItemToType(((TypeVariable<?>) mapValueType).getName());
 				} else {
 					jsondocType.setMapValue(build(jsondocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
 				}
@@ -58,6 +63,8 @@ public class JSONDocTypeBuilder {
 					jsondocType.addItemToType(getCustomClassName((Class<?>) parametrizedType));
 				} else if (parametrizedType instanceof WildcardType) {
 					jsondocType.addItemToType(WILDCARD);
+				} else if(parametrizedType instanceof TypeVariable<?>){
+					jsondocType.addItemToType(((TypeVariable<?>) parametrizedType).getName());
 				} else {
 					return build(jsondocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType);
 				}
@@ -81,6 +88,8 @@ public class JSONDocTypeBuilder {
 					jsondocType.addItemToType(getCustomClassName((Class<?>) parametrizedType));
 				} else if (parametrizedType instanceof WildcardType) {
 					jsondocType.addItemToType(WILDCARD);
+				} else if(parametrizedType instanceof TypeVariable<?>){
+					jsondocType.addItemToType(((TypeVariable<?>) parametrizedType).getName());
 				} else {
 					return build(jsondocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType);
 				}
