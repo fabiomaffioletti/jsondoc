@@ -37,7 +37,7 @@ public class JSONDocTypeBuilder {
 				} else if (mapKeyType instanceof WildcardType) {
 					jsondocType.setMapKey(new JSONDocType(WILDCARD));
 				}  else if(mapKeyType instanceof TypeVariable<?>){
-					jsondocType.addItemToType(((TypeVariable<?>) mapValueType).getName());
+					jsondocType.setMapKey(new JSONDocType(((TypeVariable<?>) mapKeyType).getName()));
 				} else {
 					jsondocType.setMapKey(build(jsondocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
 				}
@@ -47,7 +47,7 @@ public class JSONDocTypeBuilder {
 				} else if (mapValueType instanceof WildcardType) {
 					jsondocType.setMapValue(new JSONDocType(WILDCARD));
 				} else if(mapValueType instanceof TypeVariable<?>){
-					jsondocType.addItemToType(((TypeVariable<?>) mapValueType).getName());
+					jsondocType.setMapValue(new JSONDocType(((TypeVariable<?>) mapValueType).getName()));
 				} else {
 					jsondocType.setMapValue(build(jsondocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
 				}
