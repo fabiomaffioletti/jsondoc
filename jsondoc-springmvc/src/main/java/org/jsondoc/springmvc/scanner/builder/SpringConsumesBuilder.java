@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringConsumesBuilder {
@@ -33,6 +34,10 @@ public class SpringConsumesBuilder {
 				consumes.clear();
 				consumes.addAll(Arrays.asList(requestMapping.consumes()));
 			}
+		}
+		
+		if(consumes.isEmpty()) {
+		    consumes.add(MediaType.APPLICATION_JSON_VALUE);
 		}
 
 		return consumes;
