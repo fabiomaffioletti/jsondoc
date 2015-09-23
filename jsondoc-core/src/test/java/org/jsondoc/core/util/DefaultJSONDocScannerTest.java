@@ -52,7 +52,7 @@ public class DefaultJSONDocScannerTest {
         for (String string : jsondoc.getObjects().keySet()) {
             countObjects += jsondoc.getObjects().get(string).size();
         }
-        assertEquals(8, countObjects);
+        assertEquals(9, countObjects);
 
         Set<ApiVerb> apiVerbs = getAllTestedApiVerbs(jsondoc);
         assertEquals(ApiVerb.values().length, apiVerbs.size());
