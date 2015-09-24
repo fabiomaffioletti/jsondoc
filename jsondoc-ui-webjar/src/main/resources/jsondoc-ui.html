@@ -82,10 +82,10 @@
 	<div class="panel-body">
 		<ul class="list-unstyled">
 			<li><a href="#" id="_overview" rel="global">Global documentation</a></li>
-			{{#if global.changelogset}}
+			{{#if global.changelogset.changelogs}}
 				<li><a href="#" id="_changelogs" rel="global">Changelog</a></li>
 			{{/if}}
-			{{#if global.migrationset}}
+			{{#if global.migrationset.migrations}}
 				<li><a href="#" id="_migrations" rel="global">Migration notes</a></li>
 			{{/if}}
 		</ul>
@@ -1098,32 +1098,34 @@
 		var mainHTML = main(data);
 		$("#maindiv").html(mainHTML);
 		
-		if(data.global.sections.length > 0 || data.global.changelogset || data.global.migrationset) {
-			var global = Handlebars.compile($("#global").html());
-			var globalHTML = global(data);
-			$("#globaldiv").html(globalHTML);
-			$("#globaldiv").addClass("panel panel-default");
+		if(data.global) {
+			if(data.global.sections) {
+				var global = Handlebars.compile($("#global").html());
+				var globalHTML = global(data);
+				$("#globaldiv").html(globalHTML);
+				$("#globaldiv").addClass("panel panel-default");
+	
+				$("#_overview").click(function() {
+					var overview = Handlebars.compile($("#overviewdiv").html());
+					var overviewHTML = overview(data.global);
+					loadGlobalContent(overviewHTML, data.playgroundEnabled);
+					
+					$("#content div[rel='overviewpanel'] table").each(function() {
+						$(this).removeClass();
+						$(this).addClass("table table-condensed table-bordered");
+					});			
+					
+				});
+			}
 
-			$("#_overview").click(function() {
-				var overview = Handlebars.compile($("#overviewdiv").html());
-				var overviewHTML = overview(data.global);
-				loadGlobalContent(overviewHTML, data.playgroundEnabled);
-				
-				$("#content div[rel='overviewpanel'] table").each(function() {
-					$(this).removeClass();
-					$(this).addClass("table table-condensed table-bordered");
-				});			
-				
-			});
-
-			if(data.global.changelogset) {
+			if(data.global.changelogset.changelogs) {
 				$("#_changelogs").click(function() {
 					var changelogs = Handlebars.compile($("#changelogsdiv").html());
 					var changelogsHTML = changelogs(data.global.changelogset);
 					loadGlobalContent(changelogsHTML, data.playgroundEnabled);
 				});
 			}
-			if(data.global.migrationset) {
+			if(data.global.migrationset.migrations) {
 				$("#_migrations").click(function() {
 					var migrations = Handlebars.compile($("#migrationsdiv").html());
 					var migrationsHTML = migrations(data.global.migrationset);

@@ -16,6 +16,8 @@ public class ApiGlobalDoc {
 
 	public ApiGlobalDoc() {
 		this.sections = Sets.newHashSet();
+		this.changelogset = new ApiChangelogsDoc();
+		this.migrationset = new ApiMigrationsDoc();
 	}
 
 	public Set<ApiGlobalSectionDoc> getSections() {

@@ -26,7 +26,11 @@ public class JSONDocApiGlobalDocBuilder {
 		apiGlobalDoc = buildGlobalDoc(apiGlobalDoc, globalClasses);
 		apiGlobalDoc = buildChangelogDoc(apiGlobalDoc, changelogClasses);
 		apiGlobalDoc = buildMigrationDoc(apiGlobalDoc, migrationClasses);
-		return apiGlobalDoc;
+		if(apiGlobalDoc.getSections().isEmpty() && apiGlobalDoc.getChangelogset().getChangelogs().isEmpty() && apiGlobalDoc.getMigrationset().getMigrations().isEmpty()) {
+			return null;
+		} else {
+			return apiGlobalDoc;
+		}
 	}
 	
 	private static ApiGlobalDoc buildGlobalDoc(ApiGlobalDoc apiGlobalDoc, Set<Class<?>> globalClasses) {
