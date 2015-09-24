@@ -3,7 +3,13 @@ layout: default
 title: Migration notes
 ---
 
-<h3>How to migrate from 1.1.16 to 1.2.0</h3>
+<h3>How to migrate from 1.2.0 to 1.2.5</h3>
+<h4>Moved @ApiFlow and related annotations to another package</h4>
+<p><code>@ApiFlow, @ApiFlowSet, @ApiFlowStep</code> have been moved to another package. If you are using them you just need to reorganize your imports.</p>
+<h4>Optional code changes</h4>
+<p>You can remove JSONDoc annotations from Spring's objects returned by methods or being the method's request body.</p>
+
+<h3 class="spaced">How to migrate from 1.1.16 to 1.2.0</h3>
 <h4>Changes in the jsondoc maven plugin</h4>
 <p>If you were using this scanner <code>org.jsondoc.springmvc.scanner.SpringJSONDocScanner</code>, you now need to change it to one of the following <code>org.jsondoc.springmvc.scanner.Spring3JSONDocScanner</code> or <code>org.jsondoc.springmvc.scanner.Spring4JSONDocScanner</code> depending on the Spring version you have on the classpath.</p>
 <h4>Optional code changes</h4>

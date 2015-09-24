@@ -41,7 +41,7 @@ public class GlobalDocumentation {
 }
 {% endhighlight %}
 
-<p>To correctly let JSONDoc find the static files, they need to be on the classpath. For example, put them in the <code>src/main/resources</code> directory, and specify the relative path to that directory, like <code>/jsondoc/filename.html</code></p>
+<p>To correctly let JSONDoc find the static files, they need to be on the classpath. For example, put them in the <code>src/main/resources</code> directory, and specify the relative path to that directory, like <code>/jsondoc/filename.html</code>. To make this work properly, these files must be prefixed with <code>/jsondocfile:</code>.</p>
 
 <h3 class="spaced">Annotation to document changelogs</h3>
 <p>It's useful to document changes occurred in the new version of your api. This can be done easily with this annotation:</p>
