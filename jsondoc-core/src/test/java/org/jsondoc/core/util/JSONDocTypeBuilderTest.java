@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
@@ -145,10 +146,21 @@ public class JSONDocTypeBuilderTest {
 		return null;
 	}
 	
+	public <T> FooPojo<T> getSpecializedWGenericsPojo() {
+		return null;
+	}
+	
 	@ApiObject(name = "my_parent")
 	class ParentPojo {
 		
 	}
+	
+	@ApiObject(name="fooPojo", group="foo")
+	public class FooPojo<K> {
+		@ApiObjectField
+		private K fooField;
+	}
+
 	
 	@Test
 	public void testReflex() throws NoSuchMethodException, SecurityException, ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
@@ -401,6 +413,14 @@ public class JSONDocTypeBuilderTest {
 		System.out.println(jsonDocType.getOneLineText());
 		Assert.assertEquals("list of my_parent", jsonDocType.getOneLineText());
 		System.out.println("---------------------------");
+		
+		jsonDocType = new JSONDocType();
+		method = JSONDocTypeBuilderTest.class.getMethod("getSpecializedWGenericsPojo");
+		JSONDocTypeBuilder.build(jsonDocType, method.getReturnType(), method.getGenericReturnType());
+		System.out.println(mapper.writeValueAsString(jsonDocType));
+		System.out.println(jsonDocType.getOneLineText());
+		Assert.assertEquals("fooPojo of T", jsonDocType.getOneLineText());
+		System.out.println("---------------------------");		
 	}
 
 }
