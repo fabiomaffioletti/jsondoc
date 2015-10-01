@@ -56,6 +56,35 @@ public class Location {
         <li>The object is annotated with <code>show = false</code>, indicating that this object will take part to the documentation build process, but it will not be shown as a stadalone object in the resulting documentation</li>
 </ul>
 
+<h3 class="spaced"></h3>
+<div class="alert alert-info">
+<h3>Hibernate validator intergration</h3>
+<p>If JSONDoc finds Hibernate validator libraries on the classpath, it will trigger the scan for its annotations put on objects' fields. It will then extract data from them and use them to display validation rules in the JSONDoc UI. Currently JSONDoc supports these Hibernate validator annotations:</p>
+<ul>
+<li>AssertFalse</li>
+<li>AssertTrue</li>
+<li>NotNull</li>
+<li>Null</li>
+<li>Size</li>
+<li>NotBlank</li>
+<li>NotEmpty</li>
+<li>Length</li>
+<li>Range</li>
+<li>DecimalMax</li>
+<li>DecimalMin</li>
+<li>Future</li>
+<li>Past</li>
+<li>Digits</li>
+<li>Max</li>
+<li>Min</li>
+<li>Pattern</li>
+<li>Email</li>
+<li>URL</li>
+<li>CreditCardNumber</li>
+</ul>
+</div>
+
+
 
 <script type="text/javascript">
 	$('#examples-objects').addClass('active');
