@@ -349,6 +349,9 @@
 						<tr>
 							<th>Auth</th>
 							<td>{{auth.type}}, Roles: {{auth.roles}}</td>
+							{{#if auth.scheme}}
+								<tr><td></td><td>Scheme: {{auth.scheme}}</td></tr>
+							{{/if}}
 						</tr>
 					{{/if}}
 
@@ -584,6 +587,23 @@
 				<div class="form-group">
 					<label for="basicAuthPassword">Password</label>
 					<input class="form-control" type="text" id="basicAuthPassword" name="basicAuthPassword" placeholder="Password">
+				</div>
+			</div>
+		{{/equal}}
+		{{#equal auth.type "TOKEN"}}
+			<div class="col-md-12">
+				<h4>Token Authentication</h4>
+				<div class="form-group">
+					<select class="form-control" id="tokenAuthSelect" onchange="fillTokenAuthFields(); return false;">
+						<option disabled="disabled" selected="selected">Select a test token or fill input below</option>
+						{{#each auth.testtokens}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
+					</select>
+				</div>
+				<div class="form-group" style="margin-bottom:5px;">
+					<label for="tokenAuthToken">Token</label>
+					<input class="form-control" type="text" id="tokenAuthToken" name="tokenAuthToken" placeholder="Token">
 				</div>
 			</div>
 		{{/equal}}
@@ -915,6 +935,10 @@
 		$("#basicAuthUsername").val($("#basicAuthSelect").find(":selected").text());
 	}
 	
+	function fillTokenAuthFields() {
+		$("#tokenAuthToken").val($("#tokenAuthSelect").val());
+	}
+	
 	function printResponse(data, res, url) {
 		if(res.responseXML != null) {
 			$("#response").text(formatXML(res.responseText));
@@ -1016,6 +1040,10 @@
 						if(method.auth) {
 							if(method.auth.type == "BASIC_AUTH") {
 								headers["Authorization"] = "Basic " + window.btoa($('#basicAuthUsername').val() + ":" + $('#basicAuthPassword').val());
+							}
+							
+							if(method.auth.type == "TOKEN") {
+								headers["Authorization"] = method.auth.scheme + " " + $('#tokenAuthToken').val();
 							}
 						}
 						
