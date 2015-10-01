@@ -27,8 +27,8 @@ public class JSONDocApiObjectBuilderTest {
 			if(apiObjectFieldDoc.getName().equals("id")) {
 				Iterator<String> formats = apiObjectFieldDoc.getFormat().iterator();
 				Assert.assertEquals("a not empty id", formats.next());
-				Assert.assertEquals("must be less than or equal to 9", formats.next());
 				Assert.assertEquals("length must be between 2 and 2147483647", formats.next());
+				Assert.assertEquals("must be less than or equal to 9", formats.next());
 			}
 		}
 	}
