@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.util.JSONDocHibernateValidatorProcessor;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
@@ -19,7 +20,6 @@ public class JSONDocApiObjectFieldDocBuilder {
 		}
 		apiPojoFieldDoc.setDescription(annotation.description());
 		apiPojoFieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
-		apiPojoFieldDoc.setFormat(annotation.format());
 		// if allowedvalues property is populated on an enum field, then the enum values are overridden with the allowedvalues ones
 		if (field.getType().isEnum() && annotation.allowedvalues().length == 0) {
 			apiPojoFieldDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(field.getType().getEnumConstants()));
@@ -28,7 +28,14 @@ public class JSONDocApiObjectFieldDocBuilder {
 		}
 		apiPojoFieldDoc.setRequired(String.valueOf(annotation.required()));
 		apiPojoFieldDoc.setOrder(annotation.order());
+		
+		if(!annotation.format().isEmpty()) {
+			apiPojoFieldDoc.addFormat(annotation.format());
+		}
+		
+		JSONDocHibernateValidatorProcessor.processHibernateValidatorAnnotations(field, apiPojoFieldDoc);
+		
 		return apiPojoFieldDoc;
 	}
-
+	
 }

@@ -1,19 +1,27 @@
 package org.jsondoc.core.pojo;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jsondoc.core.util.JSONDocType;
+
+import com.google.common.base.Joiner;
 
 public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObjectFieldDoc> {
 	public final String jsondocId = UUID.randomUUID().toString();
 	private JSONDocType jsondocType;
 	private String name;
 	private String description;
-	private String format;
+	private Set<String> format;
 	private String[] allowedvalues;
 	private String required;
 	private ApiVersionDoc supportedversions;
 	private Integer order;
+
+	public ApiObjectFieldDoc() {
+		this.format = new LinkedHashSet<String>();
+	}
 
 	public String[] getAllowedvalues() {
 		return allowedvalues;
@@ -23,12 +31,20 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
 		this.allowedvalues = allowedvalues;
 	}
 
-	public String getFormat() {
+	public Set<String> getFormat() {
 		return format;
 	}
+	
+	public String getDisplayedFormat() {
+		return Joiner.on(", ").join(format);
+	}
 
-	public void setFormat(String format) {
+	public void setFormat(Set<String> format) {
 		this.format = format;
+	}
+	
+	public void addFormat(String format) {
+		this.format.add(format);
 	}
 
 	public String getName() {
@@ -77,10 +93,6 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
 
 	public Integer getOrder() {
 		return order;
-	}
-
-	public ApiObjectFieldDoc() {
-		super();
 	}
 
 	@Override

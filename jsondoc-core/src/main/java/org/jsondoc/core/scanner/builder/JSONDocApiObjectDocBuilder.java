@@ -21,7 +21,6 @@ public class JSONDocApiObjectDocBuilder {
 			if (field.getAnnotation(ApiObjectField.class) != null) {
 				ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(field.getAnnotation(ApiObjectField.class), field);
 				fieldDoc.setSupportedversions(JSONDocApiVersionDocBuilder.build(field));
-
 				fieldDocs.add(fieldDoc);
 			}
 		}

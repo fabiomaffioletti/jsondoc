@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.util.JSONDocHibernateValidatorProcessor;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 
@@ -25,6 +26,9 @@ public class SpringObjectBuilder {
 			fieldDoc.setOrder(Integer.MAX_VALUE);
 			fieldDoc.setRequired(DefaultJSONDocScanner.UNDEFINED.toUpperCase());
 			fieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
+			
+			JSONDocHibernateValidatorProcessor.processHibernateValidatorAnnotations(field, fieldDoc);
+			
 			fieldDocs.add(fieldDoc);
 		}
 		
