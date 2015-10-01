@@ -30,9 +30,9 @@ public @interface ApiAuthToken {
 	public String[] testtokens() default {};
 	
 	/**
-	 * The default scheme placed at the beginning of the Authorization header. Defaults to "Bearer"
+	 * The default scheme placed at the beginning of the Authorization header
 	 * @return
 	 */
-	public String scheme() default "Bearer";
+	public String scheme() default "";
 
 }

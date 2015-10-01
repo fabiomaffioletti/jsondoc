@@ -1043,7 +1043,11 @@
 							}
 							
 							if(method.auth.type == "TOKEN") {
-								headers["Authorization"] = method.auth.scheme + " " + $('#tokenAuthToken').val();
+								if(method.auth.scheme != "") {
+									headers["Authorization"] = method.auth.scheme + " " + $('#tokenAuthToken').val();
+								} else {
+									headers["Authorization"] = $('#tokenAuthToken').val();
+								}
 							}
 						}
 						

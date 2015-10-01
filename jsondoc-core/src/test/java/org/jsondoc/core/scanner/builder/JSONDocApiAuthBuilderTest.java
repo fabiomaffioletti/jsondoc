@@ -5,8 +5,6 @@ import org.jsondoc.core.annotation.ApiAuthToken;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.ApiStage;
-import org.jsondoc.core.pojo.ApiVisibility;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.scanner.JSONDocScanner;
@@ -29,7 +27,7 @@ public class JSONDocApiAuthBuilderTest {
 		}
 		
 		@ApiMethod(path = "/override")
-		@ApiAuthToken(roles = { "" }, scheme = "JWT", testtokens = { "xyz" })
+		@ApiAuthToken(roles = { "" }, scheme = "Bearer", testtokens = { "xyz" })
 		public void override() {
 			
 		}
@@ -40,18 +38,18 @@ public class JSONDocApiAuthBuilderTest {
 	public void testApiAuthToken() {
 		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(Controller.class), MethodDisplay.URI).iterator().next();
 		Assert.assertEquals("TOKEN", apiDoc.getAuth().getType());
-		Assert.assertEquals("Bearer", apiDoc.getAuth().getScheme());
+		Assert.assertEquals("", apiDoc.getAuth().getScheme());
 		Assert.assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
 		
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if(apiMethodDoc.getPath().contains("/inherit")) {
 				Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
-				Assert.assertEquals("Bearer", apiMethodDoc.getAuth().getScheme());
+				Assert.assertEquals("", apiMethodDoc.getAuth().getScheme());
 				Assert.assertEquals("abc", apiMethodDoc.getAuth().getTesttokens().iterator().next());
 			}
 			if(apiMethodDoc.getPath().contains("/override")) {
 				Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
-				Assert.assertEquals("JWT", apiMethodDoc.getAuth().getScheme());
+				Assert.assertEquals("Bearer", apiMethodDoc.getAuth().getScheme());
 				Assert.assertEquals("xyz", apiMethodDoc.getAuth().getTesttokens().iterator().next());
 			}
 		}
