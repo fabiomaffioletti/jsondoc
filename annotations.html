@@ -14,7 +14,7 @@ title: Documentation
 	<tr><td><a href="#apiglobal">@ApiGlobal</a></td><td><a href="#api">@Api</a></td><td><a href="#apiauthnone">@ApiAuthNone</a></td><td><a href="#apiobject">@ApiObject</a></td><td><a href="#apiflowset">@ApiFlowSet</a></td></tr>
 	<tr><td><a href="#apiglobalsection">@ApiGlobalSection</a></td><td><a href="#apimethod">@ApiMethod</a></td><td><a href="#apiauthbasic">@ApiAuthBasic</a></td><td><a href="#apiobjectfield">@ApiObjectField</a></td><td><a href="#apiflow">@ApiFlow</a></td></tr>
 	<tr><td><a href="#apichangelogset">@ApiChangelogSet</a></td><td><a href="#apiversion">@ApiVersion</a></td><td><a href="#apiauthbasicuser">@ApiAuthBasicUser</a></td><td></td><td><a href="#apiflowstep">@ApiFlowStep</a></td></tr>
-	<tr><td><a href="#apichangelog">@ApiChangelog</a></td><td><a href="#apiheaders">@ApiHeaders</a></td><td></td><td></td><td></td></tr>
+	<tr><td><a href="#apichangelog">@ApiChangelog</a></td><td><a href="#apiheaders">@ApiHeaders</a></td><td><a href="#apiauthtoken">@ApiAuthToken</a></td><td></td><td></td></tr>
 	<tr><td><a href="#apimigrationset">@ApiMigrationSet</a></td><td><a href="#apiheader">@ApiHeader</a></td><td></td><td></td><td></td></tr>
 	<tr><td><a href="#apimigration">@ApiMigration</a></td><td><a href="#apiparams">@ApiParams</a></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td><a href="#apipathparam">@ApiPathParam</a></td><td></td><td></td><td></td></tr>
@@ -502,6 +502,31 @@ title: Documentation
 			<td></td>
 			<td><code>password</code></td>
 			<td>The test user's password</td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" id="apiauthtoken">
+	<thead><tr><th><h4>@ApiAuthToken</h4></th></tr></thead>
+	<tbody>
+		<tr>
+			<td colspan="3">This annotation is to be used on your "service" class, for example controllers, or on exposed methods. It specifies that the controller/method needs token authentication</td>
+		</tr>
+		<tr><td>Level</td><td><code>Class, Method</code></td><td></td></tr>
+		<tr>
+			<td>Property</td>
+			<td><code>roles</code></td>
+			<td>The role(s) a user must have to correctly access the annotated controller/method</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>scheme</code></td>
+			<td>The scheme to use for the Authorization header (Bearer, JWT, etc). It can be empty</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><code>testtokens</code></td>
+			<td>A list of test tokens that can be used to test methods</td>
 		</tr>
 	</tbody>
 </table>
