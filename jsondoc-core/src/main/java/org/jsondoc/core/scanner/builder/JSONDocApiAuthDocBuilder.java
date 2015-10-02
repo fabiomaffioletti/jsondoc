@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.jsondoc.core.annotation.ApiAuthBasic;
 import org.jsondoc.core.annotation.ApiAuthBasicUser;
 import org.jsondoc.core.annotation.ApiAuthNone;
+import org.jsondoc.core.annotation.ApiAuthToken;
 import org.jsondoc.core.pojo.ApiAuthDoc;
 import org.jsondoc.core.pojo.ApiAuthType;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
@@ -21,6 +22,10 @@ public class JSONDocApiAuthDocBuilder {
 			return buildFromApiAuthBasicAnnotation(controller.getAnnotation(ApiAuthBasic.class));
 		}
 		
+		if(controller.isAnnotationPresent(ApiAuthToken.class)) {
+			return buildFromApiAuthTokenAnnotation(controller.getAnnotation(ApiAuthToken.class));
+		}
+		
 		return null;
 	}
 	
@@ -31,6 +36,10 @@ public class JSONDocApiAuthDocBuilder {
 		
 		if(method.isAnnotationPresent(ApiAuthBasic.class)) {
 			return buildFromApiAuthBasicAnnotation(method.getAnnotation(ApiAuthBasic.class));
+		}
+		
+		if(method.isAnnotationPresent(ApiAuthToken.class)) {
+			return buildFromApiAuthTokenAnnotation(method.getAnnotation(ApiAuthToken.class));
 		}
 		
 		return getApiAuthDocForController(method.getDeclaringClass());
@@ -49,6 +58,17 @@ public class JSONDocApiAuthDocBuilder {
 		apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
 		for (ApiAuthBasicUser testuser : annotation.testusers()) {
 			apiAuthDoc.addTestUser(testuser.username(), testuser.password());
+		}
+		return apiAuthDoc;
+	}
+	
+	private static ApiAuthDoc buildFromApiAuthTokenAnnotation(ApiAuthToken annotation) {
+		ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
+		apiAuthDoc.setType(ApiAuthType.TOKEN.name());
+		apiAuthDoc.setScheme(annotation.scheme());
+		apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
+		for (String testtoken : annotation.testtokens()) {
+			apiAuthDoc.addTestToken(testtoken);
 		}
 		return apiAuthDoc;
 	}

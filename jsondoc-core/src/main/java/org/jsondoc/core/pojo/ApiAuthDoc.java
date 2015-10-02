@@ -2,13 +2,22 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ApiAuthDoc {
+
 	private String type;
+
+	// Basic auth
 	private List<String> roles = new ArrayList<String>();
 	private Map<String, String> testusers = new HashMap<String, String>();
+
+	// Token auth
+	private String scheme;
+	private Set<String> testtokens = new HashSet<String>();
 
 	public String getType() {
 		return type;
@@ -40,6 +49,26 @@ public class ApiAuthDoc {
 
 	public void setTestusers(Map<String, String> testusers) {
 		this.testusers = testusers;
+	}
+
+	public String getScheme() {
+		return scheme;
+	}
+
+	public void setScheme(String scheme) {
+		this.scheme = scheme;
+	}
+
+	public Set<String> getTesttokens() {
+		return testtokens;
+	}
+
+	public void setTesttokens(Set<String> testtokens) {
+		this.testtokens = testtokens;
+	}
+
+	public void addTestToken(String testtoken) {
+		this.testtokens.add(testtoken);
 	}
 
 }
