@@ -10,5 +10,10 @@ public class FooController {
 	public FooWrapper<BarPojo> getBar() {
 		return null;
 	}
+	
+	@RequestMapping("/wildcard")
+	public FooWrapper<?> wildcard() {
+		return null;
+	}
 
 }

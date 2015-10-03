@@ -12,5 +12,11 @@ public class FooController {
 	public FooWrapper<BarPojo> getBar() {
 		return null;
 	}
+	
+	@ApiMethod(path = { "/api/foo-wildcard" }, description = "Main foo service with wildcard")
+	@ApiResponseObject
+	public FooWrapper<?> wildcard() {
+		return null;
+	}
 
 }
