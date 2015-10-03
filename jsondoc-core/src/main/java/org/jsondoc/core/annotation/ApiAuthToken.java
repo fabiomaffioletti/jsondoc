@@ -18,10 +18,10 @@ import java.lang.annotation.Target;
 public @interface ApiAuthToken {
 	
 	/**
-	 * The role(s) a user must have to correctly access the annotated controller/method
+	 * The role(s) a user must have to correctly access the annotated controller/method. Defaults to *
 	 * @return
 	 */
-	public String[] roles();
+	public String[] roles() default { "*" };
 	
 	/**
 	 * A list of test tokens that can be used to test methods

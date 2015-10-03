@@ -19,10 +19,10 @@ import java.lang.annotation.Target;
 public @interface ApiAuthBasic {
 	
 	/**
-	 * The role(s) a user must have to correctly access the annotated controller/method
+	 * The role(s) a user must have to correctly access the annotated controller/method. Defaults to *
 	 * @return
 	 */
-	public String[] roles();
+	public String[] roles() default { "*" };
 	
 	/**
 	 * A list of test users that can be used to test methods with different username/password/roles combinations

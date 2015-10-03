@@ -593,6 +593,7 @@
 		{{#equal auth.type "TOKEN"}}
 			<div class="col-md-12">
 				<h4>Token Authentication</h4>
+				{{#if auth.testtokens}}
 				<div class="form-group">
 					<select class="form-control" id="tokenAuthSelect" onchange="fillTokenAuthFields(); return false;">
 						<option disabled="disabled" selected="selected">Select a test token or fill input below</option>
@@ -601,6 +602,7 @@
 						{{/each}}
 					</select>
 				</div>
+				{{/if}}
 				<div class="form-group" style="margin-bottom:5px;">
 					<label for="tokenAuthToken">Token</label>
 					<input class="form-control" type="text" id="tokenAuthToken" name="tokenAuthToken" placeholder="Token">
@@ -1043,7 +1045,7 @@
 							}
 							
 							if(method.auth.type == "TOKEN") {
-								if(method.auth.scheme != "") {
+								if(typeof(method.auth.scheme) != "undefined" && method.auth.scheme != "") {
 									headers["Authorization"] = method.auth.scheme + " " + $('#tokenAuthToken').val();
 								} else {
 									headers["Authorization"] = $('#tokenAuthToken').val();
