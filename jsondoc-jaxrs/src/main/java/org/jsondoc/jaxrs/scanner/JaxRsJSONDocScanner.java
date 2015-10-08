@@ -52,6 +52,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * JaxRS implementation based on {@link org.jsondoc.springmvc.scanner.AbstractSpringJSONDocScanner}
+ *
  * @author Arne Bosien
  */
 public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
@@ -67,8 +69,10 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
      * @return
      */
     public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type) {
+        LOGGER.debug("buildJSONDocObjectsCandidates: class <{}>", clazz);
 
         if (Map.class.isAssignableFrom(clazz)) {
+            LOGGER.trace("buildJSONDocObjectsCandidates: map");
 
             if (type instanceof ParameterizedType) {
                 Type mapKeyType = ((ParameterizedType) type).getActualTypeArguments()[0];
@@ -93,6 +97,8 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
             }
 
         } else if (Collection.class.isAssignableFrom(clazz)) {
+            LOGGER.trace("buildJSONDocObjectsCandidates: collection");
+
             if (type instanceof ParameterizedType) {
                 Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
                 candidates.add(clazz);
@@ -111,11 +117,15 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
             }
 
         } else if (clazz.isArray()) {
+            LOGGER.trace("buildJSONDocObjectsCandidates: array");
+
             Class<?> componentType = clazz.getComponentType();
             candidates.addAll(buildJSONDocObjectsCandidates(candidates, componentType, type));
 
         } else {
             if (type instanceof ParameterizedType) {
+                LOGGER.trace("buildJSONDocObjectsCandidates: parametrizedType");
+
                 Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
 
                 if (parametrizedType instanceof Class) {
@@ -128,6 +138,7 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
                     candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType));
                 }
             } else {
+                LOGGER.trace("buildJSONDocObjectsCandidates: else");
                 candidates.add(clazz);
             }
         }
@@ -191,6 +202,8 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
 
     @Override
     public Set<Class<?>> jsondocObjects(List<String> packages) {
+        LOGGER.debug("jsondocObjects");
+
         Set<Method> methodsAnnotatedWith = getHttpMethods();
 
         Set<Class<?>> candidates = Sets.newHashSet();
@@ -199,10 +212,11 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
 
         for (Method method : methodsAnnotatedWith) {
             buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType());
-//            Integer requestBodyParameterIndex = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
-//            if (requestBodyParameterIndex != -1) {
-//                candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex]));
-//            }
+
+            Integer requestBodyParameterIndex = JaxRsRequestBodyBuilder.getIndexOfBodyParam(method);
+            if (requestBodyParameterIndex != -1) {
+                candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex]));
+            }
         }
 
         // This is to get objects' fields that are not returned nor part of the body request of a method, but that are a field
