@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * @author Arne Bosien
+ */
 public class JaxRsHeaderBuilder {
 
     public static Set<ApiHeaderDoc> buildHeaders(Method method) {

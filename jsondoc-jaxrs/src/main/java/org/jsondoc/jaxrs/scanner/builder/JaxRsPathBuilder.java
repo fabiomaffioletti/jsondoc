@@ -9,6 +9,9 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Arne Bosien
+ */
 public class JaxRsPathBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(JaxRsPathBuilder.class);
 
