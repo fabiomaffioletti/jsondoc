@@ -221,6 +221,8 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
                 ApiResponseObject repo = method.getAnnotation(ApiResponseObject.class);
                 if (repo != null && repo.clazz() != null) {
                     candidates.add(repo.clazz());
+                } else {
+                    // object belong to return
                 }
             }
         }

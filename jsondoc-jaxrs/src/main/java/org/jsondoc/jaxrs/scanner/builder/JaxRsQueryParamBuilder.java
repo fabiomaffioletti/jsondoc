@@ -18,20 +18,20 @@ public class JaxRsQueryParamBuilder {
 
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();
         for (int i = 0; i < parametersAnnotations.length; i++) {
-            QueryParam pathVariable = null;
+            QueryParam queryVar = null;
             ApiQueryParam apiQueryParam = null;
             ApiParamDoc apiParamDoc = null;
 
             for (int j = 0; j < parametersAnnotations[i].length; j++) {
                 if (parametersAnnotations[i][j] instanceof QueryParam) {
-                    pathVariable = (QueryParam) parametersAnnotations[i][j];
+                    queryVar = (QueryParam) parametersAnnotations[i][j];
                 }
                 if (parametersAnnotations[i][j] instanceof ApiQueryParam) {
                     apiQueryParam = (ApiQueryParam) parametersAnnotations[i][j];
                 }
 
-                if (pathVariable != null) {
-                    apiParamDoc = new ApiParamDoc(pathVariable.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), "true", new String[]{}, null, "");
+                if (queryVar != null) {
+                    apiParamDoc = new ApiParamDoc(queryVar.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), "false", new String[]{}, null, "");
                     mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 }
             }
@@ -52,6 +52,7 @@ public class JaxRsQueryParamBuilder {
             apiParamDoc.setDescription(apiQueryParam.description());
             apiParamDoc.setAllowedvalues(apiQueryParam.allowedvalues());
             apiParamDoc.setFormat(apiQueryParam.format());
+            apiParamDoc.setRequired(apiParamDoc.getRequired());
         }
     }
 }
