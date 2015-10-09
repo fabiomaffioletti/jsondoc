@@ -44,4 +44,12 @@ public class TestRest1 {
     public long create(Pet pet) {
         return 0l;
     }
+
+    @Path("pets/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponseObject(clazz = Other.class)
+    public Response createNewOther() {
+        return null;
+    }
 }

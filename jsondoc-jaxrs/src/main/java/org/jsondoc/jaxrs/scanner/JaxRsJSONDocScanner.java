@@ -6,6 +6,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiResponseObject;
 import org.jsondoc.core.annotation.flow.ApiFlowSet;
 import org.jsondoc.core.annotation.global.ApiChangelogSet;
 import org.jsondoc.core.annotation.global.ApiGlobal;
@@ -216,6 +217,11 @@ public class JaxRsJSONDocScanner extends AbstractJSONDocScanner {
             Integer requestBodyParameterIndex = JaxRsRequestBodyBuilder.getIndexOfBodyParam(method);
             if (requestBodyParameterIndex != -1) {
                 candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex]));
+            } else {
+                ApiResponseObject repo = method.getAnnotation(ApiResponseObject.class);
+                if (repo != null && repo.clazz() != null) {
+                    candidates.add(repo.clazz());
+                }
             }
         }
 
