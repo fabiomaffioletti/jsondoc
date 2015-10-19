@@ -202,6 +202,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	@Override
 	public ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, JSONDocTemplate> jsondocTemplates) {
 		ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+		apiMethodDoc.setMethodName(method.getName());
 		apiMethodDoc.setPath(SpringPathBuilder.buildPath(method));
 		apiMethodDoc.setVerb(SpringVerbBuilder.buildVerb(method));
 		apiMethodDoc.setProduces(SpringProducesBuilder.buildProduces(method));

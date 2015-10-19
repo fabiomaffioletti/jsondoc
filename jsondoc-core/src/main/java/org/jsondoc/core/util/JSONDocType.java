@@ -6,7 +6,7 @@ import java.util.List;
 public class JSONDocType {
 
 	private List<String> type = new LinkedList<String>();
-
+	private List<String> classType = new LinkedList<String>();
 	private JSONDocType mapKey;
 
 	private JSONDocType mapValue;
@@ -21,6 +21,11 @@ public class JSONDocType {
 
 	public void addItemToType(String item) {
 		this.type.add(item);
+	}
+
+	public void addItemToClassType(String classType)
+	{
+		this.classType.add(classType);
 	}
 
 	public String getOneLineText() {
@@ -47,6 +52,16 @@ public class JSONDocType {
 
 	public void setType(List<String> type) {
 		this.type = type;
+	}
+
+	public List<String> getClassType()
+	{
+		return classType;
+	}
+
+	public void setClassType(List<String> classType)
+	{
+		this.classType = classType;
 	}
 
 	public JSONDocType getMapKey() {

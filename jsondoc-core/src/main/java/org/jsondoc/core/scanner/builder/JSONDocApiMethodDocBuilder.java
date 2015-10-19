@@ -22,6 +22,7 @@ public class JSONDocApiMethodDocBuilder {
 		apiMethodDoc.setPath(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.path())));
 		apiMethodDoc.setSummary(methodAnnotation.summary());
 		apiMethodDoc.setDescription(methodAnnotation.description());
+		apiMethodDoc.setMethodName(method.getName());
 		apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(methodAnnotation.verb())));
 		apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.consumes())));
 		apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.produces())));

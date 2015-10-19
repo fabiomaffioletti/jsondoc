@@ -1,5 +1,7 @@
 package org.jsondoc.core.util;
 
+import org.jsondoc.core.annotation.ApiObject;
+
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -8,8 +10,6 @@ import java.lang.reflect.WildcardType;
 import java.util.Collection;
 import java.util.Map;
 
-import org.jsondoc.core.annotation.ApiObject;
-
 public class JSONDocTypeBuilder {
 	
 	private static final String WILDCARD = "wildcard";
@@ -17,6 +17,9 @@ public class JSONDocTypeBuilder {
 	private static final String ARRAY = "array";
 
 	public static JSONDocType build(JSONDocType jsondocType, Class<?> clazz, Type type) {
+
+		jsondocType.addItemToClassType(getTypeString(type));
+
 		if(clazz.isAssignableFrom(JSONDocDefaultType.class)) {
 			jsondocType.addItemToType(UNDEFINED);
 			return jsondocType;
@@ -58,7 +61,7 @@ public class JSONDocTypeBuilder {
 			if (type instanceof ParameterizedType) {
 				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
 				jsondocType.addItemToType(getCustomClassName(clazz));
-				
+
 				if (parametrizedType instanceof Class) {
 					jsondocType.addItemToType(getCustomClassName((Class<?>) parametrizedType));
 				} else if (parametrizedType instanceof WildcardType) {
@@ -110,6 +113,27 @@ public class JSONDocTypeBuilder {
 		} else {
 			return clazz.getSimpleName().toLowerCase();
 		}
+	}
+
+	private static String getTypeString(Type type)
+	{
+		if(type == null)
+			return UNDEFINED;
+
+		String typeName = null;
+		if(type instanceof ParameterizedType)
+		{
+			ParameterizedType ptype = (ParameterizedType) type;
+			if(ptype.getOwnerType() != null)
+				typeName = ptype.getRawType().getTypeName();
+		}
+
+		if(typeName == null)
+			typeName = type.getTypeName();
+
+		//For nested classes, remove the $ and add a dot notation so its a valid
+		//java reference.
+		return typeName.replace("$",".");
 	}
 
 }
