@@ -239,6 +239,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc) {
 		if(clazz.isAnnotationPresent(ApiObject.class)) {
 			ApiObjectDoc jsondocApiObjectDoc = JSONDocApiObjectDocBuilder.build(clazz);
+	    if (jsondocApiObjectDoc.getFields() != null) {
+	      jsondocApiObjectDoc.getFields().addAll(apiObjectDoc.getFields());
+	    }
 			BeanUtils.copyProperties(jsondocApiObjectDoc, apiObjectDoc);
 		}
 		return apiObjectDoc;
