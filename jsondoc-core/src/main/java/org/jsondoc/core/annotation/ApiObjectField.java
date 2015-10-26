@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target(value = ElementType.FIELD)
+@Target(value = { ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiObjectField {
 

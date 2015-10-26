@@ -155,6 +155,11 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 			for (Field field : clazz.getDeclaredFields()) {
 				subCandidates.addAll(buildJSONDocObjectsCandidates(subCandidates, field.getType(), field.getGenericType()));
 			}
+      for (Method method : clazz.getDeclaredMethods()) {
+        if (JSONDocUtils.isFieldMethod(method)) {
+          subCandidates.addAll(buildJSONDocObjectsCandidates(subCandidates, method.getReturnType(), method.getGenericReturnType()));
+        }
+      }
 		}
 		candidates.addAll(subCandidates);
 		

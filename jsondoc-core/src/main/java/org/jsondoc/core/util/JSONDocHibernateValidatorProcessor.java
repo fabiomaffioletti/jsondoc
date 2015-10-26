@@ -1,6 +1,6 @@
 package org.jsondoc.core.util;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.AnnotatedElement;
 
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
@@ -49,7 +49,7 @@ public class JSONDocHibernateValidatorProcessor {
 	private final static String CreditCardNumber_message = "must be a valid credit card number";
 	private final static String ScriptAssert_message = "script expression %s didn't evaluate to true";
 
-	public static void processHibernateValidatorAnnotations(Field field, ApiObjectFieldDoc apiPojoFieldDoc) {
+	public static void processHibernateValidatorAnnotations(AnnotatedElement field, ApiObjectFieldDoc apiPojoFieldDoc) {
 		try {
 			Class.forName("org.hibernate.validator.constraints.NotBlank");
 

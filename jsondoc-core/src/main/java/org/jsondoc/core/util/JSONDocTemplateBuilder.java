@@ -1,6 +1,7 @@
 package org.jsondoc.core.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,10 +41,9 @@ public class JSONDocTemplateBuilder {
 			try {
 				Set<JSONDocFieldWrapper> fields = getAllDeclaredFields(clazz);
 	
-				for (JSONDocFieldWrapper jsondocFieldWrapper : fields) {
-					Field field = jsondocFieldWrapper.getField();
-					String fieldName = field.getName();
-					ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
+				for (JSONDocFieldWrapper wrapper : fields) {
+					String fieldName = wrapper.getName();
+					ApiObjectField apiObjectField = wrapper.getApiObjectFieldAnnotation();
 					if (apiObjectField != null && !apiObjectField.name().isEmpty()) {
 						fieldName = apiObjectField.name();
 					}
@@ -51,10 +51,10 @@ public class JSONDocTemplateBuilder {
 					Object value;
 					// This condition is to avoid StackOverflow in case class "A"
 					// contains a field of type "A"
-					if (field.getType().equals(clazz) || (apiObjectField != null && !apiObjectField.processtemplate())) {
-						value = getValue(Object.class, field.getGenericType(), fieldName, jsondocObjects);
+					if (wrapper.getType().equals(clazz) || (apiObjectField != null && !apiObjectField.processtemplate())) {
+						value = getValue(Object.class, wrapper.getGenericType(), fieldName, jsondocObjects);
 					} else {
-						value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
+						value = getValue(wrapper.getType(), wrapper.getGenericType(), fieldName, jsondocObjects);
 					}
 	
 					jsonDocTemplate.put(fieldName, value);
@@ -107,20 +107,38 @@ public class JSONDocTemplateBuilder {
 		for (Field field : declaredFields) {
 			if (field.isAnnotationPresent(ApiObjectField.class)) {
 				ApiObjectField annotation = field.getAnnotation(ApiObjectField.class);
-				fields.add(new JSONDocFieldWrapper(field, annotation.order()));
+				fields.add(new JSONDocFieldWrapper(field.getName(), field.getType(), field.getGenericType(), annotation, annotation.order()));
 			} else {
-				fields.add(new JSONDocFieldWrapper(field, Integer.MAX_VALUE));
+        fields.add(new JSONDocFieldWrapper(field.getName(), field.getType(), field.getGenericType(), null, Integer.MAX_VALUE));
 			}
 		}
 
-		if (clazz.getSuperclass() != null) {
+    List<Method> declaredMethods = new ArrayList<Method>();
+    if (clazz.isEnum()) {
+      return fields;
+    } else {
+      declaredMethods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
+    }
+    
+    for (Method method : declaredMethods) {
+      if (JSONDocUtils.isFieldMethod(method)) {
+        if (method.isAnnotationPresent(ApiObjectField.class)) {
+          ApiObjectField annotation = method.getAnnotation(ApiObjectField.class);
+          fields.add(new JSONDocFieldWrapper(JSONDocUtils.getPropertyName(method), method.getReturnType(), method.getGenericReturnType(), annotation, annotation.order()));
+        } else {
+          fields.add(new JSONDocFieldWrapper(JSONDocUtils.getPropertyName(method), method.getReturnType(), method.getGenericReturnType(), null, Integer.MAX_VALUE));
+        }
+      }
+    }
+
+    if (clazz.getSuperclass() != null && !clazz.getSuperclass().isAssignableFrom(Object.class)) {
 			fields.addAll(getAllDeclaredFields(clazz.getSuperclass()));
 		}
-
-		return fields;
+		
+    return fields;
 	}
 
-	@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
 	private static <T> Class<T> wrap(Class<T> clazz) {
 		return clazz.isPrimitive() ? (Class<T>) primitives.get(clazz) : clazz;
 	}

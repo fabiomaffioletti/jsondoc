@@ -1,6 +1,7 @@
 package org.jsondoc.core.scanner.builder;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -9,6 +10,7 @@ import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.scanner.DefaultJSONDocScanner;
+import org.jsondoc.core.util.JSONDocUtils;
 
 public class JSONDocApiObjectDocBuilder {
 	
@@ -17,14 +19,23 @@ public class JSONDocApiObjectDocBuilder {
 		ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
 		Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
-		for (Field field : clazz.getDeclaredFields()) {
-			if (field.getAnnotation(ApiObjectField.class) != null) {
-				ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(field.getAnnotation(ApiObjectField.class), field);
-				fieldDoc.setSupportedversions(JSONDocApiVersionDocBuilder.build(field));
-				fieldDocs.add(fieldDoc);
-			}
-		}
 
+    for (Field field : clazz.getDeclaredFields()) {
+      if (field.getAnnotation(ApiObjectField.class) != null) {
+        ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(field.getAnnotation(ApiObjectField.class), field);
+        fieldDoc.setSupportedversions(JSONDocApiVersionDocBuilder.build(field));
+        fieldDocs.add(fieldDoc);
+      }
+    }
+
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (JSONDocUtils.isFieldMethod(method)) {
+        ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(method.getAnnotation(ApiObjectField.class), method);
+        fieldDoc.setSupportedversions(JSONDocApiVersionDocBuilder.build(method));
+        fieldDocs.add(fieldDoc);
+      }
+    }
+		
 		Class<?> c = clazz.getSuperclass();
 		if (c != null) {
 			if (c.isAnnotationPresent(ApiObject.class)) {
