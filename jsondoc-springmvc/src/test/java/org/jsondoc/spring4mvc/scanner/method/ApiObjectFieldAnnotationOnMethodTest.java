@@ -3,6 +3,7 @@ package org.jsondoc.spring4mvc.scanner.method;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import org.jsondoc.core.annotation.ApiObject;
@@ -12,6 +13,7 @@ import org.jsondoc.core.pojo.ApiObjectFieldDoc;
 import org.jsondoc.core.pojo.JSONDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.springmvc.scanner.Spring4JSONDocScanner;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,15 +25,19 @@ public class ApiObjectFieldAnnotationOnMethodTest {
   @Test
   public void testSpring4JSONDocScanner() {
     Spring4JSONDocScanner jsondocScanner = new Spring4JSONDocScanner();
-    JSONDoc jsonDoc = jsondocScanner.getJSONDoc("1.0", "/field", Lists.newArrayList("org.jsondoc.spring4mvc.scanner"), true, MethodDisplay.URI);
-    for (Set<ApiObjectDoc> o : jsonDoc.getObjects().values()) {
-      for (ApiObjectDoc api : o) {
-        System.out.println(api.getName());
-        for (ApiObjectFieldDoc field : api.getFields()) {
-          System.out.println("  " + field.getName());
-        }
-      }
-    }
+    JSONDoc jsonDoc = jsondocScanner.getJSONDoc("1.0", "/field", Lists.newArrayList("org.jsondoc.spring4mvc.scanner.method"), true, MethodDisplay.URI);
+    Assert.assertEquals(1, jsonDoc.getObjects().size());
+    Set<ApiObjectDoc> objects = jsonDoc.getObjects().get("");
+    ApiObjectDoc o = objects.iterator().next();
+    ApiObjectFieldDoc[] fields = o.getFields().toArray(new ApiObjectFieldDoc[]{});
+    Arrays.sort(fields);
+    Assert.assertEquals(6, fields.length);
+    Assert.assertEquals("a", fields[0].getName());
+    Assert.assertEquals("address", fields[1].getName());
+    Assert.assertEquals("b", fields[2].getName());
+    Assert.assertEquals("get", fields[3].getName());
+    Assert.assertEquals("name", fields[4].getName());
+    Assert.assertEquals("retired", fields[5].getName());
   }
 
   @RestController
@@ -51,6 +57,8 @@ public class ApiObjectFieldAnnotationOnMethodTest {
         public Long b() { return null; }
         @Override
         public Boolean setRetired() { return null; }
+        @Override
+        public Boolean get() { return null; }
       };
     }
   }
@@ -58,13 +66,16 @@ public class ApiObjectFieldAnnotationOnMethodTest {
   @ApiObject(name="Spring4ObjectMethod", show=true)
   public static abstract class Spring4ObjectMethod {
     
-    private String adress;
+    private String address;
     
     @ApiObjectField
     public abstract String getName();
     
     @ApiObjectField
     public abstract Boolean setRetired();
+
+    @ApiObjectField
+    public abstract Boolean get();
 
     // Missing @ApiObjectField
     public abstract Long getLocation();
@@ -75,14 +86,13 @@ public class ApiObjectFieldAnnotationOnMethodTest {
     @ApiObjectField
     public abstract Long b();
 
-    public String getAdress() {
-      return adress;
+    public String getAddress() {
+      return address;
     }
 
-    public void setAdress(String adress) {
-      this.adress = adress;
+    public void setAddress(String address) {
+      this.address = address;
     }
-
   }
 }
 
