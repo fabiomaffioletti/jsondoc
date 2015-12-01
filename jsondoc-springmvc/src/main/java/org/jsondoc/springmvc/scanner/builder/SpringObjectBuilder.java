@@ -1,6 +1,7 @@
 package org.jsondoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,6 +12,7 @@ import org.jsondoc.core.scanner.DefaultJSONDocScanner;
 import org.jsondoc.core.util.JSONDocHibernateValidatorProcessor;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
+import org.jsondoc.core.util.JSONDocUtils;
 
 public class SpringObjectBuilder {
 
@@ -32,8 +34,22 @@ public class SpringObjectBuilder {
 			fieldDocs.add(fieldDoc);
 		}
 		
-		Class<?> superclass = clazz.getSuperclass();
-		if (superclass != null) {
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (JSONDocUtils.isFieldMethod(method)) {
+        ApiObjectFieldDoc fieldDoc = new ApiObjectFieldDoc();
+        fieldDoc.setName(JSONDocUtils.getPropertyName(method));
+        fieldDoc.setOrder(Integer.MAX_VALUE);
+        fieldDoc.setRequired(DefaultJSONDocScanner.UNDEFINED.toUpperCase());
+        fieldDoc.setJsondocType(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
+        
+        JSONDocHibernateValidatorProcessor.processHibernateValidatorAnnotations(method, fieldDoc);
+        
+        fieldDocs.add(fieldDoc);
+      }
+    }
+
+    Class<?> superclass = clazz.getSuperclass();
+		if (superclass != null && !superclass.isAssignableFrom(Object.class) && !superclass.isEnum()) {
 			ApiObjectDoc parentObjectDoc = buildObject(superclass);
 			fieldDocs.addAll(parentObjectDoc.getFields());
 		}
