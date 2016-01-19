@@ -1,19 +1,6 @@
 package org.jsondoc.springmvc.scanner;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
@@ -30,22 +17,13 @@ import org.jsondoc.core.scanner.builder.JSONDocApiDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiMethodDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiObjectDocBuilder;
 import org.jsondoc.core.util.JSONDocUtils;
-import org.jsondoc.springmvc.scanner.builder.SpringConsumesBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringHeaderBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringObjectBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringPathBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringPathVariableBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringProducesBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringQueryParamBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringResponseBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
-import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
+import org.jsondoc.springmvc.scanner.builder.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Sets;
+import java.lang.reflect.*;
+import java.util.*;
 
 public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanner {
 
@@ -138,7 +116,29 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 		return candidates;
 	}
-	
+
+	private void appendSubCandidates(Class<?> clazz, Set<Class<?>> subCandidates) {
+		if(clazz.isPrimitive() || clazz.equals(Class.class)) {
+			return;
+		}
+
+		for (Field field : clazz.getDeclaredFields()) {
+			Class fieldClass = field.getType();
+			Set<Class<?>> fieldCandidates = new HashSet<Class<?>>();
+			buildJSONDocObjectsCandidates(fieldCandidates, fieldClass, field.getGenericType());
+
+			for(Class<?> candidate: fieldCandidates) {
+				if(!subCandidates.contains(candidate)) {
+					subCandidates.add(candidate);
+
+
+					appendSubCandidates(candidate, subCandidates);
+				}
+			}
+		}
+	}
+
+
 	@Override
 	public Set<Class<?>> jsondocObjects(List<String> packages) {
 		Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
@@ -157,10 +157,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		// This is to get objects' fields that are not returned nor part of the body request of a method, but that are a field
 		// of an object returned or a body  of a request of a method
 		for (Class<?> clazz : candidates) {
-			for (Field field : clazz.getDeclaredFields()) {
-				subCandidates.addAll(buildJSONDocObjectsCandidates(subCandidates, field.getType(), field.getGenericType()));
-			}
+			appendSubCandidates(clazz, subCandidates);
 		}
+
 		candidates.addAll(subCandidates);
 		
 		for (Class<?> clazz : candidates) {
