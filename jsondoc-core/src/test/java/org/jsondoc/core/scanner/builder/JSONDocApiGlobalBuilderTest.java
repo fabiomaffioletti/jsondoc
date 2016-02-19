@@ -16,62 +16,68 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 
 public class JSONDocApiGlobalBuilderTest {
-	
+
 	JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
-	
-	@ApiGlobal(
-		sections = { 
-			@ApiGlobalSection(title = "title", paragraphs = {
-				"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt" }
-			) 
-		}
-	)
+
+	@ApiGlobal(sections = {
+			@ApiGlobalSection(title = "title 1", paragraphs = { "Paragraph 1", "Paragraph 2",
+					"/jsondocfile./src/main/resources/text.txt" }),
+			@ApiGlobalSection(title = "title 2", paragraphs = { "Paragraph 1", "Paragraph 2",
+					"/jsondocfile./src/main/resources/text.txt" }),
+			@ApiGlobalSection(title = "title 3", paragraphs = { "Paragraph 1", "Paragraph 2",
+					"/jsondocfile./src/main/resources/text.txt" }),
+			@ApiGlobalSection(title = "title 4", paragraphs = { "Paragraph 1", "Paragraph 2",
+					"/jsondocfile./src/main/resources/text.txt" }),
+			@ApiGlobalSection(title = "title 5", paragraphs = { "Paragraph 1", "Paragraph 2",
+					"/jsondocfile./src/main/resources/text.txt" }) })
 	private class Global {
-		
+
 	}
-	
-	
+
 	@ApiChangelogSet(changlogs = { @ApiChangelog(changes = { "Change #1" }, version = "1.0") })
 	private class Changelog {
-		
+
 	}
-	
+
 	@ApiMigrationSet(migrations = { @ApiMigration(fromversion = "1.0", steps = { "Step #1" }, toversion = "1.1") })
 	private class Migration {
-		
+
 	}
-	
-	@ApiGlobal(
-		sections = { 
-			@ApiGlobalSection(title = "title", paragraphs = {
-				"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt" }
-			) 
-		}
-	)
+
+	@ApiGlobal(sections = { @ApiGlobalSection(title = "title", paragraphs = { "Paragraph 1", "Paragraph 2",
+			"/jsondocfile./src/main/resources/text.txt" }) })
 	@ApiChangelogSet(changlogs = { @ApiChangelog(changes = { "Change #1" }, version = "1.0") })
 	@ApiMigrationSet(migrations = { @ApiMigration(fromversion = "1.0", steps = { "Step #1" }, toversion = "1.1") })
 	private class AllTogether {
-		
+
 	}
-	
+
 	@Test
 	public void testApiGlobalDoc() {
-		ApiGlobalDoc apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(Global.class), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet());
+		ApiGlobalDoc apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(Global.class),
+				Sets.<Class<?>> newHashSet(), Sets.<Class<?>> newHashSet());
 		Assert.assertNotNull(apiGlobalDoc);
-		Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-		ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().iterator().next();
-		Assert.assertEquals("title", sectionDoc.getTitle());
-		Assert.assertEquals(3, sectionDoc.getParagraphs().size());
-		
-		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Changelog.class), Sets.<Class<?>>newHashSet());
+		Assert.assertEquals(5, apiGlobalDoc.getSections().size());
+
+		int index = 1;
+		for (ApiGlobalSectionDoc sectionDoc : apiGlobalDoc.getSections()) {
+			Assert.assertEquals("title " + index, sectionDoc.getTitle());
+			Assert.assertEquals(3, sectionDoc.getParagraphs().size());
+			index++;
+		}
+
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(),
+				Sets.<Class<?>> newHashSet(Changelog.class), Sets.<Class<?>> newHashSet());
 		Assert.assertNotNull(apiGlobalDoc);
 		Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
-		
-		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Migration.class));
+
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(), Sets.<Class<?>> newHashSet(),
+				Sets.<Class<?>> newHashSet(Migration.class));
 		Assert.assertNotNull(apiGlobalDoc);
 		Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
-		
-		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(AllTogether.class), Sets.<Class<?>>newHashSet(AllTogether.class), Sets.<Class<?>>newHashSet(AllTogether.class));
+
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>> newHashSet(AllTogether.class),
+				Sets.<Class<?>> newHashSet(AllTogether.class), Sets.<Class<?>> newHashSet(AllTogether.class));
 		Assert.assertNotNull(apiGlobalDoc);
 		Assert.assertEquals(1, apiGlobalDoc.getSections().size());
 		Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());

@@ -1,5 +1,6 @@
 package org.jsondoc.core.pojo.global;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class ApiGlobalDoc {
 	private ApiMigrationsDoc migrationset;
 
 	public ApiGlobalDoc() {
-		this.sections = Sets.newHashSet();
+		this.sections = new LinkedHashSet<ApiGlobalSectionDoc>();
 		this.changelogset = new ApiChangelogsDoc();
 		this.migrationset = new ApiMigrationsDoc();
 	}
