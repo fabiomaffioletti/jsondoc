@@ -1,6 +1,19 @@
 package org.jsondoc.springmvc.scanner;
 
-import com.google.common.collect.Sets;
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiObject;
@@ -17,13 +30,22 @@ import org.jsondoc.core.scanner.builder.JSONDocApiDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiMethodDocBuilder;
 import org.jsondoc.core.scanner.builder.JSONDocApiObjectDocBuilder;
 import org.jsondoc.core.util.JSONDocUtils;
-import org.jsondoc.springmvc.scanner.builder.*;
+import org.jsondoc.springmvc.scanner.builder.SpringConsumesBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringHeaderBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringObjectBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringPathBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringPathVariableBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringProducesBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringQueryParamBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringResponseBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
+import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.lang.reflect.*;
-import java.util.*;
+import com.google.common.collect.Sets;
 
 public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanner {
 
