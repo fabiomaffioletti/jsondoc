@@ -20,7 +20,7 @@ public class JSONDoc {
 	private MethodDisplay displayMethodAs;
 
 	public enum MethodDisplay {
-		URI, SUMMARY;
+		URI, SUMMARY, METHOD;
 	}
 
 	public JSONDoc(String version, String basePath) {

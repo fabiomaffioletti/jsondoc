@@ -29,13 +29,36 @@ public class JSONDocApiMethodPathBuilderTest {
 	}
 
 	@Test
-	public void testPath() {
+	public void testPathWithMethodDisplayURI() {
 		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(Controller.class), MethodDisplay.URI).iterator().next();
 
 		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
 			@Override
 			public boolean apply(ApiMethodDoc input) {
-				return input.getPath().contains("/path1") && input.getPath().contains("/path2") ;
+				return 
+						input.getPath().contains("/path1") && 
+						input.getPath().contains("/path2") && 
+						input.getDisplayedMethodString().contains("/path1") &&
+						input.getDisplayedMethodString().contains("/path2");
+			}
+			
+		});
+		
+		Assert.assertTrue(allRight);
+	}
+
+	@Test
+	public void testPathWithMethodDisplayMethod() {
+		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(Controller.class), MethodDisplay.METHOD).iterator().next();
+		
+		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
+			@Override
+			public boolean apply(ApiMethodDoc input) {
+				return 
+						input.getPath().contains("/path1") && 
+						input.getPath().contains("/path2") && 
+						input.getDisplayedMethodString().contains("path") &&
+						!input.getDisplayedMethodString().contains("/path1");
 			}
 			
 		});

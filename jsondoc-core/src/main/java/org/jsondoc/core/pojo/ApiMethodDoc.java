@@ -15,6 +15,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	public final String jsondocId = UUID.randomUUID().toString();
 
 	private Set<String> path;
+	private String method;
 	private Set<ApiVerb> verb;
 	private Set<String> produces;
 	private Set<String> consumes;
@@ -97,6 +98,14 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
 	public void setPath(Set<String> path) {
 		this.path = path;
+	}
+	
+	public String getMethod() {
+		return method;
+	}
+	
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public String getDescription() {
@@ -196,10 +205,15 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	}
 
 	public Set<String> getDisplayedMethodString() {
-		if (displayMethodAs.equals(MethodDisplay.URI)) {
+		switch (displayMethodAs) {
+		case URI:
 			return path;
-		} else {
+		case SUMMARY:
 			return Sets.newHashSet(summary);
+		case METHOD:
+			return Sets.newHashSet(method);
+		default:
+			return path;
 		}
 	}
 
