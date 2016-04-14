@@ -33,7 +33,7 @@ title: Changelog
 		</tr>
 		<tr>
 			<th><code>displayMethodAs</code></th>
-			<td>Whether to display methods as URIs or with a short description (summary attribute in the @ApiMethod annotation). Allowed values are <code>URI</code> and <code>SUMMARY</code>. Defaults to <code>URI</code>. For example, if <code>displayMethodAs</code> is set to <code>URI</code>, on the UI there will be something like <code>/books/{id}</code>. If it is set to <code>SUMMARY</code>, on the UI there will be something like <i>Gets a book with the given ID</i></td>
+			<td>Whether to display methods as URIs or with a short description (summary attribute in the @ApiMethod annotation) or with the java method name. Allowed values are <code>URI</code>, <code>SUMMARY</code>, <code>METHOD</code>. Defaults to <code>URI</code>. For example, if <code>displayMethodAs</code> is set to <code>URI</code>, on the UI there will be something like <code>/books/{id}</code>. If it is set to <code>SUMMARY</code>, on the UI there will be something like <i>Gets a book with the given ID</i>. If it is set to <code>METHOD</code>, on the UI there will be something like <i>findBookById</i>.</td>
 		</tr>
 	</tbody>
 </table>
