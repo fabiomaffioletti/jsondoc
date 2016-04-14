@@ -74,6 +74,17 @@ public class SpringPathBuilderTest {
 
 	}
 
+	@Controller
+	@RequestMapping(path = {"/path", "/path2"}, value = "/val1")
+	public class SpringController5 {
+		
+		@RequestMapping
+		public void none() {
+			
+		}
+		
+	}
+
 	@Test
 	public void testPath() {
 		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(SpringController.class), MethodDisplay.URI).iterator().next();
@@ -155,6 +166,21 @@ public class SpringPathBuilderTest {
 		});
 		Assert.assertTrue(allRight);
 
+	}
+
+	@Test
+	public void testPath5() {
+		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(SpringController5.class), MethodDisplay.URI).iterator().next();
+		Assert.assertEquals("SpringController5", apiDoc.getName());
+		
+		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
+			@Override
+			public boolean apply(ApiMethodDoc input) {
+				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2") && input.getPath().contains("/val1"); 
+				return allRight;
+			}
+		});
+		Assert.assertTrue(allRight);
 	}
 
 }

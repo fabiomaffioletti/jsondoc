@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.common.collect.ObjectArrays;
+
 public class SpringPathBuilder {
 
 	/**
@@ -28,15 +30,15 @@ public class SpringPathBuilder {
 
 		if (controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-			if (requestMapping.value().length > 0) {
-				controllerMapping = new HashSet<String>(Arrays.asList(requestMapping.value()));
+			if (requestMapping.value().length > 0 || requestMapping.path().length > 0) {
+				controllerMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), requestMapping.path(), String.class)));
 			}
 		}
 
 		if (method.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if (requestMapping.value().length > 0) {
-				methodMapping = new HashSet<String>(Arrays.asList(requestMapping.value()));
+			if (requestMapping.value().length > 0 || requestMapping.path().length > 0) {
+				methodMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), requestMapping.path(), String.class)));
 			}
 		}
 
