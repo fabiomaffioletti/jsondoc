@@ -30,6 +30,17 @@ public class JSONDocApiGlobalBuilderTest {
 		
 	}
 	
+	@ApiGlobal(
+		sections = { 
+			@ApiGlobalSection(title = "section1", paragraphs = { "Paragraph 1" }), 
+			@ApiGlobalSection(title = "abc", paragraphs = { "Paragraph 1", "Paragraph2" }), 
+			@ApiGlobalSection(title = "198xyz", paragraphs = { "Paragraph 1", "Paragraph2", "Paragraph3", "Paragraph4" }), 
+		}
+	)
+	private class MultipleGlobalSections {
+		
+	}
+	
 	
 	@ApiChangelogSet(changlogs = { @ApiChangelog(changes = { "Change #1" }, version = "1.0") })
 	private class Changelog {
@@ -66,6 +77,15 @@ public class JSONDocApiGlobalBuilderTest {
 		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Changelog.class), Sets.<Class<?>>newHashSet());
 		Assert.assertNotNull(apiGlobalDoc);
 		Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
+
+		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(MultipleGlobalSections.class), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet());
+		Assert.assertNotNull(apiGlobalDoc);
+		Assert.assertEquals(3, apiGlobalDoc.getSections().size());
+		
+		ApiGlobalSectionDoc[] apiGlobalSectionDocs = apiGlobalDoc.getSections().toArray(new ApiGlobalSectionDoc[apiGlobalDoc.getSections().size()]);
+		Assert.assertEquals("section1", apiGlobalSectionDocs[0].getTitle());
+		Assert.assertEquals("abc", apiGlobalSectionDocs[1].getTitle());
+		Assert.assertEquals("198xyz", apiGlobalSectionDocs[2].getTitle());
 		
 		apiGlobalDoc = jsondocScanner.getApiGlobalDoc(Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(), Sets.<Class<?>>newHashSet(Migration.class));
 		Assert.assertNotNull(apiGlobalDoc);

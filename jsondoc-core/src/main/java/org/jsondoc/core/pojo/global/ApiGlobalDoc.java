@@ -15,7 +15,7 @@ public class ApiGlobalDoc {
 	private ApiMigrationsDoc migrationset;
 
 	public ApiGlobalDoc() {
-		this.sections = Sets.newHashSet();
+		this.sections = Sets.newLinkedHashSet();
 		this.changelogset = new ApiChangelogsDoc();
 		this.migrationset = new ApiMigrationsDoc();
 	}
