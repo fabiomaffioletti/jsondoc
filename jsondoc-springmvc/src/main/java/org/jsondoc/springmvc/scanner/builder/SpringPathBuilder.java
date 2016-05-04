@@ -30,15 +30,15 @@ public class SpringPathBuilder {
 
 		if (controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-			if (requestMapping.value().length > 0 || requestMapping.path().length > 0) {
-				controllerMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), requestMapping.path(), String.class)));
+			if (valueMapping(requestMapping).length > 0 || pathMapping(requestMapping).length > 0) {
+				controllerMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}
 		}
 
 		if (method.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if (requestMapping.value().length > 0 || requestMapping.path().length > 0) {
-				methodMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), requestMapping.path(), String.class)));
+			if (requestMapping.value().length > 0 || pathMapping(requestMapping).length > 0) {
+				methodMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}
 		}
 
@@ -64,6 +64,19 @@ public class SpringPathBuilder {
 		}
 
 		return paths;
+	}
+
+	//Handle the fact that this method is only in Spring 4, not available in Spring 3
+	private static String[] pathMapping(RequestMapping requestMapping) {
+		try {
+			return requestMapping.path();
+		}catch(NoSuchMethodError e) {
+			return new String[0];
+		}
+	}
+
+	private static String[] valueMapping(RequestMapping requestMapping) {
+		return requestMapping.value();
 	}
 
 }
