@@ -82,7 +82,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				} else if (mapKeyType instanceof WildcardType) {
 					candidates.add(Void.class);
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType, reflections));
+					if (mapKeyType instanceof ParameterizedType) {
+						candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType, reflections));
+					}
 				}
 
 				if (mapValueType instanceof Class) {
@@ -90,7 +92,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				} else if (mapValueType instanceof WildcardType) {
 					candidates.add(Void.class);
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType, reflections));
+					if (mapValueType instanceof ParameterizedType) {
+						candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType, reflections));
+					}
 				}
 
 			}
