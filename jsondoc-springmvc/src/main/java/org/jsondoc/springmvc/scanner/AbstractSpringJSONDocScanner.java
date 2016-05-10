@@ -41,6 +41,7 @@ import org.jsondoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringResponseBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
+import org.reflections.Reflections;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,9 +66,10 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	 * @param candidates
 	 * @param clazz
 	 * @param type
+	 * @param reflections 
 	 * @return
 	 */
-	public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type) {
+	public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type, Reflections reflections) {
 
 		if (Map.class.isAssignableFrom(clazz)) {
 
@@ -80,7 +82,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				} else if (mapKeyType instanceof WildcardType) {
 					candidates.add(Void.class);
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType, reflections));
 				}
 
 				if (mapValueType instanceof Class) {
@@ -88,7 +90,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				} else if (mapValueType instanceof WildcardType) {
 					candidates.add(Void.class);
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType, reflections));
 				}
 
 			}
@@ -103,34 +105,46 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				} else if (parametrizedType instanceof WildcardType) {
 					candidates.add(Void.class);
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType, reflections));
 				}
 			} else if (type instanceof GenericArrayType) {
-				candidates.addAll(buildJSONDocObjectsCandidates(candidates, clazz, ((GenericArrayType) type).getGenericComponentType()));
+				candidates.addAll(buildJSONDocObjectsCandidates(candidates, clazz, ((GenericArrayType) type).getGenericComponentType(), reflections));
 			} else {
 				candidates.add(clazz);
 			}
 
 		} else if (clazz.isArray()) {
 			Class<?> componentType = clazz.getComponentType();
-			candidates.addAll(buildJSONDocObjectsCandidates(candidates, componentType, type));
+			candidates.addAll(buildJSONDocObjectsCandidates(candidates, componentType, type, reflections));
 
 		} else {
 			if (type instanceof ParameterizedType) {
 				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
 				
 				if (parametrizedType instanceof Class) {
-					candidates.add((Class<?>) parametrizedType);
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType));
+					Class<?> candidate = (Class<?>) parametrizedType;
+					if(candidate.isInterface()) {
+						for (Class<?> implementation : reflections.getSubTypesOf(candidate)) {
+							buildJSONDocObjectsCandidates(candidates, implementation, parametrizedType, reflections);
+						}
+					} else {
+						candidates.add(candidate);
+						candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
+					}
 				} else if (parametrizedType instanceof WildcardType) {
 					candidates.add(Void.class);
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
 				} else if(parametrizedType instanceof TypeVariable<?>) {
 					candidates.add(Void.class);
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
 				} else {
-					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType));
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType, reflections));
 				}
+			} else if(clazz.isInterface()) {
+				for (Class<?> implementation : reflections.getSubTypesOf(clazz)) {
+					candidates.addAll(buildJSONDocObjectsCandidates(candidates, implementation, type, reflections));
+				}
+				
 			} else {
 				candidates.add(clazz);
 			}
@@ -139,22 +153,22 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		return candidates;
 	}
 
-	private void appendSubCandidates(Class<?> clazz, Set<Class<?>> subCandidates) {
+	private void appendSubCandidates(Class<?> clazz, Set<Class<?>> subCandidates, Reflections reflections) {
 		if(clazz.isPrimitive() || clazz.equals(Class.class)) {
 			return;
 		}
 
 		for (Field field : clazz.getDeclaredFields()) {
-			Class fieldClass = field.getType();
+			Class<?> fieldClass = field.getType();
 			Set<Class<?>> fieldCandidates = new HashSet<Class<?>>();
-			buildJSONDocObjectsCandidates(fieldCandidates, fieldClass, field.getGenericType());
+			buildJSONDocObjectsCandidates(fieldCandidates, fieldClass, field.getGenericType(), reflections);
 
 			for(Class<?> candidate: fieldCandidates) {
 				if(!subCandidates.contains(candidate)) {
 					subCandidates.add(candidate);
 
 
-					appendSubCandidates(candidate, subCandidates);
+					appendSubCandidates(candidate, subCandidates, reflections);
 				}
 			}
 		}
@@ -169,17 +183,17 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		Set<Class<?>> elected = Sets.newHashSet();
 		
 		for (Method method : methodsAnnotatedWith) {
-			buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType());
+			buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType(), reflections);
 			Integer requestBodyParameterIndex = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
 			if(requestBodyParameterIndex != -1) {
-				candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex]));
+				candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex], reflections));
 			}
 		}
 		
 		// This is to get objects' fields that are not returned nor part of the body request of a method, but that are a field
 		// of an object returned or a body  of a request of a method
 		for (Class<?> clazz : candidates) {
-			appendSubCandidates(clazz, subCandidates);
+			appendSubCandidates(clazz, subCandidates, reflections);
 		}
 
 		candidates.addAll(subCandidates);
