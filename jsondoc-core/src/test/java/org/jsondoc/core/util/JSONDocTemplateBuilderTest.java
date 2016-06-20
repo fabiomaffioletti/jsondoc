@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsondoc.core.annotation.ApiObjectField;
 import org.jsondoc.core.pojo.JSONDocTemplate;
 import org.jsondoc.core.util.pojo.TemplateObject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 
@@ -51,4 +54,21 @@ public class JSONDocTemplateBuilderTest {
 		System.out.println(mapper.writeValueAsString(template));
 	}
 
+	class TestTemplateObject {
+	    @ApiObjectField
+	    private String test1;
+	    private String test2;
+	}
+	
+	@Test
+	public void testTemplateWithOnlyApiObjectFieldAnnotatedFields() throws JsonGenerationException, JsonMappingException, IOException {
+	    ObjectMapper mapper = new ObjectMapper();
+        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(TestTemplateObject.class);
+        
+        Map<String, Object> template = JSONDocTemplateBuilder.build(TestTemplateObject.class, classes);
+        Assert.assertEquals("", template.get("test1"));
+        Assert.assertNull(template.get("test2"));
+        
+        System.out.println(mapper.writeValueAsString(template));
+	}
 }
