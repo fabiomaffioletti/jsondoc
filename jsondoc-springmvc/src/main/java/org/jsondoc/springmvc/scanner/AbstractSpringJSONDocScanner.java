@@ -43,6 +43,11 @@ import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
 import org.reflections.Reflections;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -54,19 +59,22 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public Set<Method> jsondocMethods(Class<?> controller) {
 		Set<Method> annotatedMethods = new LinkedHashSet<Method>();
 		for (Method method : controller.getDeclaredMethods()) {
-			if (method.isAnnotationPresent(RequestMapping.class)) {
+			if (method.isAnnotationPresent(RequestMapping.class) || method.isAnnotationPresent(GetMapping.class)
+					|| method.isAnnotationPresent(PostMapping.class) || method.isAnnotationPresent(PutMapping.class)
+					|| method.isAnnotationPresent(DeleteMapping.class)
+					|| method.isAnnotationPresent(PatchMapping.class)) {
 				annotatedMethods.add(method);
 			}
 		}
 		return annotatedMethods;
 	}
-	
+
 	/**
 	 * Returns a set of classes that are either return types or body objects
 	 * @param candidates
 	 * @param clazz
 	 * @param type
-	 * @param reflections 
+	 * @param reflections
 	 * @return
 	 */
 	public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type, Reflections reflections) {
@@ -99,7 +107,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 			if (type instanceof ParameterizedType) {
 				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
 				candidates.add(clazz);
-				
+
 				if (parametrizedType instanceof Class) {
 					candidates.add((Class<?>) parametrizedType);
 				} else if (parametrizedType instanceof WildcardType) {
@@ -120,7 +128,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		} else {
 			if (type instanceof ParameterizedType) {
 				Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
-				
+
 				if (parametrizedType instanceof Class) {
 					Class<?> candidate = (Class<?>) parametrizedType;
 					if(candidate.isInterface()) {
@@ -144,7 +152,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				for (Class<?> implementation : reflections.getSubTypesOf(clazz)) {
 					candidates.addAll(buildJSONDocObjectsCandidates(candidates, implementation, type, reflections));
 				}
-				
+
 			} else {
 				candidates.add(clazz);
 			}
@@ -177,11 +185,18 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
 	@Override
 	public Set<Class<?>> jsondocObjects(List<String> packages) {
-		Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
+		final Set<Method> methodsAnnotatedWith = Sets.newHashSet();
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(RequestMapping.class));
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(GetMapping.class));
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(PostMapping.class));
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(PutMapping.class));
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(DeleteMapping.class));
+		methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(PatchMapping.class));
+
 		Set<Class<?>> candidates = Sets.newHashSet();
 		Set<Class<?>> subCandidates = Sets.newHashSet();
 		Set<Class<?>> elected = Sets.newHashSet();
-		
+
 		for (Method method : methodsAnnotatedWith) {
 			buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType(), reflections);
 			Integer requestBodyParameterIndex = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
@@ -189,7 +204,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				candidates.addAll(buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex], method.getGenericParameterTypes()[requestBodyParameterIndex], reflections));
 			}
 		}
-		
+
 		// This is to get objects' fields that are not returned nor part of the body request of a method, but that are a field
 		// of an object returned or a body  of a request of a method
 		for (Class<?> clazz : candidates) {
@@ -197,7 +212,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		}
 
 		candidates.addAll(subCandidates);
-		
+
 		for (Class<?> clazz : candidates) {
 			if(clazz.getPackage() != null) {
 				for (String pkg : packages) {
@@ -207,10 +222,10 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 				}
 			}
 		}
-		
+
 		return elected;
 	}
-	
+
 	@Override
 	public Set<Class<?>> jsondocFlows() {
 		return reflections.getTypesAnnotatedWith(ApiFlowSet.class, true);
@@ -253,7 +268,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method));
 		apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
 		apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
-		
+
 		Integer index = JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
 		if (index != -1) {
 			apiMethodDoc.getBodyobject().setJsondocTemplate(jsondocTemplates.get(method.getParameterTypes()[index]));
@@ -289,7 +304,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public Set<Class<?>> jsondocGlobal() {
 		return reflections.getTypesAnnotatedWith(ApiGlobal.class, true);
 	}
-	
+
 	@Override
 	public Set<Class<?>> jsondocChangelogs() {
 		return reflections.getTypesAnnotatedWith(ApiChangelogSet.class, true);
