@@ -2,6 +2,6 @@ name: JSONDoc
 baseurl: 
 markdown: redcarpet
 highlighter: rouge
-version: 1.2.15
+version: 1.2.16
 demourl: http://jsondoc-fabiomaffioletti.rhcloud.com/jsondoc-ui.html?url=http://jsondoc-fabiomaffioletti.rhcloud.com/jsondoc
 downloadurl: distro/jsondoc-bundle-1.0.2.tar.gz
