@@ -1,18 +1,19 @@
 package org.jsondoc.core.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.jsondoc.core.util.pojo.AbstractJsonRootNameObject;
+import org.jsondoc.core.util.pojo.JsonRootNameObject;
+import org.jsondoc.core.util.pojo.TemplateObject;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.jsondoc.core.pojo.JSONDocTemplate;
-import org.jsondoc.core.util.pojo.TemplateObject;
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Sets;
 
 public class JSONDocTemplateBuilderTest {
 
@@ -50,5 +51,19 @@ public class JSONDocTemplateBuilderTest {
 		
 		System.out.println(mapper.writeValueAsString(template));
 	}
+
+    @Test
+    public void testTemplateWithJsonRootName() throws Exception {
+        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(JsonRootNameObject.class);
+        Map<String, Object> template = JSONDocTemplateBuilder.build(JsonRootNameObject.class, classes);
+        Assert.assertNotNull(template.get("data"));
+    }
+
+    @Test
+    public void testTemplateWithJsonRootNameInAbstractClass() throws Exception {
+        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(AbstractJsonRootNameObject.class);
+        Map<String, Object> template = JSONDocTemplateBuilder.build(AbstractJsonRootNameObject.class, classes);
+        Assert.assertNotNull(template.get("data"));
+    }
 
 }
