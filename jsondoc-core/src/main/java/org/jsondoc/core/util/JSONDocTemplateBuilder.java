@@ -1,5 +1,10 @@
 package org.jsondoc.core.util;
 
+import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,10 +16,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.pojo.JSONDocTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isStatic;
 
 public class JSONDocTemplateBuilder {
 
@@ -42,6 +45,9 @@ public class JSONDocTemplateBuilder {
 	
 				for (JSONDocFieldWrapper jsondocFieldWrapper : fields) {
 					Field field = jsondocFieldWrapper.getField();
+					if (isFinal(field.getModifiers()) && isStatic(field.getModifiers())) {
+					    continue;
+					}
 					String fieldName = field.getName();
 					ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
 					if (apiObjectField != null && !apiObjectField.name().isEmpty()) {
