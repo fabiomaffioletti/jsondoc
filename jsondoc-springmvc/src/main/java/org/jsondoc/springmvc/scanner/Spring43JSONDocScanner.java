@@ -20,7 +20,9 @@ public class Spring43JSONDocScanner extends Spring4JSONDocScanner {
         final Set<Method> methods = super.jsondocMethods(controller);
         for (Method method : controller.getDeclaredMethods()) {
             for (Class<? extends Annotation> clazz : HTTP_REQUEST_METHOD_MAPPINGS) {
-                method.isAnnotationPresent(clazz);
+                if (method.isAnnotationPresent(clazz)) {
+                    methods.add(method);
+                }
             }
         }
         return methods;
