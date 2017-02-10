@@ -3,7 +3,10 @@ package org.jsondoc.springmvc.scanner;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.*;
 
-import static java.util.Arrays.asList;
+import java.lang.reflect.Method;
+import java.util.Set;
+
+import static org.junit.Assert.assertTrue;
 
 public class Spring43JSONDocScannerTest {
 
@@ -43,14 +46,13 @@ public class Spring43JSONDocScannerTest {
     @Test
     public void jsondocMethods() throws Exception {
         Spring43JSONDocScanner scanner = new Spring43JSONDocScanner();
-        scanner.jsondocMethods(Controller.class).containsAll(asList(
-                RequestMapping.class,
-                GetMapping.class,
-                PostMapping.class,
-                PutMapping.class,
-                PatchMapping.class,
-                DeleteMapping.class));
-
+        final Set<Method> methods = scanner.jsondocMethods(Controller.class);
+        assertTrue(methods.contains(Controller.class.getMethod("requestMapping")));
+        assertTrue(methods.contains(Controller.class.getMethod("get")));
+        assertTrue(methods.contains(Controller.class.getMethod("post")));
+        assertTrue(methods.contains(Controller.class.getMethod("path")));
+        assertTrue(methods.contains(Controller.class.getMethod("put")));
+        assertTrue(methods.contains(Controller.class.getMethod("delete")));
     }
 
 }
