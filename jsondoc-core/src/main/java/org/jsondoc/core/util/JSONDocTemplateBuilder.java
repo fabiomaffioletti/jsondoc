@@ -44,20 +44,23 @@ public class JSONDocTemplateBuilder {
 					Field field = jsondocFieldWrapper.getField();
 					String fieldName = field.getName();
 					ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
-					if (apiObjectField != null && !apiObjectField.name().isEmpty()) {
-						fieldName = apiObjectField.name();
+
+					if (apiObjectField != null) {
+					    if(!apiObjectField.name().isEmpty()) {
+					        fieldName = apiObjectField.name();
+					    }
+
+					    Object value;
+					    // This condition is to avoid StackOverflow in case class "A"
+					    // contains a field of type "A"
+					    if (field.getType().equals(clazz) || (apiObjectField != null && !apiObjectField.processtemplate())) {
+					        value = getValue(Object.class, field.getGenericType(), fieldName, jsondocObjects);
+					    } else {
+					        value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
+					    }
+
+					    jsonDocTemplate.put(fieldName, value);
 					}
-	
-					Object value;
-					// This condition is to avoid StackOverflow in case class "A"
-					// contains a field of type "A"
-					if (field.getType().equals(clazz) || (apiObjectField != null && !apiObjectField.processtemplate())) {
-						value = getValue(Object.class, field.getGenericType(), fieldName, jsondocObjects);
-					} else {
-						value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
-					}
-	
-					jsonDocTemplate.put(fieldName, value);
 				}
 	
 			} catch (Exception e) {
