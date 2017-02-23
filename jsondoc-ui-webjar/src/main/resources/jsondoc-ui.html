@@ -11,7 +11,6 @@
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/handlebars.min.js"></script>
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/prettify.js"></script>
-<script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jlinq.js"></script>
 <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jsondoc.js"></script>
 
 <link rel="stylesheet" href="webjars/jsondoc-ui-webjar/css/bootstrap.min.css" >
@@ -1013,7 +1012,14 @@
 		if(playgroundEnabled) {
 			$('#content a[rel="method"]').each(function() {
 				$(this).click(function() {
-					var method = jlinq.from(items).equals("jsondocId", this.id).first();
+
+                    var method = null;
+                    for(i = 0; i<items.length; i++) {
+                        if(items[i].jsondocId == this.id) {
+                            method = items[i];
+                        }
+                    }
+
 					var test = Handlebars.compile($("#test").html());
 					var testHTML = test(method);
 					$("#testContent").html(testHTML);
@@ -1179,7 +1185,6 @@
 				$("#_panel-apis").removeClass("in");
 			}
 
-			// this builds an plain array out of the apis map, that makes selecting with jlinq much easier
 			var plainApis = [];
 			$.each(data.apis, function(i, v) {
 				$.each(v, function(j, p) {
@@ -1189,7 +1194,14 @@
 			
 			$("#apidiv a[rel='api']").each(function() {
 				$(this).click(function() {
-					var api = jlinq.from(plainApis).equals("jsondocId", this.id).first();
+
+				    var api = null;
+				    for(i = 0; i<plainApis.length; i++) {
+				        if(plainApis[i].jsondocId == this.id) {
+                            api = plainApis[i];
+                        }
+                    }
+
 					var methods = Handlebars.compile($("#methods").html());
 					var methodsHTML = methods(api);
 					$("#content").html(methodsHTML);
@@ -1213,7 +1225,6 @@
 			$("#objectdiv").html(objectsHTML);
 			$("#objectdiv").addClass("panel panel-default");
 
-			// this builds an plain array out of the objects map, that makes selecting with jlinq much easier
 			var plainObjects = [];
 			$.each(data.objects, function(i, v) {
 				$.each(v, function(j, p) {
@@ -1223,7 +1234,14 @@
 			
 			$("#objectdiv a[rel='object']").each(function() {
 				$(this).click(function() {
-					var o = jlinq.from(plainObjects).equals("jsondocId", this.id).first();
+
+				    var o = null;
+                    for(i = 0; i<plainObjects.length; i++) {
+                        if(plainObjects[i].jsondocId == this.id) {
+                            o = plainObjects[i];
+                        }
+                    }
+
 					buildObjectContent(o, data.playgroundEnabled);
 				});
 			});
@@ -1235,7 +1253,6 @@
 			$("#flowdiv").html(flowsHTML);
 			$("#flowdiv").addClass("panel panel-default");
 
-			// this builds an plain array out of the flows map, that makes selecting with jlinq much easier
 			var plainFlows = [];
 			$.each(data.flows, function(i, v) {
 				$.each(v, function(j, p) {
@@ -1245,7 +1262,14 @@
 			
 			$("#flowdiv a[rel='flow']").each(function() {
 				$(this).click(function() {
-					var flow = jlinq.from(plainFlows).equals("jsondocId", this.id).first();
+
+                    var flow = null;
+                    for(i = 0; i<plainFlows.length; i++) {
+                        if(plainFlows[i].jsondocId == this.id) {
+                            flow = plainFlows[i];
+                        }
+                    }
+
 					var methods = Handlebars.compile($("#methods").html());
 					var methodsHTML = methods(flow);
 					$("#content").html(methodsHTML);
