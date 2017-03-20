@@ -49,12 +49,15 @@ public class SpringApiHeadersDocTest {
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-one")) {
 				Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
+				Assert.assertEquals("apiHeadersMethodOne", apiMethodDoc.getMethodName());
 			}
 			if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-two")) {
 				Assert.assertEquals(3, apiMethodDoc.getHeaders().size());
+				Assert.assertEquals("apiHeadersMethodTwo", apiMethodDoc.getMethodName());
 			}
 			if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-three")) {
 				Assert.assertEquals(4, apiMethodDoc.getHeaders().size());
+				Assert.assertEquals("apiHeadersMethodThree", apiMethodDoc.getMethodName());
 				Iterator<ApiHeaderDoc> headers = apiMethodDoc.getHeaders().iterator();
 				ApiHeaderDoc h1 = headers.next();
 				ApiHeaderDoc h2 = headers.next();

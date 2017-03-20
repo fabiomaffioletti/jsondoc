@@ -31,6 +31,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 	private String id;
 	private String description;
 	private String summary;
+	private String methodName;
 
 	private List<ApiErrorDoc> apierrors;
 	private ApiVersionDoc supportedversions;
@@ -42,6 +43,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 		this.id = null;
 		this.description = "";
 		this.summary = "";
+		this.methodName = "";
 		this.path = new LinkedHashSet<String>();
 		this.verb = new LinkedHashSet<ApiVerb>();
 		this.produces = new LinkedHashSet<String>();
@@ -114,6 +116,16 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getMethodName()
+	{
+		return methodName;
+	}
+
+	public void setMethodName(String methodName)
+	{
+		this.methodName = methodName;
 	}
 
 	public Set<ApiParamDoc> getPathparameters() {

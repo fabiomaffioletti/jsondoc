@@ -57,6 +57,7 @@ public class PlainSpringJSONDocScannerTest {
 			Assert.assertNull(apiMethodDoc.getSupportedversions());
 			Assert.assertTrue(apiMethodDoc.getApierrors().isEmpty());
 			Assert.assertNull(apiMethodDoc.getId());
+			Assert.assertEquals("string",apiMethodDoc.getMethodName());
 			Assert.assertEquals("", apiMethodDoc.getSummary());
 			Assert.assertEquals("", apiMethodDoc.getDescription());
 			
