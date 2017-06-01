@@ -34,7 +34,7 @@ public class PlainSpringJSONDocScannerTest {
 
 		@RequestMapping(value = "/string/{name}", headers = "header=test", params = "delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseStatus(value = HttpStatus.CREATED)
-		public @ResponseBody String string(@PathVariable(value = "test") String name, @RequestParam("id") Integer id, @RequestParam Long query, @RequestHeader(value = "header-two", defaultValue = "header-test") String header, @RequestBody String requestBody) {
+		public @ResponseBody String string(@PathVariable(value = "test") String name, @RequestParam("id") Integer id, @RequestParam Long query, @RequestParam(name = "user", required = false, defaultValue = "admin") String user,				@RequestHeader(value = "header-two", defaultValue = "header-test") String header, @RequestBody String requestBody) {
 			return "ok";
 		}
 
@@ -79,7 +79,7 @@ public class PlainSpringJSONDocScannerTest {
 				Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
 
 				Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
-				Assert.assertEquals(3, queryparameters.size());
+				Assert.assertEquals(4, queryparameters.size());
 				Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
 				ApiParamDoc apiParamDoc = qpIterator.next();
 				Assert.assertEquals("delete", apiParamDoc.getName());
@@ -94,6 +94,11 @@ public class PlainSpringJSONDocScannerTest {
 				Assert.assertEquals("", apiParamDoc.getName());
 				Assert.assertEquals("true", apiParamDoc.getRequired());
 				Assert.assertEquals("", apiParamDoc.getDefaultvalue());
+
+				apiParamDoc = qpIterator.next();
+				Assert.assertEquals("user", apiParamDoc.getName());
+				Assert.assertEquals("false", apiParamDoc.getRequired());
+				Assert.assertEquals("admin", apiParamDoc.getDefaultvalue());
 
 				Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
 				Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();

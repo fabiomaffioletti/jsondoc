@@ -76,6 +76,11 @@ public class SpringQueryParamBuilderTest {
 		public void paramThree(@RequestParam String name) {
 
 		}
+
+		@RequestMapping(value = "/param-four")
+		public void paramFour(@RequestParam(name = "value", required = false) String value) {
+
+		}
 		
 	}
 	
@@ -149,7 +154,7 @@ public class SpringQueryParamBuilderTest {
 		
 		apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(SpringController3.class), MethodDisplay.URI).iterator().next();
 		Assert.assertEquals("SpringController3", apiDoc.getName());
-		Assert.assertEquals(3, apiDoc.getMethods().size());
+		Assert.assertEquals(4, apiDoc.getMethods().size());
 		for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 			if (apiMethodDoc.getPath().contains("/param-one")) {
 				Assert.assertEquals(2, apiMethodDoc.getQueryparameters().size());
@@ -178,6 +183,16 @@ public class SpringQueryParamBuilderTest {
 				ApiParamDoc queryParam = iterator.next();
 				Assert.assertEquals("", queryParam.getName());
 				Assert.assertEquals("true", queryParam.getRequired());
+				Assert.assertEquals("string", queryParam.getJsondocType().getOneLineText());
+				Assert.assertEquals("", queryParam.getDefaultvalue());
+			}
+			if (apiMethodDoc.getPath().contains("/param-four")) {
+				Assert.assertEquals(2, apiMethodDoc.getQueryparameters().size());
+				Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryparameters().iterator();
+				ApiParamDoc param = iterator.next();
+				ApiParamDoc queryParam = iterator.next();
+				Assert.assertEquals("value", queryParam.getName());
+				Assert.assertEquals("false", queryParam.getRequired());
 				Assert.assertEquals("string", queryParam.getJsondocType().getOneLineText());
 				Assert.assertEquals("", queryParam.getDefaultvalue());
 			}
