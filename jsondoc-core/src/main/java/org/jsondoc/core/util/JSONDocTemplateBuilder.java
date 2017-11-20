@@ -1,20 +1,24 @@
 package org.jsondoc.core.util;
 
+import org.jsondoc.core.annotation.ApiObjectField;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.jsondoc.core.annotation.ApiObjectField;
-import org.jsondoc.core.pojo.JSONDocTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JSONDocTemplateBuilder {
 
@@ -35,7 +39,22 @@ public class JSONDocTemplateBuilder {
 
 	public static JSONDocTemplate build(Class<?> clazz, Set<Class<?>> jsondocObjects) {
 		final JSONDocTemplate jsonDocTemplate = new JSONDocTemplate();
-		
+        final Map<String, Object> dataWithRootName = new LinkedHashMap<String, Object>();
+        Annotation jsonRootName = null;
+        try {
+            @SuppressWarnings("unchecked")
+            final Class<Annotation> jsonRootNameAnnotation = (Class<Annotation>) Class.forName("com.fasterxml.jackson.annotation.JsonRootName");
+            final Class<?> superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                jsonRootName = superclass.getAnnotation(jsonRootNameAnnotation);
+            }
+            if (jsonRootName == null) {
+                jsonRootName = clazz.getAnnotation(jsonRootNameAnnotation);
+            }
+        } catch (ClassNotFoundException e) {
+            log.info("Jackson annotation dependency not met. Support for JsonRootName is not available.");
+        }
+
 		if(jsondocObjects.contains(clazz)) {
 			try {
 				Set<JSONDocFieldWrapper> fields = getAllDeclaredFields(clazz);
@@ -56,15 +75,29 @@ public class JSONDocTemplateBuilder {
 					} else {
 						value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
 					}
-	
-					jsonDocTemplate.put(fieldName, value);
+	                if (jsonRootName != null) {
+                        dataWithRootName.put(fieldName, value);
+                    } else {
+                        jsonDocTemplate.put(fieldName, value);
+                    }
 				}
 	
 			} catch (Exception e) {
 				log.error("Error in JSONDocTemplate creation for class [" + clazz.getCanonicalName() + "]", e);
 			}
 		}
-		
+        if (jsonRootName != null) {
+            try {
+                final Method value = jsonRootName.getClass().getMethod("value");
+                jsonDocTemplate.put(value.invoke(jsonRootName).toString(), dataWithRootName);
+            } catch (NoSuchMethodException e) {
+                log.error("Method 'value' of JsonRootName annotation does not exist. Jackson > 2.0.0 is required");
+            } catch (IllegalAccessException e) {
+                log.error("Method access of 'value' of JsonRootName annotation is not possible");
+            } catch (InvocationTargetException e) {
+                log.error("Method 'value' of JsonRootName annotation cannot be invoked");
+            }
+        }
 		return jsonDocTemplate;
 	}
 
