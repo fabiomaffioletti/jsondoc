@@ -22,7 +22,6 @@ public class SpringQueryParamBuilder {
 	 * inherit this parameter restriction
 	 * 
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<ApiParamDoc> buildQueryParams(Method method) {
@@ -31,30 +30,12 @@ public class SpringQueryParamBuilder {
 
 		if (controller.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-			if (requestMapping.params().length > 0) {
-				for (String param : requestMapping.params()) {
-					String[] splitParam = param.split("=");
-					if (splitParam.length > 1) {
-						apiParamDocs.add(new ApiParamDoc(splitParam[0], "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] { splitParam[1] }, null, null));
-					} else {
-						apiParamDocs.add(new ApiParamDoc(param, "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] {}, null, null));
-					}
-				}
-			}
+			addRequestMappingParamDoc(apiParamDocs, requestMapping);
 		}
 
 		if (method.isAnnotationPresent(RequestMapping.class)) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-			if (requestMapping.params().length > 0) {
-				for (String param : requestMapping.params()) {
-					String[] splitParam = param.split("=");
-					if (splitParam.length > 1) {
-						apiParamDocs.add(new ApiParamDoc(splitParam[0], "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] { splitParam[1] }, null, null));
-					} else {
-						apiParamDocs.add(new ApiParamDoc(param, "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] {}, null, null));
-					}
-				}
-			}
+			addRequestMappingParamDoc(apiParamDocs, requestMapping);
 		}
 
 		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
@@ -92,6 +73,24 @@ public class SpringQueryParamBuilder {
 		}
 		
 		return apiParamDocs;
+	}
+
+	/**
+	 * Checks the request mapping annotation value and adds the resulting @ApiParamDoc to the documentation
+	 * @param apiParamDocs
+	 * @param requestMapping
+	 */
+	private static void addRequestMappingParamDoc(Set<ApiParamDoc> apiParamDocs, RequestMapping requestMapping) {
+		if (requestMapping.params().length > 0) {
+            for (String param : requestMapping.params()) {
+                String[] splitParam = param.split("=");
+                if (splitParam.length > 1) {
+                    apiParamDocs.add(new ApiParamDoc(splitParam[0], "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] { splitParam[1] }, null, null));
+                } else {
+                    apiParamDocs.add(new ApiParamDoc(param, "", JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true", new String[] {}, null, null));
+                }
+            }
+        }
 	}
 
 	/**
