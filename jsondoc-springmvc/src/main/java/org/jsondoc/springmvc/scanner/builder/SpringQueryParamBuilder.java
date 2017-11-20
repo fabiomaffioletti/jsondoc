@@ -76,7 +76,7 @@ public class SpringQueryParamBuilder {
 				}
 				
 				if (requestParam != null) {
-					apiParamDoc = new ApiParamDoc(requestParam.value() != null && !requestParam.value().isEmpty() ? requestParam.value() : requestParam.name() , "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
+					apiParamDoc = new ApiParamDoc(requestParam.value().isEmpty() ? requestParam.name() : requestParam.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
 					mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
 				}
 				if(modelAttribute != null) {
