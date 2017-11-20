@@ -16,9 +16,7 @@ public class SpringPathBuilder {
 	 * the method level! When used at the type level, all method-level mappings
 	 * inherit this primary mapping, narrowing it for a specific handler method.
 	 * 
-	 * @param apiMethodDoc
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<String> buildPath(Method method) {
@@ -52,7 +50,13 @@ public class SpringPathBuilder {
 
 		for (String controllerPath : controllerMapping) {
 			for (String methodPath : methodMapping) {
-				paths.add(controllerPath + methodPath);
+				String resolvedPath;
+				if(needsToJoinWithSlash(controllerPath, methodPath)) {
+					resolvedPath = controllerPath + "/" + methodPath;
+				} else {
+					resolvedPath = controllerPath + methodPath;
+				}
+				paths.add(resolvedPath);
 			}
 		}
 		
@@ -64,6 +68,10 @@ public class SpringPathBuilder {
 		}
 
 		return paths;
+	}
+
+	private static boolean needsToJoinWithSlash(String controllerPath, String methodPath) {
+		return (!controllerPath.isEmpty() && !controllerPath.endsWith("/")) && (!methodPath.isEmpty() && !methodPath.startsWith("/"));
 	}
 
 	//Handle the fact that this method is only in Spring 4, not available in Spring 3

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Sets;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 public class SpringPathBuilderTest {
 
@@ -83,6 +84,17 @@ public class SpringPathBuilderTest {
 			
 		}
 		
+	}
+
+	@Controller
+	@RequestMapping(path = {"/api/widget"})
+	public class SpringController6 {
+
+		@RequestMapping(method = RequestMethod.GET, path = "frame")
+		public void getItem() {
+
+		}
+
 	}
 
 	@Test
@@ -178,6 +190,20 @@ public class SpringPathBuilderTest {
 			public boolean apply(ApiMethodDoc input) {
 				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2") && input.getPath().contains("/val1"); 
 				return allRight;
+			}
+		});
+		Assert.assertTrue(allRight);
+	}
+
+	@Test
+	public void testPath6() {
+		ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(SpringController6.class), MethodDisplay.URI).iterator().next();
+		Assert.assertEquals("SpringController6", apiDoc.getName());
+
+		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
+			@Override
+			public boolean apply(ApiMethodDoc input) {
+				return input.getPath().contains("/api/widget/frame");
 			}
 		});
 		Assert.assertTrue(allRight);
