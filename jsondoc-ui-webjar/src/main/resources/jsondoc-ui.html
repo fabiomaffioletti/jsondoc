@@ -279,8 +279,8 @@
 				{{#each verb}}
 					<span class="label pull-right verb {{this}}">{{this}}</span>
 				{{/each}}
-				{{#each path}}
-					<a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{../displayedMethodString}}</a><br/>	
+				{{#each displayedMethodString}}
+					<a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{this}}</a><br/>
 				{{/each}}
 			</h4>
 		</div>

@@ -280,8 +280,9 @@
 				{{#each verb}}
 					<span class="label pull-right verb {{this}}">{{this}}</span>
 				{{/each}}
-				{{#each path}}
-					<a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{../displayedMethodString}}</a><br/>	
+
+				{{#each displayedMethodString}}
+					<a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse" data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{this}}</a><br/>
 				{{/each}}
 			</h4>
 		</div>
@@ -838,7 +839,7 @@
 <script>
 	var model;
 	var jsondoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
-	
+
 	$(document).ready(function() {
 		// This is to check if the _JSONDOC_OFFLINE_PLACEHOLDER_ has been replaced with content coming from
 		// the result of the jsondoc-maven-plugin
