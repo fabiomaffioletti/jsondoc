@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.jsondoc.core.util.pojo.ClassWithConstant.THIS_IS_A_CONSTANT;
 
 public class JSONDocTemplateBuilderTest {
 
@@ -61,13 +63,13 @@ public class JSONDocTemplateBuilderTest {
 
         final Map<String, Object> template = JSONDocTemplateBuilder.build(ClassWithConstant.class, classes);
         Assert.assertEquals("", template.get("identifier"));
-        Assert.assertEquals(null, template.get("TEST"));
+        Assert.assertEquals(null, template.get(THIS_IS_A_CONSTANT));
 
         final String serializedTemplate =
             "{" +
                 "\"identifier\":\"\"" +
             "}";
 
-        assertThat(mapper.writeValueAsString(template), CoreMatchers.is(serializedTemplate));
+        assertThat(mapper.writeValueAsString(template), is(serializedTemplate));
 	}
 }

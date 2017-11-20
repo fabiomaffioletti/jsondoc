@@ -2,15 +2,8 @@ package org.jsondoc.core.util.pojo;
 
 public class ClassWithConstant {
 
-    public static final String TEST = "test";
+    public static final String THIS_IS_A_CONSTANT = "test";
 
     private String identifier;
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
 }
