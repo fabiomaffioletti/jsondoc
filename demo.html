@@ -1,0 +1,21 @@
+---
+layout: default
+title: Demo
+---
+
+<p>
+	Unfortunately there is no live demo anymore. After using Heroku, Appfog and Openshift I understood that it was better to build a docker image instead because it is free, universal and does not go to sleep after 30 minutes of inactivity :-)
+</p>
+<p>
+	You can use the image in three steps:
+	<ol>
+		<li>Have Docker installed and running</li>
+		<li>Pull image with <code>docker pull fabiomaffioletti/jsondoc-sample-boot</code></li>
+		<li>Run image with <code>docker run -p 8080:8080 fabiomaffioletti/jsondoc-sample-boot</code></li>
+		<li>Go to <code>http://localhost:8080/jsondoc-ui.html?url=http://localhost:8080/jsondoc</code></li>
+	</ol>
+</p>
+
+<script type="text/javascript">
+	$('#demo').addClass('active');
+</script>
