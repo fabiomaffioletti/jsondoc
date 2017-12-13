@@ -76,7 +76,7 @@ public class SpringPathBuilderTest {
 	}
 
 	@Controller
-	@RequestMapping(path = {"/path", "/path2"}, value = "/val1")
+	@RequestMapping(path = {"/path", "/path2"})
 	public class SpringController5 {
 		
 		@RequestMapping
@@ -188,7 +188,7 @@ public class SpringPathBuilderTest {
 		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
 			@Override
 			public boolean apply(ApiMethodDoc input) {
-				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2") && input.getPath().contains("/val1"); 
+				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2");
 				return allRight;
 			}
 		});
@@ -215,7 +215,7 @@ public class SpringPathBuilderTest {
 		boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
 			@Override
 			public boolean apply(ApiMethodDoc input) {
-				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2") && input.getPath().contains("/val1") && input.getDisplayedMethodString().contains("none"); 
+				boolean allRight = input.getPath().contains("/path") && input.getPath().contains("/path2") && input.getDisplayedMethodString().contains("none");
 				return allRight;
 			}
 		});
