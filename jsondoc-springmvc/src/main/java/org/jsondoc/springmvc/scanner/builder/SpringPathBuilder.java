@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.ObjectArrays;
@@ -26,15 +27,15 @@ public class SpringPathBuilder {
 		Set<String> controllerMapping = new HashSet<String>();
 		Set<String> methodMapping = new HashSet<String>();
 
-		if (controller.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
+		if (AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
 			if (valueMapping(requestMapping).length > 0 || pathMapping(requestMapping).length > 0) {
 				controllerMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}
 		}
 
-		if (method.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+		if (AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
 			if (requestMapping.value().length > 0 || pathMapping(requestMapping).length > 0) {
 				methodMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}

@@ -13,7 +13,6 @@ public class SpringResponseBuilder {
 	 * Builds the ApiResponseObjectDoc from the method's return type and checks if the first type corresponds to a ResponseEntity class. In that case removes the "responseentity"
 	 * string from the final list because it's not important to the documentation user.
 	 * @param method
-	 * @param apiResponseObjectDoc
 	 * @return
 	 */
 	public static ApiResponseObjectDoc buildResponse(Method method) {

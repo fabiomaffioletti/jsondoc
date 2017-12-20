@@ -43,6 +43,7 @@ import org.jsondoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.jsondoc.springmvc.scanner.builder.SpringVerbBuilder;
 import org.reflections.Reflections;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -54,7 +55,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	public Set<Method> jsondocMethods(Class<?> controller) {
 		Set<Method> annotatedMethods = new LinkedHashSet<Method>();
 		for (Method method : controller.getDeclaredMethods()) {
-			if (method.isAnnotationPresent(RequestMapping.class)) {
+			if (AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
 				annotatedMethods.add(method);
 			}
 		}

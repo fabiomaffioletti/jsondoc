@@ -9,6 +9,7 @@ import org.jsondoc.core.annotation.ApiQueryParam;
 import org.jsondoc.core.pojo.ApiParamDoc;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,13 +29,13 @@ public class SpringQueryParamBuilder {
 		Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<ApiParamDoc>();
 		Class<?> controller = method.getDeclaringClass();
 
-		if (controller.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
+		if (AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
 			addRequestMappingParamDoc(apiParamDocs, requestMapping);
 		}
 
-		if (method.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+		if (AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
 			addRequestMappingParamDoc(apiParamDocs, requestMapping);
 		}
 

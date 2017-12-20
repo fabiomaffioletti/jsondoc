@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.jsondoc.core.pojo.ApiVerb;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -13,20 +14,19 @@ public class SpringVerbBuilder {
 	/**
 	 * From Spring's documentation: When [RequestMapping method is] used at the type level, all method-level mappings inherit this HTTP method restriction 
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<ApiVerb> buildVerb(Method method) {
 		Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
 		Class<?> controller = method.getDeclaringClass();
 		
-		if(controller.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
+		if(AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
 			getApiVerbFromRequestMapping(apiVerbs, requestMapping);
 		}
 		
-		if(method.isAnnotationPresent(RequestMapping.class)) {
-			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+		if(AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
 			getApiVerbFromRequestMapping(apiVerbs, requestMapping);
 		}
 		
