@@ -1,13 +1,15 @@
 package org.jsondoc.springmvc.scanner.builder;
 
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.getAnnotation;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.isAnnotated;
 
 public class SpringConsumesBuilder {
 
@@ -21,15 +23,15 @@ public class SpringConsumesBuilder {
 		Set<String> consumes = new LinkedHashSet<String>();
 		Class<?> controller = method.getDeclaringClass();
 
-		if (AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
+		if (isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(controller, RequestMapping.class);
 			if (requestMapping.consumes().length > 0) {
 				consumes.addAll(Arrays.asList(requestMapping.consumes()));
 			}
 		}
 
-		if (AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+		if (isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(method, RequestMapping.class);
 			if (requestMapping.consumes().length > 0) {
 				consumes.clear();
 				consumes.addAll(Arrays.asList(requestMapping.consumes()));

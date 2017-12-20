@@ -5,9 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.jsondoc.core.pojo.ApiVerb;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.getAnnotation;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.isAnnotated;
 
 public class SpringVerbBuilder {
 
@@ -20,13 +22,13 @@ public class SpringVerbBuilder {
 		Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
 		Class<?> controller = method.getDeclaringClass();
 		
-		if(AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
+		if(isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(controller, RequestMapping.class);
 			getApiVerbFromRequestMapping(apiVerbs, requestMapping);
 		}
 		
-		if(AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+		if(isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(method, RequestMapping.class);
 			getApiVerbFromRequestMapping(apiVerbs, requestMapping);
 		}
 		

@@ -1,14 +1,15 @@
 package org.jsondoc.springmvc.scanner.builder;
 
+import com.google.common.collect.ObjectArrays;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.google.common.collect.ObjectArrays;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.getAnnotation;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.isAnnotated;
 
 public class SpringPathBuilder {
 
@@ -27,15 +28,15 @@ public class SpringPathBuilder {
 		Set<String> controllerMapping = new HashSet<String>();
 		Set<String> methodMapping = new HashSet<String>();
 
-		if (AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
+		if (isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(controller, RequestMapping.class);
 			if (valueMapping(requestMapping).length > 0 || pathMapping(requestMapping).length > 0) {
 				controllerMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}
 		}
 
-		if (AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+		if (isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(method, RequestMapping.class);
 			if (requestMapping.value().length > 0 || pathMapping(requestMapping).length > 0) {
 				methodMapping = new HashSet<String>(Arrays.asList(ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
 			}

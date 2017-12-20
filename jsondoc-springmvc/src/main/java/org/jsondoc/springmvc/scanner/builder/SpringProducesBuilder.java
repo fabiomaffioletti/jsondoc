@@ -1,13 +1,15 @@
 package org.jsondoc.springmvc.scanner.builder;
 
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.getAnnotation;
+import static org.jsondoc.springmvc.scanner.SpringBuilderUtils.isAnnotated;
 
 
 public class SpringProducesBuilder {
@@ -21,16 +23,16 @@ public class SpringProducesBuilder {
 	public static Set<String> buildProduces(Method method) {
 		Set<String> produces = new LinkedHashSet<String>();
 		Class<?> controller = method.getDeclaringClass();
-		
-		if(AnnotatedElementUtils.isAnnotated(controller, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(controller, RequestMapping.class);
+
+		if(isAnnotated(controller, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(controller, RequestMapping.class);
 			if(requestMapping.produces().length > 0) {
 				produces.addAll(Arrays.asList(requestMapping.produces()));
 			}
 		}
 		
-		if(AnnotatedElementUtils.isAnnotated(method, RequestMapping.class)) {
-			RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+		if(isAnnotated(method, RequestMapping.class)) {
+			RequestMapping requestMapping = getAnnotation(method, RequestMapping.class);
 			if(requestMapping.produces().length > 0) {
 				produces.clear();
 				produces.addAll(Arrays.asList(requestMapping.produces()));
