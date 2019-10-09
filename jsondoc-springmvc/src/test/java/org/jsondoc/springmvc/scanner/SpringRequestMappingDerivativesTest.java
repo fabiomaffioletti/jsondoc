@@ -2,9 +2,12 @@ package org.jsondoc.springmvc.scanner;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.jsondoc.core.annotation.ApiObject;
 import org.jsondoc.core.pojo.ApiDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
+import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.JSONDoc.MethodDisplay;
 import org.jsondoc.core.scanner.JSONDocScanner;
 import org.junit.Assert;
@@ -16,6 +19,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.fail;
+
 public class SpringRequestMappingDerivativesTest {
 
     private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
@@ -24,8 +32,8 @@ public class SpringRequestMappingDerivativesTest {
     public class RequestMappingController {
 
         @GetMapping(value = "/request")
-        public void get() {
-
+        public GetResponse get() {
+            return null;
         }
 
         @PostMapping(value = "/request")
@@ -50,10 +58,14 @@ public class SpringRequestMappingDerivativesTest {
     }
 
 
+    @ApiObject
+    private class GetResponse {
+    }
+
     @Test
     public void testGetMapping() {
         ApiDoc
-            apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>> newHashSet(RequestMappingController.class), MethodDisplay.URI).iterator().next();
+                apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(RequestMappingController.class), MethodDisplay.URI).iterator().next();
         Assert.assertEquals("RequestMappingController", apiDoc.getName());
 
         boolean getMethodPresent = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
@@ -97,5 +109,26 @@ public class SpringRequestMappingDerivativesTest {
         Assert.assertTrue(deleteMethodPresent);
     }
 
+    @Test
+    public void testGetMappingResponse() {
+        Map<String, Set<ApiObjectDoc>> apiObjects = jsondocScanner.getJSONDoc("1.0",
+                "http://localhost:8080/api",
+                Lists.newArrayList("org.jsondoc.springmvc.scanner"),
+                true,
+                MethodDisplay.URI)
+                .getObjects();
+        Set<ApiObjectDoc> apiObjectDocs = apiObjects.entrySet().iterator().next().getValue();
 
+        assertContainsMethod(apiObjectDocs, "getresponse");
+    }
+
+    private void assertContainsMethod(Set<ApiObjectDoc> apiObjectDocs, final String methodName) {
+        boolean getResponseFound = FluentIterable.from(apiObjectDocs).anyMatch(new Predicate<ApiObjectDoc>() {
+            @Override
+            public boolean apply(ApiObjectDoc input) {
+                return input.getName().equals(methodName);
+            }
+        });
+        Assert.assertTrue(getResponseFound);
+    }
 }
