@@ -60,7 +60,7 @@ public class SpringQueryParamBuilder {
 				}
 				
 				if (requestParam != null) {
-					apiParamDoc = new ApiParamDoc(requestParam.value().isEmpty() ? requestParam.name() : requestParam.value(), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
+					apiParamDoc = new ApiParamDoc(nameOrValue(requestParam), "", JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()), new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ? "" : requestParam.defaultValue());
 					mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
 				}
 				if(modelAttribute != null) {
@@ -76,6 +76,15 @@ public class SpringQueryParamBuilder {
 		}
 		
 		return apiParamDocs;
+	}
+
+	private static String nameOrValue(RequestParam requestParam) {
+		try {
+			return requestParam.value().isEmpty() ? requestParam.name() : requestParam.value();
+		} catch (NoSuchMethodError nme) {
+			// value is empty, name is not defined (introduced in 4.2, with spring3 this results in NoSuchMethodError)
+		}
+		return "";
 	}
 
 	/**
