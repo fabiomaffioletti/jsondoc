@@ -2,7 +2,7 @@ package org.jsondoc.core.pojo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +17,7 @@ public class ApiAuthDoc {
 
 	// Token auth
 	private String scheme;
-	private Set<String> testtokens = new HashSet<String>();
+	private Set<String> testtokens = new LinkedHashSet<String>();
 
 	public String getType() {
 		return type;
