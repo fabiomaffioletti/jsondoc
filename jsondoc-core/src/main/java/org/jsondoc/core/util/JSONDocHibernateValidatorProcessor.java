@@ -63,6 +63,7 @@ public class JSONDocHibernateValidatorProcessor {
 			
 			if (field.isAnnotationPresent(NotNull.class)) {
 				apiPojoFieldDoc.addFormat(NotNull_message);
+				apiPojoFieldDoc.setRequired("true");
 			}
 
 			if (field.isAnnotationPresent(Null.class)) {
@@ -76,10 +77,12 @@ public class JSONDocHibernateValidatorProcessor {
 			
 			if (field.isAnnotationPresent(NotBlank.class)) {
 				apiPojoFieldDoc.addFormat(NotBlank_message);
+				apiPojoFieldDoc.setRequired("true");
 			}
 
 			if (field.isAnnotationPresent(NotEmpty.class)) {
 				apiPojoFieldDoc.addFormat(NotEmpty_message);
+				apiPojoFieldDoc.setRequired("true");
 			}
 			
 			if (field.isAnnotationPresent(Length.class)) {

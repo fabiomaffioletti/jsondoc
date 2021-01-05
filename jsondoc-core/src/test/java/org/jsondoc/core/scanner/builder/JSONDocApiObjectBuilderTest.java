@@ -33,4 +33,15 @@ public class JSONDocApiObjectBuilderTest {
 		}
 	}
 
+	@Test
+	public void testApiObjectDocRequiredWithHibernateValidator() {
+		Set<ApiObjectDoc> apiObjectDocs = jsondocScanner.getApiObjectDocs(Sets.<Class<?>>newHashSet(HibernateValidatorPojo.class));
+
+		Set<ApiObjectFieldDoc> fields = apiObjectDocs.iterator().next().getFields();
+		for (ApiObjectFieldDoc fieldDoc : fields) {
+			if(fieldDoc.getName().equals("notNullField") || fieldDoc.getName().equals("notEmptyField") || fieldDoc.getName().equals("notBlankField")) {
+				Assert.assertEquals("Field should be required: " + fieldDoc.getName(), "true", fieldDoc.getRequired());
+			}
+		}
+	}
 }
