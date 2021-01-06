@@ -9,6 +9,8 @@ import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
+import org.jsondoc.core.annotation.ApiHeader;
+import org.jsondoc.core.annotation.ApiHeaders;
 import org.jsondoc.core.annotation.ApiMethod;
 import org.jsondoc.core.annotation.ApiPathParam;
 import org.jsondoc.core.annotation.ApiQueryParam;
@@ -50,6 +52,7 @@ public class JSONDocSpringJSONDocScannerTest {
 		
 		@ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verb = ApiVerb.GET)
 		@RequestMapping(value = "/string/{name}", headers = "header=test", params = "delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+		@ApiHeaders(headers=@ApiHeader(name="header", description="test description", allowedvalues="test"))
 		@ResponseStatus(value = HttpStatus.CREATED)
 		public @ApiResponseObject @ResponseBody String string(
 				@ApiPathParam(name = "name") @PathVariable(value = "test") String name, 
@@ -88,6 +91,7 @@ public class JSONDocSpringJSONDocScannerTest {
 				ApiHeaderDoc header = headers.iterator().next();
 				Assert.assertEquals("header", header.getName());
 				Assert.assertEquals("test", header.getAllowedvalues()[0]);
+				Assert.assertEquals("test description", header.getDescription());
 				
 				Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
 				Assert.assertEquals(3, queryparameters.size());

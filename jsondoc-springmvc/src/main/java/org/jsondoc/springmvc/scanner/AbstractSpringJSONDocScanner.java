@@ -9,6 +9,7 @@ import org.jsondoc.core.annotation.global.ApiChangelogSet;
 import org.jsondoc.core.annotation.global.ApiGlobal;
 import org.jsondoc.core.annotation.global.ApiMigrationSet;
 import org.jsondoc.core.pojo.ApiDoc;
+import org.jsondoc.core.pojo.ApiHeaderDoc;
 import org.jsondoc.core.pojo.ApiMethodDoc;
 import org.jsondoc.core.pojo.ApiObjectDoc;
 import org.jsondoc.core.pojo.JSONDocTemplate;
@@ -251,6 +252,16 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 		if (method.isAnnotationPresent(ApiMethod.class) && method.getDeclaringClass().isAnnotationPresent(Api.class)) {
 			ApiMethodDoc jsondocApiMethodDoc = JSONDocApiMethodDocBuilder.build(method);
 			BeanUtils.copyProperties(jsondocApiMethodDoc, apiMethodDoc, new String[] { "path", "verb", "produces", "consumes", "headers", "pathparameters", "queryparameters", "bodyobject", "response", "responsestatuscode", "apierrors", "supportedversions", "auth", "displayMethodAs" });
+
+			for (ApiHeaderDoc jsondocApiHeaderDoc : jsondocApiMethodDoc.getHeaders()) {
+				
+				if(!apiMethodDoc.getHeaders().add(jsondocApiHeaderDoc)){
+					apiMethodDoc.getHeaders().remove(jsondocApiHeaderDoc);
+					apiMethodDoc.getHeaders().add(jsondocApiHeaderDoc);
+				}
+				
+			}
+			
 		}
 		return apiMethodDoc;
 	}
