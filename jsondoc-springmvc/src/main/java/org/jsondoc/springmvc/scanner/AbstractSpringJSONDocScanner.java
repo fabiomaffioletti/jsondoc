@@ -162,6 +162,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 	@Override
 	public Set<Class<?>> jsondocObjects(List<String> packages) {
 		Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
+		for(Class<?> clazz : jsondocControllers()) {
+			methodsAnnotatedWith.addAll(jsondocMethods(clazz));
+		}
 		Set<Class<?>> candidates = Sets.newHashSet();
 		Set<Class<?>> subCandidates = Sets.newHashSet();
 		Set<Class<?>> elected = Sets.newHashSet();
