@@ -34,6 +34,7 @@
 	<modules>
 		<module>jsondoc-core</module>
 		<module>jsondoc-springmvc</module>
+		<module>jsondoc-jaxrs</module>
 		<module>jsondoc-maven-plugin</module>
 		<module>jsondoc-ui</module>
 		<module>jsondoc-ui-webjar</module>
