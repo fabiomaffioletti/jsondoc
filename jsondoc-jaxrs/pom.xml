@@ -1,0 +1,64 @@
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>jsondoc-master</artifactId>
+        <groupId>org.jsondoc</groupId>
+        <version>1.2.10-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>jsondoc-jaxrs</artifactId>
+    <packaging>jar</packaging>
+
+    <name>jsondoc-springmvc</name>
+    <description>The Jax-RS helper of the jsondoc project</description>
+    <url>http://www.jsondoc.org</url>
+
+    <dependencies>
+        <!-- Jsondoc -->
+        <dependency>
+            <groupId>org.jsondoc</groupId>
+            <artifactId>jsondoc-core</artifactId>
+        </dependency>
+
+        <!-- JaxRS -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <!-- Commons -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>jsondoc-jaxrs</finalName>
+    </build>
+
+</project>

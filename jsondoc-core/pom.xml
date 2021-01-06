@@ -17,6 +17,11 @@
 	<url>http://www.jsondoc.org</url>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-annotations</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.reflections</groupId>
